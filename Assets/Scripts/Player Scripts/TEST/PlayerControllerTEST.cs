@@ -16,9 +16,11 @@ public class PlayerControllerTEST : Singleton<PlayerController>
     public bool moveInput;
     public bool jumpInput;
     public bool dashInput;
+    public bool attackInput;
     [Space(5)]
     public bool isAlive = true;
     private bool isTrapped;
+
     #region Player Script & Component References
 
     private Rigidbody2D playerRigidBody;
@@ -30,6 +32,7 @@ public class PlayerControllerTEST : Singleton<PlayerController>
     private PlayerJumpControllerTEST jumpController;
     private PlayerWallControllerTEST wallController;
     private PlayerDashControllerTEST dashController;
+    private PlayerAttackControllerTEST attackController;
 
     #endregion
 
@@ -51,6 +54,7 @@ public class PlayerControllerTEST : Singleton<PlayerController>
         jumpController = GetComponent<PlayerJumpControllerTEST>();
         wallController = GetComponent<PlayerWallControllerTEST>();
         dashController = GetComponent<PlayerDashControllerTEST>();
+        attackController = GetComponent<PlayerAttackControllerTEST>();
         #endregion
 
         isAlive = true;
@@ -63,6 +67,7 @@ public class PlayerControllerTEST : Singleton<PlayerController>
         movementController.SetMoveInput(moveVector, moveInput);
         wallController.SetWallInput(moveVector, moveInput);
         dashController.SetDashInput(moveVector, dashInput);
+        attackController.SetAttackInput(attackInput, moveVector);
 
         if (jumpInput)
         {
@@ -81,6 +86,11 @@ public class PlayerControllerTEST : Singleton<PlayerController>
         if (dashInput)
         {
             dashInput = false;
+        }
+
+        if (attackInput)
+        {
+            attackInput = false;
         }
 
         PlayerAnimation();
@@ -113,6 +123,14 @@ public class PlayerControllerTEST : Singleton<PlayerController>
         if (context.performed)
         {
             dashInput = true;
+        }
+    }
+    
+    public void PlayerInputAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            attackInput = true;
         }
     }
 

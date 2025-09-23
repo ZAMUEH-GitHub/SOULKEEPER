@@ -161,10 +161,6 @@ public class PlayerController : Singleton<PlayerController>
         gameManager.HealthUpdater(playerHealth);
         gameManager.DashUpdater(nextDash);
 
-        if (Keyboard.current.eKey.wasPressedThisFrame)
-        {
-            Debug.Log("E key pressed");
-        }
     }
 
     public void PlayerInputMove(InputAction.CallbackContext context)
