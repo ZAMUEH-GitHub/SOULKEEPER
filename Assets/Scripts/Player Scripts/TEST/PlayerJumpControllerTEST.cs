@@ -24,10 +24,12 @@ public class PlayerJumpControllerTEST : MonoBehaviour
     public float bufferCount;
 
     private Rigidbody2D playerRB;
+    private Animator playerAnimator; 
 
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
+        playerAnimator = GetComponentInParent<Animator>();
     }
 
     private void Update()
@@ -86,6 +88,7 @@ public class PlayerJumpControllerTEST : MonoBehaviour
     private void DoJump()
     {
         playerRB.linearVelocity = new Vector2(playerRB.linearVelocityX, jumpForce);
+        playerAnimator.SetTrigger("PlayerJump");
         isJumping = true;
         jumpCount--;
         StartCoroutine(CancelPlayerJump());

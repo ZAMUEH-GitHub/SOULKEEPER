@@ -27,11 +27,14 @@ public class PlayerAttackControllerTEST : MonoBehaviour
     private PlayerWallControllerTEST wallController;
     private PlayerDashControllerTEST dashController;
 
+    private Animator playerAnimator; 
+
     private void Awake()
     {
         jumpController = GetComponent< PlayerJumpControllerTEST>();
         wallController = GetComponent< PlayerWallControllerTEST>();
         dashController = GetComponent< PlayerDashControllerTEST>();
+        playerAnimator = GetComponentInParent<Animator>();
     }
 
     void Update()
@@ -99,7 +102,7 @@ public class PlayerAttackControllerTEST : MonoBehaviour
 
     private void SideAttack1()
     {
-        //playerAnimator.SetTrigger("PlayerSideAttack1");
+        playerAnimator.SetTrigger("PlayerSideAttack1");
 
         AttackSetup();
 
@@ -109,7 +112,7 @@ public class PlayerAttackControllerTEST : MonoBehaviour
 
     private void SideAttack2()
     {
-        //playerAnimator.SetTrigger("PlayerSideAttack2");
+        playerAnimator.SetTrigger("PlayerSideAttack2");
 
         AttackSetup();
 
@@ -119,7 +122,7 @@ public class PlayerAttackControllerTEST : MonoBehaviour
 
     private void SideAttack3()
     {
-        //playerAnimator.SetTrigger("PlayerSideAttack3");
+        playerAnimator.SetTrigger("PlayerSideAttack3");
 
         AttackSetup();
 
@@ -141,7 +144,7 @@ public class PlayerAttackControllerTEST : MonoBehaviour
     {
         if (nextAttack == 0)
         {
-            //playerAnimator.SetTrigger("PlayerDownAttack");
+            playerAnimator.SetTrigger("PlayerDownAttack");
 
             AttackSetup();
         }
