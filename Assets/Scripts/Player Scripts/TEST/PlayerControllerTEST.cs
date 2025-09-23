@@ -20,6 +20,7 @@ public class PlayerControllerTEST : Singleton<PlayerController>
     [Space(5)]
     public bool isAlive = true;
     private bool isTrapped;
+
     #region Player Script & Component References
 
     private Rigidbody2D playerRigidBody;
