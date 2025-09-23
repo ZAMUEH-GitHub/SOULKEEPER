@@ -93,6 +93,7 @@ public class PlayerWallControllerTEST : MonoBehaviour
         if (isWalled && !jumpController.isGrounded && moveVector.x != 0 && !jumpController.isJumping)
         {
             playerRB.linearVelocity = new Vector2(playerRB.linearVelocityX, Mathf.Clamp(playerRB.linearVelocityY, -wallSlidingSpeed, float.MaxValue));
+            jumpController.jumpCount = jumpController.maxJumpCount;
             isWallSliding = true;
         }
         else
@@ -106,6 +107,7 @@ public class PlayerWallControllerTEST : MonoBehaviour
         playerRB.linearVelocity = new Vector2(-moveVector.x / wallJumpDivider * wallJumpForce, wallJumpForce);
         isWallJumping = true;
         isWallSliding = false;
+        jumpController.jumpCount--;
         PlayerWallJumpFlip();
     }
 
@@ -126,7 +128,6 @@ public class PlayerWallControllerTEST : MonoBehaviour
         if (collision.CompareTag("Wall") || collision.CompareTag("Obstacle") || collision.CompareTag("MovingObstacle"))
         {
             isWalled = true;
-            jumpController.jumpCount = jumpController.maxJumpCount;
         }
     }
 
