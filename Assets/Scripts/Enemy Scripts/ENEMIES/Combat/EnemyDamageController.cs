@@ -21,12 +21,15 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
 
     private Coroutine takeDamageCoroutine;
 
+    private EnemyBaseController enemyBaseController;
+
     private SpriteRenderer enemySprite;
     private Rigidbody2D enemyRB;
     private Animator enemyAnimator;
 
     private void Awake()
     {
+        enemyBaseController = GetComponent<EnemyBaseController>();
         enemySprite = GetComponent<SpriteRenderer>();
         enemyRB = GetComponent<Rigidbody2D>();
         enemyAnimator = GetComponent<Animator>();
@@ -43,10 +46,11 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
     public void Knockback(Vector2 knockbackVector, float knockbackForce, float knockbackDuration)
     {
         enemyRB.AddForce(knockbackVector * knockbackForce, ForceMode2D.Impulse);
-        enemyRB.linearVelocity = (knockbackVector * knockbackForce);
+        enemyRB.linearVelocity = (new Vector2(knockbackVector.x, knockbackVector.y + 1) * knockbackForce);
         isKnockedBack = true;
         StartCoroutine(CancelKnockback(knockbackDuration));
     }
+
     public IEnumerator CancelKnockback(float knockbackDuration)
     {
         yield return new WaitForSeconds(knockbackDuration);
@@ -82,7 +86,7 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
 
         if (enemyHealth <= 0)
         {
-            Die();
+            enemyBaseController.Die();
         }
     }
 

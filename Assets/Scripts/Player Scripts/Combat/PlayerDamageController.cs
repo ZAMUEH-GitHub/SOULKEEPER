@@ -11,7 +11,6 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     public float damageRate;
     private float nextDamage;
     public bool isKnockedBack;
-    private bool isAlive;
 
     public GameObject soulObject;
     public ParticleSystem damageParticles;
@@ -51,7 +50,7 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     public void Knockback(Vector2 knockbackVector, float knockbackForce, float knockbackDuration)
     {
         playerRB.AddForce(knockbackVector * knockbackForce, ForceMode2D.Impulse);
-        playerRB.linearVelocity = (knockbackVector * knockbackForce);
+        playerRB.linearVelocity = (new Vector2(knockbackVector.x, knockbackVector.y + 1) * knockbackForce);
         isKnockedBack = true;
         StartCoroutine(CancelKnockback(knockbackDuration));
     }
@@ -104,7 +103,6 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
 
     public void Die()
     {
-        isAlive = false;
         Instantiate(deathParticles, transform.position, Quaternion.identity);
 
         for (int i = playerController.playerScore / 2; i > 0; i--)
