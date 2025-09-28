@@ -15,6 +15,7 @@ public class Phase2Controller : MonoBehaviour
     public float attackTimer;
     [Space(5f)]
     private PlayerController playerController;
+    private PlayerDamageController playerDamageController;
     private Transform playerTransform;
     public int idleState;
     private bool throwRight;
@@ -32,15 +33,7 @@ public class Phase2Controller : MonoBehaviour
         bossAnimator = GetComponent<Animator>();
         attackTimer = 0f;
 
-        if (PlayerController.Instance != null)
-        {
-            playerController = PlayerController.Instance;
-            playerTransform = PlayerController.Instance.transform;
-        }
-        else
-        {
-            Debug.LogWarning("PlayerController instance not found!");
-        }
+        playerController = GetComponent<PlayerController>();
     }
 
     public void RunPhase2()
@@ -128,7 +121,7 @@ public void ApplyPlayerKnockback()
 {
     float xDirection = throwRight ? 1f : -1f;
     Vector2 knockbackVector = new Vector2(xDirection * 2f, 1f).normalized;
-    playerController.PlayerKnockback(knockbackVector, knockbackForce*2, knockbackDuration);
+    playerDamageController.Knockback(knockbackVector, knockbackForce*2, knockbackDuration);
 }
 
     public void EndAttack()

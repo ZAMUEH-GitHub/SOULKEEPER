@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 
 public class FixedScarfController : MonoBehaviour
 {
@@ -51,3 +51,4 @@ public class FixedScarfController : MonoBehaviour
         }
     }
 }
+*/

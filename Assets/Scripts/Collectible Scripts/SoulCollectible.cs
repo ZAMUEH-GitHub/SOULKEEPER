@@ -7,13 +7,11 @@ public class SoulCollectible : MonoBehaviour
     public float acceleration;
     public float smoothTime = 0.3f;
     private GameObject playerObject;
-    private GameManager gameManager;
     private float currentSpeed;
     private Vector2 velocity = Vector2.zero;
 
     void Start()
     {
-        gameManager = GameObject.Find("GAME MANAGER").GetComponent<GameManager>();
         playerObject = GameObject.Find("PLAYER");
         currentSpeed = initialSoulSpeed;
     }
@@ -31,7 +29,6 @@ public class SoulCollectible : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            gameManager.ScoreUpdater(collectibleScore);
             Destroy(gameObject);
         }
     }

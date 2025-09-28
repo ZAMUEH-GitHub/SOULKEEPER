@@ -12,6 +12,7 @@ public class GameManager : Singleton<GameManager>
     public int playerHealth = 5;
     public GameObject[] healthSprites;
     private PlayerController playerController;
+    private PlayerDamageController playerDamageController;
     #endregion
 
     #region Power-Up Tracking
@@ -182,7 +183,7 @@ public class GameManager : Singleton<GameManager>
             healthSprites[i].SetActive(i < currentHealth);
         }
 
-        playerHealth = playerController.playerHealth;
+        //playerHealth = playerDamageController.playerHealth;
     }
 
     public void ScoreUpdater(int score)

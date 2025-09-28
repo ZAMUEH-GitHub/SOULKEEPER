@@ -34,7 +34,6 @@ public class BaseScarfController : MonoBehaviour
 
         float targetSmoothSpeed = (Vector3.Distance(segmentPoses[1], segmentPoses[0]) > segmentDistance + maxDistance) ? maxSpeed : minSpeed;
 
-        // Smoothly transition smoothSpeed to the target value
         smoothSpeed = Mathf.Lerp(smoothSpeed, targetSmoothSpeed, Time.deltaTime * speedTransition); 
 
         for (int i = 1; i < segmentPoses.Length; i++)
@@ -47,11 +46,11 @@ public class BaseScarfController : MonoBehaviour
 
     private void Flip()
     {
-        if (playerController.playerOrientation.x > 0)
+        if (playerController.moveVector.x > 0)
         {
             transform.localScale = new Vector2(1, 1);
         }
-        if (playerController.playerOrientation.x < 0)
+        if (playerController.moveVector.x < 0)
         {
             transform.localScale = new Vector2(-1, 1);
         }
