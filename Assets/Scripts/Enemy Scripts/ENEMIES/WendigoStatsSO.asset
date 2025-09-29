@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95e3c34ace81f844495f402c59de9f7c, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b06e747c6070e74794724d30b4e3f2c, type: 3}
   m_Name: WendigoStatsSO
   m_EditorClassIdentifier: 
   health: 10
@@ -17,7 +17,7 @@ MonoBehaviour:
   unlocker: 0
   speed: 2
   idleDuration: 2
-  canRun: 0
+  canRun: 1
   speedMultiplier: 2
   canJump: 1
   jumpForce: 20
@@ -27,7 +27,7 @@ MonoBehaviour:
   canComboAttack: 1
   hasChargedAttack: 0
   attackRate: 1
-  attackRange: 3
+  attackRange: 2.5
   chargeAttackSpeed: 0
   chargeAttackDuration: 0
   knockback: 5
