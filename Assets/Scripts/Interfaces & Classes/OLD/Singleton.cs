@@ -58,7 +58,6 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void OnSceneChanged(bool isGameplayScene)
     {
-        Debug.Log($"[Singleton<{typeof(T)}>] Scene changed. Is gameplay: {isGameplayScene}");
     }
 
     protected bool IsGameplayScene(string sceneName)

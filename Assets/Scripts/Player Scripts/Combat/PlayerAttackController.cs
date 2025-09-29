@@ -196,18 +196,18 @@ public class PlayerAttackController : MonoBehaviour
         {
             if (player.position.y > collision.transform.position.y + 1)
             {
-                damageController.Knockback(-damageVector, knockbackForce * 2, knockbackDuration);
+                damageController.Knockback(-damageVector, knockbackForce, knockbackDuration);
             }
-            else damageController.Knockback(-damageVector, knockbackForce , knockbackDuration);
+            else damageController.Knockback(-damageVector, knockbackForce/2 , knockbackDuration);
         }
 
         if (collision.CompareTag("Bulb"))
         {
             if (player.position.y > collision.transform.position.y + 1)
             {
-                damageController.Knockback(-damageVector, knockbackForce * 3, knockbackDuration);
+                damageController.Knockback(-damageVector, knockbackForce * 2, knockbackDuration);
             }
-            else damageController.Knockback(-damageVector, knockbackForce * 1.5f, knockbackDuration);
+            else damageController.Knockback(-damageVector, knockbackForce, knockbackDuration);
         }
     }
 

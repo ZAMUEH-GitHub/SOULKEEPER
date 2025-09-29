@@ -99,7 +99,7 @@ MonoBehaviour:
   knockbackVector: {x: 0, y: 0}
   knockbackForce: 10
   knockbackDuration: 0
-  playerAttackParticles: {fileID: 0}
+  playerAttackParticles: {fileID: 5957356996548768394, guid: 3c87d7b19e0b0e846ac3c50ddc648ff6, type: 3}
   attackOrientation: {x: 0, y: 0}
   particleRotation: {x: 0, y: 0, z: 0, w: 0}
   player: {fileID: 5498866274407217416}
@@ -399,6 +399,7 @@ MonoBehaviour:
   nextDamage: 0
   damageParticles: {fileID: 487942289725805393, guid: 1c785a88208007844aa5f5015a062b0b, type: 3}
   deathParticles: {fileID: 4231633206474095276, guid: 8eccf4353e5e4424293a563851595620, type: 3}
+  gameOverPanel: {fileID: 0}
   gameManager: {fileID: 0}
   jumpController: {fileID: 3115921065563794972}
   wallController: {fileID: 1670969660814321489}
@@ -424,7 +425,7 @@ MonoBehaviour:
   wallJumpUnlocked: 0
   wallJumpUpgraded: 0
   attackSpeedUpgraded: 0
-  attackDamageUpgrade: 0
+  attackDamageUpgraded: 0
   playerController: {fileID: 440446617068297391}
   jumpController: {fileID: 3115921065563794972}
   attackController: {fileID: 7554589826390375820}
