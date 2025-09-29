@@ -9,24 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b06e747c6070e74794724d30b4e3f2c, type: 3}
+  m_Script: {fileID: 11500000, guid: 95e3c34ace81f844495f402c59de9f7c, type: 3}
   m_Name: BrutusStatsSO
   m_EditorClassIdentifier: 
   health: 15
-  score: 15
+  score: 10
   unlocker: 0
-  speed: 2
-  idleDuration: 2
-  canRun: 0
-  speedMultiplier: 0
+  speed: 1
+  idleDuration: 5
+  canRun: 1
+  speedMultiplier: 2
   canJump: 0
-  jumpForce: 15
+  jumpForce: 5
   jumpRate: 5
   jumpChargeDuration: 1
   damage: 2
   canComboAttack: 0
   hasChargedAttack: 0
-  attackRate: 3
+  attackRate: 2
   attackRange: 3
   chargeAttackSpeed: 0
   chargeAttackDuration: 0
