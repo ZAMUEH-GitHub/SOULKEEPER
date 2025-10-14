@@ -38,6 +38,8 @@ public class PlayerController : Singleton<PlayerController>
     private PlayerWallController wallController;
     private PlayerDashController dashController;
     private PlayerAttackController attackController;
+    public BaseScarfController scarfController, scarfController2;
+ 
     private PlayerDamageController damageController;
 
     #endregion
@@ -64,6 +66,8 @@ public class PlayerController : Singleton<PlayerController>
         dashController = GetComponent<PlayerDashController>();
         attackController = GetComponentInChildren<PlayerAttackController>();
         damageController = GetComponent<PlayerDamageController>();
+       
+       
         #endregion
 
         isAlive = true;
@@ -77,6 +81,8 @@ public class PlayerController : Singleton<PlayerController>
         wallController.SetWallInput(moveVector, moveInput);
         dashController.SetDashInput(moveVector, dashInput);
         attackController.SetAttackInput(attackInput, moveVector);
+        scarfController.ScarfAttack(attackInput, moveVector);
+        scarfController2.ScarfAttack(attackInput, moveVector);
 
         if (jumpInput)
         {

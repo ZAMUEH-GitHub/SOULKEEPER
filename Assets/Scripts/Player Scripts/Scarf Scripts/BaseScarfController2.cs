@@ -3,17 +3,17 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines;
 
-public class BaseScarfController : MonoBehaviour
+public class BaseScarfController2 : MonoBehaviour
 {
     [Header("States")]
     public bool isIdle;
-    public bool isAttacking; 
-    public int facing; 
+    public bool isAttacking;
+    public int facing;
     [Header("Scarf Settings")]
     public int segmentAmount;
     public float segmentDistance;
     public float maxDistance;
-    public Vector3 segment0; 
+    public Vector3 segment0;
 
     [Header("Speed Settings")]
     public float speedTransition;
@@ -22,18 +22,16 @@ public class BaseScarfController : MonoBehaviour
     private float smoothSpeed;
 
     [Header("Vectors")]
-    private Vector3 attackPosition; 
+    private Vector3 attackPosition;
     private Vector3[] segmentPoses;
     private Vector3[] segmentV;
     private Vector2 playerOrientation;
 
-    [Header ("Objects")]
+    [Header("Objects")]
     public Transform targetDirection;
     public PlayerController playerController;
     public LineRenderer lineRend;
     private PlayerJumpController jumpController;
-    public Transform scarfObjective;
-    public Transform leftScarfObjective; 
     private void Start()
     {
         transform.position = targetDirection.position;
@@ -41,10 +39,9 @@ public class BaseScarfController : MonoBehaviour
         segmentPoses = new Vector3[segmentAmount];
         segmentV = new Vector3[segmentAmount];
         isAttacking = false;
-        isIdle = true; 
+        isIdle = true;
 
         jumpController = GetComponentInParent<PlayerJumpController>();
-        
     }
 
     private void Update()
@@ -54,28 +51,21 @@ public class BaseScarfController : MonoBehaviour
 
         if (isAttacking == true)
         {
-           
-            if (playerOrientation.y == 0 && facing == 1)
+            if (playerOrientation.y == 0)
             {
-                attackPosition = scarfObjective.transform.position;
+                attackPosition = new Vector3(playerController.transform.position.x + facing * 4, playerController.transform.position.y - 0.2f);
             }
-            else if (playerOrientation.y == 0 && facing == -1)
-            {
-                attackPosition = leftScarfObjective.transform.position;
-            }
-
-
             else if (playerOrientation.y > 0)
             {
-                attackPosition = scarfObjective.position;
+                attackPosition = new Vector3(playerController.transform.position.x -0.2f, playerController.transform.position.y + 4);
             }
-            else if (playerOrientation.y < 0 /*&& !jumpController.isGrounded*/)
+            else if (playerOrientation.y < 0 /*jumpController.isJumping == true*/)
             {
-                attackPosition = scarfObjective.position;
+                attackPosition = new Vector3(playerController.transform.position.x, playerController.transform.position.y - 4);
             }
 
 
-                segmentPoses[segmentPoses.Length - 1] = attackPosition;
+            segmentPoses[segmentPoses.Length - 1] = attackPosition;
             for (int i = segmentPoses.Length - 2; i >= 0; i--)
             {
                 Vector3 targetPos = segmentPoses[i + 1] - (targetDirection.right * segmentDistance);
@@ -91,6 +81,7 @@ public class BaseScarfController : MonoBehaviour
         lineRend.SetPositions(segmentPoses);
 
     }
+
     private void ScarfIdle()
     {
         segmentPoses[0] = targetDirection.position;
@@ -111,7 +102,7 @@ public class BaseScarfController : MonoBehaviour
     {
         if (attackInput == true)
         {
-            playerOrientation = moveVector; 
+            playerOrientation = moveVector;
             isIdle = false;
             isAttacking = true;
             StartCoroutine(ScarfCooldown());
@@ -120,17 +111,18 @@ public class BaseScarfController : MonoBehaviour
     public IEnumerator ScarfCooldown()
     {
         lineRend.SetPositions(segmentPoses);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
         isAttacking = false;
         isIdle = true;
     }
+
 
     private void Flip()
     {
         if (playerController.moveVector.x > 0)
         {
             transform.localScale = new Vector2(1, 1);
-            facing = 1; 
+            facing = 1;
         }
         if (playerController.moveVector.x < 0)
         {
