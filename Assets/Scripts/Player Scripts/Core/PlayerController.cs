@@ -20,6 +20,7 @@ public class PlayerController : Singleton<PlayerController>
     public bool jumpInput;
     public bool dashInput;
     public bool attackInput;
+    public bool interactInput;
     [Space(5)]
     public int playerHealth;
     public bool isAlive = true;
@@ -108,6 +109,11 @@ public class PlayerController : Singleton<PlayerController>
             attackInput = false;
         }
 
+        if (interactInput)
+        { 
+            interactInput = false; 
+        }
+
         PlayerAnimation();
     }
 
@@ -146,6 +152,14 @@ public class PlayerController : Singleton<PlayerController>
         if (context.performed)
         {
             attackInput = true;
+        }
+    }
+
+    public void PlayerInputInteract(InputAction.CallbackContext context)
+    { 
+        if (context.performed)
+        {
+            interactInput = true;
         }
     }
 
