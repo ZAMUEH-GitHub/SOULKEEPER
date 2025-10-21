@@ -128,9 +128,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 304822134}
-  - component: {fileID: 304822133}
   - component: {fileID: 304822132}
   - component: {fileID: 304822131}
+  - component: {fileID: 304822135}
   m_Layer: 0
   m_Name: SceneDoor_1
   m_TagString: Untagged
@@ -239,21 +239,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &304822133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 304822130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e09165cf49d2e94b805d408b7687991, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loadScene:
-    _sceneAsset: {fileID: 102900000, guid: 06ef31c2b1d37564285fe069cfd192a9, type: 3}
-    _sceneName: TEST_Level1Room1
 --- !u!4 &304822134
 Transform:
   m_ObjectHideFlags: 0
@@ -269,6 +254,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &304822135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304822130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f940e046f19f1b345b2c6fb162e75a81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadScene:
+    _sceneAsset: {fileID: 102900000, guid: 06ef31c2b1d37564285fe069cfd192a9, type: 3}
+    _sceneName: TEST_Level1Room1
 --- !u!1 &508908192
 GameObject:
   m_ObjectHideFlags: 0

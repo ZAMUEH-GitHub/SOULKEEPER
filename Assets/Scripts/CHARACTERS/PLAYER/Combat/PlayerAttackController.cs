@@ -186,10 +186,10 @@ public class PlayerAttackController : MonoBehaviour
 
         Vector2 damageVector = (collision.transform.position - player.transform.position).normalized;
 
-        if (damageable != null) 
+        if (damageable != null)
             damageable.TakeDamage(playerDamage, damageVector);
 
-        if (knockbackable != null) 
+        if (knockbackable != null)
             knockbackable.Knockback(damageVector, knockbackForce, knockbackDuration);
 
         if (collision.CompareTag("Enemy") || collision.CompareTag("Spike"))

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneDoor : MonoBehaviour, IInteractable
 {
@@ -7,6 +8,7 @@ public class SceneDoor : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-
+        Debug.Log("Door Received Input!!");
+        SceneManager.LoadScene(loadScene);
     }
 }

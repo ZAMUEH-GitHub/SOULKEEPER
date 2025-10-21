@@ -212,9 +212,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 898957508}
-  - component: {fileID: 898957507}
   - component: {fileID: 898957506}
   - component: {fileID: 898957505}
+  - component: {fileID: 898957509}
   m_Layer: 0
   m_Name: SceneDoor
   m_TagString: Untagged
@@ -323,21 +323,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &898957507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 898957504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e09165cf49d2e94b805d408b7687991, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loadScene:
-    _sceneAsset: {fileID: 102900000, guid: 2e8cdddaad85b6348a4f3264943d3dda, type: 3}
-    _sceneName: TEST_Level1Room0
 --- !u!4 &898957508
 Transform:
   m_ObjectHideFlags: 0
@@ -353,6 +338,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &898957509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 898957504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f940e046f19f1b345b2c6fb162e75a81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadScene:
+    _sceneAsset: {fileID: 102900000, guid: 2e8cdddaad85b6348a4f3264943d3dda, type: 3}
+    _sceneName: TEST_Level1Room0
 --- !u!1 &1109959655
 GameObject:
   m_ObjectHideFlags: 0
@@ -901,9 +901,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2143305723}
-  - component: {fileID: 2143305722}
   - component: {fileID: 2143305721}
   - component: {fileID: 2143305720}
+  - component: {fileID: 2143305724}
   m_Layer: 0
   m_Name: SceneDoor_1
   m_TagString: Untagged
@@ -1012,21 +1012,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2143305722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2143305719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e09165cf49d2e94b805d408b7687991, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loadScene:
-    _sceneAsset: {fileID: 102900000, guid: d175b8ecdb8c1bb41b123231d477f297, type: 3}
-    _sceneName: TEST_Level1Room2
 --- !u!4 &2143305723
 Transform:
   m_ObjectHideFlags: 0
@@ -1042,6 +1027,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2143305724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2143305719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f940e046f19f1b345b2c6fb162e75a81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadScene:
+    _sceneAsset: {fileID: 102900000, guid: d175b8ecdb8c1bb41b123231d477f297, type: 3}
+    _sceneName: TEST_Level1Room2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

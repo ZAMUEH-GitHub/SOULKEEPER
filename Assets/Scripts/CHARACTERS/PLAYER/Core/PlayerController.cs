@@ -39,6 +39,7 @@ public class PlayerController : Singleton<PlayerController>
     private PlayerWallController wallController;
     private PlayerDashController dashController;
     private PlayerAttackController attackController;
+    private PlayerInteractController interactController;
     public BaseScarfController scarfController, scarfController2;
  
     private PlayerDamageController damageController;
@@ -67,6 +68,7 @@ public class PlayerController : Singleton<PlayerController>
         dashController = GetComponent<PlayerDashController>();
         attackController = GetComponentInChildren<PlayerAttackController>();
         damageController = GetComponent<PlayerDamageController>();
+        interactController = GetComponent<PlayerInteractController>();
        
        
         #endregion
@@ -82,6 +84,7 @@ public class PlayerController : Singleton<PlayerController>
         wallController.SetWallInput(moveVector, moveInput);
         dashController.SetDashInput(moveVector, dashInput);
         attackController.SetAttackInput(attackInput, moveVector);
+        interactController.SetInteractInput(interactInput);
         scarfController.ScarfAttack(attackInput, moveVector);
         scarfController2.ScarfAttack(attackInput, moveVector);
 
@@ -110,7 +113,7 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         if (interactInput)
-        { 
+        {
             interactInput = false; 
         }
 
@@ -159,6 +162,7 @@ public class PlayerController : Singleton<PlayerController>
     { 
         if (context.performed)
         {
+            Debug.Log("Player Input Interact");
             interactInput = true;
         }
     }
@@ -198,7 +202,7 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     private void OnTriggerStay2D(Collider2D other)
-    {
+    {        
         if (other != null && other.CompareTag("MovingObstacle") || other != null && other.CompareTag("Parenting Collider"))
         {
             transform.SetParent(other.transform, true);
