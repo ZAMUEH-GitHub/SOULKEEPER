@@ -10,12 +10,12 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerDashController))]
 #endregion
 
-public class PlayerController : Singleton<PlayerController>
+public class PlayerController : MonoBehaviour
 {
     public PlayerStatsSO playerStats;
 
     [Header("Player Input")]
-    public Vector2 moveVector;
+    public Vector2 moveVector;  
     public bool moveInput;
     public bool jumpInput;
     public bool dashInput;
@@ -46,9 +46,8 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         playerHealth = playerStats.health;
         playerScore = playerStats.score;
     }
@@ -162,7 +161,6 @@ public class PlayerController : Singleton<PlayerController>
     { 
         if (context.performed)
         {
-            Debug.Log("Player Input Interact");
             interactInput = true;
         }
     }

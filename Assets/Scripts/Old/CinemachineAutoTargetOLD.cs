@@ -1,7 +1,7 @@
-using UnityEngine;
+/*using UnityEngine;
 using Unity.Cinemachine;
 
-public class CinemachineAutoTarget : MonoBehaviour
+public class CinemachineAutoTargetOLD : MonoBehaviour
 {
     private CinemachineCamera vCam;
 
@@ -14,4 +14,4 @@ public class CinemachineAutoTarget : MonoBehaviour
             vCam.Follow = PlayerController.Instance.transform;
         }
     }
-}
+}*/

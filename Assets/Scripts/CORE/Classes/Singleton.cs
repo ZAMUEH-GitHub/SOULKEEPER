@@ -1,67 +1,19 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+public class Singleton : MonoBehaviour
 {
-    private static T _instance;
-    private static object _lock = new object();
+    public static Singleton instance;
 
-    public static T Instance
+    private void Awake()
     {
-        get
+        if (instance == null)
         {
-            if (_instance == null)
-            {
-                lock (_lock)
-                {
-                    if (_instance == null)
-                    {
-                        _instance = FindFirstObjectByType<T>();
-                        if (_instance == null)
-                        {
-                            Debug.LogError($"[Singleton] An instance of {typeof(T)} is needed in the scene, but none was found.");
-                        }
-                    }
-                }
-            }
-            return _instance;
-        }
-    }
-
-    protected virtual void Awake()
-    {
-        if (_instance == null)
-        {
-            _instance = this as T;
+            instance = this;
             DontDestroyOnLoad(gameObject);
-            SceneManager.sceneLoaded += OnSceneLoaded;
         }
-        else if (_instance != this)
+        else
         {
             Destroy(gameObject);
         }
-    }
-
-    protected virtual void OnDestroy()
-    {
-        if (_instance == this)
-        {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-        }
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        bool isGameplayScene = IsGameplayScene(scene.name);
-        OnSceneChanged(isGameplayScene);
-    }
-
-    protected virtual void OnSceneChanged(bool isGameplayScene)
-    {
-    }
-
-    protected bool IsGameplayScene(string sceneName)
-    {
-        return sceneName == "Level 1" || sceneName == "Level 2" || sceneName == "Level 3" || sceneName == "BossLevel";
     }
 }
