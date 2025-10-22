@@ -1,24 +1,43 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneDoorManager : MonoBehaviour
 {
+    [Header("Scene Doors")]
     public GameObject[] sceneDoors;
-    private GameObject player;
-    private GameObject chosenDoor;
 
-    private void Start()
+    private GameObject player;
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    public void ChooseDoor(int doorName)
+    public void ChooseDoor(string targetDoorID)
     {
-        chosenDoor = sceneDoors[doorName];
-        TeleportPlayer(chosenDoor);
+        foreach (GameObject targetDoor in sceneDoors)
+        {
+            var doorComp = targetDoor.GetComponent<SceneDoor>();
+            if (doorComp != null && doorComp.doorID == targetDoorID)
+            {
+                TeleportPlayer(targetDoor);
+                return;
+            }
+        }
     }
 
-    private void TeleportPlayer(GameObject chosenDoor)
+    private void TeleportPlayer(GameObject targetDoor)
     {
-        player.transform.position = chosenDoor.transform.position;
+        player.transform.position = targetDoor.transform.position;
     }
 }

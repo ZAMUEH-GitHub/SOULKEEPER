@@ -417,7 +417,8 @@ MonoBehaviour:
   loadScene:
     _sceneAsset: {fileID: 102900000, guid: 06ef31c2b1d37564285fe069cfd192a9, type: 3}
     _sceneName: TEST_Level1Room1
-  doorName: 0
+  doorID: Room0_DoorA
+  targetDoorID: Room1_DoorA
 --- !u!1 &904015645
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,7 +866,8 @@ MonoBehaviour:
   loadScene:
     _sceneAsset: {fileID: 102900000, guid: 06ef31c2b1d37564285fe069cfd192a9, type: 3}
     _sceneName: TEST_Level1Room1
-  doorName: 0
+  doorID: Room0_DoorB
+  targetDoorID: Room1_DoorB
 --- !u!4 &2059471681
 Transform:
   m_ObjectHideFlags: 0

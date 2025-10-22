@@ -5,7 +5,10 @@ public class SceneDoor : MonoBehaviour, IInteractable
 {
     [Header("Load Scene")]
     [SerializeField] private SceneField loadScene;
-    public int doorName;
+
+    [Header("Door IDs")]
+    public string doorID;
+    public string targetDoorID;
 
     private GameSceneManager gameSceneManager;
 
@@ -16,6 +19,6 @@ public class SceneDoor : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        gameSceneManager.LoadScene(loadScene, doorName);
+        gameSceneManager.LoadScene(loadScene, targetDoorID);
     }
 }
