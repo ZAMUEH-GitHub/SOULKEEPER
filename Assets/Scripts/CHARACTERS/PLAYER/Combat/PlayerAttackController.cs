@@ -9,7 +9,7 @@ public class PlayerAttackController : MonoBehaviour
     private int playerDamage;
     public float attackRate;
     private float nextAttack;
-    private float attackRangeTime;
+    private float comboGrace = 0.2f;
     private float attackTimer;
     private float knockbackForce;
     private float knockbackDuration;
@@ -18,12 +18,9 @@ public class PlayerAttackController : MonoBehaviour
     public AttackState currentAttackState = AttackState.Attack1;
 
     private Vector2 playerOrientation;
-    private bool attackInput;
-
-    [Header("Particle Settings")]
-    public ParticleSystem playerAttackParticles;
     public Vector2 attackOrientation;
-    public Quaternion particleRotation;
+
+    private bool attackInput;
 
     #region Script & Component References
     private PlayerJumpController jumpController;
@@ -55,7 +52,7 @@ public class PlayerAttackController : MonoBehaviour
 
     void Update()
     {
-        if (attackTimer == 0)
+        if (attackTimer <= 0)
         {
             currentAttackState = AttackState.Attack1;
             isAttacking = false;
@@ -127,8 +124,8 @@ public class PlayerAttackController : MonoBehaviour
             AttackSetup();
 
             currentAttackState = AttackState.Attack2;
-            attackTimer = attackRate + attackRangeTime;
-        }
+            attackTimer = attackRate + comboGrace;
+    }
 
         private void SideAttack2()
         {
@@ -137,8 +134,8 @@ public class PlayerAttackController : MonoBehaviour
             AttackSetup();
 
             currentAttackState = AttackState.Attack3;
-            attackTimer = attackRate + attackRangeTime;
-        }
+            attackTimer = attackRate + comboGrace;
+    }
 
         private void SideAttack3()
         {
@@ -147,8 +144,8 @@ public class PlayerAttackController : MonoBehaviour
             AttackSetup();
 
             currentAttackState = AttackState.Attack1;
-            attackTimer = 0.3f;
-        }
+            attackTimer = comboGrace;
+    }
         #endregion
 
     private void PlayerUpAttack()
@@ -173,9 +170,7 @@ public class PlayerAttackController : MonoBehaviour
 
     private void AttackSetup()
     {
-        particleRotation = Quaternion.FromToRotation(Vector2.up, attackOrientation);
-        Instantiate(playerAttackParticles, transform.position, particleRotation);
-        nextAttack = attackRate;
+        nextAttack = Mathf.Max(0f, attackRate - comboGrace);
     }
     #endregion
 
