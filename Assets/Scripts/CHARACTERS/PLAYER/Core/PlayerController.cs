@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     private PlayerDashController dashController;
     private PlayerAttackController attackController;
     private PlayerInteractController interactController;
-    public BaseScarfController scarfController, scarfController2;
+    
  
     private PlayerDamageController damageController;
 
@@ -84,8 +84,7 @@ public class PlayerController : MonoBehaviour
         dashController.SetDashInput(moveVector, dashInput);
         attackController.SetAttackInput(attackInput, moveVector);
         interactController.SetInteractInput(interactInput);
-        scarfController.ScarfAttack(attackInput, moveVector);
-        scarfController2.ScarfAttack(attackInput, moveVector);
+
 
         if (jumpInput)
         {

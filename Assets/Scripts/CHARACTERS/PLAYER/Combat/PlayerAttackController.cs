@@ -14,6 +14,7 @@ public class PlayerAttackController : MonoBehaviour
     private float knockbackForce;
     private float knockbackDuration;
 
+
     public enum AttackState { Attack1, Attack2, Attack3 }
     public AttackState currentAttackState = AttackState.Attack1;
 
@@ -30,6 +31,7 @@ public class PlayerAttackController : MonoBehaviour
 
     private Animator playerAnimator;
     public Transform player;
+    public BaseScarfController scarfController, scarfController2;
     #endregion
 
     private void Awake()
@@ -41,6 +43,7 @@ public class PlayerAttackController : MonoBehaviour
         dashController = GetComponentInParent< PlayerDashController>();
         damageController = GetComponentInParent< PlayerDamageController>();
         playerAnimator = GetComponentInParent<Animator>();
+        
 
         playerDamage = playerStats.damage;
         knockbackForce = playerStats.knockback;
@@ -119,26 +122,33 @@ public class PlayerAttackController : MonoBehaviour
         #region Player Side Attacks
         private void SideAttack1()
         {
+            scarfController.ScarfAttack(attackInput, playerOrientation);
+            scarfController2.ScarfAttack(attackInput, playerOrientation);
+            
             playerAnimator.SetTrigger("PlayerSideAttack1");
 
             AttackSetup();
 
             currentAttackState = AttackState.Attack2;
             attackTimer = attackRate + comboGrace;
-    }
+        }
 
         private void SideAttack2()
         {
+            scarfController.ScarfAttack(attackInput, playerOrientation);
+            scarfController2.ScarfAttack(attackInput, playerOrientation);
             playerAnimator.SetTrigger("PlayerSideAttack2");
 
             AttackSetup();
 
             currentAttackState = AttackState.Attack3;
             attackTimer = attackRate + comboGrace;
-    }
+        }
 
         private void SideAttack3()
         {
+            scarfController.ScarfAttack(attackInput, playerOrientation);
+            scarfController2.ScarfAttack(attackInput, playerOrientation);
             playerAnimator.SetTrigger("PlayerSideAttack3");
 
             AttackSetup();
@@ -152,6 +162,8 @@ public class PlayerAttackController : MonoBehaviour
     {
         if (nextAttack == 0)
         {
+            scarfController.ScarfAttack(attackInput, playerOrientation);
+            scarfController2.ScarfAttack(attackInput, playerOrientation);
             playerAnimator.SetTrigger("PlayerUpAttack");
 
             AttackSetup();
@@ -162,6 +174,8 @@ public class PlayerAttackController : MonoBehaviour
     {
         if (nextAttack == 0)
         {
+            scarfController.ScarfAttack(attackInput, playerOrientation);
+            scarfController2.ScarfAttack(attackInput, playerOrientation);
             playerAnimator.SetTrigger("PlayerDownAttack");
 
             AttackSetup();
