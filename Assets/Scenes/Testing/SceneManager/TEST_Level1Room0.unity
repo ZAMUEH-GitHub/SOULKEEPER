@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &10394684 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8917952460610809833, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-  m_PrefabInstance: {fileID: 8532466972553548361}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &20998773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -134,11 +129,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4030027386351102324, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.1734877
+      value: -6.97
       objectReference: {fileID: 0}
     - target: {fileID: 4030027386351102324, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.3795013
+      value: -7.21
       objectReference: {fileID: 0}
     - target: {fileID: 4030027386351102324, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -172,6 +167,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5319863570445165762, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
+      propertyPath: patrolTarget
+      value: 
+      objectReference: {fileID: 231364219}
     - target: {fileID: 8137694784229910153, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
       propertyPath: m_Name
       value: BRUTUS
@@ -464,17 +463,37 @@ MonoBehaviour:
     _sceneName: TEST_Level1Room1
   doorID: Room0_DoorA
   targetDoorID: Room1_DoorA
---- !u!114 &890866911 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6392730570109313323, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-  m_PrefabInstance: {fileID: 8532466972553548361}
+--- !u!1 &231364218
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a741cc8944e772d43aaae0e223a06674, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 231364219}
+  m_Layer: 0
+  m_Name: Patrol Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &231364219
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231364218}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.61, y: -7.65, z: -20.007881}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &981197301
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,17 +628,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1262784545 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5401116873119672969, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-  m_PrefabInstance: {fileID: 8532466972553548361}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a741cc8944e772d43aaae0e223a06674, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1669030954
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,32 +1150,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: SINGLETONS
       objectReference: {fileID: 0}
-    - target: {fileID: 5401116873119672969, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: scarfObjective
-      value: 
-      objectReference: {fileID: 10394684}
-    - target: {fileID: 6151434777538962274, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: scarfController
-      value: 
-      objectReference: {fileID: 1262784545}
-    - target: {fileID: 6151434777538962274, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: scarfController2
-      value: 
-      objectReference: {fileID: 890866911}
-    - target: {fileID: 6392730570109313323, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: scarfObjective
-      value: 
-      objectReference: {fileID: 10394684}
-    - target: {fileID: 8300103865497453019, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 6966622024686799190, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-    - {fileID: 178830267267339649, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-    - {fileID: 2833547485926764808, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-    - {fileID: 5392571796287712507, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
@@ -1184,3 +1168,4 @@ SceneRoots:
   - {fileID: 2112122643}
   - {fileID: 8532466972553548361}
   - {fileID: 20998773}
+  - {fileID: 231364219}

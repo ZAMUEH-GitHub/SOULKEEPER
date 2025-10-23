@@ -7,20 +7,19 @@ public class PlayerAttackController : MonoBehaviour
     [Header("AttackSettings")]
     public bool isAttacking;
     private int playerDamage;
-    public float attackRate;
+    private float attackRate;
     private float nextAttack;
     private float comboGrace = 0.2f;
     private float attackTimer;
     private float knockbackForce;
     private float knockbackDuration;
 
-
     public enum AttackState { Attack1, Attack2, Attack3 }
     public AttackState currentAttackState = AttackState.Attack1;
 
     private Vector2 playerOrientation;
     public Vector2 attackOrientation;
-
+    [Space(5)]
     private bool attackInput;
 
     #region Script & Component References
@@ -44,7 +43,6 @@ public class PlayerAttackController : MonoBehaviour
         damageController = GetComponentInParent< PlayerDamageController>();
         playerAnimator = GetComponentInParent<Animator>();
         
-
         playerDamage = playerStats.damage;
         knockbackForce = playerStats.knockback;
         attackRate = playerStats.attackRate;
@@ -121,52 +119,49 @@ public class PlayerAttackController : MonoBehaviour
 
         #region Player Side Attacks
         private void SideAttack1()
-        {
-            scarfController.ScarfAttack(attackInput, playerOrientation);
-            scarfController2.ScarfAttack(attackInput, playerOrientation);
-            
+        {         
             playerAnimator.SetTrigger("PlayerSideAttack1");
-
-            AttackSetup();
+            scarfController.ScarfAttack(attackInput, playerOrientation);
 
             currentAttackState = AttackState.Attack2;
+
             attackTimer = attackRate + comboGrace;
+            nextAttack = Mathf.Max(0f, attackRate - comboGrace);
         }
 
         private void SideAttack2()
         {
-            scarfController.ScarfAttack(attackInput, playerOrientation);
-            scarfController2.ScarfAttack(attackInput, playerOrientation);
             playerAnimator.SetTrigger("PlayerSideAttack2");
-
-            AttackSetup();
-
+            scarfController2.ScarfAttack(attackInput, playerOrientation);
+            
             currentAttackState = AttackState.Attack3;
+
             attackTimer = attackRate + comboGrace;
+            nextAttack = Mathf.Max(0f, attackRate - comboGrace);
         }
 
         private void SideAttack3()
         {
+            playerAnimator.SetTrigger("PlayerSideAttack3");
             scarfController.ScarfAttack(attackInput, playerOrientation);
             scarfController2.ScarfAttack(attackInput, playerOrientation);
-            playerAnimator.SetTrigger("PlayerSideAttack3");
-
-            AttackSetup();
 
             currentAttackState = AttackState.Attack1;
+
             attackTimer = comboGrace;
-    }
-        #endregion
+            nextAttack = Mathf.Max(0f, attackRate - comboGrace);
+        }
+    #endregion
 
     private void PlayerUpAttack()
     {
         if (nextAttack == 0)
         {
+            playerAnimator.SetTrigger("PlayerUpAttack");
             scarfController.ScarfAttack(attackInput, playerOrientation);
             scarfController2.ScarfAttack(attackInput, playerOrientation);
-            playerAnimator.SetTrigger("PlayerUpAttack");
 
-            AttackSetup();
+            nextAttack = Mathf.Max(0f, attackRate - comboGrace);
         }
     }
 
@@ -174,18 +169,21 @@ public class PlayerAttackController : MonoBehaviour
     {
         if (nextAttack == 0)
         {
+            playerAnimator.SetTrigger("PlayerDownAttack");
             scarfController.ScarfAttack(attackInput, playerOrientation);
             scarfController2.ScarfAttack(attackInput, playerOrientation);
-            playerAnimator.SetTrigger("PlayerDownAttack");
 
-            AttackSetup();
+            nextAttack = Mathf.Max(0f, attackRate - comboGrace);
         }
     }
-
-    private void AttackSetup()
+    
+    /*private void AttackSetup()
     {
+        scarfController.ScarfAttack(attackInput, playerOrientation);
+        scarfController2.ScarfAttack(attackInput, playerOrientation);
+
         nextAttack = Mathf.Max(0f, attackRate - comboGrace);
-    }
+    }*/
     #endregion
 
     private void OnTriggerEnter2D(Collider2D collision)
