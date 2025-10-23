@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,6 +22,15 @@ public class SceneDoorManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         player = GameObject.FindGameObjectWithTag("Player");
+
+        FindAllDoors();
+    }
+
+    private void FindAllDoors()
+    {
+        SceneDoor[] doorComponents = FindObjectsByType<SceneDoor>(FindObjectsSortMode.None);
+
+        sceneDoors = doorComponents.Select(d => d.gameObject).ToArray();
     }
 
     public void ChooseDoor(string targetDoorID)
