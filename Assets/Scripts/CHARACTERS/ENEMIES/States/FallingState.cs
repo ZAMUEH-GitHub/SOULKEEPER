@@ -1,10 +1,13 @@
 using UnityEngine;
 
-public class FallingState : IEnemyState
+public class FallingState : IVerticalState
 {
-    private EnemyBaseController enemy;
+    private readonly EnemyBaseController enemy;
 
-    public FallingState(EnemyBaseController enemy) { this.enemy = enemy; }
+    public FallingState(EnemyBaseController enemy)
+    {
+        this.enemy = enemy;
+    }
 
     public void Enter()
     {
@@ -17,10 +20,7 @@ public class FallingState : IEnemyState
         {
             enemy.animator.SetBool("isFalling", false);
 
-            if (enemy.targetPlayer)
-                enemy.ChangeState(new ChaseState(enemy));
-            else
-                enemy.ChangeState(new PatrolState(enemy));
+            enemy.ChangeVerticalState(null);
         }
     }
 

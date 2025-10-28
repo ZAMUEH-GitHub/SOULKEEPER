@@ -6,20 +6,21 @@ public class EnemyStateMachine
     public void Initialize(IEnemyState startState)
     {
         CurrentState = startState;
-        CurrentState.Enter();
-        CurrentStateName = CurrentState.GetType().Name;
+        CurrentState?.Enter();
+        CurrentStateName = startState?.GetType().Name;
     }
 
     public void ChangeState(IEnemyState newState)
     {
-        CurrentState.Exit();
+        if (CurrentState == newState) return;
+        CurrentState?.Exit();
         CurrentState = newState;
-        CurrentState.Enter();
-        CurrentStateName = CurrentState.GetType().Name;
+        CurrentState?.Enter();
+        CurrentStateName = CurrentState?.GetType().Name;
     }
 
-    public void Update()
-    {
-        CurrentState?.Update();
-    }
+    public void Update() => CurrentState?.Update();
 }
+
+public class EnemyMovementStateMachine : EnemyStateMachine { }
+public class EnemyVerticalStateMachine : EnemyStateMachine { }

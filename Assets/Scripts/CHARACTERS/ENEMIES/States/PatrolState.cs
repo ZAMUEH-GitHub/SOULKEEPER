@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class PatrolState : IEnemyState
+public class PatrolState : IMovementState
 {
-    private EnemyBaseController enemy;
+    private readonly EnemyBaseController enemy;
 
     public PatrolState(EnemyBaseController enemy) { this.enemy = enemy; }
 
@@ -14,15 +14,11 @@ public class PatrolState : IEnemyState
 
     public void Update()
     {
+        if (enemy.damageController.isKnockedBack) return;
+
         if (enemy.targetPlayer)
         {
-            enemy.ChangeState(new ChaseState(enemy));
-            return;
-        }
-
-        if (enemy.enemyStats.canJump && enemy.jumpController.CanJump && enemy.currentTarget.y > enemy.transform.position.y + 2f)
-        {
-            enemy.ChangeState(new JumpChargeState(enemy));
+            enemy.ChangeMovementState(new ChaseState(enemy));
             return;
         }
 
@@ -35,12 +31,19 @@ public class PatrolState : IEnemyState
                 ? enemy.patrolStart
                 : enemy.patrolTarget.position;
 
-            enemy.ChangeState(new IdleState(enemy));
+            enemy.ChangeMovementState(new IdleState(enemy));
+        }
+
+        if (enemy.enemyStats.canJump && enemy.jumpController.CanJump &&
+            enemy.currentTarget.y > enemy.transform.position.y + 2f)
+        {
+            enemy.ChangeVerticalState(new JumpChargeState(enemy));
         }
     }
 
     public void Exit()
     {
         enemy.Stop();
+        enemy.animator.SetBool("isMoving", false);
     }
 }
