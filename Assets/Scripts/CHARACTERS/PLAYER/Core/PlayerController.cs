@@ -69,7 +69,6 @@ public class PlayerController : MonoBehaviour
         damageController = GetComponent<PlayerDamageController>();
         interactController = GetComponent<PlayerInteractController>();
        
-       
         #endregion
 
         isAlive = true;
@@ -238,7 +237,13 @@ public class PlayerController : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        Vector2 knockbackVector = (collision.transform.position - transform.position).normalized;
+        Vector2 collisionVector = (transform.position - collision.transform.position).normalized;
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            damageController.TakeDamage(1, collisionVector);
+            damageController.Knockback(collisionVector, playerStats.damageForce, playerStats.damageLenght);
+        }
 
         if (collision.gameObject.CompareTag("Bulb"))
         {

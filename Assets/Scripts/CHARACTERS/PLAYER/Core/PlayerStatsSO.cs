@@ -29,4 +29,9 @@ public class PlayerStatsSO : ScriptableObject
     public float attackRate;
     public float knockback;
     public float knockbackLenght;
+
+    [Header("Damage Stats")]
+    public float damageRate;
+    public float damageForce;
+    public float damageLenght;
 }

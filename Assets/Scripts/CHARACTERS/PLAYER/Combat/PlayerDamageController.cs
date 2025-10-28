@@ -36,7 +36,7 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
         playerRB = GetComponent<Rigidbody2D>();
 
         playerHealth = playerStats.health;
-        damageRate = playerStats.attackRate;
+        damageRate = playerStats.damageRate;
         #endregion
     }
 
