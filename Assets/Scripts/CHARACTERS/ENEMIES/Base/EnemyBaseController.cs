@@ -104,14 +104,11 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
         }
     }
 
-    public void ChangeMovementState(IMovementState newState)
-        => movementStateMachine.ChangeState(newState);
+    public void ChangeMovementState(IMovementState newState) => movementStateMachine.ChangeState(newState);
 
-    public void ChangeVerticalState(IVerticalState newState)
-        => verticalStateMachine.ChangeState(newState);
+    public void ChangeVerticalState(IVerticalState newState) => verticalStateMachine.ChangeState(newState);
 
-    public void SetTargetPlayer(bool target)
-        => targetPlayer = target;
+    public void SetTargetPlayer(bool target) => targetPlayer = target;
 
     public void MoveToTarget(Vector2 target, float speedOverride = -1f)
     {
@@ -132,10 +129,7 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
     {
         if (attackController != null && attackController.isAttacking) return;
 
-        transform.localScale = new Vector2(
-            targetPosition.x > transform.position.x ? 1f : -1f,
-            1f
-        );
+        transform.localScale = new Vector2(targetPosition.x > transform.position.x ? 1f : -1f, 1f);
     }
 
     public void EndAttackAnimation()
@@ -152,10 +146,36 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
 
     public void Die()
     {
+        if (isDead) return;
         isDead = true;
         isAlive = false;
 
+        PauseMovement(true);
+        PauseVertical(true);
+
+        if (rigidBody != null) rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
+        if (attackController != null) attackController.enabled = false;
+        if (damageController != null) damageController.enabled = false;
+
         movementStateMachine.ChangeState(new DeathState(this));
         verticalStateMachine.ChangeState(null);
+    }
+
+    public void Destroy()
+    {
+        if (damageController == null) return;
+
+        Instantiate(damageController.deathParticles, transform.position, Quaternion.identity);
+
+        for (int i = damageController.enemyScore; i > 0; i--)
+        {
+            GameObject soul = Instantiate(damageController.soulObject, transform.position, Quaternion.identity);
+            soul.transform.position = new Vector2(
+                soul.transform.position.x + Random.Range(-2f, 2f),
+                soul.transform.position.y + Random.Range(-2f, -0.5f)
+            );
+        }
+
+        Destroy(gameObject);
     }
 }

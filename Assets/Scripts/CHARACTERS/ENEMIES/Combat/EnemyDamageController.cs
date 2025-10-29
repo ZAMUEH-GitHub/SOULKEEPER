@@ -25,14 +25,12 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
 
     private SpriteRenderer enemySprite;
     private Rigidbody2D enemyRB;
-    private Animator enemyAnimator;
 
     private void Awake()
     {
         enemyBaseController = GetComponent<EnemyBaseController>();
         enemySprite = GetComponent<SpriteRenderer>();
         enemyRB = GetComponent<Rigidbody2D>();
-        enemyAnimator = GetComponent<Animator>();
 
         enemyHealth = enemyStats.health;
         enemyScore = enemyStats.score;
@@ -88,28 +86,5 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
         {
             enemyBaseController.Die();
         }
-    }
-
-    private void Die()
-    {
-        isAlive = false;
-
-        transform.Translate(Vector2.zero);
-        enemyRB.constraints = RigidbodyConstraints2D.FreezeAll;
-
-        enemyAnimator.SetTrigger("EnemyDeath");
-        //unlocker?.TriggerUnlock();
-    }
-    private void Destroy()
-    {
-        Instantiate(deathParticles, new Vector2(transform.position.x, transform.position.y - 1.5f), Quaternion.identity);
-
-        for (int i = enemyScore; i > 0; i--)
-        {
-            GameObject soul = Instantiate(soulObject, transform.position, Quaternion.identity);
-            soul.transform.position = new Vector2(soul.transform.position.x + Random.Range(-2f, 2f), soul.transform.position.y + Random.Range(-2f, -0.5f));
-        }
-
-        Destroy(gameObject);
     }
 }
