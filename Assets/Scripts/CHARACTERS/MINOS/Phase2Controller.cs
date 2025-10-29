@@ -14,7 +14,7 @@ public class Phase2Controller : MonoBehaviour
     public float attackRate;    
     public float attackTimer;
     [Space(5f)]
-    private PlayerController playerController;
+    private PlayerCollisionController playerCollisionController;
     private PlayerDamageController playerDamageController;
     private Transform playerTransform;
     public int idleState;
@@ -33,7 +33,7 @@ public class Phase2Controller : MonoBehaviour
         bossAnimator = GetComponent<Animator>();
         attackTimer = 0f;
 
-        playerController = GetComponent<PlayerController>();
+        playerCollisionController = GetComponent<PlayerCollisionController>();
     }
 
     public void RunPhase2()
@@ -114,7 +114,7 @@ public class Phase2Controller : MonoBehaviour
         bossAnimator.SetFloat("Player Horizontal", playerX);
         //}
 
-        bossAnimator.SetBool("Player Grabbed", playerController.isTrapped);
+        bossAnimator.SetBool("Player Grabbed", playerCollisionController.isTrapped);
     }
 
 public void ApplyPlayerKnockback()

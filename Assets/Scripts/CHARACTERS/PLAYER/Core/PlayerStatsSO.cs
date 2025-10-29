@@ -27,6 +27,7 @@ public class PlayerStatsSO : ScriptableObject
     [Header("Attack Stats")]
     public int damage;
     public float attackRate;
+    public float attackRange;
     public float knockback;
     public float knockbackLenght;
 
@@ -34,4 +35,11 @@ public class PlayerStatsSO : ScriptableObject
     public float damageRate;
     public float damageForce;
     public float damageLenght;
+
+    [Header("Power Up Unlocks")]
+    public bool jumpUnlocked;
+    public bool attackUnlocked;
+    public bool wallSlideUnlocked;
+    public bool wallJumpUnlocked;
+    public bool dashUnlocked;
 }

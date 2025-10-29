@@ -6,8 +6,12 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerMovementController))]
 [RequireComponent(typeof(PlayerJumpController))]
 [RequireComponent(typeof(PlayerWallController))]
-[RequireComponent(typeof(PlayerDamageController))]
 [RequireComponent(typeof(PlayerDashController))]
+[RequireComponent(typeof(PlayerDamageController))]
+[RequireComponent(typeof(PlayerInteractController))]
+[RequireComponent(typeof(PlayerAnimationController))]
+[RequireComponent(typeof(PlayerCollisionController))]
+
 #endregion
 
 public class PlayerController : MonoBehaviour
@@ -22,17 +26,9 @@ public class PlayerController : MonoBehaviour
     public bool attackInput;
     public bool interactInput;
     [Space(5)]
-    public int playerHealth;
     public bool isAlive = true;
-    public int playerScore;
-    public bool isTrapped;
 
     #region Player Script & Component References
-
-    private Rigidbody2D playerRigidBody;
-    private CapsuleCollider2D playerCollider;
-    private Animator playerAnimator;
-    private SpriteRenderer playerSprite;
 
     private PlayerMovementController movementController;
     private PlayerJumpController jumpController;
@@ -40,33 +36,18 @@ public class PlayerController : MonoBehaviour
     private PlayerDashController dashController;
     private PlayerAttackController attackController;
     private PlayerInteractController interactController;
-    
- 
-    private PlayerDamageController damageController;
 
     #endregion
-
-    protected void Awake()
-    {
-        playerHealth = playerStats.health;
-        playerScore = playerStats.score;
-    }
 
     void Start()
     {
         #region Player Script & Component Subscriptions
-
-        playerRigidBody = GetComponent<Rigidbody2D>();
-        playerCollider = GetComponent<CapsuleCollider2D>();
-        playerAnimator = GetComponent<Animator>();
-        playerSprite = GetComponent<SpriteRenderer>();
 
         movementController = GetComponent<PlayerMovementController>();
         jumpController = GetComponent<PlayerJumpController>();
         wallController = GetComponent<PlayerWallController>();
         dashController = GetComponent<PlayerDashController>();
         attackController = GetComponentInChildren<PlayerAttackController>();
-        damageController = GetComponent<PlayerDamageController>();
         interactController = GetComponent<PlayerInteractController>();
        
         #endregion
@@ -84,7 +65,6 @@ public class PlayerController : MonoBehaviour
         attackController.SetAttackInput(attackInput, moveVector);
         interactController.SetInteractInput(interactInput);
 
-
         if (jumpInput)
         {
             if (wallController.IsWallSliding)
@@ -100,22 +80,16 @@ public class PlayerController : MonoBehaviour
         }
 
         if (dashInput)
-        {
             dashInput = false;
-        }
 
         if (attackInput)
-        {
             attackInput = false;
-        }
 
         if (interactInput)
-        {
             interactInput = false; 
-        }
-
-        PlayerAnimation();
     }
+
+    #region Player Input Management
 
     public void PlayerInputMove(InputAction.CallbackContext context)
     {
@@ -163,91 +137,5 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void PlayerAnimation()
-    {
-        if (moveVector.x != 0 && jumpController.isGrounded)
-        {
-            playerAnimator.SetBool("isMoving", true);
-            playerAnimator.SetBool("isWallSliding", false);
-        }
-        else { playerAnimator.SetBool("isMoving", false); }
-
-        if (!jumpController.isGrounded && playerRigidBody.linearVelocityY < -1 && !wallController.IsWallSliding)
-        {
-            playerAnimator.SetBool("isFalling", true);
-            playerAnimator.SetBool("isWallSliding", false);
-        }
-        else { playerAnimator.SetBool("isFalling", false); }
-
-        if (dashController.isDashing)
-        {
-            playerAnimator.SetBool("isDashing", true);
-        }
-        else { playerAnimator.SetBool("isDashing", false); }
-
-        if (wallController.IsWallSliding)
-        {
-            playerAnimator.SetBool("isWallSliding", true);
-            playerAnimator.SetBool("PlayerWallJump", false);
-        }
-        else if (wallController.IsWallJumping)
-        {
-            playerAnimator.SetBool("PlayerWallJump", true);
-            playerAnimator.SetBool("isWallSliding", false);
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {        
-        if (other != null && other.CompareTag("MovingObstacle") || other != null && other.CompareTag("Parenting Collider"))
-        {
-            transform.SetParent(other.transform, true);
-            playerCollider.isTrigger = false;
-        }
-
-        if (other != null && other.CompareTag("Minos Grab Collider"))
-        {
-            transform.SetParent(other.transform, true);
-            transform.position = other.transform.position;
-            playerRigidBody.gravityScale = 0f;
-            isTrapped = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other != null && other.CompareTag("MovingObstacle") || other != null && other.CompareTag("Parenting Collider"))
-        {
-            transform.SetParent(null);
-            playerCollider.isTrigger = false;
-
-            DontDestroyOnLoad(gameObject);
-        }
-
-        if (other != null && other.CompareTag("Minos Grab Collider"))
-        {
-            transform.SetParent(null);
-            isTrapped = false;
-            playerRigidBody.gravityScale = 5f;
-            playerCollider.isTrigger = false;
-
-            DontDestroyOnLoad(gameObject);
-        }
-    }
-
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        Vector2 collisionVector = (transform.position - collision.transform.position).normalized;
-
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            damageController.TakeDamage(1, collisionVector);
-            damageController.Knockback(collisionVector, playerStats.damageForce, playerStats.damageLenght);
-        }
-
-        if (collision.gameObject.CompareTag("Bulb"))
-        {
-            playerAnimator.SetTrigger("PlayerJump");
-        }
-    }
+    #endregion
 }

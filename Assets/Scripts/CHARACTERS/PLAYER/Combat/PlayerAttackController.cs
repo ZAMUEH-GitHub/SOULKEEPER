@@ -6,6 +6,7 @@ public class PlayerAttackController : MonoBehaviour
 
     [Header("AttackSettings")]
     public bool isAttacking;
+    private bool attackInput;
     private int playerDamage;
     private float attackRate;
     private float nextAttack;
@@ -14,13 +15,15 @@ public class PlayerAttackController : MonoBehaviour
     private float knockbackForce;
     private float knockbackDuration;
 
-    public enum AttackState { Attack1, Attack2, Attack3 }
     public AttackState currentAttackState = AttackState.Attack1;
+    public enum AttackState { Attack1, Attack2, Attack3 }
 
     private Vector2 playerOrientation;
     public Vector2 attackOrientation;
-    [Space(5)]
-    private bool attackInput;
+
+    [Header("GameObjects & Scripts")]
+    public Transform player;
+    public BaseScarfController scarfController, scarfController2;
 
     #region Script & Component References
     private PlayerJumpController jumpController;
@@ -29,8 +32,7 @@ public class PlayerAttackController : MonoBehaviour
     private PlayerDamageController damageController;
 
     private Animator playerAnimator;
-    public Transform player;
-    public BaseScarfController scarfController, scarfController2;
+
     #endregion
 
     private void Awake()

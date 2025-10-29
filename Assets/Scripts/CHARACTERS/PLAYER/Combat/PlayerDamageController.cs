@@ -12,6 +12,7 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     private float nextDamage;
     public bool isKnockedBack;
 
+    [Header("GameObjects & Particle Systems")]
     public GameObject soulObject;
     public ParticleSystem damageParticles;
     public ParticleSystem deathParticles;
@@ -105,7 +106,7 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     {
         Instantiate(deathParticles, transform.position, Quaternion.identity);
 
-        for (int i = playerController.playerScore / 2; i > 0; i--)
+        for (int i = playerStats.score / 2; i > 0; i--)
         {
             GameObject soul = Instantiate(soulObject, transform.position, Quaternion.identity);
             soul.transform.position = new Vector2(soul.transform.position.x + Random.Range(-2f, 2f), soul.transform.position.y + Random.Range(-1.5f, 2f));
