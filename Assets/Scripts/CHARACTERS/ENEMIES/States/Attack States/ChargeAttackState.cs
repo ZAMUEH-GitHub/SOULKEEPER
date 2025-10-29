@@ -23,13 +23,7 @@ public class ChargeAttackState : IMovementState
         chargeTimer = enemy.enemyStats.chargeAttackDuration;
     }
 
-    public void Update()
-    {
-        chargeTimer -= Time.deltaTime;
-
-        if (chargeTimer <= 0)
-            FinishCharge();
-    }
+    public void Update() { }
 
     public void Exit()
     {
