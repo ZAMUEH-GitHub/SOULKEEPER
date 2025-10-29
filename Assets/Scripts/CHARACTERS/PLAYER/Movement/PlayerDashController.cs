@@ -22,7 +22,6 @@ public class PlayerDashController : MonoBehaviour
     private Rigidbody2D playerRB;
     private CapsuleCollider2D playerCL;
 
-    private PlayerJumpController jumpController;
     private PlayerWallController wallController;
 
     private void Awake()
@@ -30,7 +29,6 @@ public class PlayerDashController : MonoBehaviour
         playerRB = GetComponent<Rigidbody2D>();
         playerCL = GetComponent<CapsuleCollider2D>();
 
-        jumpController = GetComponent<PlayerJumpController>();
         wallController = GetComponent<PlayerWallController>();
 
         dashForce = playerStats.dashForce;
@@ -57,19 +55,26 @@ public class PlayerDashController : MonoBehaviour
         }
         #endregion
 
-        if (bufferCount > 0 && nextDash <= 0)
+        if (playerStats.dashUnlocked)
+
+            if (bufferCount > 0 && nextDash <= 0)
+            {
+                DoDash();
+                nextDash = dashRate;
+                bufferCount = 0;
+            }
+
+        if (transform.localScale.x > 0)
         {
-            DoDash();
-            nextDash = dashRate;
-            bufferCount = 0;
+            dashVector = Vector2.right;
         }
+        else dashVector = Vector2.left;
     }
 
-    public void SetDashInput(Vector2 moveVector, bool dashInput)
+    public void SetDashInput(bool dashInput)
     {
-        dashVector = moveVector;
         this.dashInput = dashInput;
-        PlayerDash(dashInput);
+        PlayerDash(this.dashInput);
     }
 
     public void PlayerDash(bool dashInput)

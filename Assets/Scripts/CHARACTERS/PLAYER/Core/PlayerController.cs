@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
         
         movementController.SetMoveInput(moveVector, moveInput);
         wallController.SetWallInput(moveVector, moveInput);
-        dashController.SetDashInput(moveVector, dashInput);
+        dashController.SetDashInput(dashInput);
         attackController.SetAttackInput(attackInput, moveVector);
         interactController.SetInteractInput(interactInput);
 

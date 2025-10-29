@@ -73,17 +73,20 @@ public class PlayerWallController : MonoBehaviour
         }
         #endregion
 
-        PlayerWallSlide();
 
-        if (IsWallSliding && bufferCount > 0 && !jumpController.IsGrounded && jumpController.jumpCount > 0 && nextWallJump <= 0)
-        {
-            DoWallJump();
-            jumpController.nextJump = wallJumpLenght;
-            nextWallJump = wallJumpRate;
-            bufferCount = 0;
-            isWallJumping = true;
-            StartCoroutine(CancelPlayerWallJump());
-        }
+        if (playerStats.wallSlideUnlocked) PlayerWallSlide();
+
+        if (playerStats.wallJumpUnlocked)
+
+            if (IsWallSliding && bufferCount > 0 && !jumpController.IsGrounded && jumpController.jumpCount > 0 && nextWallJump <= 0)
+            {
+                DoWallJump();
+                jumpController.nextJump = wallJumpLenght;
+                nextWallJump = wallJumpRate;
+                bufferCount = 0;
+                isWallJumping = true;
+                StartCoroutine(CancelPlayerWallJump());
+            }
     }
 
     public void SetWallInput(Vector2 moveVector, bool moveInput)
@@ -95,7 +98,7 @@ public class PlayerWallController : MonoBehaviour
     public void SetWallJumpInput(bool jumpInput)
     {
         wallJumpInput = jumpInput;
-        PlayerWallJump(jumpInput);
+        PlayerWallJump(wallJumpInput);
     }
 
     public void PlayerWallJump(bool jumpInput)

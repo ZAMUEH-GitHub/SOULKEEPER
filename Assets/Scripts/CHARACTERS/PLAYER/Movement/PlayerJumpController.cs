@@ -82,18 +82,20 @@ public class PlayerJumpController : MonoBehaviour
         }
         #endregion
 
-        if (nextJump <= 0 && bufferCount > 0 && (IsGrounded || jumpCount > 0 || coyoteCount > 0))
-        {
-            DoJump();
-            nextJump = jumpRate;
-            bufferCount = 0;
-        }
+        if (playerStats.jumpUnlocked)
+
+            if (nextJump <= 0 && bufferCount > 0 && (IsGrounded || jumpCount > 0 || coyoteCount > 0))
+            {
+                DoJump();
+                nextJump = jumpRate;
+                bufferCount = 0;
+            }
     }
 
     public void SetJumpInput(bool jumpInput)
     {
         this.jumpInput = jumpInput;
-        PlayerJump(jumpInput);
+        PlayerJump(this.jumpInput);
     }
 
     public void PlayerJump(bool jumpInput)

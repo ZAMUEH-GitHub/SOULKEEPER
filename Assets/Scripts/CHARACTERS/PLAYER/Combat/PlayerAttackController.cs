@@ -74,29 +74,31 @@ public class PlayerAttackController : MonoBehaviour
 
     public void PlayerAttack(bool attackInput)
     {
-        if (!dashController.isDashing && !wallController.isWallSliding)
-        {
-            if (attackInput && playerOrientation.y == 0)
+        if (playerStats.attackUnlocked)
+        
+            if (!dashController.isDashing && !wallController.isWallSliding)
             {
-                attackOrientation = (player.localScale.x > 0) ? Vector2.right : Vector2.left;
-                isAttacking = true;
-                PlayerSideAttack();
-            }
+                if (attackInput && playerOrientation.y == 0)
+                {
+                    attackOrientation = (player.localScale.x > 0) ? Vector2.right : Vector2.left;
+                    isAttacking = true;
+                    PlayerSideAttack();
+                }
 
-            if (attackInput && playerOrientation.y > 0)
-            {
-                attackOrientation = Vector2.up;
-                isAttacking = true;
-                PlayerUpAttack();
-            }
+                if (attackInput && playerOrientation.y > 0)
+                {
+                    attackOrientation = Vector2.up;
+                    isAttacking = true;
+                    PlayerUpAttack();
+                }
 
-            if (attackInput && playerOrientation.y < 0 && !jumpController.isGrounded)
-            {
-                attackOrientation = Vector2.down;
-                isAttacking = true;
-                PlayerDownAttack();
+                if (attackInput && playerOrientation.y < 0 && !jumpController.isGrounded)
+                {
+                    attackOrientation = Vector2.down;
+                    isAttacking = true;
+                    PlayerDownAttack();
+                }
             }
-        }
     }
 
     #region Player Attacks

@@ -42,4 +42,11 @@ public class PlayerStatsSO : ScriptableObject
     public bool wallSlideUnlocked;
     public bool wallJumpUnlocked;
     public bool dashUnlocked;
+
+    public void Grant(PowerUpDefinition def)
+    {
+        foreach (var effect in def.effects)
+            effect.Apply(this);
+    }
+
 }
