@@ -32,7 +32,10 @@ public class GameSceneManager : MonoBehaviour
     {
         yield return null;
 
-        sceneDoorManager = GameObject.FindGameObjectWithTag("Scene Door Manager").GetComponent<SceneDoorManager>();
-        sceneDoorManager.ChooseDoor(targetDoorID);
+        if (sceneDoorManager != null)
+        {
+            sceneDoorManager = GameObject.FindGameObjectWithTag("Scene Door Manager").GetComponent<SceneDoorManager>();
+            sceneDoorManager.ChooseDoor(targetDoorID);
+        }
     }
 }
