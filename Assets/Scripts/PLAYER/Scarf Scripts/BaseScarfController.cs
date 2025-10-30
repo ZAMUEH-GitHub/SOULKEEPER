@@ -53,14 +53,7 @@ public class BaseScarfController : MonoBehaviour
 
         if (isAttacking)
         {
-            attackPosition = scarfObjective.transform.position;            
-            segmentPoses[segmentPoses.Length - 1] = attackPosition;
-
-            for (int i = segmentPoses.Length - 2; i >= 0; i--)
-            {
-                Vector3 targetPos = segmentPoses[i + 1] - (targetDirection.right * segmentDistance);
-                segmentPoses[i] = Vector3.SmoothDamp(segmentPoses[i], targetPos, ref segmentV[i], smoothSpeed);
-            }
+            ScarfAttack();
         }
 
         if (isIdle)
@@ -69,6 +62,13 @@ public class BaseScarfController : MonoBehaviour
         }
 
         lineRend.SetPositions(segmentPoses);
+    }
+
+    public void SetAttackInput(bool attackInput, Vector2 moveVector)
+    {
+        isIdle = false;
+        isAttacking = true;
+        StartCoroutine(EndAttack());
     }
 
     private void ScarfIdle()
@@ -87,11 +87,16 @@ public class BaseScarfController : MonoBehaviour
         lineRend.SetPositions(segmentPoses);
     }
 
-    public void ScarfAttack(bool attackInput, Vector2 moveVector)
+    private void ScarfAttack()
     {
-        isIdle = false;
-        isAttacking = true;
-        StartCoroutine(EndAttack());
+        attackPosition = scarfObjective.transform.position;
+        segmentPoses[segmentPoses.Length - 1] = attackPosition;
+
+        for (int i = segmentPoses.Length - 2; i >= 0; i--)
+        {
+            Vector3 targetPos = segmentPoses[i + 1] - (targetDirection.right * segmentDistance);
+            segmentPoses[i] = Vector3.SmoothDamp(segmentPoses[i], targetPos, ref segmentV[i], smoothSpeed);
+        }
     }
 
     private void Flip()

@@ -125,7 +125,7 @@ public class PlayerAttackController : MonoBehaviour
         private void SideAttack1()
         {         
             playerAnimator.SetTrigger("PlayerSideAttack1");
-            scarfController.ScarfAttack(attackInput, playerOrientation);
+            scarfController.SetAttackInput(attackInput, playerOrientation);
 
             currentAttackState = AttackState.Attack2;
 
@@ -136,7 +136,7 @@ public class PlayerAttackController : MonoBehaviour
         private void SideAttack2()
         {
             playerAnimator.SetTrigger("PlayerSideAttack2");
-            scarfController2.ScarfAttack(attackInput, playerOrientation);
+            scarfController2.SetAttackInput(attackInput, playerOrientation);
             
             currentAttackState = AttackState.Attack3;
 
@@ -147,8 +147,8 @@ public class PlayerAttackController : MonoBehaviour
         private void SideAttack3()
         {
             playerAnimator.SetTrigger("PlayerSideAttack3");
-            scarfController.ScarfAttack(attackInput, playerOrientation);
-            scarfController2.ScarfAttack(attackInput, playerOrientation);
+            scarfController.SetAttackInput(attackInput, playerOrientation);
+            scarfController2.SetAttackInput(attackInput, playerOrientation);
 
             currentAttackState = AttackState.Attack1;
 
@@ -162,8 +162,8 @@ public class PlayerAttackController : MonoBehaviour
         if (nextAttack == 0)
         {
             playerAnimator.SetTrigger("PlayerUpAttack");
-            scarfController.ScarfAttack(attackInput, playerOrientation);
-            scarfController2.ScarfAttack(attackInput, playerOrientation);
+            scarfController.SetAttackInput(attackInput, playerOrientation);
+            scarfController2.SetAttackInput(attackInput, playerOrientation);
 
             nextAttack = Mathf.Max(0f, attackRate - comboGrace);
         }
@@ -174,20 +174,12 @@ public class PlayerAttackController : MonoBehaviour
         if (nextAttack == 0)
         {
             playerAnimator.SetTrigger("PlayerDownAttack");
-            scarfController.ScarfAttack(attackInput, playerOrientation);
-            scarfController2.ScarfAttack(attackInput, playerOrientation);
+            scarfController.SetAttackInput(attackInput, playerOrientation);
+            scarfController2.SetAttackInput(attackInput, playerOrientation);
 
             nextAttack = Mathf.Max(0f, attackRate - comboGrace);
         }
     }
-
-    /*private void AttackSetup()
-    {
-        scarfController.ScarfAttack(attackInput, playerOrientation);
-        scarfController2.ScarfAttack(attackInput, playerOrientation);
-
-        nextAttack = Mathf.Max(0f, attackRate - comboGrace);
-    }*/
     #endregion
 
     private void OnTriggerEnter2D(Collider2D collision)
