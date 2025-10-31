@@ -1061,7 +1061,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509434, g: 0.40781704, b: 0.28555533, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1149,6 +1149,18 @@ PrefabInstance:
     - target: {fileID: 830380596282123720, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_Name
       value: SINGLETONS
+      objectReference: {fileID: 0}
+    - target: {fileID: 8769907943096161837, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: panelSettingsList.Array.data[2].fadeDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8769907943096161837, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: panelSettingsList.Array.data[1].disablesPlayerInput
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8769907943096161837, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: panelSettingsList.Array.data[2].disablesPlayerInput
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

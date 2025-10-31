@@ -11,6 +11,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInteractController))]
 [RequireComponent(typeof(PlayerAnimationController))]
 [RequireComponent(typeof(PlayerCollisionController))]
+[RequireComponent(typeof(PlayerPowerUpController))]
 
 #endregion
 
@@ -26,7 +27,7 @@ public class PlayerController : MonoBehaviour
     public bool attackInput;
     public bool interactInput;
     [Space(5)]
-    public bool isAlive = true;
+    public bool playerInputActive;
 
     #region Player Script & Component References
 
@@ -49,15 +50,15 @@ public class PlayerController : MonoBehaviour
         dashController = GetComponent<PlayerDashController>();
         attackController = GetComponentInChildren<PlayerAttackController>();
         interactController = GetComponent<PlayerInteractController>();
-       
+
         #endregion
 
-        isAlive = true;
+        playerInputActive = true;
     }
 
     void Update()
     {
-        if (!isAlive) { return; }
+        if (!playerInputActive) { return; }
         
         movementController.SetMoveInput(moveVector, moveInput);
         wallController.SetWallInput(moveVector, moveInput);
@@ -135,6 +136,33 @@ public class PlayerController : MonoBehaviour
         {
             interactInput = true;
         }
+    }
+
+    #endregion
+
+    #region Player Input Lock Controls
+
+    public void FreezeAllInputs()
+    {
+        playerInputActive = false;
+
+        moveVector = Vector2.zero;
+        moveInput = false;
+        jumpInput = false;
+        dashInput = false;
+        attackInput = false;
+        interactInput = false;
+
+        movementController.SetMoveInput(Vector2.zero, false);
+        wallController.SetWallInput(Vector2.zero, false);
+        dashController.SetDashInput(false);
+        attackController.SetAttackInput(false, Vector2.zero);
+        interactController.SetInteractInput(false);
+    }
+
+    public void UnfreezeAllInputs()
+    {
+        playerInputActive = true;
     }
 
     #endregion

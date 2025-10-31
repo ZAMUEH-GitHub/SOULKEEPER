@@ -119,25 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &170627401 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4349855356711425223, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-  m_PrefabInstance: {fileID: 1324519515}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &170627415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 170627401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb507757e0f26e243a4f05689b809bb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerAnimator: {fileID: 0}
-  playerRigidBody: {fileID: 0}
 --- !u!1 &309371827
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,25 +750,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SINGLETONS
       objectReference: {fileID: 0}
-    - target: {fileID: 2518307864161609410, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: groundLayer.m_Bits
-      value: 83886080
-      objectReference: {fileID: 0}
-    - target: {fileID: 2893910773129349927, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: playerStats
-      value: 
-      objectReference: {fileID: 11400000, guid: 7fc0cc6bde1cc154097261fdedddeeaf, type: 2}
-    - target: {fileID: 6763226914009238863, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: wallLayer.m_Bits
-      value: 100663296
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4349855356711425223, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      insertIndex: 10
-      addedObject: {fileID: 170627415}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
 --- !u!1 &1465187182
 GameObject:
@@ -985,7 +951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8137694784229910153, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1010,7 +976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3176606683999004639, guid: 1ee3dd1310c804d46bf066dbcd933ce8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6095797071166558448, guid: 1ee3dd1310c804d46bf066dbcd933ce8, type: 3}
       propertyPath: patrolTarget
@@ -1075,7 +1041,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 608714813369096779, guid: e836f8072a52abf4182e6806a1808c82, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5375086555416154777, guid: e836f8072a52abf4182e6806a1808c82, type: 3}
       propertyPath: groundLayer.m_Bits
