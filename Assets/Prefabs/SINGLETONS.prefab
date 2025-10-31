@@ -816,16 +816,19 @@ MonoBehaviour:
     fadeDuration: 0.5
     interactable: 0
     blockRaycasts: 0
+    disablesPlayerInput: 0
   - panelType: 1
     panel: {fileID: 3289181545949778770}
     fadeDuration: 0.5
     interactable: 1
     blockRaycasts: 1
+    disablesPlayerInput: 0
   - panelType: 2
     panel: {fileID: 7163054659010834865}
     fadeDuration: 2
     interactable: 0
     blockRaycasts: 1
+    disablesPlayerInput: 0
 --- !u!1 &4349855356711425223
 GameObject:
   m_ObjectHideFlags: 0
@@ -842,7 +845,6 @@ GameObject:
   - component: {fileID: 2161218490653702914}
   - component: {fileID: 448660116320185597}
   - component: {fileID: 5208659084123335045}
-  - component: {fileID: 2085816209162511660}
   - component: {fileID: 2893910773129349927}
   - component: {fileID: 2031232722887317062}
   - component: {fileID: 288729760238550076}
@@ -1025,20 +1027,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInteractable: 0
---- !u!114 &2085816209162511660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4349855356711425223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb507757e0f26e243a4f05689b809bb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerAnimator: {fileID: 4892644156197762517}
-  playerRigidBody: {fileID: 1890771098727255967}
 --- !u!114 &2893910773129349927
 MonoBehaviour:
   m_ObjectHideFlags: 0
