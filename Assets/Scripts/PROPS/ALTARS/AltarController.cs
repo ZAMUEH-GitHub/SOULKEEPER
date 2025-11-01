@@ -2,34 +2,52 @@ using UnityEngine;
 
 public class AltarController : MonoBehaviour, IAltar, IInteractable
 {
-    [Header("Altar Setup")]
-    [SerializeField] private PowerUpDefinition powerUp;
-
-    private bool used;
+    [Header("Setup")]
+    public AltarStatsSO altar;
     private PlayerPowerUpController player;
 
-    public bool IsUsed => used;
+    [Header("State (read-only)")]
+    [SerializeField] private int currentStageIndex = 0;
+    [SerializeField] private bool completed = false;
+
+    public bool IsUsed => completed;
+    public bool IsCompleted => completed;
+    public int CurrentStage => currentStageIndex;
+    public int TotalStages => altar ? altar.StageCount : 0;
 
     private void Awake()
     {
-        var playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null) player = playerObj.GetComponent<PlayerPowerUpController>();
+        if (player == null)
+        {
+            var go = GameObject.FindGameObjectWithTag("Player");
+            if (go) player = go.GetComponent<PlayerPowerUpController>();
+        }
+        completed = (altar == null || altar.StageCount == 0);
     }
 
-    public void Interact()
-    {
-        UnlockPowerUp();
-    }
+    public void Interact() => UnlockPowerUp();
 
     public void UnlockPowerUp()
     {
-        var target = player;
-        if (target == null)
+        if (completed || altar == null) return;
+
+        var def = altar.GetStage(currentStageIndex);
+        if (def != null)
         {
-            var playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null) target = playerObj.GetComponent<PlayerPowerUpController>();
+            player.UnlockPowerUp(def);
         }
 
-        target.UnlockPowerUp(powerUp);
+        currentStageIndex++;
+
+        if (currentStageIndex >= altar.StageCount)
+            CompleteAltar();
+    }
+
+    private void CompleteAltar()
+    {
+        completed = true;
+        
+        var col = GetComponent<Collider2D>();
+        if (col) col.enabled = false;
     }
 }
