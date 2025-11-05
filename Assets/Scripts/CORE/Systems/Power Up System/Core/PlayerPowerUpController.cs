@@ -4,7 +4,7 @@ public class PlayerPowerUpController : MonoBehaviour
 {
     public PlayerStatsSO playerStats;
 
-    public void UnlockPowerUp(PowerUpDefinition def)
+    public void ApplyPowerUp(PowerUpDefinition def)
     {
         playerStats.Grant(def);
     }

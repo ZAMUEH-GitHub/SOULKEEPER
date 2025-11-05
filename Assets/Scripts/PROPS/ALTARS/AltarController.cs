@@ -25,7 +25,11 @@ public class AltarController : MonoBehaviour, IAltar, IInteractable
         completed = (altar == null || altar.StageCount == 0);
     }
 
-    public void Interact() => UnlockPowerUp();
+    public void Interact()
+    {
+        UnlockPowerUp();
+        Debug.Log("Player Interacted with Altar");
+    }
 
     public void UnlockPowerUp()
     {
@@ -34,7 +38,8 @@ public class AltarController : MonoBehaviour, IAltar, IInteractable
         var def = altar.GetStage(currentStageIndex);
         if (def != null)
         {
-            player.UnlockPowerUp(def);
+            player.ApplyPowerUp(def);
+            Debug.Log("Apply Power Up!!");
         }
 
         currentStageIndex++;
@@ -45,6 +50,7 @@ public class AltarController : MonoBehaviour, IAltar, IInteractable
 
     private void CompleteAltar()
     {
+        Debug.Log("Altar Completed!!");
         completed = true;
         
         var col = GetComponent<Collider2D>();

@@ -35,14 +35,14 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
         dashController = GetComponent<PlayerDashController>();
         playerSprite = GetComponent<SpriteRenderer>();
         playerRB = GetComponent<Rigidbody2D>();
-
-        playerHealth = playerStats.health;
-        damageRate = playerStats.damageRate;
         #endregion
     }
 
     private void Update()
     {
+        playerHealth = playerStats.health;
+        damageRate = playerStats.damageRate;
+
         nextDamage = Mathf.Max(0, nextDamage - Time.deltaTime);
     }
 

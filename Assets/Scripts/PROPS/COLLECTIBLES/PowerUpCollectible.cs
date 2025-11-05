@@ -15,7 +15,7 @@ public class PowerUpCollectible : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            playerPowerUpController.UnlockPowerUp(powerUp);
+            playerPowerUpController.ApplyPowerUp(powerUp);
             Instantiate(collectiblePickupParticles, transform.position, Quaternion.identity);
 
             if (destroyOnPickup) Destroy(gameObject);
