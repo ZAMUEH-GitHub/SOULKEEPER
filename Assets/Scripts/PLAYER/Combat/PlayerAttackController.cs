@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerAttackController : MonoBehaviour
 {
-    public PlayerStatsSO playerStats;
+    private PlayerStatsSO playerStats;
 
     [Header("AttackSettings")]
     public bool isAttacking;
@@ -38,6 +38,8 @@ public class PlayerAttackController : MonoBehaviour
     private void Awake()
     {
         #region Script and Variable Suscriptions
+
+        playerStats = PlayerController.Instance.playerRuntimeStats;
 
         jumpController = GetComponentInParent< PlayerJumpController>();
         wallController = GetComponentInParent< PlayerWallController>();

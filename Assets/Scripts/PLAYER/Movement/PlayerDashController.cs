@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerDashController : MonoBehaviour
 {
-    public PlayerStatsSO playerStats;
+    private PlayerStatsSO playerStats;
 
     [Header("Dash Settings")]
     public float dashForce;
@@ -26,6 +26,10 @@ public class PlayerDashController : MonoBehaviour
 
     private void Awake()
     {
+        #region Script and Variable Subscriptions
+
+        playerStats = PlayerController.Instance.playerRuntimeStats;
+
         playerRB = GetComponent<Rigidbody2D>();
         playerCL = GetComponent<CapsuleCollider2D>();
 
@@ -34,6 +38,7 @@ public class PlayerDashController : MonoBehaviour
         dashForce = playerStats.dashForce;
         dashRate = playerStats.dashRate;
         dashLenght = playerStats.dashLenght;
+        #endregion
     }
 
     private void Update()

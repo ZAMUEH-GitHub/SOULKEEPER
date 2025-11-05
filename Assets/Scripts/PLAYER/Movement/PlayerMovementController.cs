@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    public PlayerStatsSO playerStats;
+    private PlayerStatsSO playerStats;
 
     [Header("Movement Settings")]
     public float playerSpeed;
@@ -17,6 +17,10 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Awake()
     {
+        #region Script and Variable Subscriptions
+
+        playerStats = PlayerController.Instance.playerRuntimeStats;
+
         playerRB = GetComponent<Rigidbody2D>();
 
         dashController = GetComponent<PlayerDashController>();
@@ -24,6 +28,7 @@ public class PlayerMovementController : MonoBehaviour
         damageController = GetComponent<PlayerDamageController>();
 
         playerSpeed = playerStats.speed;
+        #endregion
     }
 
     private void Update()

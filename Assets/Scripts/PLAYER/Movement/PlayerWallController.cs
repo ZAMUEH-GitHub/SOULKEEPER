@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerWallController : MonoBehaviour
 {
-    public PlayerStatsSO playerStats;
+    private PlayerStatsSO playerStats;
 
     [Header("Wall Settings")]
     public bool isWalled;
@@ -42,6 +42,8 @@ public class PlayerWallController : MonoBehaviour
     private void Awake()
     {
         #region Script, Component and Variable Suscriptions
+
+        playerStats = PlayerController.Instance.playerRuntimeStats;
 
         movementController = GetComponent<PlayerMovementController>();
         jumpController = GetComponent<PlayerJumpController>();

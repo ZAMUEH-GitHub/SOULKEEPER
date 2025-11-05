@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class PlayerCollisionController : MonoBehaviour
 {
-    public PlayerStatsSO playerStats;
+    private PlayerStatsSO playerStats;
 
     #region Script and Variable References
 
@@ -16,9 +15,11 @@ public class PlayerCollisionController : MonoBehaviour
     private PlayerDamageController damageController;
     #endregion
 
-    private void Start()
+    private void Awake()
     {
         #region Script and Variable Subscriptions
+
+        playerStats = PlayerController.Instance.playerRuntimeStats;
 
         playerRigidBody = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<CapsuleCollider2D>();

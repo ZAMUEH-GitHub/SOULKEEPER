@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
 {
-    public PlayerStatsSO playerStats;
+    private PlayerStatsSO playerStats;
 
     [Header("Damage Settings")]
     public int playerHealth;
@@ -30,6 +30,8 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     private void Awake()
     {
         #region Script, Component and Variable Suscriptions
+
+        playerStats = PlayerController.Instance.playerRuntimeStats;
 
         playerController = GetComponent<PlayerController>();
         dashController = GetComponent<PlayerDashController>();

@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,7 +18,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerStatsSO playerStats;
+    public PlayerStatsSO playerBaseStats;
+    public PlayerStatsSO playerRuntimeStats;
+    public static PlayerController Instance { get; private set; }
 
     [Header("Player Input")]
     public Vector2 moveVector;  
@@ -39,6 +42,20 @@ public class PlayerController : MonoBehaviour
     private PlayerInteractController interactController;
 
     #endregion
+
+    private void Awake()
+    {
+        Instance = this;
+
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (playerRuntimeStats == null)
+            playerRuntimeStats = playerBaseStats.Clone();
+    }
 
     void Start()
     {

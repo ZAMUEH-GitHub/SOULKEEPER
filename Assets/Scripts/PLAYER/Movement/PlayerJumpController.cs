@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerJumpController : MonoBehaviour
 {
-    public PlayerStatsSO playerStats;
+    private PlayerStatsSO playerStats;
 
     [Header("Jump Parameters")]
     public float jumpForce;
@@ -36,12 +36,17 @@ public class PlayerJumpController : MonoBehaviour
 
     private void Awake()
     {
+        #region Script and Variable Subscriptions
+
+        playerStats = PlayerController.Instance.playerRuntimeStats;
+
         playerRB = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponentInParent<Animator>();
         
         jumpForce = playerStats.jumpForce;
         maxJumpCount = playerStats.maxJumpCount;
         jumpRate = playerStats.jumpRate;
+        #endregion
     }
 
     private void Update()

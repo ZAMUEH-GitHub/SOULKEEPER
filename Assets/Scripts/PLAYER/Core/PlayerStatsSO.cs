@@ -43,6 +43,13 @@ public class PlayerStatsSO : ScriptableObject
     public bool wallJumpUnlocked;
     public bool dashUnlocked;
 
+    public PlayerStatsSO Clone()
+    {
+        PlayerStatsSO clone = ScriptableObject.CreateInstance<PlayerStatsSO>();
+        JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(this), clone);
+        return clone;
+    }
+
     public void Grant(PowerUpDefinition def)
     {
         foreach (var effect in def.effects)
