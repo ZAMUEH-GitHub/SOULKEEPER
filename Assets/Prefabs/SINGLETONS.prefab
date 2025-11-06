@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4876bb31ac653d4688a8a35fd29f914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: 7fc0cc6bde1cc154097261fdedddeeaf, type: 2}
   isAttacking: 0
   currentAttackState: 0
   attackOrientation: {x: 0, y: 0}
@@ -891,7 +890,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e032819bdd1f6346ad3c641e1124f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: 7fc0cc6bde1cc154097261fdedddeeaf, type: 2}
+  playerBaseStats: {fileID: 11400000, guid: 7fc0cc6bde1cc154097261fdedddeeaf, type: 2}
+  playerRuntimeStats: {fileID: 0}
   moveVector: {x: 0, y: 0}
   moveInput: 0
   jumpInput: 0
@@ -911,7 +911,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f3da22702b775f4c9b8430d8b0fa791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: 7fc0cc6bde1cc154097261fdedddeeaf, type: 2}
   playerSpeed: 10
   playerOrientation: {x: 0, y: 0}
   isMoving: 0
@@ -927,7 +926,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a9c2333df67bf8419f356052bf55ccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: 7fc0cc6bde1cc154097261fdedddeeaf, type: 2}
   jumpForce: 20
   isGrounded: 0
   isJumping: 0
@@ -956,7 +954,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5375fb66227ec8244b58480c95899b7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: 7fc0cc6bde1cc154097261fdedddeeaf, type: 2}
   isWalled: 0
   isWallSliding: 0
   wallSlidingSpeed: 3
@@ -985,7 +982,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7dec13f148c0ea4d9a146e9958506b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: 7fc0cc6bde1cc154097261fdedddeeaf, type: 2}
   dashForce: 30
   isDashing: 0
   dashVector: {x: 0, y: 0}
@@ -1006,7 +1002,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e01f98204597c48b58b3b165c78500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: 7fc0cc6bde1cc154097261fdedddeeaf, type: 2}
   playerHealth: 0
   isTakingDamage: 0
   damageRate: 0
@@ -1039,7 +1034,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7600196dacc89b468dda88a1058c99e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: 7fc0cc6bde1cc154097261fdedddeeaf, type: 2}
   isTrapped: 0
 --- !u!114 &2031232722887317062
 MonoBehaviour:
@@ -1067,7 +1061,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 730481c9ba8c1124e93f3de24aec4d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: 7fc0cc6bde1cc154097261fdedddeeaf, type: 2}
 --- !u!114 &8903427483422724569
 MonoBehaviour:
   m_ObjectHideFlags: 0
