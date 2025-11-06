@@ -4,6 +4,11 @@ using UnityEngine;
 
 public enum PanelType
 {
+    MainMenuPanel,
+    PlayGamePanel,
+    SettingsPanel,
+    KeyBindings,
+    CreditsPanel,
     HUDPanel,
     PausePanel,
     BlackScreen
@@ -41,7 +46,9 @@ public class CanvasManager : MonoBehaviour
                 panelSettings.Add(settings.panelType, settings);
         }
 
-        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+            playerController = playerObj.GetComponent<PlayerController>();
     }
 
     public void FadeIn(PanelType type)
@@ -58,14 +65,14 @@ public class CanvasManager : MonoBehaviour
         StartFade(s.panel, s.panel.alpha, 0f, s.fadeDuration, s.interactable, s.blockRaycasts, s.disablesPlayerInput);
     }
 
+    #region Fade Logic
+
     public float GetFadeDuration(PanelType type)
     {
         if (panelSettings.ContainsKey(type))
             return panelSettings[type].fadeDuration;
         return 0.5f;
     }
-
-    #region Fade Logic
 
     private void StartFade(CanvasGroup panel, float startAlpha, float finalAlpha, float duration, bool interactable, bool blockRaycasts, bool disablesInput)
     {
@@ -115,4 +122,18 @@ public class CanvasManager : MonoBehaviour
             activeFades.Remove(panel);
     }
     #endregion
+
+    public void ToggleCanvasInteractivity(GameObject canvasObject, bool enable)
+    {
+        if (canvasObject == null) return;
+
+        var raycaster = canvasObject.GetComponent<UnityEngine.UI.GraphicRaycaster>();
+        if (raycaster != null)
+            raycaster.enabled = enable;
+
+        // Optional: disable any EventTriggers if you have them
+        var triggers = canvasObject.GetComponentsInChildren<UnityEngine.EventSystems.EventTrigger>(true);
+        foreach (var t in triggers)
+            t.enabled = enable;
+    }
 }

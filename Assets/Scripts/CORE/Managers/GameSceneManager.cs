@@ -39,18 +39,27 @@ public class GameSceneManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         StartCoroutine(WaitAndTeleport());
-        sceneDoorManager = GameObject.FindGameObjectWithTag("Scene Door Manager").GetComponent<SceneDoorManager>();
+        FindSceneDoorManager();
     }
 
     private IEnumerator WaitAndTeleport()
     {
         yield return null;
 
-        sceneDoorManager = GameObject.FindGameObjectWithTag("Scene Door Manager").GetComponent<SceneDoorManager>();
+        FindSceneDoorManager();
 
         if (sceneDoorManager != null)
             sceneDoorManager.ChooseDoor(targetDoorID);
 
         canvasManager.FadeOut(PanelType.BlackScreen);
+    }
+
+    private void FindSceneDoorManager()
+    {
+        GameObject sceneDoorObj = GameObject.FindGameObjectWithTag("Scene Door Manager");
+        if (sceneDoorObj != null)
+            sceneDoorManager = sceneDoorObj.GetComponent<SceneDoorManager>();
+        else
+            sceneDoorManager = null;
     }
 }
