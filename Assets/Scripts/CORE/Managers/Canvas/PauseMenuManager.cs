@@ -12,6 +12,7 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField] private PanelType startPanel = PanelType.HUD;
     [SerializeField] private PanelType pausePanel = PanelType.PauseMenu;
     [SerializeField] private PanelType pauseSettings = PanelType.PauseSettings;
+    [SerializeField] private PanelType pauseAudioSettings = PanelType.PauseAudioSettings;
     [SerializeField] private PanelType pauseKeybindings = PanelType.PauseKeybindings;
     [SerializeField] private PanelType fadePanel = PanelType.BlackScreen;
 
@@ -24,6 +25,7 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField] private KeyCode pauseKey = KeyCode.Escape;
 
     private bool isPaused = false;
+    private GameObject _GameplayCanvas;
 
     private void Start()
     {
@@ -42,6 +44,8 @@ public class PauseMenuManager : MonoBehaviour
         canvasManager.FadeOut(pausePanel);
         canvasManager.FadeOut(pauseSettings);
         canvasManager.FadeOut(pauseKeybindings);
+
+        _GameplayCanvas = gameObject;
     }
 
     private void Update()
@@ -64,6 +68,11 @@ public class PauseMenuManager : MonoBehaviour
         if (isPaused) return;
         isPaused = true;
 
+        canvasManager.ToggleCanvasInteractivity(_GameplayCanvas, true);
+        var raycaster = _GameplayCanvas.GetComponent<UnityEngine.UI.GraphicRaycaster>();
+        if (raycaster != null && !raycaster.enabled)
+            raycaster.enabled = true;
+
         timeManager.FreezeTime();
         GoToPanel(pausePanel);
     }
@@ -73,6 +82,13 @@ public class PauseMenuManager : MonoBehaviour
         if (!isPaused) return;
         isPaused = false;
 
+        var raycaster = _GameplayCanvas.GetComponent<UnityEngine.UI.GraphicRaycaster>();
+        if (raycaster != null)
+            raycaster.enabled = false;
+
+        foreach (var t in _GameplayCanvas.GetComponentsInChildren<UnityEngine.EventSystems.EventTrigger>(true))
+            t.enabled = false;
+
         timeManager.ResetTime();
         StartCoroutine(CrossFadePanels(currentPanel, startPanel));
         currentPanel = startPanel;
@@ -80,11 +96,12 @@ public class PauseMenuManager : MonoBehaviour
     #endregion
 
     #region Inspector-Friendly UI Methods
+
+    public void OnResumeGame() => ResumeGame();
     public void GoToPauseMenu() => GoToPanel(pausePanel);
     public void GoToSettingsPanel() => GoToPanel(pauseSettings);
+    public void GoToAudioSettings() => GoToPanel(pauseAudioSettings);
     public void GoToKeybindingsPanel() => GoToPanel(pauseKeybindings);
-    public void OnResumeButton() => ResumeGame();
-    public void OnExitToMainMenu() => StartCoroutine(ExitToMainMenuRoutine());
     #endregion
 
     #region Navigation
@@ -110,9 +127,23 @@ public class PauseMenuManager : MonoBehaviour
     #endregion
 
     #region Exit Logic
+
+    public void OnExitToMainMenu()
+    {
+        canvasManager.ShowConfirmation(
+            "EXIT TO MAIN MENU?",
+            "(All unsaved progress will be lost)",
+            () => StartCoroutine(ExitToMainMenuRoutine()),
+            () => Debug.Log("Exit cancelled.")
+        );
+    }
+
     private IEnumerator ExitToMainMenuRoutine()
     {
         timeManager.ResetTime();
+
+        if (canvasManager != null)
+            canvasManager.FadeOut(pausePanel);
 
         if (canvasManager != null)
             canvasManager.FadeIn(fadePanel);
