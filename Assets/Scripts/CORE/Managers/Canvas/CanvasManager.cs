@@ -4,14 +4,20 @@ using UnityEngine;
 
 public enum PanelType
 {
-    MainMenuPanel,
-    PlayGamePanel,
-    SettingsPanel,
+    [Header("Main Menu Panels")]
+    MainMenu,
+    PlayGame,
+    LoadGame,
+    Settings,
     KeyBindings,
-    CreditsPanel,
-    HUDPanel,
-    PausePanel,
-    BlackScreen
+    Credits,
+
+    [Header("Gameplay Panels")]
+    HUD,
+    BlackScreen,
+    PauseMenu,
+    PauseSettings,
+    PauseKeybindings
 }
 
 [System.Serializable]
@@ -62,7 +68,7 @@ public class CanvasManager : MonoBehaviour
     {
         if (!panelSettings.ContainsKey(type)) return;
         var s = panelSettings[type];
-        StartFade(s.panel, s.panel.alpha, 0f, s.fadeDuration, s.interactable, s.blockRaycasts, s.disablesPlayerInput);
+        StartFade(s.panel, s.panel.alpha, 0f, s.fadeDuration, false, false, s.disablesPlayerInput);
     }
 
     #region Fade Logic
@@ -96,6 +102,11 @@ public class CanvasManager : MonoBehaviour
             if (disablesInput && playerController != null)
                 playerController.FreezeAllInputs();
         }
+        else if (finalAlpha == 0)
+        {
+            panel.interactable = false;
+            panel.blocksRaycasts = false;
+        }
 
         float t = 0f;
         while (t < duration)
@@ -112,10 +123,15 @@ public class CanvasManager : MonoBehaviour
 
         panel.alpha = finalAlpha;
 
-        if (finalAlpha == 0)
+        if (finalAlpha == 0f)
         {
-            panel.interactable = interactable;
-            panel.blocksRaycasts = blockRaycasts;
+            panel.interactable = false;
+            panel.blocksRaycasts = false;
+        }
+        else
+        {
+            panel.interactable = true;
+            panel.blocksRaycasts = true;
         }
 
         if (activeFades.ContainsKey(panel))
@@ -131,7 +147,6 @@ public class CanvasManager : MonoBehaviour
         if (raycaster != null)
             raycaster.enabled = enable;
 
-        // Optional: disable any EventTriggers if you have them
         var triggers = canvasObject.GetComponentsInChildren<UnityEngine.EventSystems.EventTrigger>(true);
         foreach (var t in triggers)
             t.enabled = enable;

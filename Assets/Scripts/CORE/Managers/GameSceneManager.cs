@@ -5,8 +5,9 @@ using System.Collections;
 public class GameSceneManager : MonoBehaviour
 {
     private SceneDoorManager sceneDoorManager;
-    private string targetDoorID;
-
+    [SerializeField] private string targetDoorID;
+    [SerializeField] private bool isLoadingScene;
+    [Space(5)]
     [SerializeField] private CanvasManager canvasManager;
 
     private void OnEnable()
@@ -19,21 +20,26 @@ public class GameSceneManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+
     public void LoadScene(SceneField scene, string targetDoorID)
     {
+        if (isLoadingScene) return;
         StartCoroutine(LoadSceneRoutine(scene, targetDoorID));
     }
 
     private IEnumerator LoadSceneRoutine(SceneField scene, string targetDoorID)
     {
+        isLoadingScene = true;
+
         this.targetDoorID = targetDoorID;
 
-        canvasManager.FadeIn(PanelType.BlackScreen);
+        if (canvasManager != null)
+            canvasManager.FadeIn(PanelType.BlackScreen);
 
-        float fadeDuration = canvasManager.GetFadeDuration(PanelType.BlackScreen);
-        yield return new WaitForSeconds(fadeDuration);
+        yield return new WaitForSeconds(canvasManager.GetFadeDuration(PanelType.BlackScreen));
 
-        SceneManager.LoadScene(scene);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(scene);
+        isLoadingScene = false;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -51,7 +57,8 @@ public class GameSceneManager : MonoBehaviour
         if (sceneDoorManager != null)
             sceneDoorManager.ChooseDoor(targetDoorID);
 
-        canvasManager.FadeOut(PanelType.BlackScreen);
+        if (canvasManager != null)
+            canvasManager.FadeOut(PanelType.BlackScreen);
     }
 
     private void FindSceneDoorManager()
