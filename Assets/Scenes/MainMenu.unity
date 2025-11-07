@@ -277,11 +277,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 185550232834588891, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.5980756
       objectReference: {fileID: 0}
     - target: {fileID: 185550232834588891, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 602839755588710408, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_LocalPosition.x
@@ -327,26 +327,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SINGLETONS
       objectReference: {fileID: 0}
-    - target: {fileID: 1105698902707543469, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: mainMenuScene._sceneName
-      value: MainMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 1105698902707543469, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: mainMenuScene._sceneAsset
-      value: 
-      objectReference: {fileID: 102900000, guid: 8fcf48851ff05cc48a3e888005b65666, type: 3}
-    - target: {fileID: 1113274340253552235, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: m_Alpha
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1429779306931236145, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1944459313}
-    - target: {fileID: 2406731519477510696, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: m_BlockingMask.m_Bits
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3663272070115031088, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -354,10 +338,6 @@ PrefabInstance:
     - target: {fileID: 3663272070115031088, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4086712728567460458, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: panelSettingsList.Array.data[7].blockRaycasts
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5531844694978581156, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_AnchorMax.x
@@ -381,11 +361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6099143005372685353, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: orthographic size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6582615488347881946, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
-      propertyPath: m_BlockingMask.m_Bits
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2779,7 +2755,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2804,7 +2780,7 @@ Transform:
   m_GameObject: {fileID: 1944459308}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -20}
+  m_LocalPosition: {x: 0, y: 2.5980756, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
