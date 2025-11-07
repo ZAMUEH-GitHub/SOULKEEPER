@@ -55,7 +55,6 @@ public class SingletonManager : MonoBehaviour
         SafeSetActive(_MainMenuCanvas, isMainMenu);
 
         canvasManager.ToggleCanvasInteractivity(_MainMenuCanvas, isMainMenu);
-        canvasManager.ToggleCanvasInteractivity(_GameplayCanvas, !isMainMenu);
     }
 
     private void SafeSetActive(GameObject obj, bool active)

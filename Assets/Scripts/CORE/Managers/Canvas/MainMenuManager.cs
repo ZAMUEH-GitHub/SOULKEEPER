@@ -29,11 +29,12 @@ public class MainMenuManager : MonoBehaviour
         canvasManager.FadeIn(currentPanel);
     }
 
-
     public void GoToMainMenuPanel() => GoToPanel(PanelType.MainMenu);
     public void GoToPlayGamePanel() => GoToPanel(PanelType.PlayGame);
     public void GoToLoadGamePanel() => GoToPanel(PanelType.LoadGame);
     public void GoToSettingsPanel() => GoToPanel(PanelType.Settings);
+    public void GoToVideoSettings() => GoToPanel(PanelType.VideoSettings);
+    public void GoToAudioSettings() => GoToPanel(PanelType.AudioSettings);
     public void GoToCreditsPanel() => GoToPanel(PanelType.Credits);
     public void GoToKeybindingsPanel() => GoToPanel(PanelType.KeyBindings);
     public void StartGame() => StartCoroutine(StartGameRoutine(currentGameplayScene, startingDoorID));
@@ -72,7 +73,17 @@ public class MainMenuManager : MonoBehaviour
         canvasManager.FadeIn(currentPanel);
     }
 
-    public void ExitGame()
+    public void OnExitGame()
+    {
+        canvasManager.ShowConfirmation(
+            "EXIT GAME?",
+            "(The application will close.)",
+            () => ExitGameExecutor(),
+            () => Debug.Log("Exit cancelled.")
+        );
+    }
+
+    public void ExitGameExecutor()
     {
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;

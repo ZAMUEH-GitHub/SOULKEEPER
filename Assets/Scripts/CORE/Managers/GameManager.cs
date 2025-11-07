@@ -15,6 +15,16 @@ public class GameManager : MonoBehaviour
     [field: SerializeField] public GameState CurrentState { get; private set; }
 
     [SerializeField] private SceneField mainMenuScene;
+    [SerializeField] private CanvasManager canvasManager; 
+
+    private void Start()
+    {
+        if (canvasManager == null)
+            canvasManager = FindFirstObjectByType<CanvasManager>();
+
+        if (canvasManager != null)
+            canvasManager.FadeOut(PanelType.BlackScreen);
+    }
 
     private void OnEnable()
     {
