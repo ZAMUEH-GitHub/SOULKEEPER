@@ -175,6 +175,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BRUTUS
       objectReference: {fileID: 0}
+    - target: {fileID: 8137694784229910153, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -478,7 +482,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &231364219
 Transform:
   m_ObjectHideFlags: 0
@@ -545,6 +549,94 @@ PrefabInstance:
     - target: {fileID: 830380596282123720, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_Name
       value: SINGLETONS
+      objectReference: {fileID: 0}
+    - target: {fileID: 910854578245565964, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3663272070115031088, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3663272070115031088, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817199455513141652, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817199455513141652, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3817199455513141652, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4549906863619866343, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5333206242486493572, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5333206242486493572, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531844694978581156, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531844694978581156, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5804822334431686051, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5804822334431686051, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5804822334431686051, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6734935082718588409, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7163054659010834865, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_Alpha
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7485497511630651226, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GoToSettingsPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7554231162525490787, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnExitToMainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7821911045207374371, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnResumeGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 8373559149602225759, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8682763497875561203, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8682763497875561203, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

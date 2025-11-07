@@ -80,10 +80,11 @@ public class PauseMenuManager : MonoBehaviour
     #endregion
 
     #region Inspector-Friendly UI Methods
+
+    public void OnResumeGame() => ResumeGame();
     public void GoToPauseMenu() => GoToPanel(pausePanel);
     public void GoToSettingsPanel() => GoToPanel(pauseSettings);
     public void GoToKeybindingsPanel() => GoToPanel(pauseKeybindings);
-    public void OnResumeButton() => ResumeGame();
     public void OnExitToMainMenu() => StartCoroutine(ExitToMainMenuRoutine());
     #endregion
 
@@ -113,6 +114,9 @@ public class PauseMenuManager : MonoBehaviour
     private IEnumerator ExitToMainMenuRoutine()
     {
         timeManager.ResetTime();
+
+        if (canvasManager != null)
+            canvasManager.FadeOut(pausePanel);
 
         if (canvasManager != null)
             canvasManager.FadeIn(fadePanel);

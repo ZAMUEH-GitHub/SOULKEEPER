@@ -111,7 +111,7 @@ public class CanvasManager : MonoBehaviour
         float t = 0f;
         while (t < duration)
         {
-            t += Time.deltaTime;
+            t += Time.unscaledDeltaTime;
             float progress = t / duration;
             panel.alpha = Mathf.Lerp(startAlpha, finalAlpha, t / duration);
 

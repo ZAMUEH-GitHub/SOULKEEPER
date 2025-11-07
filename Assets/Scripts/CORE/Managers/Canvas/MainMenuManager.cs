@@ -32,6 +32,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void GoToMainMenuPanel() => GoToPanel(PanelType.MainMenu);
     public void GoToPlayGamePanel() => GoToPanel(PanelType.PlayGame);
+    public void GoToLoadGamePanel() => GoToPanel(PanelType.LoadGame);
     public void GoToSettingsPanel() => GoToPanel(PanelType.Settings);
     public void GoToCreditsPanel() => GoToPanel(PanelType.Credits);
     public void GoToKeybindingsPanel() => GoToPanel(PanelType.KeyBindings);
@@ -73,6 +74,10 @@ public class MainMenuManager : MonoBehaviour
 
     public void ExitGame()
     {
-        Application.Quit();
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit(); // Quit the built game
+        #endif
     }
 }
