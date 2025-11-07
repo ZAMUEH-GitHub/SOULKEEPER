@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class IdleState : IEnemyState
+public class IdleState : IMovementState
 {
-    private EnemyBaseController enemy;
+    private readonly EnemyBaseController enemy;
     private float idleTimer;
 
     public IdleState(EnemyBaseController enemy) { this.enemy = enemy; }
@@ -20,13 +20,19 @@ public class IdleState : IEnemyState
 
         if (enemy.targetPlayer)
         {
-            enemy.ChangeState(new ChaseState(enemy));
+            enemy.ChangeMovementState(new ChaseState(enemy));
             return;
         }
 
         if (idleTimer <= 0)
         {
-            enemy.ChangeState(new PatrolState(enemy));
+            enemy.ChangeMovementState(new PatrolState(enemy));
+        }
+
+        if (enemy.enemyStats.canJump && enemy.jumpController.CanJump &&
+            enemy.currentTarget.y > enemy.transform.position.y + 2f)
+        {
+            enemy.ChangeVerticalState(new JumpChargeState(enemy));
         }
     }
 

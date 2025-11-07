@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class ChargeAttackState : IEnemyState
+public class ChargeAttackState : IMovementState
 {
-    private EnemyBaseController enemy;
+    private readonly EnemyBaseController enemy;
+    private float chargeTimer;
 
     public ChargeAttackState(EnemyBaseController enemy)
     {
@@ -12,14 +13,17 @@ public class ChargeAttackState : IEnemyState
     public void Enter()
     {
         enemy.Stop();
+        enemy.PauseVertical(true);
+
+        enemy.ResetVerticalStateIfGrounded();
+
         enemy.attackController.isChargingAttack = true;
-
         enemy.animator.SetBool("isChargingAttack", true);
+
+        chargeTimer = enemy.enemyStats.chargeAttackDuration;
     }
 
-    public void Update()
-    {
-    }
+    public void Update() { }
 
     public void Exit()
     {
@@ -29,6 +33,6 @@ public class ChargeAttackState : IEnemyState
 
     public void FinishCharge()
     {
-        enemy.ChangeState(new AttackingState(enemy));
+        enemy.ChangeMovementState(new AttackingState(enemy));
     }
 }

@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class SimpleAttackState : IEnemyState
+public class SimpleAttackState : IMovementState
 {
-    private EnemyBaseController enemy;
+    private readonly EnemyBaseController enemy;
     private float attackTimer;
 
     public SimpleAttackState(EnemyBaseController enemy) { this.enemy = enemy; }
@@ -10,34 +10,32 @@ public class SimpleAttackState : IEnemyState
     public void Enter()
     {
         enemy.Stop();
+        enemy.PauseVertical(true);
+
+        enemy.ResetVerticalStateIfGrounded();
 
         enemy.attackController.isAttacking = true;
-
         enemy.animator.SetTrigger("EnemyAttack");
-
         attackTimer = enemy.enemyStats.attackRate;
     }
 
     public void Update()
     {
         attackTimer -= Time.deltaTime;
-
-        if (attackTimer <= 0)
-        {
-            EndAttack();
-        }
+        if (attackTimer <= 0) EndAttack();
     }
 
     public void Exit()
     {
+        enemy.PauseVertical(false);
         enemy.attackController.isAttacking = false;
     }
 
     public void EndAttack()
     {
         if (enemy.targetPlayer)
-            enemy.ChangeState(new ChaseState(enemy));
+            enemy.ChangeMovementState(new ChaseState(enemy));
         else
-            enemy.ChangeState(new PatrolState(enemy));
+            enemy.ChangeMovementState(new PatrolState(enemy));
     }
 }

@@ -1,16 +1,22 @@
 using UnityEngine;
 
-public class JumpChargeState : IEnemyState
+public class JumpChargeState : IVerticalState
 {
-    private EnemyBaseController enemy;
+    private readonly EnemyBaseController enemy;
     private float chargeTimer;
 
-    public JumpChargeState(EnemyBaseController enemy) { this.enemy = enemy; }
+    public JumpChargeState(EnemyBaseController enemy)
+    {
+        this.enemy = enemy;
+    }
 
     public void Enter()
     {
         chargeTimer = enemy.enemyStats.jumpChargeDuration;
+
         enemy.Stop();
+        enemy.PauseMovement(true);
+
         enemy.animator.SetBool("isChargingJump", true);
     }
 
@@ -20,7 +26,7 @@ public class JumpChargeState : IEnemyState
 
         if (chargeTimer <= 0)
         {
-            enemy.ChangeState(new JumpState(enemy));
+            enemy.ChangeVerticalState(new JumpState(enemy));
         }
     }
 
