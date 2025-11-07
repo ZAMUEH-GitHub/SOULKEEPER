@@ -70,4 +70,9 @@ public class MainMenuManager : MonoBehaviour
         currentPanel = startPanel;
         canvasManager.FadeIn(currentPanel);
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
