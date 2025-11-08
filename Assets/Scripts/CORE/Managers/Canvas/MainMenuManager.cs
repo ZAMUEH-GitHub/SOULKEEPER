@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +8,7 @@ public class MainMenuManager : MonoBehaviour
     [Header("Managers")]
     [SerializeField] private CanvasManager canvasManager;
     [SerializeField] private GameSceneManager gameSceneManager;
+    [SerializeField] private SaveSlotManager saveSlotManager;
 
     [Header("Panels")]
     [SerializeField] private PanelType startPanel = PanelType.MainMenu;
@@ -14,10 +16,8 @@ public class MainMenuManager : MonoBehaviour
 
     [field: SerializeField] private PanelType currentPanel;
 
-    private SceneField currentGameplayScene;
+    [Header("Scenes")]
     [SerializeField] private SceneField newGameScene;
-
-    private string startingDoorID;
 
     private void Start()
     {
@@ -35,17 +35,14 @@ public class MainMenuManager : MonoBehaviour
     public void GoToPlayGamePanel() => GoToPanel(PanelType.PlayGame);
     public void GoToLoadGamePanel() => GoToPanel(PanelType.LoadGame);
     public void GoToSettingsPanel() => GoToPanel(PanelType.Settings);
-    public void GoToVideoSettings() => GoToPanel(PanelType.VideoSettings);
-    public void GoToAudioSettings() => GoToPanel(PanelType.AudioSettings);
-    public void GoToCreditsPanel() => GoToPanel(PanelType.Credits);
+    public void GoToAudioSettingsPanel() => GoToPanel(PanelType.AudioSettings);
+    public void GoToVideoSettingsPanel() => GoToPanel(PanelType.VideoSettings);
     public void GoToKeybindingsPanel() => GoToPanel(PanelType.KeyBindings);
-    public void ContinueGame() => StartCoroutine(StartGameRoutine(currentGameplayScene, startingDoorID));
-    public void NewGame() => StartCoroutine(StartGameRoutine(newGameScene, "Cathedral_StartDoor"));
+    public void GoToCreditsPanel() => GoToPanel(PanelType.Credits);
+
     public void GoToPanel(PanelType newPanel)
     {
-        if (newPanel == currentPanel)
-            return;
-
+        if (newPanel == currentPanel) return;
         StartCoroutine(CrossFadePanels(currentPanel, newPanel));
         currentPanel = newPanel;
     }
@@ -57,22 +54,55 @@ public class MainMenuManager : MonoBehaviour
         yield return new WaitForSeconds(canvasManager.GetFadeDuration(toPanel));
     }
 
-    public void StartGame(SceneField gameplayScene, string startingDoorID)
+    public void NewGame(int slotIndex)
     {
-        StartCoroutine(StartGameRoutine(gameplayScene, startingDoorID));
+        saveSlotManager.SetActiveSlot(slotIndex);
+
+        if (SaveSystem.SaveExists(slotIndex))
+        {
+            Debug.Log($"[MainMenuManager] Overwriting previous save slot {slotIndex}");
+            System.IO.File.Delete(Path.Combine(Application.persistentDataPath, $"Saves/SaveSlot_{slotIndex}.json"));
+        }
+
+        StartCoroutine(StartNewGameRoutine());
     }
 
-    private IEnumerator StartGameRoutine(SceneField gameplayScene, string startingDoorID)
+    private IEnumerator StartNewGameRoutine()
     {
         canvasManager.FadeIn(fadePanel);
         yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
-        gameSceneManager.LoadScene(gameplayScene, startingDoorID);
+
+        gameSceneManager.LoadSceneFromDoor(newGameScene, "Cathedral_StartDoor");
     }
 
-    public void ResetToMainMenu()
+    public void OnLoadGameButton(int slotIndex)
     {
-        currentPanel = startPanel;
-        canvasManager.FadeIn(currentPanel);
+        if (!SaveSystem.SaveExists(slotIndex))
+        {
+            Debug.LogWarning($"[MainMenuManager] No save found in slot {slotIndex}");
+            return;
+        }
+
+        saveSlotManager.SetActiveSlot(slotIndex);
+
+        string savedScene = SaveSystem.GetSavedScene(slotIndex);
+        string savedDoor = SaveSystem.GetSavedDoor(slotIndex);
+
+        if (string.IsNullOrEmpty(savedScene))
+        {
+            Debug.LogError("[MainMenuManager] Save data missing scene info!");
+            return;
+        }
+
+        StartCoroutine(LoadSavedGameRoutine(savedScene, savedDoor));
+    }
+
+    private IEnumerator LoadSavedGameRoutine(SceneField savedScene, string savedDoor)
+    {
+        canvasManager.FadeIn(fadePanel);
+        yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
+
+        gameSceneManager.LoadSceneFromCheckpoint(savedScene);
     }
 
     public void OnExitGame()
@@ -80,17 +110,17 @@ public class MainMenuManager : MonoBehaviour
         canvasManager.ShowConfirmation(
             "EXIT GAME?",
             "(The application will close.)",
-            () => ExitGameExecutor(),
-            () => Debug.Log("Exit cancelled.")
+            ExitGameExecutor,
+            () => Debug.Log("[MainMenuManager] Exit cancelled.")
         );
     }
 
-    public void ExitGameExecutor()
+    private void ExitGameExecutor()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-        #else
-        Application.Quit(); // Quit the built game
-        #endif
+#else
+        Application.Quit();
+#endif
     }
 }

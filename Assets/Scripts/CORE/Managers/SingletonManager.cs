@@ -7,8 +7,10 @@ public class SingletonManager : MonoBehaviour
     public GameObject _Camera;
     public GameObject _GameManager;
     public GameObject _GameSceneManager;
+    public GameObject _SceneDoorManager;
     public GameObject _AudioManager;
     public GameObject _TimeManager;
+    public GameObject _SaveSlotManager;
     public GameObject _CanvasGroup;
     public GameObject _MainMenuCanvas;
     public GameObject _GameplayCanvas;

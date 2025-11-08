@@ -134,7 +134,7 @@ public class PauseMenuManager : MonoBehaviour
             "EXIT TO MAIN MENU?",
             "(All unsaved progress will be lost)",
             () => StartCoroutine(ExitToMainMenuRoutine()),
-            () => Debug.Log("Exit cancelled.")
+            () => Debug.Log("[PauseMenuManager] Exit cancelled.")
         );
     }
 
@@ -151,7 +151,7 @@ public class PauseMenuManager : MonoBehaviour
         yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
 
         if (sceneManager != null)
-            sceneManager.LoadScene(mainMenuScene, null);
+            sceneManager.LoadSceneFromCheckpoint(mainMenuScene);
     }
     #endregion
 

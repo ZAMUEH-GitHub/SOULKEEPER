@@ -1,26 +1,20 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SceneDoor : MonoBehaviour, IInteractable
 {
-    [Header("Load Scene")]
-    [SerializeField] private SceneField loadScene;
-
-    [Header("Door IDs")]
+    [Header("Door Settings")]
     public string doorID;
-    public bool isInteractable;
+    public SceneField targetScene;
     public string targetDoorID;
-
-    private GameSceneManager gameSceneManager;
-
-    void Start()
-    {
-        gameSceneManager = GameObject.FindGameObjectWithTag("Game Scene Manager").GetComponent<GameSceneManager>();
-    }
 
     public void Interact()
     {
-        if (isInteractable)
-            gameSceneManager.LoadScene(loadScene, targetDoorID);
+        var manager = FindFirstObjectByType<SceneDoorManager>();
+        if (manager != null)
+            manager.RegisterDoorUse(doorID);
+
+        var sceneManager = FindFirstObjectByType<GameSceneManager>();
+        if (sceneManager != null)
+            sceneManager.LoadSceneFromDoor(targetScene, targetDoorID);
     }
 }

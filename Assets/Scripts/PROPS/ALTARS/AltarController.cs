@@ -3,7 +3,8 @@ using UnityEngine;
 public class AltarController : MonoBehaviour, IAltar, IInteractable
 {
     [Header("Setup")]
-    public AltarStatsSO altar;
+    public AltarStatsSO altarSO;
+    public string altarID;
     private PlayerPowerUpController player;
 
     [Header("State (read-only)")]
@@ -13,7 +14,7 @@ public class AltarController : MonoBehaviour, IAltar, IInteractable
     public bool IsUsed => completed;
     public bool IsCompleted => completed;
     public int CurrentStage => currentStageIndex;
-    public int TotalStages => altar ? altar.StageCount : 0;
+    public int TotalStages => altarSO ? altarSO.StageCount : 0;
 
     private void Awake()
     {
@@ -22,7 +23,9 @@ public class AltarController : MonoBehaviour, IAltar, IInteractable
             var go = GameObject.FindGameObjectWithTag("Player");
             if (go) player = go.GetComponent<PlayerPowerUpController>();
         }
-        completed = (altar == null || altar.StageCount == 0);
+        completed = (altarSO == null || altarSO.StageCount == 0);
+
+        altarID = altarSO.displayName;
     }
 
     public void Interact()
@@ -33,9 +36,9 @@ public class AltarController : MonoBehaviour, IAltar, IInteractable
 
     public void UnlockPowerUp()
     {
-        if (completed || altar == null) return;
+        if (completed || altarSO == null) return;
 
-        var def = altar.GetStage(currentStageIndex);
+        var def = altarSO.GetStage(currentStageIndex);
         if (def != null)
         {
             player.ApplyPowerUp(def);
@@ -44,7 +47,7 @@ public class AltarController : MonoBehaviour, IAltar, IInteractable
 
         currentStageIndex++;
 
-        if (currentStageIndex >= altar.StageCount)
+        if (currentStageIndex >= altarSO.StageCount)
             CompleteAltar();
     }
 
@@ -55,5 +58,25 @@ public class AltarController : MonoBehaviour, IAltar, IInteractable
         
         var col = GetComponent<Collider2D>();
         if (col) col.enabled = false;
+    }
+
+    public AltarSaveData ToSaveData()
+    {
+        return new AltarSaveData(altarID, completed, currentStageIndex);
+    }
+
+    public void FromSaveData(AltarSaveData data)
+    {
+        if (data == null) return;
+        if (altarID != data.altarID) return;
+
+        completed = data.completed;
+        currentStageIndex = data.currentStage;
+
+        if (completed)
+        {
+            var col = GetComponent<Collider2D>();
+            if (col) col.enabled = false;
+        }
     }
 }

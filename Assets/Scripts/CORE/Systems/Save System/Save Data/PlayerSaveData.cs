@@ -44,12 +44,6 @@ public class PlayerSaveData
     public bool dashUnlocked;
     public bool attackUnlocked;
 
-    [Header("Meta Data")]
-    public int saveSlot;
-    public string timestamp;
-    public float playtime;
-    public string version = "0.1.0";
-
     public void FromRuntime(PlayerStatsSO runtimeStats, int slot)
     {
         health = runtimeStats.health;
@@ -79,9 +73,11 @@ public class PlayerSaveData
         damageForce = runtimeStats.damageForce;
         damageLenght = runtimeStats.damageLenght;
 
-        saveSlot = slot;
-        timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        playtime = Time.time;
+        jumpUnlocked = runtimeStats.jumpUnlocked;
+        wallSlideUnlocked = runtimeStats.wallSlideUnlocked;
+        wallJumpUnlocked = runtimeStats.wallJumpUnlocked;
+        dashUnlocked = runtimeStats.dashUnlocked;
+        attackUnlocked = runtimeStats.attackUnlocked;
     }
 
     public void ApplyToRuntime(PlayerStatsSO runtimeStats)
@@ -112,5 +108,11 @@ public class PlayerSaveData
         runtimeStats.damageRate = damageRate;
         runtimeStats.damageForce = damageForce;
         runtimeStats.damageLenght = damageLenght;
+
+        runtimeStats.jumpUnlocked = jumpUnlocked;
+        runtimeStats.wallSlideUnlocked = wallSlideUnlocked;
+        runtimeStats.wallJumpUnlocked = wallJumpUnlocked;
+        runtimeStats.dashUnlocked = dashUnlocked;
+        runtimeStats.attackUnlocked = attackUnlocked;
     }
 }

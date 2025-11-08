@@ -350,11 +350,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f940e046f19f1b345b2c6fb162e75a81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadScene:
+  doorID: Room1_DoorA
+  targetScene:
     _sceneAsset: {fileID: 102900000, guid: 2e8cdddaad85b6348a4f3264943d3dda, type: 3}
     _sceneName: TEST_Level1Room0
-  doorID: Room1_DoorA
-  isInteractable: 1
   targetDoorID: Room0_DoorB
 --- !u!1 &927395543
 GameObject:
