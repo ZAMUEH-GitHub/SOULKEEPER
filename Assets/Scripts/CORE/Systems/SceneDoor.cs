@@ -8,6 +8,7 @@ public class SceneDoor : MonoBehaviour, IInteractable
 
     [Header("Door IDs")]
     public string doorID;
+    public bool isInteractable;
     public string targetDoorID;
 
     private GameSceneManager gameSceneManager;
@@ -19,6 +20,7 @@ public class SceneDoor : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        gameSceneManager.LoadScene(loadScene, targetDoorID);
+        if (isInteractable)
+            gameSceneManager.LoadScene(loadScene, targetDoorID);
     }
 }

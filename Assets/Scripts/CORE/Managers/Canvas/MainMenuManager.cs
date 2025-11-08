@@ -15,6 +15,8 @@ public class MainMenuManager : MonoBehaviour
     [field: SerializeField] private PanelType currentPanel;
 
     private SceneField currentGameplayScene;
+    [SerializeField] private SceneField newGameScene;
+
     private string startingDoorID;
 
     private void Start()
@@ -37,8 +39,8 @@ public class MainMenuManager : MonoBehaviour
     public void GoToAudioSettings() => GoToPanel(PanelType.AudioSettings);
     public void GoToCreditsPanel() => GoToPanel(PanelType.Credits);
     public void GoToKeybindingsPanel() => GoToPanel(PanelType.KeyBindings);
-    public void StartGame() => StartCoroutine(StartGameRoutine(currentGameplayScene, startingDoorID));
-
+    public void ContinueGame() => StartCoroutine(StartGameRoutine(currentGameplayScene, startingDoorID));
+    public void NewGame() => StartCoroutine(StartGameRoutine(newGameScene, "Cathedral_StartDoor"));
     public void GoToPanel(PanelType newPanel)
     {
         if (newPanel == currentPanel)

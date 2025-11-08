@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1686584540096436206}
   - component: {fileID: 3120676115532703562}
   - component: {fileID: 3822954680058322478}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Light Shine Particles (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4862,7 +4862,7 @@ GameObject:
   - component: {fileID: 3278667328371052552}
   - component: {fileID: 3149538886491201780}
   - component: {fileID: 8350872253767447211}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Light Shine Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9711,7 +9711,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4964674108954255625}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9747,7 +9747,7 @@ GameObject:
   - component: {fileID: 3209352790190578563}
   - component: {fileID: 3405359245556653824}
   - component: {fileID: 6944529824959482206}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Light Shine Particles (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14599,7 +14599,8 @@ GameObject:
   - component: {fileID: 5670206154819213298}
   - component: {fileID: 8923592014382355265}
   - component: {fileID: 2543587332531500207}
-  m_Layer: 0
+  - component: {fileID: 1709984651543680807}
+  m_Layer: 26
   m_Name: MovingPlatform_Wide
   m_TagString: MovingObstacle
   m_Icon: {fileID: 0}
@@ -14784,6 +14785,52 @@ MonoBehaviour:
   movingObstacleLimit: 10
   vectorUpDown: -1
   vectorLeftRight: 0
+--- !u!61 &1709984651543680807
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6760120102662285368}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.6}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4, y: 4}
+    newSize: {x: 8, y: 8}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 3.8, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1 &8010107208511071212
 GameObject:
   m_ObjectHideFlags: 0
@@ -14794,7 +14841,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2360891653289773639}
   - component: {fileID: 1765202356261618832}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
