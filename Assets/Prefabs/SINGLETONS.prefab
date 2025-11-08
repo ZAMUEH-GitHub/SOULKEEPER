@@ -8243,7 +8243,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SOUND FX
+  m_text: 'MUSIC
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: edb098b62a69fdf47b9856cbdf28c438, type: 2}
   m_sharedMaterial: {fileID: 5537059235265448142, guid: edb098b62a69fdf47b9856cbdf28c438, type: 2}
@@ -13646,6 +13648,7 @@ MonoBehaviour:
   musicSlider: {fileID: 5541144052611533766}
   sfxSlider: {fileID: 5443318629058336468}
   muteToggle: {fileID: 6384359240171780957}
+  audioManager: {fileID: 0}
 --- !u!1 &3426654510880246104
 GameObject:
   m_ObjectHideFlags: 0
@@ -16121,6 +16124,7 @@ MonoBehaviour:
   musicSlider: {fileID: 6095743258094640672}
   sfxSlider: {fileID: 1232352289996557690}
   muteToggle: {fileID: 9074343363362385388}
+  audioManager: {fileID: 0}
 --- !u!1 &4340416188980067113
 GameObject:
   m_ObjectHideFlags: 0
@@ -17248,7 +17252,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MUSIC
+  m_text: 'SOUND FX
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: edb098b62a69fdf47b9856cbdf28c438, type: 2}
   m_sharedMaterial: {fileID: 5537059235265448142, guid: edb098b62a69fdf47b9856cbdf28c438, type: 2}
@@ -18266,7 +18272,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1724278720097173421}
         m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
-        m_MethodName: SetSFXVolume
+        m_MethodName: SetSfxVolume
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

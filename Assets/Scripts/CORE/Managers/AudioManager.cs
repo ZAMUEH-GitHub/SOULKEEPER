@@ -3,24 +3,6 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    [Header("Audio Sources")]
-    [SerializeField] private AudioSource musicSource;
-    [SerializeField] private AudioSource sfxSource;
-
-    [Header("Music Clips")]
-    [SerializeField] private AudioClip mainMenuMusic;
-    [SerializeField] private AudioClip gameplayMusic;
-
-    [Header("Volume Levels")]
-    [Range(0f, 1f)] public float masterVolume = 1f;
-    [Range(0f, 1f)] public float musicVolume = 1f;
-    [Range(0f, 1f)] public float sfxVolume = 1f;
-
-    [Header("Mute Settings")]
-    [SerializeField] private bool isMuted = false;
-
-    private Coroutine fadeRoutine;
-
     private void Awake()
     {
         GameManager.OnGameStateChanged += HandleGameStateChange;
@@ -31,13 +13,49 @@ public class AudioManager : MonoBehaviour
         GameManager.OnGameStateChanged -= HandleGameStateChange;
     }
 
+    [Header("Audio Sources")]
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
+
+    [Header("Music Clips")]
+    [SerializeField] private AudioClip mainMenuMusic;
+    [SerializeField] private AudioClip gameplayMusic;
+
+    [Header("Volume Levels")]
+    [Range(0f, 1f)][SerializeField] private float masterVolume = 1f;
+    [Range(0f, 1f)][SerializeField] private float musicVolume = 1f;
+    [Range(0f, 1f)][SerializeField] private float sfxVolume = 1f;
+
+    [Header("Mute Settings")]
+    [SerializeField] private bool isMuted = false;
+
+    private Coroutine fadeRoutine;
+
+    public float MasterVolume => masterVolume;
+    public float MusicVolume => musicVolume;
+    public float SfxVolume => sfxVolume;
+    public bool IsMuted => isMuted;
+
     private void Start()
     {
-        HandleGameStateChange(FindFirstObjectByType<GameManager>().CurrentState);
+        var gm = FindFirstObjectByType<GameManager>();
+        if (gm != null) HandleGameStateChange(gm.CurrentState);
+
         ApplyVolumes();
     }
 
-    #region Volume Control
+    private void OnEnable() => ApplyVolumes();
+
+    private void OnValidate()
+    {
+        if (musicSource == null)
+            Debug.LogWarning("[AudioManager] Music Source is not assigned.");
+        if (sfxSource == null)
+            Debug.LogWarning("[AudioManager] SFX Source is not assigned (SFX volume will only scale one-shots if you provide a source).");
+        if (musicSource != null && sfxSource != null && musicSource == sfxSource)
+            Debug.LogWarning("[AudioManager] Music and SFX Source reference the SAME AudioSource. Use two separate components.");
+    }
+
     public void SetMasterVolume(float value)
     {
         masterVolume = Mathf.Clamp01(value);
@@ -50,7 +68,7 @@ public class AudioManager : MonoBehaviour
         ApplyVolumes();
     }
 
-    public void SetSFXVolume(float value)
+    public void SetSfxVolume(float value)
     {
         sfxVolume = Mathf.Clamp01(value);
         ApplyVolumes();
@@ -64,25 +82,21 @@ public class AudioManager : MonoBehaviour
 
     private void ApplyVolumes()
     {
-        float globalVolume = isMuted ? 0f : masterVolume;
+        float global = isMuted ? 0f : masterVolume;
 
-        if (musicSource)
+        if (musicSource != null)
         {
-            musicSource.volume = globalVolume * musicVolume;
+            musicSource.volume = global * musicVolume;
             musicSource.mute = isMuted;
         }
 
-        if (sfxSource)
+        if (sfxSource != null)
         {
-            sfxSource.volume = globalVolume * sfxVolume;
+            sfxSource.volume = global * sfxVolume;
             sfxSource.mute = isMuted;
         }
     }
 
-    public bool IsMuted => isMuted;
-    #endregion
-
-    #region Music Control
     private void HandleGameStateChange(GameState state)
     {
         switch (state)
@@ -98,48 +112,48 @@ public class AudioManager : MonoBehaviour
 
     private void CrossFadeMusic(AudioClip newClip, float duration)
     {
-        if (musicSource == null || newClip == null)
-            return;
+        if (musicSource == null || newClip == null) return;
 
-        if (fadeRoutine != null)
-            StopCoroutine(fadeRoutine);
-
+        if (fadeRoutine != null) StopCoroutine(fadeRoutine);
         fadeRoutine = StartCoroutine(CrossFadeRoutine(newClip, duration));
     }
 
     private IEnumerator CrossFadeRoutine(AudioClip newClip, float duration)
     {
+        float half = Mathf.Max(0.01f, duration * 0.5f);
         float startVol = musicSource.volume;
-        for (float t = 0; t < duration / 2; t += Time.unscaledDeltaTime)
+
+        for (float t = 0; t < half; t += Time.unscaledDeltaTime)
         {
-            musicSource.volume = Mathf.Lerp(startVol, 0f, t / (duration / 2));
+            musicSource.volume = Mathf.Lerp(startVol, 0f, t / half);
             yield return null;
         }
 
         musicSource.clip = newClip;
         musicSource.Play();
 
-        for (float t = 0; t < duration / 2; t += Time.unscaledDeltaTime)
+        float target = (isMuted ? 0f : masterVolume) * musicVolume;
+        for (float t = 0; t < half; t += Time.unscaledDeltaTime)
         {
-            musicSource.volume = Mathf.Lerp(0f, masterVolume * musicVolume, t / (duration / 2));
+            musicSource.volume = Mathf.Lerp(0f, target, t / half);
             yield return null;
         }
 
-        musicSource.volume = masterVolume * musicVolume;
+        musicSource.volume = target;
     }
-    #endregion
 
-    #region SFX
-    public void PlaySFX(AudioClip clip)
+    public void PlaySfx(AudioClip clip)
     {
-        if (sfxSource && clip && !isMuted)
-            sfxSource.PlayOneShot(clip, masterVolume * sfxVolume);
+        if (!clip || isMuted) return;
+
+        var src = sfxSource != null ? sfxSource : musicSource;
+        if (src != null)
+            src.PlayOneShot(clip, masterVolume * sfxVolume);
     }
 
-    public void PlaySFXAtPoint(AudioClip clip, Vector3 position)
+    public void PlaySfxAtPoint(AudioClip clip, Vector3 position)
     {
         if (!clip || isMuted) return;
         AudioSource.PlayClipAtPoint(clip, position, masterVolume * sfxVolume);
     }
-    #endregion
 }
