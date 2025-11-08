@@ -48,7 +48,7 @@ public class PlayerSaveData
     public int saveSlot;
     public string timestamp;
     public float playtime;
-    public string version = "1.0.0";
+    public string version = "0.1.0";
 
     public void FromRuntime(PlayerStatsSO runtimeStats, int slot)
     {

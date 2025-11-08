@@ -33,8 +33,8 @@ public class PlayerCollisionController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other != null && other.CompareTag("MovingObstacle") || other != null && other.CompareTag("Parenting Collider"))
-        {
+        if (other.CompareTag("MovingObstacle") || other.CompareTag("Parenting Collider"))
+        {   
             transform.SetParent(other.transform, true);
             playerCollider.isTrigger = false;
         }
@@ -50,7 +50,7 @@ public class PlayerCollisionController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other != null && other.CompareTag("MovingObstacle") || other != null && other.CompareTag("Parenting Collider"))
+        if (other.CompareTag("MovingObstacle") || other.CompareTag("Parenting Collider"))
         {
             transform.SetParent(null);
             playerCollider.isTrigger = false;
@@ -58,7 +58,7 @@ public class PlayerCollisionController : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-        if (other != null && other.CompareTag("Minos Grab Collider"))
+        if (other.CompareTag("Minos Grab Collider"))
         {
             transform.SetParent(null);
             playerCollider.isTrigger = false;

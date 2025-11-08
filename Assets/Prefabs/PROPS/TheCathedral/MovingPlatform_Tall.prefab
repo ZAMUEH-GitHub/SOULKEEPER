@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4018820872080438982}
   - component: {fileID: 3598651204117038650}
   - component: {fileID: 7611594419522933861}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Light Shine Particles (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4861,7 +4861,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7918560723158198662}
   - component: {fileID: 4841083509704884842}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4944,7 +4944,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8270158999245274487}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4979,7 +4979,7 @@ GameObject:
   - component: {fileID: 8577994217431086458}
   - component: {fileID: 8160076349180970374}
   - component: {fileID: 2985676320355162073}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Light Shine Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9831,7 +9831,8 @@ GameObject:
   - component: {fileID: 5113854880493094651}
   - component: {fileID: 8113006416578396145}
   - component: {fileID: 8511646469637961464}
-  m_Layer: 0
+  - component: {fileID: 7780606741277343260}
+  m_Layer: 26
   m_Name: MovingPlatform_Tall
   m_TagString: MovingObstacle
   m_Icon: {fileID: 0}
@@ -10018,3 +10019,49 @@ MonoBehaviour:
   movingObstacleLimit: 15
   vectorUpDown: -1
   vectorLeftRight: 1
+--- !u!61 &7780606741277343260
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7538275896656215920}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 1.6}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4, y: 4}
+    newSize: {x: 8, y: 8}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.9, y: 0.5}
+  m_EdgeRadius: 0

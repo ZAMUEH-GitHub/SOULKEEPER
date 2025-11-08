@@ -46,16 +46,6 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable() => ApplyVolumes();
 
-    private void OnValidate()
-    {
-        if (musicSource == null)
-            Debug.LogWarning("[AudioManager] Music Source is not assigned.");
-        if (sfxSource == null)
-            Debug.LogWarning("[AudioManager] SFX Source is not assigned (SFX volume will only scale one-shots if you provide a source).");
-        if (musicSource != null && sfxSource != null && musicSource == sfxSource)
-            Debug.LogWarning("[AudioManager] Music and SFX Source reference the SAME AudioSource. Use two separate components.");
-    }
-
     public void SetMasterVolume(float value)
     {
         masterVolume = Mathf.Clamp01(value);

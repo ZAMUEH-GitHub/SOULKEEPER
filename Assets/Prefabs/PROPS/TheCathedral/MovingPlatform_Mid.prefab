@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6687338053363078464}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7977714660250166897}
   - component: {fileID: 7343739340858505653}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,8 @@ GameObject:
   - component: {fileID: 6426063163588510304}
   - component: {fileID: 5175271797486945568}
   - component: {fileID: 569366331141562551}
-  m_Layer: 0
+  - component: {fileID: 5925555385190237513}
+  m_Layer: 26
   m_Name: MovingPlatform_Mid
   m_TagString: MovingObstacle
   m_Icon: {fileID: 0}
@@ -299,6 +300,52 @@ MonoBehaviour:
   movingObstacleLimit: 15
   vectorUpDown: 0
   vectorLeftRight: -1
+--- !u!61 &5925555385190237513
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5141532504864665675}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 1}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4, y: 4}
+    newSize: {x: 8, y: 8}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.9, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1 &6248095087933564323
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,7 +357,7 @@ GameObject:
   - component: {fileID: 7764597063706881297}
   - component: {fileID: 7922994591066758637}
   - component: {fileID: 3865508385735511986}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: Light Shine Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
