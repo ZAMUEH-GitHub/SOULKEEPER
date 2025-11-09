@@ -5,7 +5,8 @@ using System.Collections;
 public enum SceneLoadMode
 {
     DoorTransition,
-    CheckpointSpawn
+    CheckpointSpawn,
+    DirectLoad
 }
 
 public class GameSceneManager : MonoBehaviour
@@ -40,6 +41,12 @@ public class GameSceneManager : MonoBehaviour
     {
         if (isLoadingScene) return;
         StartCoroutine(LoadSceneRoutine(scene, SceneLoadMode.CheckpointSpawn, null));
+    }
+
+    public void LoadSceneDirect(SceneField scene)
+    {
+        if (isLoadingScene) return;
+        StartCoroutine(LoadSceneRoutine(scene, SceneLoadMode.DirectLoad, null));
     }
 
     private IEnumerator LoadSceneRoutine(SceneField scene, SceneLoadMode mode, string doorID)
@@ -86,28 +93,32 @@ public class GameSceneManager : MonoBehaviour
             }
         }
 
-        if (currentLoadMode == SceneLoadMode.DoorTransition)
+        switch (currentLoadMode)
         {
-            if (sceneDoorManager != null && !string.IsNullOrEmpty(targetDoorID))
-            {
-                sceneDoorManager.ChooseDoor(targetDoorID);
-            }
-        }
-        else if (currentLoadMode == SceneLoadMode.CheckpointSpawn)
-        {
-            var spawn = GameObject.FindGameObjectWithTag("Checkpoint");
-            if (spawn != null)
-            {
-                var player = GameObject.FindGameObjectWithTag("Player");
-                if (player != null)
-                    player.transform.position = spawn.transform.position;
+            case SceneLoadMode.DoorTransition:
+                if (sceneDoorManager != null && !string.IsNullOrEmpty(targetDoorID))
+                    sceneDoorManager.ChooseDoor(targetDoorID);
+                break;
 
-                Debug.Log("[GameSceneManager] Spawned player at checkpoint");
-            }
-            else
-            {
-                Debug.LogWarning("[GameSceneManager] No checkpoint found, using default spawn position");
-            }
+            case SceneLoadMode.CheckpointSpawn:
+                var spawn = GameObject.FindGameObjectWithTag("Checkpoint");
+                if (spawn != null)
+                {
+                    var player = GameObject.FindGameObjectWithTag("Player");
+                    if (player != null)
+                        player.transform.position = spawn.transform.position;
+
+                    Debug.Log("[GameSceneManager] Spawned player at checkpoint");
+                }
+                else
+                {
+                    Debug.LogWarning("[GameSceneManager] No checkpoint found, using default spawn position");
+                }
+                break;
+
+            case SceneLoadMode.DirectLoad:
+                Debug.Log("[GameSceneManager] Direct scene load (no spawn positioning).");
+                break;
         }
 
         if (canvasManager != null)
@@ -116,6 +127,7 @@ public class GameSceneManager : MonoBehaviour
             yield return new WaitForSeconds(canvasManager.GetFadeDuration(PanelType.BlackScreen));
         }
     }
+
 
     private void FindSceneDoorManager()
     {

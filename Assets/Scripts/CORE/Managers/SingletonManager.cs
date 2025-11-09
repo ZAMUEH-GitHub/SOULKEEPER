@@ -12,6 +12,7 @@ public class SingletonManager : MonoBehaviour
     public GameObject _TimeManager;
     public GameObject _SaveSlotManager;
     public GameObject _CanvasGroup;
+    public GameObject _GlobalCanvas;
     public GameObject _MainMenuCanvas;
     public GameObject _GameplayCanvas;
     public GameObject _EventSystem;
@@ -55,8 +56,11 @@ public class SingletonManager : MonoBehaviour
         SafeSetActive(_Player, !isMainMenu);
         SafeSetActive(_Camera, !isMainMenu);
         SafeSetActive(_MainMenuCanvas, isMainMenu);
+        SafeSetActive(_GameplayCanvas, !isMainMenu);
+        SafeSetActive(_GlobalCanvas, true);
 
         canvasManager.ToggleCanvasInteractivity(_MainMenuCanvas, isMainMenu);
+        canvasManager.ToggleCanvasInteractivity(_GameplayCanvas, !isMainMenu);
     }
 
     private void SafeSetActive(GameObject obj, bool active)

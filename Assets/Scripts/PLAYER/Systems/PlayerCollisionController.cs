@@ -54,8 +54,6 @@ public class PlayerCollisionController : MonoBehaviour
         {
             transform.SetParent(null);
             playerCollider.isTrigger = false;
-
-            DontDestroyOnLoad(gameObject);
         }
 
         if (other.CompareTag("Minos Grab Collider"))
@@ -64,8 +62,6 @@ public class PlayerCollisionController : MonoBehaviour
             playerCollider.isTrigger = false;
             playerRigidBody.gravityScale = 5f;
             isTrapped = false;
-
-            DontDestroyOnLoad(gameObject);
         }
     }
 

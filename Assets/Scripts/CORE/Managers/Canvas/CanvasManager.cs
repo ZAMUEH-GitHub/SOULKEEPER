@@ -59,6 +59,7 @@ public class CanvasManager : MonoBehaviour
     [Header("Canvas Groups")]
     [SerializeField] private GameObject _MainMenuCanvas;
     [SerializeField] private GameObject _GameplayCanvas;
+    [SerializeField] private GameObject _GlobalCanvas;
 
     [Header("Panels Configuration")]
     [SerializeField] private List<PanelFadeSettings> panelSettingsList = new List<PanelFadeSettings>();
@@ -87,7 +88,8 @@ public class CanvasManager : MonoBehaviour
         if (playerObj != null)
             playerController = playerObj.GetComponent<PlayerController>();
 
-        FadeIn(PanelType.BlackScreen);
+        if (_GlobalCanvas != null && panelSettings.ContainsKey(PanelType.BlackScreen))
+            FadeIn(PanelType.BlackScreen);
     }
 
     #region Fade API
@@ -199,9 +201,9 @@ public class CanvasManager : MonoBehaviour
         {
             ToggleCanvasInteractivity(_MainMenuCanvas, false);
         }
-        else
+        else if (gm != null && gm.CurrentState == GameState.Gameplay)
         {
-            ToggleCanvasInteractivity(_GameplayCanvas, true);
+            ToggleCanvasInteractivity(_GameplayCanvas, false);
         }
 
 
@@ -256,7 +258,7 @@ public class CanvasManager : MonoBehaviour
 
     public void ToggleCanvasInteractivity(GameObject canvasObject, bool enable)
     {
-        if (canvasObject == null) return;
+        if (canvasObject == null || canvasObject == _GlobalCanvas) return;
 
         var raycaster = canvasObject.GetComponent<UnityEngine.UI.GraphicRaycaster>();
         if (raycaster != null)

@@ -151,7 +151,7 @@ public class PauseMenuManager : MonoBehaviour
         yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
 
         if (sceneManager != null)
-            sceneManager.LoadSceneFromCheckpoint(mainMenuScene);
+            sceneManager.LoadSceneDirect(mainMenuScene); ;
     }
     #endregion
 

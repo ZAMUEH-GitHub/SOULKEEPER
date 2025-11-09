@@ -277,11 +277,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 185550232834588891, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.5980756
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 185550232834588891, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 602839755588710408, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_LocalPosition.x
@@ -441,7 +441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6099143005372685353, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: orthographic size
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6451926559023977188, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_AnchorMax.x
@@ -483,6 +483,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1944459313}
+    - target: {fileID: 8126247003834648656, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2875,7 +2879,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 10
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2900,7 +2904,7 @@ Transform:
   m_GameObject: {fileID: 1944459308}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5980756, z: -15}
+  m_LocalPosition: {x: 0, y: 0, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
