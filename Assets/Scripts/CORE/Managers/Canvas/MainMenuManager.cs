@@ -33,7 +33,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void GoToMainMenuPanel() => GoToPanel(PanelType.MainMenu);
     public void GoToPlayGamePanel() => GoToPanel(PanelType.PlayGame);
-    public void GoToLoadGamePanel() => GoToPanel(PanelType.LoadGame);
     public void GoToSettingsPanel() => GoToPanel(PanelType.Settings);
     public void GoToAudioSettingsPanel() => GoToPanel(PanelType.AudioSettings);
     public void GoToVideoSettingsPanel() => GoToPanel(PanelType.VideoSettings);

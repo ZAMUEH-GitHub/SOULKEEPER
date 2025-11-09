@@ -6,7 +6,10 @@ public class PauseMenuManager : MonoBehaviour
     [Header("Managers")]
     [SerializeField] private CanvasManager canvasManager;
     [SerializeField] private GameSceneManager sceneManager;
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private TimeManager timeManager;
+    [SerializeField] private SaveSlotManager saveSlotManager;
+    [SerializeField] private PlayerStatsSO runtimePlayerStats;
 
     [Header("Panels")]
     [SerializeField] private PanelType startPanel = PanelType.HUD;
@@ -38,11 +41,18 @@ public class PauseMenuManager : MonoBehaviour
         if (timeManager == null)
             timeManager = FindFirstObjectByType<TimeManager>();
 
+        if (saveSlotManager == null)
+            saveSlotManager = FindFirstObjectByType<SaveSlotManager>();
+
+        if (runtimePlayerStats == null)
+            runtimePlayerStats = FindFirstObjectByType<PlayerStatsSO>();
+
         currentPanel = startPanel;
 
         canvasManager.FadeIn(currentPanel);
         canvasManager.FadeOut(pausePanel);
         canvasManager.FadeOut(pauseSettings);
+        canvasManager.FadeOut(pauseAudioSettings);
         canvasManager.FadeOut(pauseKeybindings);
 
         _GameplayCanvas = gameObject;
@@ -96,7 +106,6 @@ public class PauseMenuManager : MonoBehaviour
     #endregion
 
     #region Inspector-Friendly UI Methods
-
     public void OnResumeGame() => ResumeGame();
     public void GoToPauseMenu() => GoToPanel(pausePanel);
     public void GoToSettingsPanel() => GoToPanel(pauseSettings);
@@ -127,7 +136,6 @@ public class PauseMenuManager : MonoBehaviour
     #endregion
 
     #region Exit Logic
-
     public void OnExitToMainMenu()
     {
         canvasManager.ShowConfirmation(
@@ -151,7 +159,49 @@ public class PauseMenuManager : MonoBehaviour
         yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
 
         if (sceneManager != null)
-            sceneManager.LoadSceneDirect(mainMenuScene); ;
+            sceneManager.LoadSceneDirect(mainMenuScene);
+    }
+    #endregion
+
+    #region Save Logic
+
+    public void OnSaveGame()
+    {
+        if (saveSlotManager == null)
+            saveSlotManager = FindFirstObjectByType<SaveSlotManager>();
+
+        var stats = GameManager.RuntimePlayerStats;
+
+        if (stats == null)
+        {
+            Debug.LogWarning("[PauseMenuManager] No runtime PlayerStats found — cannot save!");
+            return;
+        }
+
+        int slot = saveSlotManager != null ? saveSlotManager.ActiveSlotIndex : 1;
+
+        if (canvasManager != null)
+        {
+            canvasManager.ShowConfirmation(
+                "SAVE GAME?",
+                $"Do you want to save your progress to Slot {slot}?",
+                () =>
+                {
+                    SaveSystem.Save(slot, stats);
+                    Debug.Log($"[PauseMenuManager] Game saved to slot {slot}.");
+                    canvasManager.ShowToast("Progress Saved", 3f);
+                },
+                () =>
+                {
+                    Debug.Log("[PauseMenuManager] Save cancelled by player.");
+                }
+            );
+        }
+        else
+        {
+            Debug.LogWarning("[PauseMenuManager] No CanvasManager found, saving immediately.");
+            SaveSystem.Save(slot, stats);
+        }
     }
     #endregion
 

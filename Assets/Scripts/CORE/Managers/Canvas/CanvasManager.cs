@@ -9,7 +9,6 @@ public enum PanelType
     [Header("Main Menu Panels")]
     MainMenu,
     PlayGame,
-    LoadGame,
     Settings,
     VideoSettings,
     AudioSettings,
@@ -18,12 +17,16 @@ public enum PanelType
 
     [Header("Gameplay Panels")]
     HUD,
-    BlackScreen,
     PauseMenu,
     PauseSettings,
     PauseAudioSettings,
     PauseKeybindings,
-    ConfirmationPanel
+
+    [Header("Global Panels")]
+    BlackScreen,
+    ConfirmationPanel,
+    ToastPanel
+
 }
 
 [System.Serializable]
@@ -70,11 +73,13 @@ public class CanvasManager : MonoBehaviour
     private PlayerController playerController;
 
     [Header("Confirmation System")]
-    private ConfirmationRequest currentRequest;
     [SerializeField] private TMP_Text confirmationTitleText;
     [SerializeField] private TMP_Text confirmationSubtitleText;
     private bool isClosingConfirmation = false;
+    private ConfirmationRequest currentRequest;
 
+    [Header("Toast Settings")]
+    [SerializeField] private TMP_Text toastText;
 
     private void Awake()
     {
@@ -254,6 +259,23 @@ public class CanvasManager : MonoBehaviour
         currentRequest = null;
         isClosingConfirmation = false;
     }
+    #endregion
+
+    #region Toast System
+
+    public void ShowToast(string message, float duration = 1.5f)
+    {
+        toastText.text = message;
+        FadeIn(PanelType.ToastPanel);
+        StartCoroutine(HideToastAfterDelay(duration));
+    }
+
+    private IEnumerator HideToastAfterDelay(float duration)
+    {
+        yield return new WaitForSecondsRealtime(duration);
+        FadeOut(PanelType.ToastPanel);
+    }
+
     #endregion
 
     public void ToggleCanvasInteractivity(GameObject canvasObject, bool enable)

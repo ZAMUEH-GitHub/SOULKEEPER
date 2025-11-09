@@ -39,7 +39,11 @@ public class PlayerAttackController : MonoBehaviour
     {
         #region Script and Variable Suscriptions
 
-        playerStats = PlayerController.Instance.playerRuntimeStats;
+        playerStats = GameManager.RuntimePlayerStats;
+        if (playerStats == null)
+        {
+            playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
+        }
 
         jumpController = GetComponentInParent< PlayerJumpController>();
         wallController = GetComponentInParent< PlayerWallController>();

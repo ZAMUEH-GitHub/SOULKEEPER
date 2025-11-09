@@ -17,11 +17,13 @@ public class SaveSlotUIManager : MonoBehaviour
     [SerializeField] private Button deleteButton;
 
     private MainMenuManager menuManager;
+    private CanvasManager canvasManager;
     private bool hasSave;
 
     private void Start()
     {
         menuManager = FindFirstObjectByType<MainMenuManager>();
+        canvasManager = FindFirstObjectByType<CanvasManager>();
         RefreshSlotUI();
     }
 
@@ -93,7 +95,7 @@ public class SaveSlotUIManager : MonoBehaviour
                 $"DELETE SAVE SLOT {slotIndex}?",
                 "(This cannot be undone.)",
                 () => ExecuteDelete(),
-                () => Debug.Log("[SaveSlotUI] Delete canceled.")
+            () => Debug.Log("[SaveSlotUI] Delete canceled.")
             );
         }
         else
@@ -109,6 +111,7 @@ public class SaveSlotUIManager : MonoBehaviour
         {
             File.Delete(path);
             Debug.Log($"[SaveSlotUI] Deleted save slot {slotIndex}");
+            canvasManager.ShowToast("Save Slot Deleted", 3f);
         }
 
         RefreshSlotUI();

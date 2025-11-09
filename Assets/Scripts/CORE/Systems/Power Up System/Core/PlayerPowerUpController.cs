@@ -6,9 +6,12 @@ public class PlayerPowerUpController : MonoBehaviour
 
     private void Awake()
     {
-        playerStats = PlayerController.Instance.playerRuntimeStats;
+        playerStats = GameManager.RuntimePlayerStats;
+        if (playerStats == null)
+        {
+            playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
+        }
     }
-
     public void ApplyPowerUp(PowerUpDefinition def)
     {
         playerStats.Grant(def);

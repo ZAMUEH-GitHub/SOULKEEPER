@@ -38,7 +38,11 @@ public class PlayerJumpController : MonoBehaviour
     {
         #region Script and Variable Subscriptions
 
-        playerStats = PlayerController.Instance.playerRuntimeStats;
+        playerStats = GameManager.RuntimePlayerStats;
+        if (playerStats == null)
+        {
+            playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
+        }
 
         playerRB = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponentInParent<Animator>();

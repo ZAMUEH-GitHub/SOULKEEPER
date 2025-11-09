@@ -13105,6 +13105,7 @@ MonoBehaviour:
   sceneDoors:
   - {fileID: 1343496638}
   - {fileID: 0}
+  saveSlotManager: {fileID: 0}
 --- !u!4 &429542814
 Transform:
   m_ObjectHideFlags: 0
@@ -25590,7 +25591,7 @@ GameObject:
   - component: {fileID: 1343496639}
   m_Layer: 0
   m_Name: Cathedral_StartDoor
-  m_TagString: Untagged
+  m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25607,11 +25608,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f940e046f19f1b345b2c6fb162e75a81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadScene:
+  doorID: Cathedral_StartDoor
+  targetScene:
     _sceneAsset: {fileID: 0}
     _sceneName: 
-  doorID: Cathedral_StartDoor
-  isInteractable: 0
   targetDoorID: 
 --- !u!4 &1343496640
 Transform:

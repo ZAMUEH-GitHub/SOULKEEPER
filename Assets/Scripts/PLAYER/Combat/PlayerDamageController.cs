@@ -31,7 +31,11 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     {
         #region Script, Component and Variable Suscriptions
 
-        playerStats = PlayerController.Instance.playerRuntimeStats;
+        playerStats = GameManager.RuntimePlayerStats;
+        if (playerStats == null)
+        {
+            playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
+        }
 
         playerController = GetComponent<PlayerController>();
         dashController = GetComponent<PlayerDashController>();

@@ -45,16 +45,18 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        playerRuntimeStats = GameManager.RuntimePlayerStats;
+
+        if (playerRuntimeStats == null)
+        {
+            playerRuntimeStats = playerBaseStats.Clone();
+        }
 
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
-
-        if (playerRuntimeStats == null)
-            playerRuntimeStats = playerBaseStats.Clone();
     }
 
     void Start()

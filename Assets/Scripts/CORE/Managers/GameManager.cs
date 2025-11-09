@@ -11,11 +11,16 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
     public static event Action<GameState> OnGameStateChanged;
-    
+
     [field: SerializeField] public GameState CurrentState { get; private set; }
 
+    [Header("Scene References")]
     [SerializeField] private SceneField mainMenuScene;
-    [SerializeField] private CanvasManager canvasManager; 
+    [SerializeField] private CanvasManager canvasManager;
+
+    [Header("Player Data Management")]
+    [SerializeField] private PlayerStatsSO basePlayerStats;
+    public static PlayerStatsSO RuntimePlayerStats { get; private set; }
 
     private void Start()
     {
@@ -24,6 +29,13 @@ public class GameManager : MonoBehaviour
 
         if (canvasManager != null)
             canvasManager.FadeOut(PanelType.BlackScreen);
+
+        OnGameStateChanged += HandleGameStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        OnGameStateChanged -= HandleGameStateChanged;
     }
 
     private void OnEnable()
@@ -51,5 +63,39 @@ public class GameManager : MonoBehaviour
 
         CurrentState = newState;
         OnGameStateChanged?.Invoke(newState);
+    }
+
+    private void HandleGameStateChanged(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.MainMenu:
+                if (RuntimePlayerStats != null)
+                {
+                    RuntimePlayerStats = null;
+                    Debug.Log("[GameManager] Cleared runtime PlayerStatsSO (MainMenu)");
+                }
+                break;
+
+            case GameState.Gameplay:
+                if (RuntimePlayerStats == null && basePlayerStats != null)
+                {
+                    RuntimePlayerStats = basePlayerStats.Clone();
+                    Debug.Log("[GameManager] Created runtime PlayerStatsSO clone for Gameplay");
+                }
+                break;
+        }
+    }
+
+    public void StartNewGame()
+    {
+        if (basePlayerStats == null)
+        {
+            Debug.LogError("[GameManager] Missing base PlayerStatsSO reference!");
+            return;
+        }
+
+        RuntimePlayerStats = basePlayerStats.Clone();
+        Debug.Log("[GameManager] New Game started — fresh PlayerStats clone created.");
     }
 }
