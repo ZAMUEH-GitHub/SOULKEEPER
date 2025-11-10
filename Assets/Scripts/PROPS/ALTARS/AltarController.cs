@@ -1,16 +1,14 @@
 using UnityEngine;
-using System.Collections;
+using System;
 
-public class AltarController : MonoBehaviour, IAltar, IInteractable
+public class AltarController : MonoBehaviour, IInteractable
 {
     [Header("Altar Setup")]
     public AltarStatsSO altarSO;
-    public string altarID;
-    private PlayerPowerUpController player;
-
-    [Header("Altar State")]
     [SerializeField] private int currentStageIndex = 0;
     [SerializeField] private bool completed = false;
+
+    public static event Action<PowerUpDefinition> OnPowerUpUnlocked;
 
     public bool IsUsed => completed;
     public bool IsCompleted => completed;
@@ -19,72 +17,60 @@ public class AltarController : MonoBehaviour, IAltar, IInteractable
 
     private void Awake()
     {
-        if (player == null)
+        if (altarSO == null)
         {
-            var go = GameObject.FindGameObjectWithTag("Player");
-            if (go) player = go.GetComponent<PlayerPowerUpController>();
+            Debug.LogWarning($"[AltarController] Missing AltarStatsSO on {name}");
+            completed = true;
         }
-
-        completed = (altarSO == null || altarSO.StageCount == 0);
-        altarID = altarSO != null ? altarSO.displayName : "UnknownAltar";
     }
 
     public void Interact()
     {
-        UnlockPowerUp();
-        Debug.Log("[AltarController] Player Interacted with Altar");
+        if (completed || altarSO == null)
+            return;
+
+        Debug.Log($"[AltarController] Player interacted with {altarSO.displayName}");
+        UnlockNextPowerUpStage();
     }
 
-    public void UnlockPowerUp()
+    private void UnlockNextPowerUpStage()
     {
-        if (completed || altarSO == null) return;
-
-        if (player == null || player.playerStats == null)
+        var def = altarSO.GetStage(currentStageIndex);
+        if (def == null)
         {
-            Debug.LogWarning("[AltarController] Player or stats not ready — retrying...");
-            StartCoroutine(WaitForStatsAndApply());
+            Debug.LogWarning($"[AltarController] Stage {currentStageIndex} missing definition.");
             return;
         }
 
-        ApplyCurrentStage();
-    }
+        OnPowerUpUnlocked?.Invoke(def);
 
-    private IEnumerator WaitForStatsAndApply()
-    {
-        while (player == null || player.playerStats == null)
-            yield return null;
-
-        Debug.Log("[AltarController] Player stats now ready — applying postponed PowerUp.");
-        ApplyCurrentStage();
-    }
-
-    private void ApplyCurrentStage()
-    {
-        var def = altarSO.GetStage(currentStageIndex);
-        if (def != null)
-        {
-            player.ApplyPowerUp(def);
-        }
+        Debug.Log($"[AltarController] Unlocked PowerUp: {def.name}");
 
         currentStageIndex++;
+
         if (currentStageIndex >= altarSO.StageCount)
             CompleteAltar();
     }
 
     private void CompleteAltar()
     {
-        Debug.Log("[AltarController] Altar Completed!!");
         completed = true;
+        Debug.Log($"[AltarController] {altarSO.displayName} completed!");
 
         var col = GetComponent<Collider2D>();
         if (col) col.enabled = false;
     }
 
-    public AltarSaveData ToSaveData() => new AltarSaveData(altarID, completed, currentStageIndex);
+    #region Save System
+    public AltarSaveData ToSaveData() => new AltarSaveData(
+        altarSO ? altarSO.displayName : "UnknownAltar",
+        completed,
+        currentStageIndex
+    );
 
     public void FromSaveData(AltarSaveData data)
     {
-        if (data == null || altarID != data.altarID) return;
+        if (data == null || altarSO == null) return;
 
         completed = data.completed;
         currentStageIndex = data.currentStage;
@@ -95,4 +81,5 @@ public class AltarController : MonoBehaviour, IAltar, IInteractable
             if (col) col.enabled = false;
         }
     }
+    #endregion
 }

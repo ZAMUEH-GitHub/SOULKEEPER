@@ -1,5 +1,4 @@
-using System.Collections;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,17 +12,18 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerAnimationController))]
 [RequireComponent(typeof(PlayerCollisionController))]
 [RequireComponent(typeof(PlayerPowerUpController))]
-
 #endregion
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerStatsSO playerBaseStats;
-    public PlayerStatsSO playerRuntimeStats;
     public static PlayerController Instance { get; private set; }
 
+    [Header("Player Stats")]
+    public PlayerStatsSO playerBaseStats;
+    public PlayerStatsSO playerRuntimeStats;
+
     [Header("Player Input")]
-    public Vector2 moveVector;  
+    public Vector2 moveVector;
     public bool moveInput;
     public bool jumpInput;
     public bool dashInput;
@@ -32,10 +32,11 @@ public class PlayerController : MonoBehaviour
     [Space(5)]
     public bool playerInputActive;
 
-    #region Player Script & Component References
+    #region Player SubControllers
+
+    private List<IPlayerSubController> subControllers = new();
 
     private PlayerMovementController movementController;
-    private PlayerJumpController jumpController;
     private PlayerWallController wallController;
     private PlayerDashController dashController;
     private PlayerAttackController attackController;
@@ -45,40 +46,44 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        playerRuntimeStats = GameManager.RuntimePlayerStats;
-
-        if (playerRuntimeStats == null)
-        {
-            playerRuntimeStats = playerBaseStats.Clone();
-        }
-
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
-    }
+        Instance = this;
 
-    void Start()
-    {
-        #region Player Script & Component Subscriptions
+        if (GameManager.RuntimePlayerStats == null)
+        {
+            GameManager.Instance.StartNewGame();
+        }
+
+        playerRuntimeStats = GameManager.RuntimePlayerStats ?? playerBaseStats.Clone();
+
+        #region Player SubControllers
 
         movementController = GetComponent<PlayerMovementController>();
-        jumpController = GetComponent<PlayerJumpController>();
         wallController = GetComponent<PlayerWallController>();
         dashController = GetComponent<PlayerDashController>();
         attackController = GetComponentInChildren<PlayerAttackController>();
         interactController = GetComponent<PlayerInteractController>();
 
+        subControllers.AddRange(GetComponents<IPlayerSubController>());
         #endregion
+    }
+
+    private void Start()
+    {
+        foreach (var sub in subControllers)
+            sub.Initialize(playerRuntimeStats);
 
         playerInputActive = true;
     }
 
-    void Update()
+    private void Update()
     {
-        if (!playerInputActive) { return; }
-        
+        if (!playerInputActive) return;
+
         movementController.SetMoveInput(moveVector, moveInput);
         wallController.SetWallInput(moveVector, moveInput);
         dashController.SetDashInput(dashInput);
@@ -88,89 +93,50 @@ public class PlayerController : MonoBehaviour
         if (jumpInput)
         {
             if (wallController.IsWallSliding)
-            {
-                wallController.SetWallJumpInput(jumpInput);
-            }
+                wallController.SetWallJumpInput(true);
             else
-            {
-                jumpController.SetJumpInput(jumpInput);
-            }
+                GetComponent<PlayerJumpController>().SetJumpInput(true);
 
             jumpInput = false;
         }
 
-        if (dashInput)
-            dashInput = false;
-
-        if (attackInput)
-            attackInput = false;
-
-        if (interactInput)
-            interactInput = false; 
+        dashInput = attackInput = interactInput = false;
     }
 
-    #region Player Input Management
-
-    public void PlayerInputMove(InputAction.CallbackContext context)
+    #region Player Input Callbacks
+    public void PlayerInputMove(InputAction.CallbackContext ctx)
     {
-        if (context.performed)
-        {
-            moveVector = context.ReadValue<Vector2>();
-            moveInput = true;
-        }
-        else if (context.canceled)
-        {
-            moveVector = Vector2.zero;
-            moveInput = false;
-        }
+        moveVector = ctx.ReadValue<Vector2>();
+        moveInput = ctx.performed;
     }
 
-    public void PlayerInputJump(InputAction.CallbackContext context)
+    public void PlayerInputJump(InputAction.CallbackContext ctx)
     {
-        if (context.performed)
-        {
-            jumpInput = true;
-        }
+        if (ctx.performed) jumpInput = true;
     }
 
-    public void PlayerInputDash(InputAction.CallbackContext context)
+    public void PlayerInputDash(InputAction.CallbackContext ctx)
     {
-        if (context.performed)
-        {
-            dashInput = true;
-        }
+        if (ctx.performed) dashInput = true;
     }
-    
-    public void PlayerInputAttack(InputAction.CallbackContext context)
+
+    public void PlayerInputAttack(InputAction.CallbackContext ctx)
     {
-        if (context.performed)
-        {
-            attackInput = true;
-        }
+        if (ctx.performed) attackInput = true;
     }
 
-    public void PlayerInputInteract(InputAction.CallbackContext context)
-    { 
-        if (context.performed)
-        {
-            interactInput = true;
-        }
+    public void PlayerInputInteract(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed) interactInput = true;
     }
-
     #endregion
 
     #region Player Input Lock Controls
-
     public void FreezeAllInputs()
     {
         playerInputActive = false;
-
         moveVector = Vector2.zero;
-        moveInput = false;
-        jumpInput = false;
-        dashInput = false;
-        attackInput = false;
-        interactInput = false;
+        moveInput = jumpInput = dashInput = attackInput = interactInput = false;
 
         movementController.SetMoveInput(Vector2.zero, false);
         wallController.SetWallInput(Vector2.zero, false);
@@ -179,10 +145,6 @@ public class PlayerController : MonoBehaviour
         interactController.SetInteractInput(false);
     }
 
-    public void UnfreezeAllInputs()
-    {
-        playerInputActive = true;
-    }
-
+    public void UnfreezeAllInputs() => playerInputActive = true;
     #endregion
 }

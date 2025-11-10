@@ -1,26 +1,33 @@
 using UnityEngine;
 
-public class PlayerPowerUpController : MonoBehaviour
+public class PlayerPowerUpController : MonoBehaviour, IPlayerSubController
 {
-    public PlayerStatsSO playerStats;
+    private PlayerStatsSO playerStats;
 
-    private void Awake()
+    public void Initialize(PlayerStatsSO stats)
     {
-        var controller = GetComponent<PlayerController>();
-        if (controller != null)
-        {
-            playerStats = controller.playerRuntimeStats;
-        }
+        playerStats = stats;
+    }
+
+    private void OnEnable()
+    {
+        AltarController.OnPowerUpUnlocked += ApplyPowerUp;
+    }
+
+    private void OnDisable()
+    {
+        AltarController.OnPowerUpUnlocked -= ApplyPowerUp;
     }
 
     public void ApplyPowerUp(PowerUpDefinition def)
     {
         if (playerStats == null)
         {
-            Debug.LogWarning("[PlayerPowerUpController] Player stats not assigned!");
+            Debug.LogWarning("[PlayerPowerUpController] Player stats not initialized yet!");
             return;
         }
 
         playerStats.Grant(def);
+        Debug.Log($"[PlayerPowerUpController] Power-up applied: {def.name}");
     }
 }
