@@ -3,28 +3,25 @@ using System.Collections;
 
 public class PlayerJumpController : MonoBehaviour
 {
-    private PlayerStatsSO playerStats;
+    [SerializeField] private PlayerStatsSO playerStats;
 
     [Header("Jump Parameters")]
-    public float jumpForce;
+    public float jumpForce => playerStats.jumpForce;
     private bool jumpInput;
     public bool isGrounded;
     private bool wasGrounded;
     public bool isJumping;
     [Space(5)]
     public int jumpCount;
-    public int maxJumpCount;
-    [Space(5)]
-    public float jumpRate;
-    public float nextJump;
+    public int maxJumpCount => playerStats.maxJumpCount;
+    public float jumpRate => playerStats.jumpRate;
+    [HideInInspector] public float nextJump;
 
-    [Header("Coyote Time")]
-    public float coyoteTime;
-    public float coyoteCount;
+    public float coyoteTime => playerStats.coyoteTime;
+    private float coyoteCount;
 
-    [Header("Jump Buffer")]
-    public float bufferTime;
-    public float bufferCount;
+    public float bufferTime => playerStats.bufferTime;
+    private float bufferCount;
 
     [Header("Ground Check (OverlapCircle)")]
     public Transform groundCheckPoint;
@@ -38,18 +35,15 @@ public class PlayerJumpController : MonoBehaviour
     {
         #region Script and Variable Subscriptions
 
-        playerStats = GameManager.RuntimePlayerStats;
-        if (playerStats == null)
+        var controller = GetComponent<PlayerController>();
+        if (controller != null)
         {
-            playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
+            playerStats = controller.playerRuntimeStats;
         }
 
         playerRB = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponentInParent<Animator>();
-        
-        jumpForce = playerStats.jumpForce;
-        maxJumpCount = playerStats.maxJumpCount;
-        jumpRate = playerStats.jumpRate;
+
         #endregion
     }
 

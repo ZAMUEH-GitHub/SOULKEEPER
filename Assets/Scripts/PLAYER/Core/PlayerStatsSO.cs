@@ -5,6 +5,7 @@ public class PlayerStatsSO : ScriptableObject
 {
     [Header("General Stats")]
     public int health;
+    public int maxHealth;
     public int score;
     public float speed;
 
@@ -18,6 +19,7 @@ public class PlayerStatsSO : ScriptableObject
     public float wallJumpForce;
     public float wallJumpLenght;
     public float wallJumpRate;
+    public float wallJumpDivider;
 
     [Header("Dash Stats")]
     public float dashForce;
@@ -42,6 +44,10 @@ public class PlayerStatsSO : ScriptableObject
     public bool wallSlideUnlocked;
     public bool wallJumpUnlocked;
     public bool dashUnlocked;
+
+    [Header("Coyote Time and Buffers")]
+    public float coyoteTime;
+    public float bufferTime;
 
     public PlayerStatsSO Clone()
     {

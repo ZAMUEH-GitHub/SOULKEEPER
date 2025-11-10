@@ -3,25 +3,24 @@ using System.Collections;
 
 public class PlayerWallController : MonoBehaviour
 {
-    private PlayerStatsSO playerStats;
+    [SerializeField] private PlayerStatsSO playerStats;
 
     [Header("Wall Settings")]
     public bool isWalled;
     public bool isWallSliding;
-    public float wallSlidingSpeed;
+    public float wallSlidingSpeed => playerStats.wallSlidingSpeed;
 
     [Header("Wall Jump Settings")]
-    public float wallJumpForce;
     public bool isWallJumping;
-    public float wallJumpLenght;
-    public float wallJumpDivider;
-    [Space(5)]
-    public float wallJumpRate;
-    public float nextWallJump;
+    public float wallJumpForce => playerStats.wallJumpForce;
+    public float wallJumpLenght => playerStats.wallJumpLenght;
+    public float wallJumpDivider => playerStats.wallJumpDivider;
 
-    [Header("Wall Jump Buffer")]
-    public float bufferTime;
-    public float bufferCount;
+    public float wallJumpRate => playerStats.wallJumpRate;
+    private float nextWallJump;
+
+    public float bufferTime => playerStats.bufferTime;
+    private float bufferCount;
 
     [Header("Wall Check (OverlapCircle)")]
     public Transform wallCheckPoint;
@@ -43,19 +42,17 @@ public class PlayerWallController : MonoBehaviour
     {
         #region Script, Component and Variable Suscriptions
 
-        playerStats = GameManager.RuntimePlayerStats;
-        if (playerStats == null)
+        var controller = GetComponent<PlayerController>();
+        if (controller != null)
         {
-            playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
+            playerStats = controller.playerRuntimeStats;
         }
 
         movementController = GetComponent<PlayerMovementController>();
         jumpController = GetComponent<PlayerJumpController>();
         playerRB = GetComponent<Rigidbody2D>();
 
-        wallSlidingSpeed = playerStats.wallSlidingSpeed;
-        wallJumpForce = playerStats.wallJumpForce;
-        wallJumpLenght = playerStats.wallJumpLenght;
+
         #endregion
     }
 
@@ -78,7 +75,6 @@ public class PlayerWallController : MonoBehaviour
                 nextWallJump = 0;
         }
         #endregion
-
 
         if (playerStats.wallSlideUnlocked) PlayerWallSlide();
 

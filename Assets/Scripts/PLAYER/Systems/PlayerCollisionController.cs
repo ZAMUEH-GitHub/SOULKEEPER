@@ -19,10 +19,10 @@ public class PlayerCollisionController : MonoBehaviour
     {
         #region Script and Variable Subscriptions
 
-        playerStats = GameManager.RuntimePlayerStats;
-        if (playerStats == null)
+        var controller = GetComponent<PlayerController>();
+        if (controller != null)
         {
-            playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
+            playerStats = controller.playerRuntimeStats;
         }
 
         playerRigidBody = GetComponent<Rigidbody2D>();

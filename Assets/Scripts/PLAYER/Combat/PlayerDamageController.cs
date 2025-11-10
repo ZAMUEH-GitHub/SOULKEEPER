@@ -3,12 +3,12 @@ using System.Collections;
 
 public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
 {
-    private PlayerStatsSO playerStats;
+    [SerializeField] private PlayerStatsSO playerStats;
 
     [Header("Damage Settings")]
-    public int playerHealth;
+    public int playerHealth => playerStats.health;
     public bool isTakingDamage;
-    public float damageRate;
+    public float damageRate => playerStats.damageRate;
     private float nextDamage;
     public bool isKnockedBack;
 
@@ -31,10 +31,10 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     {
         #region Script, Component and Variable Suscriptions
 
-        playerStats = GameManager.RuntimePlayerStats;
-        if (playerStats == null)
+        var controller = GetComponent<PlayerController>();
+        if (controller != null)
         {
-            playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
+            playerStats = controller.playerRuntimeStats;
         }
 
         playerController = GetComponent<PlayerController>();
@@ -46,9 +46,6 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
 
     private void Update()
     {
-        playerHealth = playerStats.health;
-        damageRate = playerStats.damageRate;
-
         nextDamage = Mathf.Max(0, nextDamage - Time.deltaTime);
     }
 
@@ -91,7 +88,7 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     private IEnumerator ExecuteTakeDamage(int damage)
     {
         isTakingDamage = true;
-        playerHealth -= damage;
+        playerStats.health -= damage;
         nextDamage = damageRate;
         playerSprite.color = Color.red;
 

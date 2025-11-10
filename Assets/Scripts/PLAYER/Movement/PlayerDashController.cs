@@ -3,21 +3,19 @@ using System.Collections;
 
 public class PlayerDashController : MonoBehaviour
 {
-    private PlayerStatsSO playerStats;
+    [SerializeField] private PlayerStatsSO playerStats;
 
     [Header("Dash Settings")]
-    public float dashForce;
+    public float dashForce => playerStats.dashForce;
     private bool dashInput;
     public bool isDashing;
     public Vector2 dashVector;
-    public float dashLenght;
-    [Space(5)]
-    public float dashRate;
-    public float nextDash;
+    public float dashLenght => playerStats.dashLenght;
+    public float dashRate => playerStats.dashRate;
+    private float nextDash;
 
-    [Header("Dash Buffer")]
-    public float bufferTime;
-    public float bufferCount;
+    public float bufferTime => playerStats.bufferTime;
+    private float bufferCount;
 
     private Rigidbody2D playerRB;
     private CapsuleCollider2D playerCL;
@@ -28,19 +26,17 @@ public class PlayerDashController : MonoBehaviour
     {
         #region Script and Variable Subscriptions
 
-        playerStats = GameManager.RuntimePlayerStats;
-        if (playerStats == null)
+        var controller = GetComponent<PlayerController>();
+        if (controller != null)
         {
-            playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
+            playerStats = controller.playerRuntimeStats;
         }
+
         playerRB = GetComponent<Rigidbody2D>();
         playerCL = GetComponent<CapsuleCollider2D>();
 
         wallController = GetComponent<PlayerWallController>();
 
-        dashForce = playerStats.dashForce;
-        dashRate = playerStats.dashRate;
-        dashLenght = playerStats.dashLenght;
         #endregion
     }
 

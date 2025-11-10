@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class PlayerAttackController : MonoBehaviour
 {
-    private PlayerStatsSO playerStats;
+    [SerializeField] private PlayerStatsSO playerStats;
 
     [Header("AttackSettings")]
     public bool isAttacking;
     private bool attackInput;
-    private int playerDamage;
-    private float attackRate;
+    private int playerDamage => playerStats.damage;
+    private float attackRate => playerStats.attackRate;
     private float nextAttack;
     private float comboGrace = 0.2f;
     private float attackTimer;
-    private float knockbackForce;
-    private float knockbackDuration;
+    private float knockbackForce => playerStats.knockback;
+    private float knockbackDuration => playerStats.knockbackLenght;
 
     public AttackState currentAttackState = AttackState.Attack1;
     public enum AttackState { Attack1, Attack2, Attack3 }
@@ -39,10 +39,10 @@ public class PlayerAttackController : MonoBehaviour
     {
         #region Script and Variable Suscriptions
 
-        playerStats = GameManager.RuntimePlayerStats;
-        if (playerStats == null)
+        var controller = GetComponentInParent<PlayerController>();
+        if (controller != null)
         {
-            playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
+            playerStats = controller.playerRuntimeStats;
         }
 
         jumpController = GetComponentInParent< PlayerJumpController>();
@@ -50,12 +50,7 @@ public class PlayerAttackController : MonoBehaviour
         dashController = GetComponentInParent< PlayerDashController>();
         damageController = GetComponentInParent< PlayerDamageController>();
         playerAnimator = GetComponentInParent<Animator>();
-        
-        playerDamage = playerStats.damage;
-        knockbackForce = playerStats.knockback;
-        attackRate = playerStats.attackRate;
-        knockbackForce = playerStats.knockback;
-        knockbackDuration = playerStats.knockbackLenght;
+       
         #endregion
     }
 

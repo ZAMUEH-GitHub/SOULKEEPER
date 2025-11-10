@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: PlayerStatsSO
   m_EditorClassIdentifier: 
   health: 5
+  maxHealth: 5
   score: 0
   speed: 10
   maxJumpCount: 1
@@ -22,6 +23,7 @@ MonoBehaviour:
   wallJumpForce: 20
   wallJumpLenght: 0.25
   wallJumpRate: 0.25
+  wallJumpDivider: 0
   dashForce: 30
   dashRate: 2
   dashLenght: 0.25
@@ -38,3 +40,5 @@ MonoBehaviour:
   wallSlideUnlocked: 0
   wallJumpUnlocked: 0
   dashUnlocked: 0
+  coyoteTime: 0.1
+  bufferTime: 0.1

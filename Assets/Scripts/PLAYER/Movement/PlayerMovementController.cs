@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    private PlayerStatsSO playerStats;
+    [SerializeField] private PlayerStatsSO playerStats;
 
     [Header("Movement Settings")]
-    public float playerSpeed;
+    public float playerSpeed => playerStats.speed;
     public Vector2 playerOrientation;
     public bool isMoving;
 
@@ -19,10 +19,10 @@ public class PlayerMovementController : MonoBehaviour
     {
         #region Script and Variable Subscriptions
 
-        playerStats = GameManager.RuntimePlayerStats;
-        if (playerStats == null)
+        var controller = GetComponent<PlayerController>();
+        if (controller != null)
         {
-            playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
+            playerStats = controller.playerRuntimeStats;
         }
 
         playerRB = GetComponent<Rigidbody2D>();
@@ -31,7 +31,6 @@ public class PlayerMovementController : MonoBehaviour
         wallController = GetComponent<PlayerWallController>();
         damageController = GetComponent<PlayerDamageController>();
 
-        playerSpeed = playerStats.speed;
         #endregion
     }
 

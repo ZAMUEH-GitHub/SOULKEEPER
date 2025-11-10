@@ -2,19 +2,25 @@ using UnityEngine;
 
 public class PlayerPowerUpController : MonoBehaviour
 {
-    private PlayerStatsSO playerStats;
+    public PlayerStatsSO playerStats;
 
     private void Awake()
     {
-        playerStats = GameManager.RuntimePlayerStats;
-        if (playerStats == null)
+        var controller = GetComponent<PlayerController>();
+        if (controller != null)
         {
-            playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
+            playerStats = controller.playerRuntimeStats;
         }
     }
 
     public void ApplyPowerUp(PowerUpDefinition def)
     {
+        if (playerStats == null)
+        {
+            Debug.LogWarning("[PlayerPowerUpController] Player stats not assigned!");
+            return;
+        }
+
         playerStats.Grant(def);
     }
 }

@@ -19,7 +19,7 @@ public class ModifyStatEffect : PowerUp
         switch (stat)
         {
             case StatType.MaxHealth:
-                if (mode == ModifyMode.Add) stats.health += Mathf.RoundToInt(value);
+                if (mode == ModifyMode.Add) stats.maxHealth += Mathf.RoundToInt(value);
                 else if (mode == ModifyMode.Subtract) stats.health -= Mathf.RoundToInt(value);
                 else stats.health = Mathf.RoundToInt(value);
                 break;
