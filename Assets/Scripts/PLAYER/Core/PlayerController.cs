@@ -56,7 +56,6 @@ public class PlayerController : MonoBehaviour
         if (session != null && session.HasActiveSession)
         {
             playerRuntimeStats = session.RuntimeStats;
-            Debug.Log("[PlayerController] Loaded runtime stats from active SessionManager.");
         }
         else
         {

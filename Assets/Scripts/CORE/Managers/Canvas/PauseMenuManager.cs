@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class PauseMenuManager : Singleton<PauseMenuManager>
 {
+    protected override bool IsPersistent => false;
+
     [Header("Managers")]
     [SerializeField] private CanvasManager canvasManager;
     [SerializeField] private GameSceneManager sceneManager;

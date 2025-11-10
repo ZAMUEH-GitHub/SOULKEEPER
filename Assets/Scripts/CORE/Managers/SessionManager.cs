@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SessionManager : Singleton<SessionManager>
 {
+    protected override bool IsPersistent => false;
+
     public PlayerStatsSO RuntimeStats { get; private set; }
 
     public void StartSession(PlayerStatsSO baseStats)
@@ -14,7 +16,6 @@ public class SessionManager : Singleton<SessionManager>
         }
 
         RuntimeStats = baseStats.Clone();
-        Debug.Log("[SessionManager] New runtime PlayerStats clone created.");
     }
 
     public void EndSession()
@@ -24,7 +25,6 @@ public class SessionManager : Singleton<SessionManager>
             RuntimeStats = null;
             Resources.UnloadUnusedAssets();
             System.GC.Collect();
-            Debug.Log("[SessionManager] Runtime PlayerStats cleared and memory released.");
         }
     }
 

@@ -4,7 +4,6 @@ public class SingletonManager : Singleton<SingletonManager>
 {
     [Header("Singleton References")]
     [SerializeField] private GameObject _PlayerRootPrefab;
-    [SerializeField] private Transform _PlayerRootParent;
 
     [Header("UI & Manager References")]
     public GameObject _GameManager;
@@ -79,10 +78,8 @@ public class SingletonManager : Singleton<SingletonManager>
             return;
         }
 
-        currentPlayerRoot = Instantiate(_PlayerRootPrefab, _PlayerRootParent);
+        currentPlayerRoot = Instantiate(_PlayerRootPrefab);
         currentPlayerRoot.name = "PLAYER ROOT";
-
-        Debug.Log("[SingletonManager] Spawned new PlayerRoot prefab.");
     }
 
     private void DestroyPlayerRoot()
@@ -91,8 +88,6 @@ public class SingletonManager : Singleton<SingletonManager>
 
         Destroy(currentPlayerRoot);
         currentPlayerRoot = null;
-
-        Debug.Log("[SingletonManager] Destroyed PlayerRoot prefab.");
     }
     #endregion
 

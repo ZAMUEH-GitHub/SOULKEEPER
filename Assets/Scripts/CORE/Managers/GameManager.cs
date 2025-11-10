@@ -10,9 +10,10 @@ public enum GameState
 
 public class GameManager : Singleton<GameManager>
 {
-    public static event Action<GameState> OnGameStateChanged;
+    protected override bool IsPersistent => false;
 
     [field: SerializeField] public GameState CurrentState { get; private set; }
+    public static event Action<GameState> OnGameStateChanged;
 
     [Header("Scene References")]
     [SerializeField] private SceneField mainMenuScene;
@@ -63,7 +64,6 @@ public class GameManager : Singleton<GameManager>
             return;
 
         CurrentState = newState;
-        Debug.Log($"[GameManager] State changed to {newState}");
         OnGameStateChanged?.Invoke(newState);
     }
 
@@ -91,7 +91,6 @@ public class GameManager : Singleton<GameManager>
         }
 
         sessionManager.StartSession(basePlayerStats);
-        Debug.Log("[GameManager] New Game started — fresh PlayerStats clone created.");
         EnterGameplay();
     }
 
@@ -99,7 +98,6 @@ public class GameManager : Singleton<GameManager>
     {
         sessionManager.StartSession(basePlayerStats);
         SaveSystem.Load(slotIndex, sessionManager.RuntimeStats);
-        Debug.Log($"[GameManager] Loaded slot {slotIndex} and applied to runtime clone.");
         EnterGameplay();
     }
 

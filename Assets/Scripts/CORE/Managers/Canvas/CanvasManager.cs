@@ -58,6 +58,8 @@ public class ConfirmationRequest
 
 public class CanvasManager : Singleton<CanvasManager>
 {
+    protected override bool IsPersistent => false;
+
     [Header("Canvas Groups")]
     [SerializeField] private GameObject _MainMenuCanvas;
     [SerializeField] private GameObject _GameplayCanvas;

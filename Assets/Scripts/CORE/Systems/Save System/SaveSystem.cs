@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,12 +22,25 @@ public static class SaveSystem
             if (!Directory.Exists(SaveFolder))
                 Directory.CreateDirectory(SaveFolder);
 
+            float previousPlaytime = 0f;
+            string path = GetSlotPath(slotIndex);
+
+            if (File.Exists(path))
+            {
+                string oldJson = File.ReadAllText(path);
+                GameSaveData oldData = JsonUtility.FromJson<GameSaveData>(oldJson);
+                if (oldData != null)
+                    previousPlaytime = oldData.totalPlaytime;
+            }
+
+            float updatedPlaytime = previousPlaytime + Time.realtimeSinceStartup;
+
             GameSaveData saveData = new GameSaveData
             {
                 playerData = new PlayerSaveData(),
                 currentScene = SceneManager.GetActiveScene().name,
                 lastDoorID = currentDoorID,
-                totalPlaytime = Time.realtimeSinceStartup,
+                totalPlaytime = updatedPlaytime,
                 timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 version = CurrentVersion
             };
@@ -40,14 +51,11 @@ public static class SaveSystem
                 saveData.altarData.Add(altar.ToSaveData());
 
             string json = JsonUtility.ToJson(saveData, true);
-            string path = GetSlotPath(slotIndex);
 
             using (StreamWriter writer = new StreamWriter(path, false))
-            {
                 await writer.WriteAsync(json);
-            }
 
-            Debug.Log($"[SaveSystem] Slot {slotIndex} saved successfully — Scene: {saveData.currentScene}, Door: {currentDoorID}");
+            Debug.Log($"[SaveSystem] Slot {slotIndex} saved successfully — Scene: {saveData.currentScene}, Door: {currentDoorID}, Total Playtime: {updatedPlaytime:F2}s");
         }
         catch (Exception ex)
         {
