@@ -58,9 +58,6 @@ public class SingletonManager : Singleton<SingletonManager>
         SafeSetActive(_MainMenuCanvas, isMainMenu);
         SafeSetActive(_GameplayCanvas, !isMainMenu);
         SafeSetActive(_GlobalCanvas, true);
-
-        canvasManager.ToggleCanvasInteractivity(_MainMenuCanvas, isMainMenu);
-        canvasManager.ToggleCanvasInteractivity(_GameplayCanvas, !isMainMenu);
     }
 
     private void SafeSetActive(GameObject obj, bool active)
