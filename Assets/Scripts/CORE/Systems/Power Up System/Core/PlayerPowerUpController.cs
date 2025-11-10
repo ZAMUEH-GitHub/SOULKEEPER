@@ -12,6 +12,7 @@ public class PlayerPowerUpController : MonoBehaviour
             playerStats = FindFirstObjectByType<PlayerController>()?.playerBaseStats;
         }
     }
+
     public void ApplyPowerUp(PowerUpDefinition def)
     {
         playerStats.Grant(def);

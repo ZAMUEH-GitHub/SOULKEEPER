@@ -412,7 +412,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e46e97fe1ed08b49b1262611989820f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  altar: {fileID: 11400000, guid: ed0323bbf3af59c49ba4cd6569a6363b, type: 2}
+  altarSO: {fileID: 11400000, guid: ed0323bbf3af59c49ba4cd6569a6363b, type: 2}
+  altarID: 
   currentStageIndex: 0
   completed: 0
 --- !u!61 &479804123
@@ -595,7 +596,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e46e97fe1ed08b49b1262611989820f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  altar: {fileID: 11400000, guid: 044166fc7988ef14ea4d7c5917d30bde, type: 2}
+  altarSO: {fileID: 11400000, guid: 044166fc7988ef14ea4d7c5917d30bde, type: 2}
+  altarID: 
   currentStageIndex: 0
   completed: 0
 --- !u!61 &622112732
@@ -900,8 +902,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasManager: {fileID: 1129614907}
+  gameSceneManager: {fileID: 0}
+  saveSlotManager: {fileID: 0}
   startPanel: 0
+  fadePanel: 12
   currentPanel: 0
+  newGameScene:
+    _sceneAsset: {fileID: 0}
+    _sceneName: 
 --- !u!1 &1021225100
 GameObject:
   m_ObjectHideFlags: 0
@@ -1019,7 +1027,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e46e97fe1ed08b49b1262611989820f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  altar: {fileID: 11400000, guid: bab8acf8ee2e2b54597d79dab9627c94, type: 2}
+  altarSO: {fileID: 11400000, guid: bab8acf8ee2e2b54597d79dab9627c94, type: 2}
+  altarID: 
   currentStageIndex: 0
   completed: 0
 --- !u!61 &1070776328
@@ -1115,7 +1124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e46e97fe1ed08b49b1262611989820f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  altar: {fileID: 11400000, guid: c420402d9d4e7304b9c1679b76ddbce0, type: 2}
+  altarSO: {fileID: 11400000, guid: c420402d9d4e7304b9c1679b76ddbce0, type: 2}
+  altarID: 
   currentStageIndex: 0
   completed: 0
 --- !u!61 &1122069381
@@ -1469,11 +1479,31 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 319387617}
+    - target: {fileID: 1838128405323281367, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1838128405323281367, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1838128405323281367, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3663272070115031088, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3663272070115031088, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5333206242486493572, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5333206242486493572, guid: 5d9f1e182b37b024b8b70210a6a72301, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
@@ -2017,7 +2047,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e46e97fe1ed08b49b1262611989820f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  altar: {fileID: 11400000, guid: 5ed767e6a59c41248836d017114bd5ae, type: 2}
+  altarSO: {fileID: 11400000, guid: 5ed767e6a59c41248836d017114bd5ae, type: 2}
+  altarID: 
   currentStageIndex: 0
   completed: 0
 --- !u!61 &1972228434
