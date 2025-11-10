@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class PauseMenuManager : Singleton<PauseMenuManager>
 {
+    protected override bool IsPersistent => false;
+
     [Header("Managers")]
     [SerializeField] private CanvasManager canvasManager;
     [SerializeField] private GameSceneManager sceneManager;
@@ -32,9 +34,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
     protected override void Awake()
     {
-        base.Awake(); // Persistent singleton
+        base.Awake();
 
-        // Cache manager instances
         canvasManager ??= CanvasManager.Instance;
         sceneManager ??= GameSceneManager.Instance;
         gameManager ??= GameManager.Instance;
@@ -165,7 +166,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     #region Save Logic
     public void OnSaveGame()
     {
-        var stats = GameManager.RuntimePlayerStats;
+        var stats = SessionManager.Instance.RuntimeStats;
         if (stats == null)
         {
             Debug.LogWarning("[PauseMenuManager] No runtime PlayerStats found — cannot save!");

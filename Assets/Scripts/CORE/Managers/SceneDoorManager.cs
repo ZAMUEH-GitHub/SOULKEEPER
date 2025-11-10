@@ -43,10 +43,6 @@ public class SceneDoorManager : Singleton<SceneDoorManager>
     private void Start()
     {
         GameSceneManager gsm = GameSceneManager.Instance;
-        if (gsm != null)
-        {
-            Debug.Log($"[SceneDoorManager] Registered with GameSceneManager for scene '{SceneManager.GetActiveScene().name}'");
-        }
 
         FindAllDoors();
     }
@@ -64,9 +60,6 @@ public class SceneDoorManager : Singleton<SceneDoorManager>
 
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player");
-
-        if (player == null)
-            Debug.LogWarning("[SceneDoorManager] No Player found after scene load.");
     }
     #endregion
 
@@ -77,16 +70,13 @@ public class SceneDoorManager : Singleton<SceneDoorManager>
 
         SceneDoor[] doorComponents = FindObjectsByType<SceneDoor>(FindObjectsSortMode.None);
         sceneDoors = doorComponents.Select(d => d.gameObject).ToArray();
-
-        Debug.Log($"[SceneDoorManager] Found {sceneDoors.Length} doors in scene '{SceneManager.GetActiveScene().name}'.");
     }
 
     public void RegisterDoorUse(string doorID)
     {
         lastUsedDoorID = doorID;
-        Debug.Log($"[SceneDoorManager] Player used door: {doorID}");
 
-        var runtimeStats = GameManager.RuntimePlayerStats;
+        var runtimeStats = SessionManager.Instance.RuntimeStats;
         if (runtimeStats == null)
         {
             Debug.LogWarning("[SceneDoorManager] RuntimePlayerStats not found — skipping autosave.");
@@ -102,7 +92,6 @@ public class SceneDoorManager : Singleton<SceneDoorManager>
 
         int slot = saveSlotManager.ActiveSlotIndex;
         SaveSystem.Save(slot, runtimeStats, doorID);
-        Debug.Log($"[SceneDoorManager] Auto-saved door '{doorID}' to slot {slot}");
     }
 
     public void ChooseDoor(string targetDoorID)
@@ -129,8 +118,6 @@ public class SceneDoorManager : Singleton<SceneDoorManager>
                 yield break;
             }
         }
-
-        Debug.LogWarning($"[SceneDoorManager] Door '{doorID}' not found even after waiting.");
     }
 
     private void TeleportToDoor(string doorID)
@@ -159,7 +146,6 @@ public class SceneDoorManager : Singleton<SceneDoorManager>
         if (player != null)
         {
             player.transform.position = targetDoor.transform.position;
-            Debug.Log($"[SceneDoorManager] Teleported player to '{targetDoor.name}'");
         }
         else
         {

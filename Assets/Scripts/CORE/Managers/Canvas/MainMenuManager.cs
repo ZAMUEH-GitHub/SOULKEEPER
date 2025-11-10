@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : Singleton<MainMenuManager>
 {
+    protected override bool IsPersistent => false;
+
     [Header("Managers")]
     [SerializeField] private CanvasManager canvasManager;
     [SerializeField] private GameSceneManager gameSceneManager;
@@ -17,6 +19,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     [Header("Scenes")]
     [SerializeField] private SceneField newGameScene;
+
+    #region Unity Lifecycle
 
     protected override void Awake()
     {
@@ -41,6 +45,26 @@ public class MainMenuManager : Singleton<MainMenuManager>
             Debug.LogWarning("[MainMenuManager] CanvasManager.Instance not found!");
         }
     }
+
+    private void OnEnable()
+    {
+        canvasManager ??= CanvasManager.Instance;
+
+        if (canvasManager != null)
+        {
+            canvasManager.FadeOut(PanelType.PlayGame);
+            canvasManager.FadeOut(PanelType.Settings);
+            canvasManager.FadeOut(PanelType.VideoSettings);
+            canvasManager.FadeOut(PanelType.AudioSettings);
+            canvasManager.FadeOut(PanelType.KeyBindings);
+            canvasManager.FadeOut(PanelType.Credits);
+
+            canvasManager.FadeIn(PanelType.MainMenu);
+            currentPanel = PanelType.MainMenu;
+        }
+    }
+
+    #endregion
 
     #region Panel Navigation
     public void GoToMainMenuPanel() => GoToPanel(PanelType.MainMenu);

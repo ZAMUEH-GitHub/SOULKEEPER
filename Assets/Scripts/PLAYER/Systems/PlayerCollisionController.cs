@@ -56,7 +56,8 @@ public class PlayerCollisionController : MonoBehaviour
     {
         if (other.CompareTag("MovingObstacle") || other.CompareTag("Parenting Collider"))
         {
-            transform.SetParent(null);
+            if (other.gameObject.activeInHierarchy)
+                transform.SetParent(null);
             playerCollider.isTrigger = false;
         }
 

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class AudioManager : Singleton<AudioManager>
 {
+    protected override bool IsPersistent => false;
+
     [Header("Audio Sources")]
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;

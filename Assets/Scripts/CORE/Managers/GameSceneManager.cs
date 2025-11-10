@@ -11,6 +11,8 @@ public enum SceneLoadMode
 
 public class GameSceneManager : Singleton<GameSceneManager>
 {
+    protected override bool IsPersistent => false;
+
     private SceneDoorManager sceneDoorManager;
 
     [SerializeField] private string targetDoorID;
@@ -93,11 +95,10 @@ public class GameSceneManager : Singleton<GameSceneManager>
             int slot = saveSlotManager.ActiveSlotIndex;
             if (SaveSystem.SaveExists(slot))
             {
-                var runtimeStats = GameManager.RuntimePlayerStats;
+                var runtimeStats = SessionManager.Instance.RuntimeStats;
                 if (runtimeStats != null)
                 {
                     SaveSystem.Load(slot, runtimeStats);
-                    Debug.Log($"[GameSceneManager] Player stats restored for slot {slot}");
                 }
             }
         }
@@ -116,8 +117,6 @@ public class GameSceneManager : Singleton<GameSceneManager>
                     var player = GameObject.FindGameObjectWithTag("Player");
                     if (player != null)
                         player.transform.position = spawn.transform.position;
-
-                    Debug.Log("[GameSceneManager] Spawned player at checkpoint");
                 }
                 else
                 {

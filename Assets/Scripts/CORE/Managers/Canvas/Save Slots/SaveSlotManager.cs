@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SaveSlotManager : Singleton<SaveSlotManager>
 {
+    protected override bool IsPersistent => false;
+
     [Header("Active Save Slot Info")]
     [SerializeField] private int activeSlotIndex = 1;
     public int ActiveSlotIndex => activeSlotIndex;

@@ -3,8 +3,9 @@ using UnityEngine;
 public class SingletonManager : Singleton<SingletonManager>
 {
     [Header("Singleton References")]
-    public GameObject _Player;
-    public GameObject _Camera;
+    [SerializeField] private GameObject _PlayerRootPrefab;
+
+    [Header("UI & Manager References")]
     public GameObject _GameManager;
     public GameObject _GameSceneManager;
     public GameObject _SceneDoorManager;
@@ -22,48 +23,80 @@ public class SingletonManager : Singleton<SingletonManager>
 
     private GameManager gameManager;
     private CanvasManager canvasManager;
+    private GameObject currentPlayerRoot;
 
+    #region Unity Lifecycle
     private void Start()
     {
-        gameManager = _GameManager.GetComponent<GameManager>();
-        canvasManager = _CanvasGroup.GetComponent<CanvasManager>();
-
-        if (_GameManager != null)
-            gameManager = _GameManager.GetComponent<GameManager>();
-        else
-            gameManager = FindFirstObjectByType<GameManager>();
+        gameManager = _GameManager != null ? _GameManager.GetComponent<GameManager>() : FindFirstObjectByType<GameManager>();
+        canvasManager = _CanvasGroup != null ? _CanvasGroup.GetComponent<CanvasManager>() : FindFirstObjectByType<CanvasManager>();
 
         if (gameManager != null)
             HandleGameStateChanged(gameManager.CurrentState);
 
         GameManager.OnGameStateChanged += HandleGameStateChanged;
-
-        if (_CanvasGroup != null)
-            canvasManager = _CanvasGroup.GetComponent<CanvasManager>();
-        else
-            canvasManager = FindFirstObjectByType<CanvasManager>();
     }
 
     private void OnDisable()
     {
         GameManager.OnGameStateChanged -= HandleGameStateChanged;
     }
+    #endregion
 
+    #region GameState Reaction
     private void HandleGameStateChanged(GameState state)
     {
         bool isMainMenu = state == GameState.MainMenu;
 
-        SafeSetActive(_Player, !isMainMenu);
-        SafeSetActive(_Camera, !isMainMenu);
         SafeSetActive(_MainMenuCanvas, isMainMenu);
         SafeSetActive(_GameplayCanvas, !isMainMenu);
         SafeSetActive(_GlobalCanvas, true);
+
+        if (isMainMenu)
+        {
+            DestroyPlayerRoot();
+        }
+        else
+        {
+            SpawnPlayerRoot();
+        }
+    }
+    #endregion
+
+    #region PlayerRoot Management
+    private void SpawnPlayerRoot()
+    {
+        if (_PlayerRootPrefab == null)
+        {
+            Debug.LogError("[SingletonManager] PlayerRoot prefab is missing!");
+            return;
+        }
+
+        if (currentPlayerRoot != null)
+        {
+            Debug.LogWarning("[SingletonManager] PlayerRoot already exists — skipping spawn.");
+            return;
+        }
+
+        currentPlayerRoot = Instantiate(_PlayerRootPrefab);
+        currentPlayerRoot.name = "PLAYER ROOT";
     }
 
+    private void DestroyPlayerRoot()
+    {
+        if (currentPlayerRoot == null) return;
+
+        Destroy(currentPlayerRoot);
+        currentPlayerRoot = null;
+    }
+    #endregion
+
+    #region Utility
     private void SafeSetActive(GameObject obj, bool active)
     {
         if (obj == null) return;
         if (obj.activeSelf == active) return;
         obj.SetActive(active);
     }
+    #endregion
 }
