@@ -20,18 +20,19 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Player Data Management")]
     [SerializeField] private PlayerStatsSO basePlayerStats;
-    public static PlayerStatsSO RuntimePlayerStats { get; private set; }
+
+    private SessionManager sessionManager;
 
     #region Unity Lifecycle
     protected override void Awake()
     {
         base.Awake();
+        sessionManager = SessionManager.Instance;
     }
 
     private void Start()
     {
         canvasManager ??= CanvasManager.Instance;
-
         if (canvasManager != null)
             canvasManager.FadeOut(PanelType.BlackScreen);
 
@@ -44,15 +45,8 @@ public class GameManager : Singleton<GameManager>
         OnGameStateChanged -= HandleGameStateChanged;
     }
 
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
+    private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
+    private void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
     #endregion
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -78,19 +72,12 @@ public class GameManager : Singleton<GameManager>
         switch (state)
         {
             case GameState.MainMenu:
-                if (RuntimePlayerStats != null)
-                {
-                    RuntimePlayerStats = null;
-                    Debug.Log("[GameManager] Cleared runtime PlayerStatsSO (MainMenu)");
-                }
+                sessionManager.EndSession();
                 break;
 
             case GameState.Gameplay:
-                if (RuntimePlayerStats == null && basePlayerStats != null)
-                {
-                    RuntimePlayerStats = basePlayerStats.Clone();
-                    Debug.Log("[GameManager] Created runtime PlayerStatsSO clone for Gameplay");
-                }
+                if (!sessionManager.HasActiveSession)
+                    sessionManager.StartSession(basePlayerStats);
                 break;
         }
     }
@@ -103,17 +90,24 @@ public class GameManager : Singleton<GameManager>
             return;
         }
 
-        RuntimePlayerStats = basePlayerStats.Clone();
+        sessionManager.StartSession(basePlayerStats);
         Debug.Log("[GameManager] New Game started — fresh PlayerStats clone created.");
+        EnterGameplay();
+    }
+
+    public void LoadGame(int slotIndex)
+    {
+        sessionManager.StartSession(basePlayerStats);
+        SaveSystem.Load(slotIndex, sessionManager.RuntimeStats);
+        Debug.Log($"[GameManager] Loaded slot {slotIndex} and applied to runtime clone.");
+        EnterGameplay();
     }
 
     public void ReturnToMainMenu()
     {
+        sessionManager.EndSession();
         SetState(GameState.MainMenu);
     }
 
-    public void EnterGameplay()
-    {
-        SetState(GameState.Gameplay);
-    }
+    public void EnterGameplay() => SetState(GameState.Gameplay);
 }

@@ -1,65 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &14338794259529093
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1729223197938421877}
-  - component: {fileID: 5750980487632602465}
-  m_Layer: 0
-  m_Name: Singleton Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1729223197938421877
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14338794259529093}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 854909710952180473}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5750980487632602465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14338794259529093}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99a2e999973ed4e468a41ab9c3008709, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Player: {fileID: 4349855356711425223}
-  _Camera: {fileID: 3263421054714722529}
-  _GameManager: {fileID: 4809404467411561521}
-  _GameSceneManager: {fileID: 7800335129840301034}
-  _SceneDoorManager: {fileID: 4353484938543407348}
-  _AudioManager: {fileID: 8962481308810028092}
-  _TimeManager: {fileID: 2446640515453210229}
-  _SaveSlotManager: {fileID: 2826421974173534316}
-  _CanvasGroup: {fileID: 4991396322297136613}
-  _GlobalCanvas: {fileID: 2634737170496486510}
-  _MainMenuCanvas: {fileID: 3395338987972836507}
-  _GameplayCanvas: {fileID: 4312953565911647115}
-  _EventSystem: {fileID: 3333361011786114105}
-  mainMenuScene:
-    _sceneAsset: {fileID: 102900000, guid: 8fcf48851ff05cc48a3e888005b65666, type: 3}
-    _sceneName: MainMenu
 --- !u!1 &72868151675700185
 GameObject:
   m_ObjectHideFlags: 0
@@ -5988,6 +5928,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 602839755588710408}
+  - component: {fileID: 8195891693040258621}
   m_Layer: 0
   m_Name: SINGLETONS
   m_TagString: Untagged
@@ -6015,6 +5956,34 @@ Transform:
   - {fileID: 1840625604554110668}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8195891693040258621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830380596282123720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99a2e999973ed4e468a41ab9c3008709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Player: {fileID: 4349855356711425223}
+  _Camera: {fileID: 3263421054714722529}
+  _GameManager: {fileID: 4809404467411561521}
+  _GameSceneManager: {fileID: 7800335129840301034}
+  _SceneDoorManager: {fileID: 4353484938543407348}
+  _AudioManager: {fileID: 8962481308810028092}
+  _TimeManager: {fileID: 2446640515453210229}
+  _SaveSlotManager: {fileID: 2826421974173534316}
+  _CanvasGroup: {fileID: 4991396322297136613}
+  _GlobalCanvas: {fileID: 2634737170496486510}
+  _MainMenuCanvas: {fileID: 3395338987972836507}
+  _GameplayCanvas: {fileID: 4312953565911647115}
+  _EventSystem: {fileID: 3333361011786114105}
+  mainMenuScene:
+    _sceneAsset: {fileID: 102900000, guid: 8fcf48851ff05cc48a3e888005b65666, type: 3}
+    _sceneName: MainMenu
 --- !u!1 &892566827178060931
 GameObject:
   m_ObjectHideFlags: 0
@@ -9473,6 +9442,37 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!1 &1929322208758484817
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1053294794107167173}
+  m_Layer: 0
+  m_Name: SessionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1053294794107167173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1929322208758484817}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 854909710952180473}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1950746972370275722
 GameObject:
   m_ObjectHideFlags: 0
@@ -9847,13 +9847,13 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8907322033696831806}
+  - {fileID: 1053294794107167173}
   - {fileID: 8218138128076967331}
   - {fileID: 4310904661211145034}
+  - {fileID: 554592594980798668}
   - {fileID: 2471918214432315973}
-  - {fileID: 1729223197938421877}
   - {fileID: 7395049817852654350}
   - {fileID: 5235400610336440719}
-  - {fileID: 554592594980798668}
   m_Father: {fileID: 602839755588710408}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2142286974824368016
@@ -17028,7 +17028,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f3da22702b775f4c9b8430d8b0fa791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 0}
   playerOrientation: {x: 0, y: 0}
   isMoving: 0
 --- !u!114 &2518307864161609410
@@ -17043,8 +17042,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a9c2333df67bf8419f356052bf55ccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 0}
   isGrounded: 0
+  wasGrounded: 0
   isJumping: 0
   jumpCount: 0
   nextJump: 0
@@ -17065,7 +17064,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5375fb66227ec8244b58480c95899b7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 0}
   isWalled: 0
   isWallSliding: 0
   isWallJumping: 0
@@ -17086,7 +17084,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7dec13f148c0ea4d9a146e9958506b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 0}
   isDashing: 0
   dashVector: {x: 0, y: 0}
 --- !u!114 &448660116320185597
@@ -17159,7 +17156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 730481c9ba8c1124e93f3de24aec4d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 0}
 --- !u!114 &8903427483422724569
 MonoBehaviour:
   m_ObjectHideFlags: 0

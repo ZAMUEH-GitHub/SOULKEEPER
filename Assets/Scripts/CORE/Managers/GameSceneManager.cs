@@ -93,7 +93,7 @@ public class GameSceneManager : Singleton<GameSceneManager>
             int slot = saveSlotManager.ActiveSlotIndex;
             if (SaveSystem.SaveExists(slot))
             {
-                var runtimeStats = GameManager.RuntimePlayerStats;
+                var runtimeStats = SessionManager.Instance.RuntimeStats;
                 if (runtimeStats != null)
                 {
                     SaveSystem.Load(slot, runtimeStats);

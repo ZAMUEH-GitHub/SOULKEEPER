@@ -33,7 +33,6 @@ public class PlayerController : MonoBehaviour
     public bool playerInputActive;
 
     #region Player SubControllers
-
     private List<IPlayerSubController> subControllers = new();
 
     private PlayerMovementController movementController;
@@ -41,7 +40,6 @@ public class PlayerController : MonoBehaviour
     private PlayerDashController dashController;
     private PlayerAttackController attackController;
     private PlayerInteractController interactController;
-
     #endregion
 
     private void Awake()
@@ -53,15 +51,27 @@ public class PlayerController : MonoBehaviour
         }
         Instance = this;
 
-        if (GameManager.RuntimePlayerStats == null)
+        var session = SessionManager.Instance;
+
+        if (session != null && session.HasActiveSession)
         {
-            GameManager.Instance.StartNewGame();
+            playerRuntimeStats = session.RuntimeStats;
+            Debug.Log("[PlayerController] Loaded runtime stats from active SessionManager.");
+        }
+        else
+        {
+            if (playerBaseStats != null)
+            {
+                playerRuntimeStats = playerBaseStats.Clone();
+                Debug.LogWarning("[PlayerController] No active session found! Using a cloned fallback base stats.");
+            }
+            else
+            {
+                Debug.LogError("[PlayerController] No PlayerStatsSO assigned or found!");
+            }
         }
 
-        playerRuntimeStats = GameManager.RuntimePlayerStats ?? playerBaseStats.Clone();
-
         #region Player SubControllers
-
         movementController = GetComponent<PlayerMovementController>();
         wallController = GetComponent<PlayerWallController>();
         dashController = GetComponent<PlayerDashController>();

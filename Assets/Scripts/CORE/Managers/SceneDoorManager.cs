@@ -86,7 +86,7 @@ public class SceneDoorManager : Singleton<SceneDoorManager>
         lastUsedDoorID = doorID;
         Debug.Log($"[SceneDoorManager] Player used door: {doorID}");
 
-        var runtimeStats = GameManager.RuntimePlayerStats;
+        var runtimeStats = SessionManager.Instance.RuntimeStats;
         if (runtimeStats == null)
         {
             Debug.LogWarning("[SceneDoorManager] RuntimePlayerStats not found — skipping autosave.");
