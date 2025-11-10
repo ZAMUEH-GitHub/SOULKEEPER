@@ -1,7 +1,9 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class PauseMenuManager : MonoBehaviour
+public class PauseMenuManager : Singleton<PauseMenuManager>
 {
     [Header("Managers")]
     [SerializeField] private CanvasManager canvasManager;
@@ -9,7 +11,6 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField] private GameManager gameManager;
     [SerializeField] private TimeManager timeManager;
     [SerializeField] private SaveSlotManager saveSlotManager;
-    [SerializeField] private PlayerStatsSO runtimePlayerStats;
 
     [Header("Panels")]
     [SerializeField] private PanelType startPanel = PanelType.HUD;
@@ -18,7 +19,6 @@ public class PauseMenuManager : MonoBehaviour
     [SerializeField] private PanelType pauseAudioSettings = PanelType.PauseAudioSettings;
     [SerializeField] private PanelType pauseKeybindings = PanelType.PauseKeybindings;
     [SerializeField] private PanelType fadePanel = PanelType.BlackScreen;
-
     [field: SerializeField] private PanelType currentPanel;
 
     [Header("Scene Settings")]
@@ -27,35 +27,35 @@ public class PauseMenuManager : MonoBehaviour
     [Header("Input Settings")]
     [SerializeField] private KeyCode pauseKey = KeyCode.Escape;
 
-    private bool isPaused = false;
-    private GameObject _GameplayCanvas;
+    private bool isPaused;
+    private GameObject gameplayCanvas;
+
+    protected override void Awake()
+    {
+        base.Awake(); // Persistent singleton
+
+        // Cache manager instances
+        canvasManager ??= CanvasManager.Instance;
+        sceneManager ??= GameSceneManager.Instance;
+        gameManager ??= GameManager.Instance;
+        timeManager ??= TimeManager.Instance;
+        saveSlotManager ??= SaveSlotManager.Instance;
+    }
 
     private void Start()
     {
-        if (canvasManager == null)
-            canvasManager = FindFirstObjectByType<CanvasManager>();
-
-        if (sceneManager == null)
-            sceneManager = FindFirstObjectByType<GameSceneManager>();
-
-        if (timeManager == null)
-            timeManager = FindFirstObjectByType<TimeManager>();
-
-        if (saveSlotManager == null)
-            saveSlotManager = FindFirstObjectByType<SaveSlotManager>();
-
-        if (runtimePlayerStats == null)
-            runtimePlayerStats = FindFirstObjectByType<PlayerStatsSO>();
-
         currentPanel = startPanel;
 
-        canvasManager.FadeIn(currentPanel);
-        canvasManager.FadeOut(pausePanel);
-        canvasManager.FadeOut(pauseSettings);
-        canvasManager.FadeOut(pauseAudioSettings);
-        canvasManager.FadeOut(pauseKeybindings);
+        if (canvasManager != null)
+        {
+            canvasManager.FadeIn(currentPanel);
+            canvasManager.FadeOut(pausePanel);
+            canvasManager.FadeOut(pauseSettings);
+            canvasManager.FadeOut(pauseAudioSettings);
+            canvasManager.FadeOut(pauseKeybindings);
+        }
 
-        _GameplayCanvas = gameObject;
+        gameplayCanvas = gameObject;
     }
 
     private void Update()
@@ -78,12 +78,14 @@ public class PauseMenuManager : MonoBehaviour
         if (isPaused) return;
         isPaused = true;
 
-        canvasManager.ToggleCanvasInteractivity(_GameplayCanvas, true);
-        var raycaster = _GameplayCanvas.GetComponent<UnityEngine.UI.GraphicRaycaster>();
+        if (canvasManager != null)
+            canvasManager.ToggleCanvasInteractivity(gameplayCanvas, true);
+
+        var raycaster = gameplayCanvas.GetComponent<GraphicRaycaster>();
         if (raycaster != null && !raycaster.enabled)
             raycaster.enabled = true;
 
-        timeManager.FreezeTime();
+        timeManager?.FreezeTime();
         GoToPanel(pausePanel);
     }
 
@@ -92,14 +94,14 @@ public class PauseMenuManager : MonoBehaviour
         if (!isPaused) return;
         isPaused = false;
 
-        var raycaster = _GameplayCanvas.GetComponent<UnityEngine.UI.GraphicRaycaster>();
+        var raycaster = gameplayCanvas.GetComponent<GraphicRaycaster>();
         if (raycaster != null)
             raycaster.enabled = false;
 
-        foreach (var t in _GameplayCanvas.GetComponentsInChildren<UnityEngine.EventSystems.EventTrigger>(true))
+        foreach (var t in gameplayCanvas.GetComponentsInChildren<EventTrigger>(true))
             t.enabled = false;
 
-        timeManager.ResetTime();
+        timeManager?.ResetTime();
         StartCoroutine(CrossFadePanels(currentPanel, startPanel));
         currentPanel = startPanel;
     }
@@ -116,17 +118,14 @@ public class PauseMenuManager : MonoBehaviour
     #region Navigation
     public void GoToPanel(PanelType newPanel)
     {
-        if (newPanel == currentPanel)
-            return;
-
+        if (newPanel == currentPanel) return;
         StartCoroutine(CrossFadePanels(currentPanel, newPanel));
         currentPanel = newPanel;
     }
 
     private IEnumerator CrossFadePanels(PanelType fromPanel, PanelType toPanel)
     {
-        if (canvasManager == null)
-            yield break;
+        if (canvasManager == null) yield break;
 
         canvasManager.FadeOut(fromPanel);
         canvasManager.FadeIn(toPanel);
@@ -138,6 +137,8 @@ public class PauseMenuManager : MonoBehaviour
     #region Exit Logic
     public void OnExitToMainMenu()
     {
+        if (canvasManager == null) return;
+
         canvasManager.ShowConfirmation(
             "EXIT TO MAIN MENU?",
             "(All unsaved progress will be lost)",
@@ -148,37 +149,30 @@ public class PauseMenuManager : MonoBehaviour
 
     private IEnumerator ExitToMainMenuRoutine()
     {
-        timeManager.ResetTime();
+        timeManager?.ResetTime();
 
         if (canvasManager != null)
+        {
             canvasManager.FadeOut(pausePanel);
-
-        if (canvasManager != null)
             canvasManager.FadeIn(fadePanel);
+            yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
+        }
 
-        yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
-
-        if (sceneManager != null)
-            sceneManager.LoadSceneDirect(mainMenuScene);
+        sceneManager?.LoadSceneDirect(mainMenuScene);
     }
     #endregion
 
     #region Save Logic
-
     public void OnSaveGame()
     {
-        if (saveSlotManager == null)
-            saveSlotManager = FindFirstObjectByType<SaveSlotManager>();
-
         var stats = GameManager.RuntimePlayerStats;
-
         if (stats == null)
         {
             Debug.LogWarning("[PauseMenuManager] No runtime PlayerStats found — cannot save!");
             return;
         }
 
-        int slot = saveSlotManager != null ? saveSlotManager.ActiveSlotIndex : 1;
+        int slot = saveSlotManager?.ActiveSlotIndex ?? 1;
 
         if (canvasManager != null)
         {
@@ -191,16 +185,13 @@ public class PauseMenuManager : MonoBehaviour
                     Debug.Log($"[PauseMenuManager] Game saved to slot {slot}.");
                     canvasManager.ShowToast("Progress Saved", 3f);
                 },
-                () =>
-                {
-                    Debug.Log("[PauseMenuManager] Save cancelled by player.");
-                }
+                () => Debug.Log("[PauseMenuManager] Save cancelled by player.")
             );
         }
         else
         {
-            Debug.LogWarning("[PauseMenuManager] No CanvasManager found, saving immediately.");
             SaveSystem.Save(slot, stats);
+            Debug.Log($"[PauseMenuManager] Game saved to slot {slot} (no canvas).");
         }
     }
     #endregion
@@ -209,9 +200,9 @@ public class PauseMenuManager : MonoBehaviour
     public void ResetToGameplay()
     {
         currentPanel = startPanel;
-        canvasManager.FadeIn(currentPanel);
+        canvasManager?.FadeIn(currentPanel);
         isPaused = false;
-        timeManager.ResetTime();
+        timeManager?.ResetTime();
     }
     #endregion
 }

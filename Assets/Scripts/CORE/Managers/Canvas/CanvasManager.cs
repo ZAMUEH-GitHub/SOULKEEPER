@@ -26,10 +26,9 @@ public enum PanelType
     BlackScreen,
     ConfirmationPanel,
     ToastPanel
-
 }
 
-[System.Serializable]
+[Serializable]
 public class PanelFadeSettings
 {
     [Header("Panel Settings")]
@@ -57,7 +56,7 @@ public class ConfirmationRequest
     }
 }
 
-public class CanvasManager : MonoBehaviour
+public class CanvasManager : Singleton<CanvasManager>
 {
     [Header("Canvas Groups")]
     [SerializeField] private GameObject _MainMenuCanvas;
@@ -66,11 +65,8 @@ public class CanvasManager : MonoBehaviour
 
     [Header("Panels Configuration")]
     [SerializeField] private List<PanelFadeSettings> panelSettingsList = new List<PanelFadeSettings>();
-
-    private Dictionary<PanelType, PanelFadeSettings> panelSettings = new Dictionary<PanelType, PanelFadeSettings>();
-    private Dictionary<CanvasGroup, Coroutine> activeFades = new Dictionary<CanvasGroup, Coroutine>();
-
-    private PlayerController playerController;
+    private readonly Dictionary<PanelType, PanelFadeSettings> panelSettings = new();
+    private readonly Dictionary<CanvasGroup, Coroutine> activeFades = new();
 
     [Header("Confirmation System")]
     [SerializeField] private TMP_Text confirmationTitleText;
@@ -81,8 +77,12 @@ public class CanvasManager : MonoBehaviour
     [Header("Toast Settings")]
     [SerializeField] private TMP_Text toastText;
 
-    private void Awake()
+    private PlayerController playerController;
+
+    protected override void Awake()
     {
+        base.Awake();
+
         foreach (var settings in panelSettingsList)
         {
             if (settings.panel != null && !panelSettings.ContainsKey(settings.panelType))
@@ -95,6 +95,30 @@ public class CanvasManager : MonoBehaviour
 
         if (_GlobalCanvas != null && panelSettings.ContainsKey(PanelType.BlackScreen))
             FadeIn(PanelType.BlackScreen);
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnGameStateChanged += HandleGameStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStateChanged -= HandleGameStateChanged;
+    }
+
+    private void HandleGameStateChanged(GameState state)
+    {
+        bool isMainMenu = state == GameState.MainMenu;
+
+        ToggleCanvasInteractivity(_MainMenuCanvas, isMainMenu);
+        ToggleCanvasInteractivity(_GameplayCanvas, !isMainMenu);
+        ToggleCanvasInteractivity(_GlobalCanvas, true);
+
+        if (isMainMenu)
+            FadeIn(PanelType.MainMenu);
+        else
+            FadeIn(PanelType.HUD);
     }
 
     #region Fade API
@@ -114,9 +138,7 @@ public class CanvasManager : MonoBehaviour
 
     public float GetFadeDuration(PanelType type)
     {
-        if (panelSettings.ContainsKey(type))
-            return panelSettings[type].fadeDuration;
-        return 0.5f;
+        return panelSettings.ContainsKey(type) ? panelSettings[type].fadeDuration : 0.5f;
     }
     #endregion
 
@@ -173,16 +195,8 @@ public class CanvasManager : MonoBehaviour
 
         panel.alpha = finalAlpha;
 
-        if (finalAlpha == 0f)
-        {
-            panel.interactable = false;
-            panel.blocksRaycasts = false;
-        }
-        else
-        {
-            panel.interactable = true;
-            panel.blocksRaycasts = true;
-        }
+        panel.interactable = finalAlpha > 0f;
+        panel.blocksRaycasts = finalAlpha > 0f;
 
         if (activeFades.ContainsKey(panel))
             activeFades.Remove(panel);
@@ -190,27 +204,21 @@ public class CanvasManager : MonoBehaviour
     #endregion
 
     #region Confirmation System
-
     public void ShowConfirmation(string title, string subtitle, Action confirmAction, Action cancelAction = null)
     {
         currentRequest = new ConfirmationRequest(title, confirmAction, cancelAction);
 
-        if (confirmationTitleText != null)
-            confirmationTitleText.text = title;
+        if (confirmationTitleText != null) confirmationTitleText.text = title;
+        if (confirmationSubtitleText != null) confirmationSubtitleText.text = subtitle;
 
-        if (confirmationSubtitleText != null)
-            confirmationSubtitleText.text = subtitle;
-
-        var gm = FindFirstObjectByType<GameManager>();
-        if (gm != null && gm.CurrentState == GameState.MainMenu)
+        var gm = GameManager.Instance;
+        if (gm != null)
         {
-            ToggleCanvasInteractivity(_MainMenuCanvas, false);
+            if (gm.CurrentState == GameState.MainMenu)
+                ToggleCanvasInteractivity(_MainMenuCanvas, false);
+            else if (gm.CurrentState == GameState.Gameplay)
+                ToggleCanvasInteractivity(_GameplayCanvas, false);
         }
-        else if (gm != null && gm.CurrentState == GameState.Gameplay)
-        {
-            ToggleCanvasInteractivity(_GameplayCanvas, false);
-        }
-
 
         if (_MainMenuCanvas != null)
         {
@@ -238,16 +246,14 @@ public class CanvasManager : MonoBehaviour
         if (isClosingConfirmation) return;
         isClosingConfirmation = true;
 
-        var gm = FindFirstObjectByType<GameManager>();
-        if (gm != null && gm.CurrentState == GameState.MainMenu)
+        var gm = GameManager.Instance;
+        if (gm != null)
         {
-            ToggleCanvasInteractivity(_MainMenuCanvas, true);
+            if (gm.CurrentState == GameState.MainMenu)
+                ToggleCanvasInteractivity(_MainMenuCanvas, true);
+            else
+                ToggleCanvasInteractivity(_GameplayCanvas, true);
         }
-        else
-        {
-            ToggleCanvasInteractivity(_GameplayCanvas, true);
-        }
-
 
         if (_MainMenuCanvas != null)
         {
@@ -262,9 +268,10 @@ public class CanvasManager : MonoBehaviour
     #endregion
 
     #region Toast System
-
     public void ShowToast(string message, float duration = 1.5f)
     {
+        if (toastText == null) return;
+
         toastText.text = message;
         FadeIn(PanelType.ToastPanel);
         StartCoroutine(HideToastAfterDelay(duration));
@@ -275,7 +282,6 @@ public class CanvasManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(duration);
         FadeOut(PanelType.ToastPanel);
     }
-
     #endregion
 
     public void ToggleCanvasInteractivity(GameObject canvasObject, bool enable)
@@ -283,11 +289,9 @@ public class CanvasManager : MonoBehaviour
         if (canvasObject == null || canvasObject == _GlobalCanvas) return;
 
         var raycaster = canvasObject.GetComponent<UnityEngine.UI.GraphicRaycaster>();
-        if (raycaster != null)
-            raycaster.enabled = enable;
+        if (raycaster != null) raycaster.enabled = enable;
 
-        var triggers = canvasObject.GetComponentsInChildren<UnityEngine.EventSystems.EventTrigger>(true);
-        foreach (var t in triggers)
+        foreach (var t in canvasObject.GetComponentsInChildren<UnityEngine.EventSystems.EventTrigger>(true))
             t.enabled = enable;
     }
 }

@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4876bb31ac653d4688a8a35fd29f914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 0}
   isAttacking: 0
   currentAttackState: 0
   attackOrientation: {x: 0, y: 0}
@@ -5987,7 +5988,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 602839755588710408}
-  - component: {fileID: 7047444737254028507}
   m_Layer: 0
   m_Name: SINGLETONS
   m_TagString: Untagged
@@ -6015,18 +6015,6 @@ Transform:
   - {fileID: 1840625604554110668}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7047444737254028507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 830380596282123720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 821cc956636029c47b32a1b5b57e4464, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &892566827178060931
 GameObject:
   m_ObjectHideFlags: 0
@@ -9860,6 +9848,7 @@ Transform:
   m_Children:
   - {fileID: 8907322033696831806}
   - {fileID: 8218138128076967331}
+  - {fileID: 4310904661211145034}
   - {fileID: 2471918214432315973}
   - {fileID: 1729223197938421877}
   - {fileID: 7395049817852654350}
@@ -10577,6 +10566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9c0bde3698d68439fb19941aa3a4ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultTimeScale: 1
 --- !u!1 &2554193115148435726
 GameObject:
   m_ObjectHideFlags: 0
@@ -14329,7 +14319,6 @@ MonoBehaviour:
   musicSlider: {fileID: 5541144052611533766}
   sfxSlider: {fileID: 5443318629058336468}
   muteToggle: {fileID: 6384359240171780957}
-  audioManager: {fileID: 1724278720097173421}
 --- !u!1 &3426654510880246104
 GameObject:
   m_ObjectHideFlags: 0
@@ -16793,7 +16782,6 @@ MonoBehaviour:
   gameManager: {fileID: 4048256434326133097}
   timeManager: {fileID: 2078415183372421613}
   saveSlotManager: {fileID: 3337154086885337062}
-  runtimePlayerStats: {fileID: 0}
   startPanel: 7
   pausePanel: 8
   pauseSettings: 9
@@ -16821,7 +16809,6 @@ MonoBehaviour:
   musicSlider: {fileID: 6095743258094640672}
   sfxSlider: {fileID: 1232352289996557690}
   muteToggle: {fileID: 9074343363362385388}
-  audioManager: {fileID: 1724278720097173421}
 --- !u!1 &4340416188980067113
 GameObject:
   m_ObjectHideFlags: 0
@@ -17041,7 +17028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f3da22702b775f4c9b8430d8b0fa791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeed: 10
+  playerStats: {fileID: 0}
   playerOrientation: {x: 0, y: 0}
   isMoving: 0
 --- !u!114 &2518307864161609410
@@ -17056,17 +17043,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a9c2333df67bf8419f356052bf55ccb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 20
+  playerStats: {fileID: 0}
   isGrounded: 0
   isJumping: 0
   jumpCount: 0
-  maxJumpCount: 2
-  jumpRate: 0.25
   nextJump: 0
-  coyoteTime: 0.1
-  coyoteCount: 0
-  bufferTime: 0.1
-  bufferCount: 0
   groundCheckPoint: {fileID: 1299650766868948208}
   groundCheckRadius: 0.4
   groundLayer:
@@ -17084,17 +17065,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5375fb66227ec8244b58480c95899b7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 0}
   isWalled: 0
   isWallSliding: 0
-  wallSlidingSpeed: 3
-  wallJumpForce: 20
   isWallJumping: 0
-  wallJumpLenght: 0.2
-  wallJumpDivider: 2
-  wallJumpRate: 0.35
-  nextWallJump: 0
-  bufferTime: 0.1
-  bufferCount: 0
   wallCheckPoint: {fileID: 2902647624186133810}
   wallCheckRadius: 0.5
   wallLayer:
@@ -17112,14 +17086,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7dec13f148c0ea4d9a146e9958506b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashForce: 30
+  playerStats: {fileID: 0}
   isDashing: 0
   dashVector: {x: 0, y: 0}
-  dashLenght: 0.25
-  dashRate: 2
-  nextDash: 0
-  bufferTime: 0.1
-  bufferCount: 0
 --- !u!114 &448660116320185597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17132,9 +17101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e01f98204597c48b58b3b165c78500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealth: 0
+  playerStats: {fileID: 0}
   isTakingDamage: 0
-  damageRate: 0
   isKnockedBack: 0
   soulObject: {fileID: 7296185017180021397, guid: 44300729b2eb8f64eb9c3d31a04fad52, type: 3}
   damageParticles: {fileID: 487942289725805393, guid: 1c785a88208007844aa5f5015a062b0b, type: 3}
@@ -17191,6 +17159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 730481c9ba8c1124e93f3de24aec4d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 0}
 --- !u!114 &8903427483422724569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24730,6 +24699,53 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &5118879623997601247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4310904661211145034}
+  - component: {fileID: 603029816373795573}
+  m_Layer: 0
+  m_Name: Scene Door Manager
+  m_TagString: Scene Door Manager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4310904661211145034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5118879623997601247}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 854909710952180473}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &603029816373795573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5118879623997601247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5634c9150fefffa49987f7e70dfff16b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneDoors:
+  - {fileID: 0}
+  saveSlotManager: {fileID: 0}
 --- !u!1 &5135892409110337547
 GameObject:
   m_ObjectHideFlags: 0

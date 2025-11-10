@@ -8,7 +8,7 @@ public enum GameState
     Gameplay
 }
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     public static event Action<GameState> OnGameStateChanged;
 
@@ -22,10 +22,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerStatsSO basePlayerStats;
     public static PlayerStatsSO RuntimePlayerStats { get; private set; }
 
+    #region Unity Lifecycle
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     private void Start()
     {
-        if (canvasManager == null)
-            canvasManager = FindFirstObjectByType<CanvasManager>();
+        canvasManager ??= CanvasManager.Instance;
 
         if (canvasManager != null)
             canvasManager.FadeOut(PanelType.BlackScreen);
@@ -33,8 +38,9 @@ public class GameManager : MonoBehaviour
         OnGameStateChanged += HandleGameStateChanged;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         OnGameStateChanged -= HandleGameStateChanged;
     }
 
@@ -47,6 +53,7 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+    #endregion
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -56,12 +63,13 @@ public class GameManager : MonoBehaviour
             SetState(GameState.Gameplay);
     }
 
-    private void SetState(GameState newState)
+    public void SetState(GameState newState)
     {
         if (newState == CurrentState)
             return;
 
         CurrentState = newState;
+        Debug.Log($"[GameManager] State changed to {newState}");
         OnGameStateChanged?.Invoke(newState);
     }
 
@@ -97,5 +105,15 @@ public class GameManager : MonoBehaviour
 
         RuntimePlayerStats = basePlayerStats.Clone();
         Debug.Log("[GameManager] New Game started — fresh PlayerStats clone created.");
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SetState(GameState.MainMenu);
+    }
+
+    public void EnterGameplay()
+    {
+        SetState(GameState.Gameplay);
     }
 }

@@ -3,38 +3,82 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneDoorManager : MonoBehaviour
+public class SceneDoorManager : Singleton<SceneDoorManager>
 {
-    [Header("Scene Doors")]
-    public GameObject[] sceneDoors;
+    protected override bool IsPersistent => false;
 
-    [SerializeField] SaveSlotManager saveSlotManager;
+    [Header("Scene Doors")]
+    [SerializeField] private GameObject[] sceneDoors;
+
+    [Header("References")]
+    [SerializeField] private SaveSlotManager saveSlotManager;
+
     private GameObject player;
     private static string lastUsedDoorID;
 
-    private void Awake()
+    #region Unity Lifecycle
+    protected override void Awake()
     {
-        var existing = FindObjectsByType<SceneDoorManager>(FindObjectsSortMode.None);
-        if (existing.Length > 1)
+        if (Instance == null)
+        {
+            var singletonField = typeof(Singleton<SceneDoorManager>).GetField("_instance",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            singletonField?.SetValue(null, this);
+        }
+        else if (Instance != this)
         {
             Destroy(gameObject);
             return;
         }
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
-    private void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    protected override void OnDestroy()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        base.OnDestroy();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void Start()
+    {
+        GameSceneManager gsm = GameSceneManager.Instance;
+        if (gsm != null)
+        {
+            Debug.Log($"[SceneDoorManager] Registered with GameSceneManager for scene '{SceneManager.GetActiveScene().name}'");
+        }
+
         FindAllDoors();
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        StartCoroutine(ReinitializeAfterSceneLoad());
+    }
+
+    private IEnumerator ReinitializeAfterSceneLoad()
+    {
+        yield return null;
+
+        FindAllDoors();
+
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player == null)
+            Debug.LogWarning("[SceneDoorManager] No Player found after scene load.");
+    }
+    #endregion
+
+    #region Door Logic
     private void FindAllDoors()
     {
+        sceneDoors = null;
+
         SceneDoor[] doorComponents = FindObjectsByType<SceneDoor>(FindObjectsSortMode.None);
         sceneDoors = doorComponents.Select(d => d.gameObject).ToArray();
+
+        Debug.Log($"[SceneDoorManager] Found {sceneDoors.Length} doors in scene '{SceneManager.GetActiveScene().name}'.");
     }
 
     public void RegisterDoorUse(string doorID)
@@ -42,24 +86,62 @@ public class SceneDoorManager : MonoBehaviour
         lastUsedDoorID = doorID;
         Debug.Log($"[SceneDoorManager] Player used door: {doorID}");
 
-        var playerStats = FindFirstObjectByType<PlayerStatsSO>();
-        if (playerStats != null)
+        var runtimeStats = GameManager.RuntimePlayerStats;
+        if (runtimeStats == null)
         {
-            int slot = saveSlotManager != null ? saveSlotManager.ActiveSlotIndex : 1;
-            SaveSystem.Save(slot, playerStats, doorID);
-            Debug.Log($"[SceneDoorManager] Auto-saved door '{doorID}' to slot {slot}");
+            Debug.LogWarning("[SceneDoorManager] RuntimePlayerStats not found — skipping autosave.");
+            return;
         }
+
+        saveSlotManager ??= SaveSlotManager.Instance;
+        if (saveSlotManager == null)
+        {
+            Debug.LogWarning("[SceneDoorManager] SaveSlotManager.Instance not found — cannot autosave.");
+            return;
+        }
+
+        int slot = saveSlotManager.ActiveSlotIndex;
+        SaveSystem.Save(slot, runtimeStats, doorID);
+        Debug.Log($"[SceneDoorManager] Auto-saved door '{doorID}' to slot {slot}");
     }
 
     public void ChooseDoor(string targetDoorID)
     {
+        if (sceneDoors == null || sceneDoors.Length == 0)
+        {
+            Debug.LogWarning("[SceneDoorManager] No doors found in current scene — retrying.");
+            StartCoroutine(WaitAndChooseDoor(targetDoorID));
+            return;
+        }
+
+        TeleportToDoor(targetDoorID);
+    }
+
+    private IEnumerator WaitAndChooseDoor(string doorID)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            yield return null;
+            FindAllDoors();
+            if (sceneDoors.Any())
+            {
+                TeleportToDoor(doorID);
+                yield break;
+            }
+        }
+
+        Debug.LogWarning($"[SceneDoorManager] Door '{doorID}' not found even after waiting.");
+    }
+
+    private void TeleportToDoor(string doorID)
+    {
         var targetDoor = sceneDoors
             .Select(d => d.GetComponent<SceneDoor>())
-            .FirstOrDefault(sd => sd != null && sd.doorID == targetDoorID);
+            .FirstOrDefault(sd => sd != null && sd.doorID == doorID);
 
         if (targetDoor == null)
         {
-            Debug.LogWarning($"[SceneDoorManager] Door '{targetDoorID}' not found in this scene.");
+            Debug.LogWarning($"[SceneDoorManager] Door '{doorID}' not found in this scene.");
             return;
         }
 
@@ -68,19 +150,21 @@ public class SceneDoorManager : MonoBehaviour
 
     private IEnumerator DelayedTeleport(GameObject targetDoor)
     {
-        yield return new WaitForEndOfFrame();
-
-        if (player == null)
+        for (int i = 0; i < 5 && player == null; i++)
+        {
             player = GameObject.FindGameObjectWithTag("Player");
+            yield return null;
+        }
 
         if (player != null)
         {
             player.transform.position = targetDoor.transform.position;
-            Debug.Log($"[SceneDoorManager] Teleported player to {targetDoor.name}");
+            Debug.Log($"[SceneDoorManager] Teleported player to '{targetDoor.name}'");
         }
         else
         {
-            Debug.LogWarning("[SceneDoorManager] Player not found for teleport!");
+            Debug.LogWarning("[SceneDoorManager] Could not find player to teleport.");
         }
     }
+    #endregion
 }

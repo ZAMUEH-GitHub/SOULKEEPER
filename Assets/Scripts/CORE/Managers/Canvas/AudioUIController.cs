@@ -11,21 +11,22 @@ public class AudioUIController : MonoBehaviour
     [Header("UI Toggles")]
     [SerializeField] private Toggle muteToggle;
 
-    [SerializeField] private AudioManager audioManager;
+    private AudioManager audioManager;
 
     private void Awake()
     {
-        audioManager = FindFirstObjectByType<AudioManager>();
+        audioManager = AudioManager.Instance;
+
+        if (audioManager == null)
+        {
+            Debug.LogWarning("[AudioUIController] AudioManager.Instance is null. UI won't function.");
+            enabled = false;
+            return;
+        }
     }
 
     private void Start()
     {
-        if (audioManager == null)
-        {
-            Debug.LogWarning("[AudioUIController] AudioManager not found in scene.");
-            return;
-        }
-
         InitializeUI();
 
         if (masterSlider != null) masterSlider.onValueChanged.AddListener(OnMasterChanged);
@@ -42,7 +43,7 @@ public class AudioUIController : MonoBehaviour
         if (muteToggle != null) muteToggle.onValueChanged.RemoveListener(OnMuteToggled);
     }
 
-    public void InitializeUI()
+    private void InitializeUI()
     {
         if (audioManager == null) return;
 

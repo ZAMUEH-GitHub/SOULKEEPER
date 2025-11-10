@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuManager : MonoBehaviour
+public class MainMenuManager : Singleton<MainMenuManager>
 {
     [Header("Managers")]
     [SerializeField] private CanvasManager canvasManager;
@@ -13,24 +13,36 @@ public class MainMenuManager : MonoBehaviour
     [Header("Panels")]
     [SerializeField] private PanelType startPanel = PanelType.MainMenu;
     [SerializeField] private PanelType fadePanel = PanelType.BlackScreen;
-
     [field: SerializeField] private PanelType currentPanel;
 
     [Header("Scenes")]
     [SerializeField] private SceneField newGameScene;
 
-    private void Start()
+    protected override void Awake()
     {
-        if (canvasManager == null)
-            canvasManager = FindFirstObjectByType<CanvasManager>();
+        base.Awake();
 
-        if (gameSceneManager == null)
-            gameSceneManager = FindFirstObjectByType<GameSceneManager>();
-
-        currentPanel = startPanel;
-        canvasManager.FadeIn(currentPanel);
+        canvasManager ??= CanvasManager.Instance;
+        gameSceneManager ??= GameSceneManager.Instance;
+        saveSlotManager ??= SaveSlotManager.Instance;
     }
 
+    private void Start()
+    {
+        currentPanel = startPanel;
+
+        if (canvasManager != null)
+        {
+            canvasManager.FadeIn(currentPanel);
+            canvasManager.FadeOut(fadePanel);
+        }
+        else
+        {
+            Debug.LogWarning("[MainMenuManager] CanvasManager.Instance not found!");
+        }
+    }
+
+    #region Panel Navigation
     public void GoToMainMenuPanel() => GoToPanel(PanelType.MainMenu);
     public void GoToPlayGamePanel() => GoToPanel(PanelType.PlayGame);
     public void GoToSettingsPanel() => GoToPanel(PanelType.Settings);
@@ -48,19 +60,31 @@ public class MainMenuManager : MonoBehaviour
 
     private IEnumerator CrossFadePanels(PanelType fromPanel, PanelType toPanel)
     {
+        if (canvasManager == null) yield break;
+
         canvasManager.FadeOut(fromPanel);
         canvasManager.FadeIn(toPanel);
         yield return new WaitForSeconds(canvasManager.GetFadeDuration(toPanel));
     }
+    #endregion
 
+    #region New Game
     public void NewGame(int slotIndex)
     {
+        saveSlotManager ??= SaveSlotManager.Instance;
+        if (saveSlotManager == null)
+        {
+            Debug.LogError("[MainMenuManager] SaveSlotManager not found!");
+            return;
+        }
+
         saveSlotManager.SetActiveSlot(slotIndex);
 
         if (SaveSystem.SaveExists(slotIndex))
         {
             Debug.Log($"[MainMenuManager] Overwriting previous save slot {slotIndex}");
-            System.IO.File.Delete(Path.Combine(Application.persistentDataPath, $"Saves/SaveSlot_{slotIndex}.json"));
+            string path = Path.Combine(Application.persistentDataPath, $"Saves/SaveSlot_{slotIndex}.json");
+            if (File.Exists(path)) File.Delete(path);
         }
 
         StartCoroutine(StartNewGameRoutine());
@@ -68,12 +92,20 @@ public class MainMenuManager : MonoBehaviour
 
     private IEnumerator StartNewGameRoutine()
     {
-        canvasManager.FadeIn(fadePanel);
-        yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
+        if (canvasManager != null)
+        {
+            canvasManager.FadeIn(fadePanel);
+            yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
+        }
 
-        gameSceneManager.LoadSceneFromDoor(newGameScene, "Cathedral_StartDoor");
+        if (gameSceneManager != null)
+            gameSceneManager.LoadSceneFromDoor(newGameScene, "Cathedral_StartDoor");
+        else
+            Debug.LogError("[MainMenuManager] GameSceneManager.Instance not found!");
     }
+    #endregion
 
+    #region Load Game
     public void OnLoadGameButton(int slotIndex)
     {
         if (!SaveSystem.SaveExists(slotIndex))
@@ -82,6 +114,7 @@ public class MainMenuManager : MonoBehaviour
             return;
         }
 
+        saveSlotManager ??= SaveSlotManager.Instance;
         saveSlotManager.SetActiveSlot(slotIndex);
 
         string savedScene = SaveSystem.GetSavedScene(slotIndex);
@@ -98,14 +131,28 @@ public class MainMenuManager : MonoBehaviour
 
     private IEnumerator LoadSavedGameRoutine(SceneField savedScene, string savedDoor)
     {
-        canvasManager.FadeIn(fadePanel);
-        yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
+        if (canvasManager != null)
+        {
+            canvasManager.FadeIn(fadePanel);
+            yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
+        }
 
-        gameSceneManager.LoadSceneFromCheckpoint(savedScene);
+        if (gameSceneManager != null)
+            gameSceneManager.LoadSceneFromCheckpoint(savedScene);
+        else
+            Debug.LogError("[MainMenuManager] GameSceneManager.Instance not found!");
     }
+    #endregion
 
+    #region Exit Game
     public void OnExitGame()
     {
+        if (canvasManager == null)
+        {
+            ExitGameExecutor();
+            return;
+        }
+
         canvasManager.ShowConfirmation(
             "EXIT GAME?",
             "(The application will close.)",
@@ -122,4 +169,5 @@ public class MainMenuManager : MonoBehaviour
         Application.Quit();
 #endif
     }
+    #endregion
 }

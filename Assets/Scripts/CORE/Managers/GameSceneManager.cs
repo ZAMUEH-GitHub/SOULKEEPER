@@ -9,7 +9,7 @@ public enum SceneLoadMode
     DirectLoad
 }
 
-public class GameSceneManager : MonoBehaviour
+public class GameSceneManager : Singleton<GameSceneManager>
 {
     private SceneDoorManager sceneDoorManager;
 
@@ -21,6 +21,11 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField] private CanvasManager canvasManager;
     [SerializeField] private SaveSlotManager saveSlotManager;
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -31,6 +36,7 @@ public class GameSceneManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    #region Scene Loading
     public void LoadSceneFromDoor(SceneField scene, string targetDoor)
     {
         if (isLoadingScene) return;
@@ -55,19 +61,20 @@ public class GameSceneManager : MonoBehaviour
         currentLoadMode = mode;
         targetDoorID = doorID;
 
-        if (canvasManager == null)
-            canvasManager = FindFirstObjectByType<CanvasManager>();
+        canvasManager ??= CanvasManager.Instance;
 
         if (canvasManager != null)
             canvasManager.FadeIn(PanelType.BlackScreen);
 
-        yield return new WaitForSeconds(canvasManager.GetFadeDuration(PanelType.BlackScreen));
+        yield return new WaitForSeconds(canvasManager?.GetFadeDuration(PanelType.BlackScreen) ?? 0.5f);
 
         SceneManager.LoadScene(scene);
 
         isLoadingScene = false;
     }
+    #endregion
 
+    #region Scene Post-Load
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         StartCoroutine(PostSceneLoadRoutine());
@@ -79,12 +86,14 @@ public class GameSceneManager : MonoBehaviour
 
         FindSceneDoorManager();
 
+        saveSlotManager ??= SaveSlotManager.Instance;
+
         if (saveSlotManager != null)
         {
             int slot = saveSlotManager.ActiveSlotIndex;
             if (SaveSystem.SaveExists(slot))
             {
-                var runtimeStats = FindFirstObjectByType<PlayerStatsSO>();
+                var runtimeStats = GameManager.RuntimePlayerStats;
                 if (runtimeStats != null)
                 {
                     SaveSystem.Load(slot, runtimeStats);
@@ -127,7 +136,7 @@ public class GameSceneManager : MonoBehaviour
             yield return new WaitForSeconds(canvasManager.GetFadeDuration(PanelType.BlackScreen));
         }
     }
-
+    #endregion
 
     private void FindSceneDoorManager()
     {

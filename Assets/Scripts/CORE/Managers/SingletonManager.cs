@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SingletonManager : MonoBehaviour
+public class SingletonManager : Singleton<SingletonManager>
 {
     [Header("Singleton References")]
     public GameObject _Player;

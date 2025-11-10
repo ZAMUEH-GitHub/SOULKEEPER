@@ -1,18 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : Singleton<AudioManager>
 {
-    private void Awake()
-    {
-        GameManager.OnGameStateChanged += HandleGameStateChange;
-    }
-
-    private void OnDestroy()
-    {
-        GameManager.OnGameStateChanged -= HandleGameStateChange;
-    }
-
     [Header("Audio Sources")]
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
@@ -36,16 +26,35 @@ public class AudioManager : MonoBehaviour
     public float SfxVolume => sfxVolume;
     public bool IsMuted => isMuted;
 
-    private void Start()
-    {
-        var gm = FindFirstObjectByType<GameManager>();
-        if (gm != null) HandleGameStateChange(gm.CurrentState);
+    #region Unity Lifecycle
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnGameStateChanged += HandleGameStateChange;
         ApplyVolumes();
     }
 
-    private void OnEnable() => ApplyVolumes();
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        GameManager.OnGameStateChanged -= HandleGameStateChange;
+    }
 
+    private void Start()
+    {
+        if (GameManager.Instance != null)
+            HandleGameStateChange(GameManager.Instance.CurrentState);
+
+        ApplyVolumes();
+    }
+    #endregion
+
+    #region Volume & Mute
     public void SetMasterVolume(float value)
     {
         masterVolume = Mathf.Clamp01(value);
@@ -86,6 +95,9 @@ public class AudioManager : MonoBehaviour
             sfxSource.mute = isMuted;
         }
     }
+    #endregion
+
+    #region Game State Music Handling
 
     private void HandleGameStateChange(GameState state)
     {
@@ -104,7 +116,9 @@ public class AudioManager : MonoBehaviour
     {
         if (musicSource == null || newClip == null) return;
 
-        if (fadeRoutine != null) StopCoroutine(fadeRoutine);
+        if (fadeRoutine != null)
+            StopCoroutine(fadeRoutine);
+
         fadeRoutine = StartCoroutine(CrossFadeRoutine(newClip, duration));
     }
 
@@ -131,7 +145,9 @@ public class AudioManager : MonoBehaviour
 
         musicSource.volume = target;
     }
+    #endregion
 
+    #region Sound Effects
     public void PlaySfx(AudioClip clip)
     {
         if (!clip || isMuted) return;
@@ -146,4 +162,5 @@ public class AudioManager : MonoBehaviour
         if (!clip || isMuted) return;
         AudioSource.PlayClipAtPoint(clip, position, masterVolume * sfxVolume);
     }
+    #endregion
 }

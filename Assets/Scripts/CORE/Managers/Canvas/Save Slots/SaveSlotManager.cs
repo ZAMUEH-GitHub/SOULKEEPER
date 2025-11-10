@@ -1,10 +1,15 @@
 using UnityEngine;
 
-public class SaveSlotManager : MonoBehaviour
+public class SaveSlotManager : Singleton<SaveSlotManager>
 {
     [Header("Active Save Slot Info")]
     [SerializeField] private int activeSlotIndex = 1;
     public int ActiveSlotIndex => activeSlotIndex;
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
     public void SetActiveSlot(int slot)
     {
@@ -16,5 +21,10 @@ public class SaveSlotManager : MonoBehaviour
 
         activeSlotIndex = slot;
         Debug.Log($"[SaveSlotManager] Active save slot set to {slot}");
+    }
+
+    public string GetActiveSaveFileName()
+    {
+        return $"SaveSlot_{activeSlotIndex}.json";
     }
 }
