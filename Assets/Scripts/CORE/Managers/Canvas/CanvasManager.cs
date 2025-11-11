@@ -88,6 +88,8 @@ public class CanvasManager : Singleton<CanvasManager>
 
     private PlayerController playerController;
 
+    private readonly Dictionary<PanelType, GameObject> _lastSelectedByPanel = new();
+
     #region Unity Lifecycle
     protected override void Awake()
     {
@@ -154,7 +156,8 @@ public class CanvasManager : Singleton<CanvasManager>
     #endregion
 
     #region Fade Logic
-    private void StartFade(PanelFadeSettings s, float startAlpha, float finalAlpha, float duration, bool interactable, bool blockRaycasts, bool disablesInput)
+    private void StartFade(PanelFadeSettings s, float startAlpha, float finalAlpha, float duration,
+                           bool interactable, bool blockRaycasts, bool disablesInput)
     {
         var panel = s.panel;
 
@@ -177,14 +180,19 @@ public class CanvasManager : Singleton<CanvasManager>
         {
             var current = EventSystem.current.currentSelectedGameObject;
             if (current != null && current.transform.IsChildOf(panel.transform))
+            {
+                _lastSelectedByPanel[s.panelType] = current;
                 EventSystem.current.SetSelectedGameObject(null);
+            }
         }
 
-        Coroutine fadeRoutine = StartCoroutine(Fade(s, startAlpha, finalAlpha, duration, interactable, blockRaycasts, disablesInput));
+        Coroutine fadeRoutine = StartCoroutine(Fade(s, startAlpha, finalAlpha, duration,
+                                                    interactable, blockRaycasts, disablesInput));
         activeFades[panel] = fadeRoutine;
     }
 
-    private IEnumerator Fade(PanelFadeSettings s, float startAlpha, float finalAlpha, float duration, bool interactable, bool blockRaycasts, bool disablesInput)
+    private IEnumerator Fade(PanelFadeSettings s, float startAlpha, float finalAlpha, float duration,
+                             bool interactable, bool blockRaycasts, bool disablesInput)
     {
         var panel = s.panel;
 
@@ -216,7 +224,6 @@ public class CanvasManager : Singleton<CanvasManager>
         }
 
         panel.alpha = finalAlpha;
-
         panel.interactable = finalAlpha > 0f;
         panel.blocksRaycasts = finalAlpha > 0f;
 
@@ -230,18 +237,22 @@ public class CanvasManager : Singleton<CanvasManager>
     private IEnumerator ApplyPanelSelectionNextFrame(PanelFadeSettings s)
     {
         yield return null;
+        if (EventSystem.current == null || s == null) yield break;
 
-        if (s == null || s.firstSelected == null) yield break;
-        if (EventSystem.current == null) yield break;
+        GameObject candidate = null;
+        if (_lastSelectedByPanel.TryGetValue(s.panelType, out var remembered) && remembered != null)
+            candidate = remembered;
 
-        var go = s.firstSelected;
-        if (!go.activeInHierarchy) yield break;
+        if (candidate == null)
+            candidate = s.firstSelected;
 
-        var selectable = go.GetComponent<Selectable>();
+        if (candidate == null || !candidate.activeInHierarchy) yield break;
+
+        var selectable = candidate.GetComponent<Selectable>();
         if (selectable == null || !selectable.IsInteractable()) yield break;
 
         EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(go);
+        EventSystem.current.SetSelectedGameObject(candidate);
         selectable.OnSelect(null);
     }
     #endregion
