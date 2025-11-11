@@ -81,6 +81,8 @@ public class CanvasManager : Singleton<CanvasManager>
     private bool isClosingConfirmation = false;
     private ConfirmationRequest currentRequest;
 
+    private readonly List<PanelFadeSettings> _temporarilyDisabledPanels = new();
+
     [Header("Toast Settings")]
     [SerializeField] private TMP_Text toastText;
 
@@ -252,19 +254,35 @@ public class CanvasManager : Singleton<CanvasManager>
         if (confirmationTitleText != null) confirmationTitleText.text = title;
         if (confirmationSubtitleText != null) confirmationSubtitleText.text = subtitle;
 
-        var gm = GameManager.Instance;
-        if (gm != null)
+        _temporarilyDisabledPanels.Clear();
+        foreach (var kvp in panelSettings)
         {
-            if (gm.CurrentState == GameState.MainMenu)
-                ToggleCanvasInteractivity(_MainMenuCanvas, false);
-            else if (gm.CurrentState == GameState.Gameplay)
-                ToggleCanvasInteractivity(_GameplayCanvas, false);
+            var p = kvp.Value;
+            if (p.panelType == PanelType.ConfirmationPanel || p.panelType == PanelType.ToastPanel)
+                continue;
+
+            if (p.panel != null && p.panel.alpha > 0.95f && p.panel.interactable)
+            {
+                p.panel.interactable = false;
+                p.panel.blocksRaycasts = false;
+                _temporarilyDisabledPanels.Add(p);
+            }
         }
 
-        if (_MainMenuCanvas != null)
+        if (EventSystem.current != null)
         {
-            var raycaster = _MainMenuCanvas.GetComponent<UnityEngine.UI.GraphicRaycaster>();
-            if (raycaster != null) raycaster.enabled = false;
+            var currentSel = EventSystem.current.currentSelectedGameObject;
+            if (currentSel != null)
+            {
+                foreach (var p in _temporarilyDisabledPanels)
+                {
+                    if (currentSel.transform.IsChildOf(p.panel.transform))
+                    {
+                        EventSystem.current.SetSelectedGameObject(null);
+                        break;
+                    }
+                }
+            }
         }
 
         FadeIn(PanelType.ConfirmationPanel);
@@ -287,22 +305,24 @@ public class CanvasManager : Singleton<CanvasManager>
         if (isClosingConfirmation) return;
         isClosingConfirmation = true;
 
+        foreach (var p in _temporarilyDisabledPanels)
+        {
+            if (p.panel == null) continue;
+            p.panel.interactable = true;
+            p.panel.blocksRaycasts = true;
+        }
+        _temporarilyDisabledPanels.Clear();
+
+        FadeOut(PanelType.ConfirmationPanel);
+
         var gm = GameManager.Instance;
         if (gm != null)
         {
-            if (gm.CurrentState == GameState.MainMenu)
-                ToggleCanvasInteractivity(_MainMenuCanvas, true);
-            else
-                ToggleCanvasInteractivity(_GameplayCanvas, true);
+            PanelType toFocus = gm.CurrentState == GameState.MainMenu ? PanelType.MainMenu : PanelType.HUD;
+            if (panelSettings.TryGetValue(toFocus, out var s))
+                StartCoroutine(ApplyPanelSelectionNextFrame(s));
         }
 
-        if (_MainMenuCanvas != null)
-        {
-            var raycaster = _MainMenuCanvas.GetComponent<UnityEngine.UI.GraphicRaycaster>();
-            if (raycaster != null) raycaster.enabled = true;
-        }
-
-        FadeOut(PanelType.ConfirmationPanel);
         currentRequest = null;
         isClosingConfirmation = false;
     }
