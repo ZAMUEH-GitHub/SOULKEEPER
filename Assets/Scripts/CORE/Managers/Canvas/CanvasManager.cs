@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public enum PanelType
 {
@@ -34,6 +36,9 @@ public class PanelFadeSettings
     [Header("Panel Settings")]
     public PanelType panelType;
     public CanvasGroup panel;
+
+    [Tooltip("UI control to select when this panel finishes fading in.")]
+    public GameObject firstSelected;
 
     [Header("Fade Properties")]
     public float fadeDuration = 0.3f;
@@ -81,6 +86,7 @@ public class CanvasManager : Singleton<CanvasManager>
 
     private PlayerController playerController;
 
+    #region Unity Lifecycle
     protected override void Awake()
     {
         base.Awake();
@@ -122,20 +128,21 @@ public class CanvasManager : Singleton<CanvasManager>
         else
             FadeIn(PanelType.HUD);
     }
+    #endregion
 
     #region Fade API
     public void FadeIn(PanelType type)
     {
         if (!panelSettings.ContainsKey(type)) return;
         var s = panelSettings[type];
-        StartFade(s.panel, s.panel.alpha, 1f, s.fadeDuration, s.interactable, s.blockRaycasts, s.disablesPlayerInput);
+        StartFade(s, s.panel.alpha, 1f, s.fadeDuration, s.interactable, s.blockRaycasts, s.disablesPlayerInput);
     }
 
     public void FadeOut(PanelType type)
     {
         if (!panelSettings.ContainsKey(type)) return;
         var s = panelSettings[type];
-        StartFade(s.panel, s.panel.alpha, 0f, s.fadeDuration, false, false, s.disablesPlayerInput);
+        StartFade(s, s.panel.alpha, 0f, s.fadeDuration, false, false, s.disablesPlayerInput);
     }
 
     public float GetFadeDuration(PanelType type)
@@ -145,8 +152,10 @@ public class CanvasManager : Singleton<CanvasManager>
     #endregion
 
     #region Fade Logic
-    private void StartFade(CanvasGroup panel, float startAlpha, float finalAlpha, float duration, bool interactable, bool blockRaycasts, bool disablesInput)
+    private void StartFade(PanelFadeSettings s, float startAlpha, float finalAlpha, float duration, bool interactable, bool blockRaycasts, bool disablesInput)
     {
+        var panel = s.panel;
+
         if (activeFades.ContainsKey(panel))
         {
             StopCoroutine(activeFades[panel]);
@@ -162,12 +171,21 @@ public class CanvasManager : Singleton<CanvasManager>
             }
         }
 
-        Coroutine fadeRoutine = StartCoroutine(Fade(panel, startAlpha, finalAlpha, duration, interactable, blockRaycasts, disablesInput));
+        if (finalAlpha == 0f && EventSystem.current != null)
+        {
+            var current = EventSystem.current.currentSelectedGameObject;
+            if (current != null && current.transform.IsChildOf(panel.transform))
+                EventSystem.current.SetSelectedGameObject(null);
+        }
+
+        Coroutine fadeRoutine = StartCoroutine(Fade(s, startAlpha, finalAlpha, duration, interactable, blockRaycasts, disablesInput));
         activeFades[panel] = fadeRoutine;
     }
 
-    private IEnumerator Fade(CanvasGroup panel, float startAlpha, float finalAlpha, float duration, bool interactable, bool blockRaycasts, bool disablesInput)
+    private IEnumerator Fade(PanelFadeSettings s, float startAlpha, float finalAlpha, float duration, bool interactable, bool blockRaycasts, bool disablesInput)
     {
+        var panel = s.panel;
+
         if (finalAlpha > startAlpha)
         {
             panel.interactable = interactable;
@@ -200,8 +218,29 @@ public class CanvasManager : Singleton<CanvasManager>
         panel.interactable = finalAlpha > 0f;
         panel.blocksRaycasts = finalAlpha > 0f;
 
+        if (finalAlpha > 0f)
+            yield return StartCoroutine(ApplyPanelSelectionNextFrame(s));
+
         if (activeFades.ContainsKey(panel))
             activeFades.Remove(panel);
+    }
+
+    private IEnumerator ApplyPanelSelectionNextFrame(PanelFadeSettings s)
+    {
+        yield return null;
+
+        if (s == null || s.firstSelected == null) yield break;
+        if (EventSystem.current == null) yield break;
+
+        var go = s.firstSelected;
+        if (!go.activeInHierarchy) yield break;
+
+        var selectable = go.GetComponent<Selectable>();
+        if (selectable == null || !selectable.IsInteractable()) yield break;
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(go);
+        selectable.OnSelect(null);
     }
     #endregion
 
