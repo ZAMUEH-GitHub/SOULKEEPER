@@ -10684,6 +10684,8 @@ GameObject:
   - component: {fileID: 4422613624474491622}
   - component: {fileID: 7241349831114873116}
   - component: {fileID: 2778017893097874259}
+  - component: {fileID: 142500037930506020}
+  - component: {fileID: 4775246243989020648}
   m_Layer: 0
   m_Name: GLOBAL Canvas
   m_TagString: Untagged
@@ -10776,6 +10778,34 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &142500037930506020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2634737170496486510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c843533a23c8444caa518108913d7bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  titleText: {fileID: 8644417380492510246}
+  subtitleText: {fileID: 6319011406691578432}
+  confirmButton: {fileID: 7160038355880056422}
+--- !u!114 &4775246243989020648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2634737170496486510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 226ac15e2927e4044a963bda462d48d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toastText: {fileID: 9111481317476418911}
 --- !u!1 &2641038017648708805
 GameObject:
   m_ObjectHideFlags: 0
@@ -11227,8 +11257,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4086712728567460458}
-        m_TargetAssemblyTypeName: CanvasManager, Assembly-CSharp
+      - m_Target: {fileID: 142500037930506020}
+        m_TargetAssemblyTypeName: ConfirmationPanelManager, Assembly-CSharp
         m_MethodName: OnCancelPressed
         m_Mode: 1
         m_Arguments:
@@ -16839,7 +16869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -17499,10 +17529,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
-    m_HighlightedColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+    m_NormalColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 0.39215687}
+    m_HighlightedColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
     m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
-    m_SelectedColor: {r: 1, g: 1, b: 1, a: 0}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -18565,6 +18595,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 0
     disablesPlayerInput: 0
+    rememberLastSelection: 1
   - panelType: 1
     panel: {fileID: 3803332333882999929}
     firstSelected: {fileID: 6412609855304445545}
@@ -18572,6 +18603,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 0
     disablesPlayerInput: 0
+    rememberLastSelection: 1
   - panelType: 2
     panel: {fileID: 1774590441392176973}
     firstSelected: {fileID: 9143737803550010540}
@@ -18579,6 +18611,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 0
     disablesPlayerInput: 0
+    rememberLastSelection: 1
   - panelType: 3
     panel: {fileID: 3708980852306436386}
     firstSelected: {fileID: 6615037642018282392}
@@ -18586,6 +18619,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 0
     disablesPlayerInput: 0
+    rememberLastSelection: 1
   - panelType: 4
     panel: {fileID: 2922974887108925445}
     firstSelected: {fileID: 274545324537571867}
@@ -18593,6 +18627,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 0
     disablesPlayerInput: 0
+    rememberLastSelection: 1
   - panelType: 5
     panel: {fileID: 910854578245565964}
     firstSelected: {fileID: 3223230691396005733}
@@ -18600,6 +18635,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 0
     disablesPlayerInput: 0
+    rememberLastSelection: 1
   - panelType: 6
     panel: {fileID: 7109812156563332892}
     firstSelected: {fileID: 8196611357906195007}
@@ -18607,6 +18643,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 0
     disablesPlayerInput: 0
+    rememberLastSelection: 1
   - panelType: 7
     panel: {fileID: 1113274340253552235}
     firstSelected: {fileID: 0}
@@ -18614,6 +18651,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 0
     disablesPlayerInput: 0
+    rememberLastSelection: 1
   - panelType: 8
     panel: {fileID: 3289181545949778770}
     firstSelected: {fileID: 8191193709384166657}
@@ -18621,6 +18659,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 0
     disablesPlayerInput: 0
+    rememberLastSelection: 1
   - panelType: 9
     panel: {fileID: 1329157888756403626}
     firstSelected: {fileID: 7074633170282559370}
@@ -18628,6 +18667,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 0
     disablesPlayerInput: 0
+    rememberLastSelection: 1
   - panelType: 10
     panel: {fileID: 5981218564070187536}
     firstSelected: {fileID: 6926965901028136505}
@@ -18635,6 +18675,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 0
     disablesPlayerInput: 0
+    rememberLastSelection: 1
   - panelType: 11
     panel: {fileID: 8373559149602225759}
     firstSelected: {fileID: 1503589825765414130}
@@ -18642,6 +18683,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 0
     disablesPlayerInput: 0
+    rememberLastSelection: 1
   - panelType: 12
     panel: {fileID: 7163054659010834865}
     firstSelected: {fileID: 0}
@@ -18649,6 +18691,7 @@ MonoBehaviour:
     interactable: 0
     blockRaycasts: 1
     disablesPlayerInput: 1
+    rememberLastSelection: 1
   - panelType: 13
     panel: {fileID: 8086723993167164227}
     firstSelected: {fileID: 7160038355880056422}
@@ -18656,6 +18699,7 @@ MonoBehaviour:
     interactable: 1
     blockRaycasts: 1
     disablesPlayerInput: 0
+    rememberLastSelection: 0
   - panelType: 14
     panel: {fileID: 125322177062362878}
     firstSelected: {fileID: 0}
@@ -18663,9 +18707,7 @@ MonoBehaviour:
     interactable: 0
     blockRaycasts: 0
     disablesPlayerInput: 0
-  confirmationTitleText: {fileID: 8644417380492510246}
-  confirmationSubtitleText: {fileID: 6319011406691578432}
-  toastText: {fileID: 9111481317476418911}
+    rememberLastSelection: 1
 --- !u!1 &4997304522708323913
 GameObject:
   m_ObjectHideFlags: 0
@@ -25186,10 +25228,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
-    m_HighlightedColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+    m_NormalColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 0.39215687}
+    m_HighlightedColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
     m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
-    m_SelectedColor: {r: 1, g: 1, b: 1, a: 0}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -29261,8 +29303,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4086712728567460458}
-        m_TargetAssemblyTypeName: CanvasManager, Assembly-CSharp
+      - m_Target: {fileID: 142500037930506020}
+        m_TargetAssemblyTypeName: ConfirmationPanelManager, Assembly-CSharp
         m_MethodName: OnConfirmPressed
         m_Mode: 1
         m_Arguments:
@@ -32348,10 +32390,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
-    m_HighlightedColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+    m_NormalColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 0.39215687}
+    m_HighlightedColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
     m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
-    m_SelectedColor: {r: 1, g: 1, b: 1, a: 0}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
