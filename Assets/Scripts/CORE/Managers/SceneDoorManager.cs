@@ -9,12 +9,10 @@ public class SceneDoorManager : Singleton<SceneDoorManager>
 
     [Header("Scene Doors")]
     [SerializeField] private GameObject[] sceneDoors;
-
-    [Header("References")]
-    [SerializeField] private SaveSlotManager saveSlotManager;
+    private static string lastUsedDoorID;
 
     private GameObject player;
-    private static string lastUsedDoorID;
+    private SaveSlotManager saveSlotManager;
 
     #region Unity Lifecycle
     protected override void Awake()

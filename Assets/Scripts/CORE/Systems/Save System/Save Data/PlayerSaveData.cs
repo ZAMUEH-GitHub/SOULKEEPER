@@ -6,6 +6,7 @@ public class PlayerSaveData
 {
     [Header("General Stats")]
     public int health;
+    public int maxHealth;
     public int score;
     public float speed;
 
@@ -47,6 +48,7 @@ public class PlayerSaveData
     public void FromRuntime(PlayerStatsSO runtimeStats, int slot)
     {
         health = runtimeStats.health;
+        maxHealth = runtimeStats.maxHealth;
         score = runtimeStats.score;
         speed = runtimeStats.speed;
 
@@ -83,6 +85,7 @@ public class PlayerSaveData
     public void ApplyToRuntime(PlayerStatsSO runtimeStats)
     {
         runtimeStats.health = health;
+        runtimeStats.maxHealth = maxHealth;
         runtimeStats.score = score;
         runtimeStats.speed = speed;
 

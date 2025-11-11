@@ -1,16 +1,10 @@
 using System.Collections;
 using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MainMenuManager : Singleton<MainMenuManager>
 {
     protected override bool IsPersistent => false;
-
-    [Header("Managers")]
-    [SerializeField] private CanvasManager canvasManager;
-    [SerializeField] private GameSceneManager gameSceneManager;
-    [SerializeField] private SaveSlotManager saveSlotManager;
 
     [Header("Panels")]
     [SerializeField] private PanelType startPanel = PanelType.MainMenu;
@@ -20,8 +14,11 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [Header("Scenes")]
     [SerializeField] private SceneField newGameScene;
 
-    #region Unity Lifecycle
+    private CanvasManager canvasManager;
+    private GameSceneManager gameSceneManager;
+    private SaveSlotManager saveSlotManager;
 
+    #region Unity Lifecycle
     protected override void Awake()
     {
         base.Awake();

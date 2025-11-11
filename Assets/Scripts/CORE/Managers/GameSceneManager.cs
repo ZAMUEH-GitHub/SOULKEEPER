@@ -13,16 +13,16 @@ public class GameSceneManager : Singleton<GameSceneManager>
 {
     protected override bool IsPersistent => false;
 
-    private SceneDoorManager sceneDoorManager;
-
-    [SerializeField] private string targetDoorID;
+    [Header("Scene Management")]
     [SerializeField] private SceneLoadMode currentLoadMode;
     [SerializeField] private bool isLoadingScene;
+    [SerializeField] private string targetDoorID;
 
-    [Header("References")]
-    [SerializeField] private CanvasManager canvasManager;
-    [SerializeField] private SaveSlotManager saveSlotManager;
+    private CanvasManager canvasManager;
+    private SaveSlotManager saveSlotManager;
+    private SceneDoorManager sceneDoorManager;
 
+    #region Unity Lifecycle
     protected override void Awake()
     {
         base.Awake();
@@ -37,6 +37,8 @@ public class GameSceneManager : Singleton<GameSceneManager>
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+
+    #endregion
 
     #region Scene Loading
     public void LoadSceneFromDoor(SceneField scene, string targetDoor)
@@ -135,7 +137,6 @@ public class GameSceneManager : Singleton<GameSceneManager>
             yield return new WaitForSeconds(canvasManager.GetFadeDuration(PanelType.BlackScreen));
         }
     }
-    #endregion
 
     private void FindSceneDoorManager()
     {
@@ -145,4 +146,5 @@ public class GameSceneManager : Singleton<GameSceneManager>
         else
             sceneDoorManager = null;
     }
+    #endregion
 }

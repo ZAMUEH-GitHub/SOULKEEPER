@@ -2,17 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class PauseMenuManager : Singleton<PauseMenuManager>
 {
     protected override bool IsPersistent => false;
-
-    [Header("Managers")]
-    [SerializeField] private CanvasManager canvasManager;
-    [SerializeField] private GameSceneManager sceneManager;
-    [SerializeField] private GameManager gameManager;
-    [SerializeField] private TimeManager timeManager;
-    [SerializeField] private SaveSlotManager saveSlotManager;
 
     [Header("Panels")]
     [SerializeField] private PanelType startPanel = PanelType.HUD;
@@ -26,12 +20,16 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [Header("Scene Settings")]
     [SerializeField] private SceneField mainMenuScene;
 
-    [Header("Input Settings")]
-    [SerializeField] private KeyCode pauseKey = KeyCode.Escape;
-
     private bool isPaused;
     private GameObject gameplayCanvas;
 
+    private CanvasManager canvasManager;
+    private GameSceneManager sceneManager;
+    private GameManager gameManager;
+    private TimeManager timeManager;
+    private SaveSlotManager saveSlotManager;
+
+    #region Unity Lifecycle
     protected override void Awake()
     {
         base.Awake();
@@ -58,14 +56,14 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
         gameplayCanvas = gameObject;
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(pauseKey))
-            TogglePause();
-    }
+    #endregion
 
     #region Pause Logic
+    public void PlayerPauseInput(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed) TogglePause();
+    }
+
     public void TogglePause()
     {
         if (isPaused)

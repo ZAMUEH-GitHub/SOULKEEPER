@@ -33,7 +33,7 @@ public static class SaveSystem
                     previousPlaytime = oldData.totalPlaytime;
             }
 
-            float updatedPlaytime = previousPlaytime + Time.realtimeSinceStartup;
+            float updatedPlaytime = previousPlaytime + TimeManager.Instance.GetTotalPlaytime();
 
             GameSaveData saveData = new GameSaveData
             {
@@ -48,14 +48,19 @@ public static class SaveSystem
             saveData.playerData.FromRuntime(runtimeStats, slotIndex);
 
             foreach (var altar in UnityEngine.Object.FindObjectsByType<AltarController>(FindObjectsSortMode.None))
-                saveData.altarData.Add(altar.ToSaveData());
+            {
+                if (altar != null)
+                    saveData.altarData.Add(altar.ToSaveData());
+            }
 
             string json = JsonUtility.ToJson(saveData, true);
 
             using (StreamWriter writer = new StreamWriter(path, false))
                 await writer.WriteAsync(json);
 
-            Debug.Log($"[SaveSystem] Slot {slotIndex} saved successfully — Scene: {saveData.currentScene}, Door: {currentDoorID}, Total Playtime: {updatedPlaytime:F2}s");
+            TimeManager.Instance.ResetPlaytime();
+
+            Debug.Log($"[SaveSystem] Slot {slotIndex} saved — Scene: {saveData.currentScene}, Door: {currentDoorID}, Total Playtime: {updatedPlaytime:F2}s");
         }
         catch (Exception ex)
         {
@@ -97,12 +102,16 @@ public static class SaveSystem
 
             foreach (var altar in UnityEngine.Object.FindObjectsByType<AltarController>(FindObjectsSortMode.None))
             {
+                if (altar == null || altar.altarSO == null) continue;
+
                 var data = saveData.altarData.Find(a => a.altarID == altar.altarSO.displayName);
                 if (data != null)
                     altar.FromSaveData(data);
             }
 
-            Debug.Log($"[SaveSystem] Loaded slot {slotIndex} — Scene: {saveData.currentScene}");
+            TimeManager.Instance.ResetPlaytime();
+
+            Debug.Log($"[SaveSystem] Loaded slot {slotIndex} — Scene: {saveData.currentScene}, Total Playtime: {saveData.totalPlaytime:F1}s");
         }
         catch (Exception ex)
         {

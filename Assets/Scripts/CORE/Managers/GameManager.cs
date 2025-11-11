@@ -12,17 +12,16 @@ public class GameManager : Singleton<GameManager>
 {
     protected override bool IsPersistent => false;
 
-    [field: SerializeField] public GameState CurrentState { get; private set; }
-    public static event Action<GameState> OnGameStateChanged;
-
     [Header("Scene References")]
     [SerializeField] private SceneField mainMenuScene;
-    [SerializeField] private CanvasManager canvasManager;
+    [field: SerializeField] public GameState CurrentState { get; private set; }
+    public static event Action<GameState> OnGameStateChanged;
 
     [Header("Player Data Management")]
     [SerializeField] private PlayerStatsSO basePlayerStats;
 
     private SessionManager sessionManager;
+    private CanvasManager canvasManager;
 
     #region Unity Lifecycle
     protected override void Awake()
@@ -48,7 +47,6 @@ public class GameManager : Singleton<GameManager>
 
     private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
     private void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
-    #endregion
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -57,7 +55,9 @@ public class GameManager : Singleton<GameManager>
         else
             SetState(GameState.Gameplay);
     }
+    #endregion
 
+    #region Game State Logic
     public void SetState(GameState newState)
     {
         if (newState == CurrentState)
@@ -81,7 +81,9 @@ public class GameManager : Singleton<GameManager>
                 break;
         }
     }
+    #endregion
 
+    #region Game Logic
     public void StartNewGame()
     {
         if (basePlayerStats == null)
@@ -108,4 +110,5 @@ public class GameManager : Singleton<GameManager>
     }
 
     public void EnterGameplay() => SetState(GameState.Gameplay);
+    #endregion
 }

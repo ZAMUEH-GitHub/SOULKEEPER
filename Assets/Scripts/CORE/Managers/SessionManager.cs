@@ -9,6 +9,7 @@ public class SessionManager : Singleton<SessionManager>
     public void StartSession(PlayerStatsSO baseStats)
     {
         EndSession();
+
         if (baseStats == null)
         {
             Debug.LogError("[SessionManager] Base PlayerStatsSO is null! Cannot start session.");
