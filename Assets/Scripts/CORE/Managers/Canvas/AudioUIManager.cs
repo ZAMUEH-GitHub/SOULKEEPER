@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AudioUIController : MonoBehaviour
+public class AudioUIManager : MonoBehaviour
 {
     [Header("UI Sliders")]
     [SerializeField] private Slider masterSlider;
