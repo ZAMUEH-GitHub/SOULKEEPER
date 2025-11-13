@@ -93,9 +93,8 @@ public class SaveSlotUIManager : MonoBehaviour
         {
             canvas.ShowConfirmation(
                 $"DELETE SAVE SLOT {slotIndex}?",
-                "(This cannot be undone.)",
-                () => ExecuteDelete(),
-            () => Debug.Log("[SaveSlotUI] Delete canceled.")
+                "(This cannot be undone)",
+                () => ExecuteDelete()
             );
         }
         else

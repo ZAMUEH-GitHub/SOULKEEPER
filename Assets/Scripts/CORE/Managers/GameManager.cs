@@ -10,7 +10,7 @@ public enum GameState
 
 public class GameManager : Singleton<GameManager>
 {
-    protected override bool IsPersistent => false;
+    protected override bool IsPersistent => true;
 
     [Header("Scene References")]
     [SerializeField] private SceneField mainMenuScene;

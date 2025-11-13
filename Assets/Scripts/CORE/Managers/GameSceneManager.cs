@@ -23,21 +23,10 @@ public class GameSceneManager : Singleton<GameSceneManager>
     private SceneDoorManager sceneDoorManager;
 
     #region Unity Lifecycle
-    protected override void Awake()
-    {
-        base.Awake();
-    }
+    protected override void Awake() => base.Awake();
 
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
+    private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
+    private void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
     #endregion
 
     #region Scene Loading
@@ -66,15 +55,12 @@ public class GameSceneManager : Singleton<GameSceneManager>
         targetDoorID = doorID;
 
         canvasManager ??= CanvasManager.Instance;
-
         if (canvasManager != null)
             canvasManager.FadeIn(PanelType.BlackScreen);
 
         yield return new WaitForSeconds(canvasManager?.GetFadeDuration(PanelType.BlackScreen) ?? 0.5f);
 
         SceneManager.LoadScene(scene);
-
-        isLoadingScene = false;
     }
     #endregion
 
@@ -86,11 +72,11 @@ public class GameSceneManager : Singleton<GameSceneManager>
 
     private IEnumerator PostSceneLoadRoutine()
     {
-        yield return new WaitForEndOfFrame();
+        yield return null;
 
         FindSceneDoorManager();
-
-        saveSlotManager ??= SaveSlotManager.Instance;
+        canvasManager = CanvasManager.Instance;
+        saveSlotManager = SaveSlotManager.Instance;
 
         if (saveSlotManager != null)
         {
@@ -99,47 +85,77 @@ public class GameSceneManager : Singleton<GameSceneManager>
             {
                 var runtimeStats = SessionManager.Instance.RuntimeStats;
                 if (runtimeStats != null)
-                {
                     SaveSystem.Load(slot, runtimeStats);
-                }
             }
         }
 
-        switch (currentLoadMode)
-        {
-            case SceneLoadMode.DoorTransition:
-                if (sceneDoorManager != null && !string.IsNullOrEmpty(targetDoorID))
-                    sceneDoorManager.ChooseDoor(targetDoorID);
-                break;
-
-            case SceneLoadMode.CheckpointSpawn:
-                var spawn = GameObject.FindGameObjectWithTag("Checkpoint");
-                if (spawn != null)
-                {
-                    var player = GameObject.FindGameObjectWithTag("Player");
-                    if (player != null)
-                        player.transform.position = spawn.transform.position;
-                }
-                break;
-
-            case SceneLoadMode.DirectLoad:
-                break;
-        }
+        yield return PositionPlayerRoot();
 
         if (canvasManager != null)
         {
             canvasManager.FadeOut(PanelType.BlackScreen);
             yield return new WaitForSeconds(canvasManager.GetFadeDuration(PanelType.BlackScreen));
         }
+
+        var player = PlayerRoot.Instance?.GetComponentInChildren<PlayerController>();
+        if (player != null)
+            player.UnfreezeAllInputs();
+
+        isLoadingScene = false;
+    }
+
+    private IEnumerator PositionPlayerRoot()
+    {
+        float timeout = 3f, timer = 0f;
+        while (PlayerRoot.Instance == null && timer < timeout)
+        {
+            if (GameManager.Instance != null &&
+                GameManager.Instance.CurrentState == GameState.MainMenu)
+                yield break;
+
+            timer += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        var playerRoot = PlayerRoot.Instance;
+        if (playerRoot == null) yield break;
+
+        var player = playerRoot.GetComponentInChildren<PlayerController>();
+        if (player == null) yield break;
+
+        switch (currentLoadMode)
+        {
+            case SceneLoadMode.DoorTransition:
+                if (sceneDoorManager != null && !string.IsNullOrEmpty(targetDoorID))
+                {
+                    try
+                    {
+                        sceneDoorManager.ChooseDoor(targetDoorID);
+                    }
+                    catch (MissingReferenceException)
+                    {
+                        Debug.LogWarning("[GameSceneManager] Door reference missing during transition.");
+                    }
+                }
+                break;
+
+            case SceneLoadMode.CheckpointSpawn:
+                var spawn = GameObject.FindGameObjectWithTag("Checkpoint");
+                if (spawn != null)
+                    player.transform.position = spawn.transform.position;
+                break;
+
+            case SceneLoadMode.DirectLoad:
+                break;
+        }
+
+        player.FreezeAllInputs();
     }
 
     private void FindSceneDoorManager()
     {
-        GameObject sceneDoorObj = GameObject.FindGameObjectWithTag("Scene Door Manager");
-        if (sceneDoorObj != null)
-            sceneDoorManager = sceneDoorObj.GetComponent<SceneDoorManager>();
-        else
-            sceneDoorManager = null;
+        var sceneDoorObj = GameObject.FindGameObjectWithTag("Scene Door Manager");
+        sceneDoorManager = sceneDoorObj ? sceneDoorObj.GetComponent<SceneDoorManager>() : null;
     }
     #endregion
 }

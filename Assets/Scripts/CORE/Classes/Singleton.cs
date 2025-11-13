@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T _instance;
+    protected static T _instance;
     private static bool _isShuttingDown;
     private static readonly object _lock = new object();
 
@@ -23,7 +23,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 _instance = FindFirstObjectByType<T>();
 
                 if (_instance == null)
-                    Debug.LogError($"[Singleton<{typeof(T).Name}>] No instance found in scene!");
+                    return null;
             }
 
             return _instance;

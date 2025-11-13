@@ -22,14 +22,11 @@ public class SingletonManager : Singleton<SingletonManager>
     public SceneField mainMenuScene;
 
     private GameManager gameManager;
-    private CanvasManager canvasManager;
-    private GameObject currentPlayerRoot;
 
     #region Unity Lifecycle
     private void Start()
     {
         gameManager = _GameManager != null ? _GameManager.GetComponent<GameManager>() : FindFirstObjectByType<GameManager>();
-        canvasManager = _CanvasGroup != null ? _CanvasGroup.GetComponent<CanvasManager>() : FindFirstObjectByType<CanvasManager>();
 
         if (gameManager != null)
             HandleGameStateChanged(gameManager.CurrentState);
@@ -72,22 +69,19 @@ public class SingletonManager : Singleton<SingletonManager>
             return;
         }
 
-        if (currentPlayerRoot != null)
+        if (FindFirstObjectByType<PlayerRoot>() != null)
         {
             Debug.LogWarning("[SingletonManager] PlayerRoot already exists — skipping spawn.");
             return;
         }
 
-        currentPlayerRoot = Instantiate(_PlayerRootPrefab);
-        currentPlayerRoot.name = "PLAYER ROOT";
+        GameObject root = Instantiate(_PlayerRootPrefab);
+        root.name = "PLAYER ROOT";
     }
 
     private void DestroyPlayerRoot()
     {
-        if (currentPlayerRoot == null) return;
-
-        Destroy(currentPlayerRoot);
-        currentPlayerRoot = null;
+        PlayerRoot.DestroyInstance();
     }
     #endregion
 
