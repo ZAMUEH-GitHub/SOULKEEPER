@@ -120,14 +120,9 @@ public class GameSceneManager : Singleton<GameSceneManager>
                     if (player != null)
                         player.transform.position = spawn.transform.position;
                 }
-                else
-                {
-                    Debug.LogWarning("[GameSceneManager] No checkpoint found, using default spawn position");
-                }
                 break;
 
             case SceneLoadMode.DirectLoad:
-                Debug.Log("[GameSceneManager] Direct scene load (no spawn positioning).");
                 break;
         }
 

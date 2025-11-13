@@ -22,7 +22,6 @@ public class SaveSlotManager : Singleton<SaveSlotManager>
         }
 
         activeSlotIndex = slot;
-        Debug.Log($"[SaveSlotManager] Active save slot set to {slot}");
     }
 
     public string GetActiveSaveFileName()

@@ -177,8 +177,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         canvasManager.ShowConfirmation(
             "EXIT GAME?",
             "(The application will close.)",
-            ExitGameExecutor,
-            () => Debug.Log("[MainMenuManager] Exit cancelled.")
+            ExitGameExecutor
         );
     }
 

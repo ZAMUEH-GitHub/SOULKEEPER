@@ -52,6 +52,8 @@ public class CanvasManager : Singleton<CanvasManager>
     private PlayerController playerController;
     private readonly Dictionary<PanelType, GameObject> _lastSelectedByPanel = new();
 
+    private int inputFreezeCount = 0;
+
     #region Unity Lifecycle
     protected override void Awake()
     {
@@ -63,7 +65,7 @@ public class CanvasManager : Singleton<CanvasManager>
                 panelSettings.Add(settings.panelType, settings);
         }
 
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        var playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
             playerController = playerObj.GetComponent<PlayerController>();
 
@@ -90,31 +92,32 @@ public class CanvasManager : Singleton<CanvasManager>
     #region Fade API
     public void FadeIn(PanelType type)
     {
-        if (!panelSettings.ContainsKey(type)) return;
-        var s = panelSettings[type];
-        StartFade(s, s.panel.alpha, 1f, s.fadeDuration, s.interactable, s.blockRaycasts, s.disablesPlayerInput);
+        if (!panelSettings.TryGetValue(type, out var s) || s.panel == null)
+            return;
+
+        StartFade(s, s.panel.alpha, 1f, s.fadeDuration);
     }
 
     public void FadeOut(PanelType type)
     {
-        if (!panelSettings.ContainsKey(type)) return;
-        var s = panelSettings[type];
-        StartFade(s, s.panel.alpha, 0f, s.fadeDuration, false, false, s.disablesPlayerInput);
+        if (!panelSettings.TryGetValue(type, out var s) || s.panel == null)
+            return;
+
+        StartFade(s, s.panel.alpha, 0f, s.fadeDuration);
     }
 
     public float GetFadeDuration(PanelType type)
-        => panelSettings.ContainsKey(type) ? panelSettings[type].fadeDuration : 0.5f;
+        => panelSettings.TryGetValue(type, out var s) ? s.fadeDuration : 0.5f;
     #endregion
 
     #region Fade Logic
-    private void StartFade(PanelFadeSettings s, float startAlpha, float finalAlpha, float duration,
-                           bool interactable, bool blockRaycasts, bool disablesInput)
+    private void StartFade(PanelFadeSettings s, float startAlpha, float finalAlpha, float duration)
     {
         var panel = s.panel;
 
-        if (activeFades.ContainsKey(panel))
+        if (activeFades.TryGetValue(panel, out var oldFade))
         {
-            StopCoroutine(activeFades[panel]);
+            StopCoroutine(oldFade);
             activeFades.Remove(panel);
         }
 
@@ -128,26 +131,25 @@ public class CanvasManager : Singleton<CanvasManager>
             }
         }
 
-        Coroutine fadeRoutine = StartCoroutine(Fade(s, startAlpha, finalAlpha, duration,
-                                                    interactable, blockRaycasts, disablesInput));
+        var fadeRoutine = StartCoroutine(FadeRoutine(s, startAlpha, finalAlpha, duration));
         activeFades[panel] = fadeRoutine;
     }
 
-    private IEnumerator Fade(PanelFadeSettings s, float startAlpha, float finalAlpha, float duration,
-                             bool interactable, bool blockRaycasts, bool disablesInput)
+    private IEnumerator FadeRoutine(PanelFadeSettings s, float startAlpha, float finalAlpha, float duration)
     {
         var panel = s.panel;
+        bool fadingIn = finalAlpha > startAlpha;
+        bool fadingOut = finalAlpha < startAlpha;
 
-        if (finalAlpha > startAlpha)
+        if (fadingIn && s.disablesPlayerInput)
+            FreezePlayerInput();
+        else if (fadingOut && s.disablesPlayerInput)
+            UnfreezePlayerInput();
+
+        if (fadingIn)
         {
-            panel.interactable = interactable;
-            panel.blocksRaycasts = blockRaycasts;
-            if (disablesInput && playerController != null) playerController.FreezeAllInputs();
-        }
-        else if (finalAlpha == 0)
-        {
-            panel.interactable = false;
-            panel.blocksRaycasts = false;
+            panel.interactable = s.interactable;
+            panel.blocksRaycasts = s.blockRaycasts;
         }
 
         float t = 0f;
@@ -159,14 +161,20 @@ public class CanvasManager : Singleton<CanvasManager>
         }
 
         panel.alpha = finalAlpha;
-        panel.interactable = finalAlpha > 0f;
-        panel.blocksRaycasts = finalAlpha > 0f;
 
         if (finalAlpha > 0f)
+        {
+            panel.interactable = s.interactable;
+            panel.blocksRaycasts = s.blockRaycasts;
             yield return StartCoroutine(ApplyPanelSelectionNextFrame(s));
+        }
+        else
+        {
+            panel.interactable = false;
+            panel.blocksRaycasts = false;
+        }
 
         activeFades.Remove(panel);
-        if (disablesInput && playerController != null) playerController.UnfreezeAllInputs();
     }
 
     private IEnumerator ApplyPanelSelectionNextFrame(PanelFadeSettings s)
@@ -192,6 +200,41 @@ public class CanvasManager : Singleton<CanvasManager>
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(candidate);
         selectable.OnSelect(null);
+    }
+    #endregion
+
+    #region Player Input Management
+    private void EnsurePlayerController()
+    {
+        if (playerController != null) return;
+
+        var playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            playerController = playerObj.GetComponent<PlayerController>();
+        }
+    }
+
+    private void FreezePlayerInput()
+    {
+        EnsurePlayerController();
+        inputFreezeCount++;
+
+        if (inputFreezeCount == 1 && playerController != null)
+        {
+            playerController.FreezeAllInputs();
+        }
+    }
+
+    private void UnfreezePlayerInput()
+    {
+        EnsurePlayerController();
+        inputFreezeCount = Mathf.Max(0, inputFreezeCount - 1);
+
+        if (inputFreezeCount == 0 && playerController != null)
+        {
+            playerController.UnfreezeAllInputs();
+        }
     }
     #endregion
 

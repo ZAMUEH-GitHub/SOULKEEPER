@@ -96,7 +96,6 @@ public class SceneDoorManager : Singleton<SceneDoorManager>
     {
         if (sceneDoors == null || sceneDoors.Length == 0)
         {
-            Debug.LogWarning("[SceneDoorManager] No doors found in current scene — retrying.");
             StartCoroutine(WaitAndChooseDoor(targetDoorID));
             return;
         }

@@ -141,8 +141,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         canvasManager.ShowConfirmation(
             "EXIT TO MAIN MENU?",
             "(All unsaved progress will be lost)",
-            () => StartCoroutine(ExitToMainMenuRoutine()),
-            () => Debug.Log("[PauseMenuManager] Exit cancelled.")
+            () => StartCoroutine(ExitToMainMenuRoutine())
         );
     }
 

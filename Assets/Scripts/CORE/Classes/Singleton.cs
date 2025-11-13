@@ -45,7 +45,6 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             }
             else if (_instance != this)
             {
-                Debug.LogWarning($"[Singleton<{typeof(T).Name}>] Duplicate detected — destroying '{name}'.");
                 Destroy(gameObject);
                 return;
             }

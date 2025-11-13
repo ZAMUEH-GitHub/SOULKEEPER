@@ -32,16 +32,14 @@ public class PlayerController : MonoBehaviour
     [Space(5)]
     public bool playerInputActive;
 
-    #region Player SubControllers
     private List<IPlayerSubController> subControllers = new();
-
     private PlayerMovementController movementController;
     private PlayerWallController wallController;
     private PlayerDashController dashController;
     private PlayerAttackController attackController;
     private PlayerInteractController interactController;
-    #endregion
 
+    #region Unity Lifecycle
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -111,6 +109,7 @@ public class PlayerController : MonoBehaviour
 
         dashInput = attackInput = interactInput = false;
     }
+    #endregion
 
     #region Player Input Callbacks
     public void PlayerInputMove(InputAction.CallbackContext ctx)
@@ -141,18 +140,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Player Input Lock Controls
-    public void FreezeAllInputs()
-    {
-        playerInputActive = false;
-        moveVector = Vector2.zero;
-        moveInput = jumpInput = dashInput = attackInput = interactInput = false;
-
-        movementController.SetMoveInput(Vector2.zero, false);
-        wallController.SetWallInput(Vector2.zero, false);
-        dashController.SetDashInput(false);
-        attackController.SetAttackInput(false, Vector2.zero);
-        interactController.SetInteractInput(false);
-    }
+    public void FreezeAllInputs() => playerInputActive = false;
 
     public void UnfreezeAllInputs() => playerInputActive = true;
     #endregion
