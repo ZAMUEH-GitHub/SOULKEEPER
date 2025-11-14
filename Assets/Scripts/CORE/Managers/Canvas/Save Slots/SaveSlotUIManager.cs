@@ -10,6 +10,7 @@ public class SaveSlotUIManager : MonoBehaviour
 
     [Header("UI References")]
     [SerializeField] private TMP_Text slotLabel;
+    [SerializeField] private TMP_Text glowText;
     [SerializeField] private TMP_Text sceneLabel;
     [SerializeField] private TMP_Text timestampLabel;
     [SerializeField] private TMP_Text playtimeLabel;
@@ -40,6 +41,8 @@ public class SaveSlotUIManager : MonoBehaviour
             timestampLabel.text = meta.timestamp;
             playtimeLabel.text = FormatPlaytime(meta.playtime);
             actionButton.GetComponentInChildren<TMP_Text>().text = "Continue";
+            glowText.text = "Continue";
+
 
             if (deleteButton != null)
                 deleteButton.gameObject.SetActive(true);
@@ -50,6 +53,7 @@ public class SaveSlotUIManager : MonoBehaviour
             timestampLabel.text = "";
             playtimeLabel.text = "";
             actionButton.GetComponentInChildren<TMP_Text>().text = "New Game";
+            glowText.text = "New Game";
 
             if (deleteButton != null)
                 deleteButton.gameObject.SetActive(false);

@@ -37,6 +37,11 @@ public class PlayerCollisionController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        if (other.CompareTag("Wall") || other.CompareTag("Obstacle"))
+        {
+            playerCollider.isTrigger = false;
+        }
+
         if (other.CompareTag("MovingObstacle") || other.CompareTag("Parenting Collider"))
         {   
             transform.SetParent(other.transform, true);

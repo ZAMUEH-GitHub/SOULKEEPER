@@ -4,8 +4,9 @@ using System.Collections.Generic;
 
 public class UIInputHandler : MonoBehaviour
 {
-    [Header("Input Action")]
-    [SerializeField] private InputActionReference uiCancelAction;
+    [Header("Input Actions")]
+    [SerializeField] private InputActionReference uiBackAction;
+    [SerializeField] private InputActionReference uiPauseAction;
 
     private CanvasManager canvasManager;
     private PauseMenuManager pauseMenuManager;
@@ -27,17 +28,24 @@ public class UIInputHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        if (uiCancelAction != null)
-            uiCancelAction.action.performed += OnCancelPressed;
+        if (uiBackAction != null)
+            uiBackAction.action.performed += OnBackPressed;
+
+        if (uiPauseAction != null)
+            uiPauseAction.action.performed += OnPausePressed;
     }
 
     private void OnDisable()
     {
-        if (uiCancelAction != null)
-            uiCancelAction.action.performed -= OnCancelPressed;
+        if (uiBackAction != null)
+            uiBackAction.action.performed -= OnBackPressed;
+
+        if (uiPauseAction != null)
+            uiPauseAction.action.performed -= OnPausePressed;
     }
 
-    private void OnCancelPressed(InputAction.CallbackContext ctx)
+
+    private void OnBackPressed(InputAction.CallbackContext ctx)
     {
         if (confirmationPanelManager != null && IsPanelVisible(PanelType.ConfirmationPanel))
         {
@@ -50,27 +58,35 @@ public class UIInputHandler : MonoBehaviour
         switch (gameState)
         {
             case GameState.Gameplay:
-                HandleGameplayCancel();
+                HandleGameplayBack();
                 break;
 
             case GameState.MainMenu:
-                HandleMainMenuCancel();
+                HandleMainMenuBack();
                 break;
 
             default:
-                Debug.Log("[UIInputManager] No valid context for Cancel input.");
+                Debug.Log("[UIInputHandler] No valid context for Back input.");
                 break;
         }
     }
 
-    #region Gameplay Handling
-    private void HandleGameplayCancel()
+    private void OnPausePressed(InputAction.CallbackContext ctx)
+    {
+        if (GameManager.Instance?.CurrentState != GameState.Gameplay)
+            return;
+
+        bool isOnHUD = IsPanelVisible(PanelType.HUD);
+        bool isOnPauseMenu = IsPanelVisible(PanelType.PauseMenu);
+
+        if (isOnHUD || isOnPauseMenu)
+            pauseMenuManager?.TogglePause();
+    }
+
+    private void HandleGameplayBack()
     {
         if (IsPanelVisible(PanelType.HUD))
-        {
-            pauseMenuManager?.TogglePause();
             return;
-        }
 
         foreach (var entry in pauseMenuBackMap)
         {
@@ -81,10 +97,8 @@ public class UIInputHandler : MonoBehaviour
             }
         }
     }
-    #endregion
 
-    #region Main Menu Handling
-    private void HandleMainMenuCancel()
+    private void HandleMainMenuBack()
     {
         if (IsPanelVisible(PanelType.MainMenu))
         {
@@ -101,9 +115,7 @@ public class UIInputHandler : MonoBehaviour
             }
         }
     }
-    #endregion
 
-    #region Navigation Maps
     private void BuildNavigationMaps()
     {
         mainMenuBackMap = new Dictionary<PanelType, System.Action>
@@ -124,7 +136,6 @@ public class UIInputHandler : MonoBehaviour
             { PanelType.PauseKeybindings, () => pauseMenuManager?.GoToSettingsPanel() },
         };
     }
-    #endregion
 
     private bool IsPanelVisible(PanelType type)
     {
