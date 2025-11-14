@@ -15945,7 +15945,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPanel: 0
-  fadePanel: 12
+  fadePanel: 13
   currentPanel: 0
   newGameScene:
     _sceneAsset: {fileID: 102900000, guid: 070f3d35612ad2846b21ab3828a2b878, type: 3}
@@ -18421,12 +18421,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274e8d6da8ceb0b40b6b6d31b8c220bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPanel: 7
-  pausePanel: 8
-  pauseSettings: 9
-  pauseAudioSettings: 10
-  pauseKeybindings: 11
-  fadePanel: 12
+  startPanel: 8
+  pausePanel: 9
+  pauseSettings: 10
+  pauseAudioSettings: 11
+  pauseKeybindings: 12
+  fadePanel: 13
   currentPanel: 7
   mainMenuScene:
     _sceneAsset: {fileID: 102900000, guid: 8fcf48851ff05cc48a3e888005b65666, type: 3}
@@ -20798,6 +20798,14 @@ MonoBehaviour:
   _GlobalCanvas: {fileID: 2634737170496486510}
   panelSettingsList:
   - panelType: 0
+    panel: {fileID: 7704398661834162184}
+    firstSelected: {fileID: 0}
+    fadeDuration: 1
+    interactable: 0
+    blockRaycasts: 0
+    disablesPlayerInput: 0
+    rememberLastSelection: 0
+  - panelType: 1
     panel: {fileID: 6297608329571881488}
     firstSelected: {fileID: 8567247056600977668}
     fadeDuration: 0.5
@@ -20805,7 +20813,7 @@ MonoBehaviour:
     blockRaycasts: 0
     disablesPlayerInput: 0
     rememberLastSelection: 1
-  - panelType: 1
+  - panelType: 2
     panel: {fileID: 3803332333882999929}
     firstSelected: {fileID: 6412609855304445545}
     fadeDuration: 0.5
@@ -20813,7 +20821,7 @@ MonoBehaviour:
     blockRaycasts: 0
     disablesPlayerInput: 0
     rememberLastSelection: 1
-  - panelType: 2
+  - panelType: 3
     panel: {fileID: 1774590441392176973}
     firstSelected: {fileID: 9143737803550010540}
     fadeDuration: 0.5
@@ -20821,7 +20829,7 @@ MonoBehaviour:
     blockRaycasts: 0
     disablesPlayerInput: 0
     rememberLastSelection: 1
-  - panelType: 3
+  - panelType: 4
     panel: {fileID: 3708980852306436386}
     firstSelected: {fileID: 6615037642018282392}
     fadeDuration: 0.5
@@ -20829,7 +20837,7 @@ MonoBehaviour:
     blockRaycasts: 0
     disablesPlayerInput: 0
     rememberLastSelection: 1
-  - panelType: 4
+  - panelType: 5
     panel: {fileID: 2922974887108925445}
     firstSelected: {fileID: 274545324537571867}
     fadeDuration: 0.5
@@ -20837,7 +20845,7 @@ MonoBehaviour:
     blockRaycasts: 0
     disablesPlayerInput: 0
     rememberLastSelection: 1
-  - panelType: 5
+  - panelType: 6
     panel: {fileID: 910854578245565964}
     firstSelected: {fileID: 3223230691396005733}
     fadeDuration: 0.5
@@ -20845,7 +20853,7 @@ MonoBehaviour:
     blockRaycasts: 0
     disablesPlayerInput: 0
     rememberLastSelection: 1
-  - panelType: 6
+  - panelType: 7
     panel: {fileID: 7109812156563332892}
     firstSelected: {fileID: 8196611357906195007}
     fadeDuration: 0.5
@@ -20853,7 +20861,7 @@ MonoBehaviour:
     blockRaycasts: 0
     disablesPlayerInput: 0
     rememberLastSelection: 1
-  - panelType: 7
+  - panelType: 8
     panel: {fileID: 1113274340253552235}
     firstSelected: {fileID: 0}
     fadeDuration: 0.5
@@ -20861,7 +20869,7 @@ MonoBehaviour:
     blockRaycasts: 0
     disablesPlayerInput: 0
     rememberLastSelection: 1
-  - panelType: 8
+  - panelType: 9
     panel: {fileID: 3289181545949778770}
     firstSelected: {fileID: 8191193709384166657}
     fadeDuration: 0.5
@@ -20869,7 +20877,7 @@ MonoBehaviour:
     blockRaycasts: 0
     disablesPlayerInput: 1
     rememberLastSelection: 1
-  - panelType: 9
+  - panelType: 10
     panel: {fileID: 1329157888756403626}
     firstSelected: {fileID: 7074633170282559370}
     fadeDuration: 0.5
@@ -20877,7 +20885,7 @@ MonoBehaviour:
     blockRaycasts: 0
     disablesPlayerInput: 1
     rememberLastSelection: 1
-  - panelType: 10
+  - panelType: 11
     panel: {fileID: 5981218564070187536}
     firstSelected: {fileID: 6926965901028136505}
     fadeDuration: 0.5
@@ -20885,7 +20893,7 @@ MonoBehaviour:
     blockRaycasts: 0
     disablesPlayerInput: 1
     rememberLastSelection: 1
-  - panelType: 11
+  - panelType: 12
     panel: {fileID: 8373559149602225759}
     firstSelected: {fileID: 1503589825765414130}
     fadeDuration: 0.5
@@ -20893,15 +20901,15 @@ MonoBehaviour:
     blockRaycasts: 0
     disablesPlayerInput: 1
     rememberLastSelection: 1
-  - panelType: 12
+  - panelType: 13
     panel: {fileID: 7163054659010834865}
     firstSelected: {fileID: 0}
     fadeDuration: 2
     interactable: 0
     blockRaycasts: 1
     disablesPlayerInput: 1
-    rememberLastSelection: 1
-  - panelType: 13
+    rememberLastSelection: 0
+  - panelType: 14
     panel: {fileID: 8086723993167164227}
     firstSelected: {fileID: 7160038355880056422}
     fadeDuration: 0.5
@@ -20909,14 +20917,22 @@ MonoBehaviour:
     blockRaycasts: 1
     disablesPlayerInput: 0
     rememberLastSelection: 0
-  - panelType: 14
+  - panelType: 15
     panel: {fileID: 125322177062362878}
     firstSelected: {fileID: 0}
     fadeDuration: 0.5
     interactable: 0
     blockRaycasts: 0
     disablesPlayerInput: 0
-    rememberLastSelection: 1
+    rememberLastSelection: 0
+  - panelType: 16
+    panel: {fileID: 7092989478705797682}
+    firstSelected: {fileID: 0}
+    fadeDuration: 1
+    interactable: 0
+    blockRaycasts: 0
+    disablesPlayerInput: 0
+    rememberLastSelection: 0
 --- !u!114 &1780988696491048156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26154,7 +26170,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5334006304516509901}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26162,7 +26178,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -250}
+  m_AnchoredPosition: {x: 0, y: -267}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6195738563977260527
@@ -26193,10 +26209,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press Any Key
+  m_text: < Press Any Key >
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a8ea189785925c143b486e58bcf02772, type: 2}
-  m_sharedMaterial: {fileID: 5537059235265448142, guid: a8ea189785925c143b486e58bcf02772, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: edb098b62a69fdf47b9856cbdf28c438, type: 2}
+  m_sharedMaterial: {fileID: 5537059235265448142, guid: edb098b62a69fdf47b9856cbdf28c438, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -26220,8 +26236,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -28190,7 +28206,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5733389232669152148}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -31323,7 +31339,7 @@ GameObject:
   - component: {fileID: 7399656431963020266}
   - component: {fileID: 7704398661834162184}
   m_Layer: 5
-  m_Name: MainTitle_Panel
+  m_Name: TitleScreen_Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

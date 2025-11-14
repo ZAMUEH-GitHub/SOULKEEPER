@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public enum PanelType
 {
     [Header("Main Menu Panels")]
-    MainMenu, PlayGame, Settings, VideoSettings, AudioSettings, KeyBindings, Credits,
+    TitleScreen, MainMenu, PlayGame, Settings, VideoSettings, AudioSettings, KeyBindings, Credits,
 
     [Header("Gameplay Panels")]
     HUD, PauseMenu, PauseSettings, PauseAudioSettings, PauseKeybindings,

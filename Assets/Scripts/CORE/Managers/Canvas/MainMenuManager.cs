@@ -32,15 +32,50 @@ public class MainMenuManager : Singleton<MainMenuManager>
     {
         currentPanel = startPanel;
 
-        if (canvasManager != null)
+        if (canvasManager == null)
+        {
+            Debug.LogWarning("[MainMenuManager] CanvasManager.Instance not found!");
+            return;
+        }
+
+        if (startPanel == PanelType.TitleScreen)
+        {
+            canvasManager.FadeIn(PanelType.TitleScreen);
+            canvasManager.FadeOut(fadePanel);
+            StartCoroutine(WaitForAnyKeyThenOpenMainMenu());
+        }
+        else
         {
             canvasManager.FadeIn(currentPanel);
             canvasManager.FadeOut(fadePanel);
         }
-        else
+    }
+
+    private IEnumerator WaitForAnyKeyThenOpenMainMenu()
+    {
+        yield return new WaitForSeconds(canvasManager.GetFadeDuration(PanelType.TitleScreen));
+
+        bool pressed = false;
+        while (!pressed)
         {
-            Debug.LogWarning("[MainMenuManager] CanvasManager.Instance not found!");
+            if (Input.anyKeyDown)
+            {
+                pressed = true;
+                break;
+            }
+            if (UnityEngine.InputSystem.Gamepad.current != null &&
+            (UnityEngine.InputSystem.Gamepad.current.startButton.wasPressedThisFrame ||
+            UnityEngine.InputSystem.Gamepad.current.buttonSouth.wasPressedThisFrame))
+            {
+                pressed = true;
+                break;
+            }
+            yield return null;
         }
+
+        canvasManager.FadeOut(PanelType.TitleScreen);
+        yield return new WaitForSeconds(canvasManager.GetFadeDuration(PanelType.TitleScreen));
+        GoToMainMenuPanel();
     }
 
     private void OnEnable()
