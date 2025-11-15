@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 4528682702829585356}
   m_Layer: 3
   m_Name: Attack Collider
-  m_TagString: Untagged
+  m_TagString: Enemy Attack Collider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -285,15 +285,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e248edabd18a9e4a8ef823e8e9bff7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentStateDebug: 
+  currentMovementState: 
+  currentVerticalState: 
   enemyStats: {fileID: 11400000, guid: 6e9e5243717474b49b46cda1d57c7877, type: 2}
   patrolTarget: {fileID: 0}
   isAlive: 1
+  isDead: 0
   targetPlayer: 0
   patrolStart: {x: 0, y: 0}
   currentTarget: {x: 0, y: 0}
   enemySpeed: 0
-  isDead: 0
+  canRunMovementState: 1
+  canRunVerticalState: 1
 --- !u!114 &441338366326941357
 MonoBehaviour:
   m_ObjectHideFlags: 0

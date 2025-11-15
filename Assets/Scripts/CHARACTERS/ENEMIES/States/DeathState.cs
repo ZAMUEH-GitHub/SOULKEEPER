@@ -17,9 +17,7 @@ public class DeathState : IMovementState
         enemy.PauseVertical(true);
 
         if (enemy.rigidBody != null)
-        {
             enemy.rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
-        }
 
         if (LayerMask.NameToLayer(CORPSE_LAYER) != -1)
             enemy.gameObject.layer = LayerMask.NameToLayer(CORPSE_LAYER);
@@ -28,9 +26,11 @@ public class DeathState : IMovementState
 
         if (enemy.verticalStateMachine != null)
             enemy.verticalStateMachine.ChangeState(null);
+
+        if (enemy.isAlive)
+            enemy.Die();
     }
 
     public void Update() { }
-
     public void Exit() { }
 }

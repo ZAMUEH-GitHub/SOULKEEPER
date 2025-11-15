@@ -17,6 +17,7 @@ public class EnemySpawner : MonoBehaviour
     private GameObject spawnedEnemy;
     private Transform playerTransform;
     private bool canRespawn = true;
+    private bool enemyDiedPermanently = false;
     private float respawnTimer;
 
     private void Start()
@@ -29,7 +30,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Update()
     {
-        if (playerTransform == null) return;
+        if (playerTransform == null || enemyDiedPermanently) return;
 
         currentDistanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
@@ -49,9 +50,7 @@ public class EnemySpawner : MonoBehaviour
         }
 
         if (spawnedEnemy == null && canRespawn && currentDistanceToPlayer <= spawnDistanceToPlayer)
-        {
             SpawnEnemy();
-        }
     }
 
     private void SpawnEnemy()
@@ -63,21 +62,32 @@ public class EnemySpawner : MonoBehaviour
         }
 
         spawnedEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
-
         var enemyController = spawnedEnemy.GetComponent<EnemyBaseController>();
+
         if (enemyController != null)
         {
             enemyController.patrolStart = transform.position;
+            enemyController.currentTarget = patrolTarget != null ? patrolTarget.position : transform.position;
 
             if (patrolTarget != null)
                 enemyController.patrolTarget = patrolTarget;
             else
                 Debug.LogWarning($"[EnemySpawner] No patrol target assigned for {name}");
 
-            enemyController.currentTarget = patrolTarget != null
-                ? patrolTarget.position
-                : transform.position;
+            enemyController.OnEnemyDied += HandleEnemyDeath;
         }
+    }
+
+    private void HandleEnemyDeath(EnemyBaseController enemy)
+    {
+        enemy.OnEnemyDied -= HandleEnemyDeath;
+        if (spawnedEnemy != null)
+        {
+            Destroy(spawnedEnemy);
+            spawnedEnemy = null;
+        }
+
+        enemyDiedPermanently = true;
     }
 
 #if UNITY_EDITOR

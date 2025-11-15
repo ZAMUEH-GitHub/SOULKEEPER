@@ -2,17 +2,19 @@ using UnityEngine;
 
 public class SoulCollectible : MonoBehaviour
 {
-    public int collectibleScore;
-    public float initialSoulSpeed;
-    public float acceleration;
-    public float smoothTime = 0.3f;
+    [Header("Souls Settings")]
+    [SerializeField] private int collectibleScore;
+    [SerializeField] private float initialSoulSpeed;
+    [SerializeField] private float acceleration;
+    [SerializeField] private float smoothTime = 0.3f;
+
     private GameObject playerObject;
     private float currentSpeed;
     private Vector2 velocity = Vector2.zero;
 
     void Start()
     {
-        playerObject = GameObject.Find("PLAYER");
+        playerObject = PlayerController.Instance.gameObject;
         currentSpeed = initialSoulSpeed;
     }
 

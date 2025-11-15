@@ -213,7 +213,7 @@ public class PlayerAttackController : MonoBehaviour
             {
                 damageController.Knockback(-damageVector, knockbackForce * 2, knockbackDuration);
             }
-            else damageController.Knockback(-damageVector, knockbackForce * 2, knockbackDuration);
+            else damageController.Knockback(-damageVector, knockbackForce * 1.5f, knockbackDuration);
         }
     }
 

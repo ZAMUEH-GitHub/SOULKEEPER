@@ -88,7 +88,6 @@ public class PlayerCollisionController : MonoBehaviour
         if (collision.gameObject.CompareTag("Bulb"))
         {
             playerAnimator.SetTrigger("PlayerJump");
-            damageController.Knockback(collisionVector, playerStats.damageForce * 2, playerStats.damageLenght);
         }
     }
 
