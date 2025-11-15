@@ -59,8 +59,6 @@ public static class SaveSystem
                 await writer.WriteAsync(json);
 
             TimeManager.Instance.ResetPlaytime();
-
-            Debug.Log($"[SaveSystem] Slot {slotIndex} saved — Scene: {saveData.currentScene}, Door: {currentDoorID}, Total Playtime: {updatedPlaytime:F2}s");
         }
         catch (Exception ex)
         {
@@ -110,8 +108,6 @@ public static class SaveSystem
             }
 
             TimeManager.Instance.ResetPlaytime();
-
-            Debug.Log($"[SaveSystem] Loaded slot {slotIndex} — Scene: {saveData.currentScene}, Total Playtime: {saveData.totalPlaytime:F1}s");
         }
         catch (Exception ex)
         {
