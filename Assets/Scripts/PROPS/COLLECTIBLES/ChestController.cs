@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Collider2D))]
+
 public class ChestController : MonoBehaviour, IInteractable
 {
     [Header("Interaction UI")]
@@ -12,7 +13,7 @@ public class ChestController : MonoBehaviour, IInteractable
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float interactionCooldown = 1.0f;
 
-    private bool playerInRange = false;
+    public bool playerInRange = false;
     private bool opened = false;
     private float lastInteractionTime = -999f;
 

@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Collider2D))]
+
 public class SceneDoor : MonoBehaviour, IInteractable
 {
     [Header("Door Settings")]
@@ -17,7 +18,7 @@ public class SceneDoor : MonoBehaviour, IInteractable
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float interactionCooldown = 1.0f;
 
-    private bool playerInRange = false;
+    public bool playerInRange = false;
     private float lastInteractionTime = -999f;
 
     #region Unity Lifecycle
