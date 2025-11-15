@@ -207,11 +207,13 @@ public class PlayerAttackController : MonoBehaviour
 
         if (collision.CompareTag("Bulb"))
         {
+            playerAnimator.SetTrigger("PlayerJump");
+
             if (player.position.y > collision.transform.position.y + 1)
             {
                 damageController.Knockback(-damageVector, knockbackForce * 2, knockbackDuration);
             }
-            else damageController.Knockback(-damageVector, knockbackForce, knockbackDuration);
+            else damageController.Knockback(-damageVector, knockbackForce * 2, knockbackDuration);
         }
     }
 
