@@ -6248,6 +6248,7 @@ MonoBehaviour:
   _SceneDoorManager: {fileID: 0}
   _AudioManager: {fileID: 8962481308810028092}
   _TimeManager: {fileID: 2446640515453210229}
+  _SessionManager: {fileID: 1929322208758484817}
   _SaveSlotManager: {fileID: 2826421974173534316}
   _CanvasGroup: {fileID: 4991396322297136613}
   _GlobalCanvas: {fileID: 2634737170496486510}
@@ -10006,7 +10007,7 @@ GameObject:
   - component: {fileID: 1053294794107167173}
   - component: {fileID: 1679066040601133575}
   m_Layer: 0
-  m_Name: SessionManager
+  m_Name: Session Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10552,8 +10553,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8907322033696831806}
-  - {fileID: 1053294794107167173}
   - {fileID: 8218138128076967331}
+  - {fileID: 1053294794107167173}
   - {fileID: 554592594980798668}
   - {fileID: 7395049817852654350}
   - {fileID: 5235400610336440719}
@@ -12750,7 +12751,7 @@ GameObject:
   - component: {fileID: 554592594980798668}
   - component: {fileID: 3337154086885337062}
   m_Layer: 0
-  m_Name: SaveSlotManager
+  m_Name: Save Slot Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28103,7 +28104,7 @@ RectTransform:
   m_GameObject: {fileID: 5733389232669152148}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6395840263155717}
@@ -28150,7 +28151,7 @@ MonoBehaviour:
   m_FillClockwise: 0
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 200
+  m_PixelsPerUnitMultiplier: 100
 --- !u!225 &7163054659010834865
 CanvasGroup:
   m_ObjectHideFlags: 0
