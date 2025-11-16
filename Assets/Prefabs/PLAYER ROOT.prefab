@@ -828,6 +828,7 @@ GameObject:
   - component: {fileID: 6199559819824216539}
   - component: {fileID: 1763274598465813667}
   - component: {fileID: 8654101761734434305}
+  - component: {fileID: 5733063978835050522}
   - component: {fileID: 5476610616298259296}
   - component: {fileID: 6066754553038268698}
   - component: {fileID: 6950133254441337511}
@@ -996,6 +997,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTrapped: 0
+--- !u!114 &5733063978835050522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7813038737202545121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5616257d6ff6f7e44a0708d78ea86d28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5476610616298259296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1326,8 +1339,8 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 9483bde7-d373-4e16-8418-0c8ae63ab6db
-    m_ActionName: 'Player/Pause[/Keyboard/escape]'
+    m_ActionId: 0c4ea44a-c794-43a5-b672-dcca4b9a628f
+    m_ActionName: 'UI/Back[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
