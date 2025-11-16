@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class SceneDoorManager : Singleton<SceneDoorManager>
+public class SceneDoorManager : MonoBehaviour
 {
-    protected override bool IsPersistent => false;
-
     [Header("Scene Doors")]
     [SerializeField] private GameObject[] sceneDoors;
     private static string lastUsedDoorID;
@@ -15,59 +12,24 @@ public class SceneDoorManager : Singleton<SceneDoorManager>
     private SaveSlotManager saveSlotManager;
 
     #region Unity Lifecycle
-    protected override void Awake()
-    {
-        if (Instance == null)
-        {
-            var singletonField = typeof(Singleton<SceneDoorManager>).GetField("_instance",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-            singletonField?.SetValue(null, this);
-        }
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
     private void Start()
     {
-        GameSceneManager gsm = GameSceneManager.Instance;
-
-        FindAllDoors();
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        StartCoroutine(ReinitializeAfterSceneLoad());
-    }
-
-    private IEnumerator ReinitializeAfterSceneLoad()
-    {
-        yield return null;
-
         FindAllDoors();
 
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player");
+
+        Debug.Log($"[SceneDoorManager] Initialized with {sceneDoors.Length} doors in scene '{gameObject.scene.name}'.");
     }
     #endregion
 
     #region Door Logic
     private void FindAllDoors()
     {
-        sceneDoors = null;
-
         SceneDoor[] doorComponents = FindObjectsByType<SceneDoor>(FindObjectsSortMode.None);
         sceneDoors = doorComponents.Select(d => d.gameObject).ToArray();
+
+        if (sceneDoors == null || sceneDoors.Length == 0)
+            Debug.LogWarning($"[SceneDoorManager] No doors found in scene '{gameObject.scene.name}'.");
     }
 
     public void RegisterDoorUse(string doorID)
@@ -109,12 +71,15 @@ public class SceneDoorManager : Singleton<SceneDoorManager>
         {
             yield return null;
             FindAllDoors();
+
             if (sceneDoors.Any())
             {
                 TeleportToDoor(doorID);
                 yield break;
             }
         }
+
+        Debug.LogWarning($"[SceneDoorManager] Failed to find door '{doorID}' after waiting.");
     }
 
     private void TeleportToDoor(string doorID)
@@ -134,15 +99,18 @@ public class SceneDoorManager : Singleton<SceneDoorManager>
 
     private IEnumerator DelayedTeleport(GameObject targetDoor)
     {
-        for (int i = 0; i < 5 && player == null; i++)
+        player ??= GameObject.FindGameObjectWithTag("Player");
+        int safety = 0;
+        while (player == null && safety++ < 5)
         {
-            player = GameObject.FindGameObjectWithTag("Player");
             yield return null;
+            player = GameObject.FindGameObjectWithTag("Player");
         }
 
         if (player != null)
         {
             player.transform.position = targetDoor.transform.position;
+            Debug.Log($"[SceneDoorManager] Teleported player to '{targetDoor.name}' in scene '{gameObject.scene.name}'.");
         }
         else
         {

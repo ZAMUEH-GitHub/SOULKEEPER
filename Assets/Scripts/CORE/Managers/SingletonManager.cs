@@ -63,6 +63,8 @@ public class SingletonManager : Singleton<SingletonManager>
     #region PlayerRoot Management
     private void SpawnPlayerRoot()
     {
+        Debug.Log("[SingletonManager] Spawning PlayerRoot");
+
         if (_PlayerRootPrefab == null)
         {
             Debug.LogError("[SingletonManager] PlayerRoot prefab is missing!");

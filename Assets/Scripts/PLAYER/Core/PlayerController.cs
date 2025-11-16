@@ -42,12 +42,10 @@ public class PlayerController : MonoBehaviour
     #region Unity Lifecycle
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
+            Debug.LogWarning("[PlayerController] Duplicate instance detected but kept alive by PlayerRoot persistence.");
 
         var session = SessionManager.Instance;
 
