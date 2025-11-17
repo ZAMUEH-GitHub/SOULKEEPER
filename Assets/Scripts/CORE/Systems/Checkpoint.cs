@@ -102,7 +102,7 @@ public class Checkpoint : MonoBehaviour, IInteractable
     #endregion
 
     #region Activation Logic
-    private void ActivateCheckpoint()
+    private async void ActivateCheckpoint()
     {
         int activeSlot = saveSlotManager != null ? saveSlotManager.ActiveSlotIndex : 1;
         var runtimeStats = SessionManager.Instance.RuntimeStats;
@@ -110,7 +110,7 @@ public class Checkpoint : MonoBehaviour, IInteractable
         if (runtimeStats != null)
         {
             string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            SaveSystem.Save(activeSlot, runtimeStats, null, checkpointID);
+            await SaveSystem.SaveAsync(activeSlot, runtimeStats, null, checkpointID);
             Debug.Log($"[Checkpoint] Saved at '{checkpointID}' (Scene '{currentScene}', Slot {activeSlot})");
         }
 
@@ -118,7 +118,6 @@ public class Checkpoint : MonoBehaviour, IInteractable
             SessionManager.Instance.CurrentCheckpointID = checkpointID;
 
         OnCheckpointActivated?.Invoke(checkpointID);
-
         ToastPanelManager.Instance.ShowToast("Progress Saved", 2f);
     }
 

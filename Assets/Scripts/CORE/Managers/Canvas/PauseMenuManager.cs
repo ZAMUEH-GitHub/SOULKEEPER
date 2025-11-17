@@ -177,9 +177,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
             canvasManager.ShowConfirmation(
                 "SAVE GAME?",
                 $"Do you want to save your progress to Slot {slot}?",
-                () =>
+                async () =>
                 {
-                    SaveSystem.Save(slot, stats, null, null);
+                    await SaveSystem.SaveAsync(slot, stats, null, null);
                     Debug.Log($"[PauseMenuManager] Game saved to slot {slot}.");
                     canvasManager.ShowToast("Progress Saved", 3f);
                 },
@@ -188,7 +188,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         }
         else
         {
-            SaveSystem.Save(slot, stats);
+            _ = SaveSystem.SaveAsync(slot, stats, null, null);
             Debug.Log($"[PauseMenuManager] Game saved to slot {slot} (no canvas).");
         }
     }

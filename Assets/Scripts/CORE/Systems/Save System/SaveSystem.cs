@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +12,7 @@ public static class SaveSystem
 
     public static string LastLoadedCheckpointID { get; private set; }
 
-    public static async void Save(int slotIndex, PlayerStatsSO runtimeStats, string currentDoorID = null, string currentCheckpointID = null)
+    public static async Task SaveAsync(int slotIndex, PlayerStatsSO runtimeStats, string currentDoorID = null, string currentCheckpointID = null)
     {
         if (slotIndex < 1 || slotIndex > MaxSlots)
         {
@@ -24,15 +25,22 @@ public static class SaveSystem
             if (!Directory.Exists(SaveFolder))
                 Directory.CreateDirectory(SaveFolder);
 
-            float previousPlaytime = 0f;
             string path = GetSlotPath(slotIndex);
+            float previousPlaytime = 0f;
 
             if (File.Exists(path))
             {
-                string oldJson = File.ReadAllText(path);
-                GameSaveData oldData = JsonUtility.FromJson<GameSaveData>(oldJson);
-                if (oldData != null)
-                    previousPlaytime = oldData.totalPlaytime;
+                try
+                {
+                    string oldJson = await File.ReadAllTextAsync(path);
+                    GameSaveData oldData = JsonUtility.FromJson<GameSaveData>(oldJson);
+                    if (oldData != null)
+                        previousPlaytime = oldData.totalPlaytime;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"[SaveSystem] Failed to read old save data: {ex.Message}");
+                }
             }
 
             float updatedPlaytime = previousPlaytime + TimeManager.Instance.GetTotalPlaytime();
@@ -65,11 +73,11 @@ public static class SaveSystem
         }
         catch (Exception ex)
         {
-            Debug.LogError($"[SaveSystem] Error saving slot {slotIndex}: {ex.Message}");
+            Debug.LogError($"[SaveSystem] Error saving slot {slotIndex}: {ex.Message}\n{ex.StackTrace}");
         }
     }
 
-    public static async void Load(int slotIndex, PlayerStatsSO runtimeStats)
+    public static async Task LoadAsync(int slotIndex, PlayerStatsSO runtimeStats)
     {
         try
         {
@@ -80,10 +88,11 @@ public static class SaveSystem
                 return;
             }
 
-            string json;
-            using (StreamReader reader = new StreamReader(path))
+            string json = await File.ReadAllTextAsync(path);
+            if (string.IsNullOrEmpty(json))
             {
-                json = await reader.ReadToEndAsync();
+                Debug.LogError($"[SaveSystem] Empty save file for slot {slotIndex}");
+                return;
             }
 
             GameSaveData saveData = JsonUtility.FromJson<GameSaveData>(json);
@@ -100,13 +109,11 @@ public static class SaveSystem
             }
 
             saveData.playerData.ApplyToRuntime(runtimeStats);
-
             LastLoadedCheckpointID = saveData.currentCheckpointID;
 
             foreach (var altar in UnityEngine.Object.FindObjectsByType<AltarController>(FindObjectsSortMode.None))
             {
                 if (altar == null || altar.altarSO == null) continue;
-
                 var data = saveData.altarData.Find(a => a.altarID == altar.altarSO.displayName);
                 if (data != null)
                     altar.FromSaveData(data);
@@ -116,7 +123,7 @@ public static class SaveSystem
         }
         catch (Exception ex)
         {
-            Debug.LogError($"[SaveSystem] Error loading slot {slotIndex}: {ex.Message}");
+            Debug.LogError($"[SaveSystem] Error loading slot {slotIndex}: {ex.Message}\n{ex.StackTrace}");
         }
     }
 

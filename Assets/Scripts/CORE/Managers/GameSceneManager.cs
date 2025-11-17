@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Threading.Tasks;
 
 public enum SceneLoadMode
 {
@@ -24,7 +25,6 @@ public class GameSceneManager : Singleton<GameSceneManager>
     private SceneDoorManager sceneDoorManager;
 
     protected override void Awake() => base.Awake();
-
     private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
     private void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
 
@@ -77,12 +77,12 @@ public class GameSceneManager : Singleton<GameSceneManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        StartCoroutine(PostSceneLoadRoutine());
+        _ = PostSceneLoadRoutineAsync();
     }
 
-    private IEnumerator PostSceneLoadRoutine()
+    private async Task PostSceneLoadRoutineAsync()
     {
-        yield return null;
+        await Task.Yield();
 
         FindSceneDoorManager();
         canvasManager = CanvasManager.Instance;
@@ -95,19 +95,19 @@ public class GameSceneManager : Singleton<GameSceneManager>
             {
                 var runtimeStats = SessionManager.Instance.RuntimeStats;
                 if (runtimeStats != null)
-                    SaveSystem.Load(slot, runtimeStats);
+                    await SaveSystem.LoadAsync(slot, runtimeStats);
             }
         }
 
         if (SessionManager.Instance != null && !string.IsNullOrEmpty(SessionManager.Instance.CurrentCheckpointID))
             Checkpoint.BroadcastActivation(SessionManager.Instance.CurrentCheckpointID);
 
-        yield return PositionPlayerRoot();
+        await PositionPlayerRootAsync();
 
         if (canvasManager != null)
         {
             canvasManager.FadeOut(PanelType.BlackScreen);
-            yield return new WaitForSeconds(canvasManager.GetFadeDuration(PanelType.BlackScreen));
+            await Task.Delay((int)(canvasManager.GetFadeDuration(PanelType.BlackScreen) * 1000));
         }
 
         var player = PlayerRoot.Instance?.GetComponentInChildren<PlayerController>();
@@ -117,24 +117,22 @@ public class GameSceneManager : Singleton<GameSceneManager>
         isLoadingScene = false;
     }
 
-    private IEnumerator PositionPlayerRoot()
+    private async Task PositionPlayerRootAsync()
     {
         float timeout = 3f, timer = 0f;
         while (PlayerRoot.Instance == null && timer < timeout)
         {
-            if (GameManager.Instance != null &&
-                GameManager.Instance.CurrentState == GameState.MainMenu)
-                yield break;
-
+            if (GameManager.Instance != null && GameManager.Instance.CurrentState == GameState.MainMenu)
+                return;
             timer += Time.unscaledDeltaTime;
-            yield return null;
+            await Task.Yield();
         }
 
         var playerRoot = PlayerRoot.Instance;
-        if (playerRoot == null) yield break;
+        if (playerRoot == null) return;
 
         var player = playerRoot.GetComponentInChildren<PlayerController>();
-        if (player == null) yield break;
+        if (player == null) return;
 
         switch (currentLoadMode)
         {

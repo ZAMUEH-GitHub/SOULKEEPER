@@ -32,7 +32,7 @@ public class SceneDoorManager : MonoBehaviour
             Debug.LogWarning($"[SceneDoorManager] No doors found in scene '{gameObject.scene.name}'.");
     }
 
-    public void RegisterDoorUse(string doorID)
+    public async void RegisterDoorUse(string doorID)
     {
         lastUsedDoorID = doorID;
 
@@ -51,7 +51,7 @@ public class SceneDoorManager : MonoBehaviour
         }
 
         int slot = saveSlotManager.ActiveSlotIndex;
-        SaveSystem.Save(slot, runtimeStats, doorID);
+        await SaveSystem.SaveAsync(slot, runtimeStats, doorID, null);
     }
 
     public void ChooseDoor(string targetDoorID)
