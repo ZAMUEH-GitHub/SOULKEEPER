@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using System;
 using System.Collections;
 
 [RequireComponent(typeof(Collider2D))]
@@ -18,11 +19,12 @@ public class Checkpoint : MonoBehaviour, IInteractable
     private SaveSlotManager saveSlotManager;
     private bool isPlayerInRange;
 
+    public static event Action<string> OnCheckpointActivated;
+
     #region Unity Lifecycle
     private void Awake()
     {
         saveSlotManager = SaveSlotManager.Instance;
-        isActiveCheckpoint = false;
 
         var collider = GetComponent<Collider2D>();
         if (collider != null)
@@ -31,9 +33,24 @@ public class Checkpoint : MonoBehaviour, IInteractable
         SetTextInstantAlpha(interactTextMesh, 0f);
     }
 
+    private void OnEnable()
+    {
+        OnCheckpointActivated += HandleCheckpointActivated;
+    }
+
     private void OnDisable()
     {
+        OnCheckpointActivated -= HandleCheckpointActivated;
         StopAllCoroutines();
+    }
+
+    private void Start()
+    {
+        if (SessionManager.Instance != null)
+        {
+            string currentID = SessionManager.Instance.CurrentCheckpointID;
+            isActiveCheckpoint = (checkpointID == currentID);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -58,14 +75,13 @@ public class Checkpoint : MonoBehaviour, IInteractable
     public void Interact()
     {
         if (!isPlayerInRange) return;
-
         ActivateCheckpoint();
         HideInteractText();
     }
 
     public string GetInteractionText()
     {
-        return isActiveCheckpoint ? "" : $"{GetInteractionKeyName()} Save Progress";
+        return $"{GetInteractionKeyName()} Save Progress";
     }
 
     private string GetInteractionKeyName()
@@ -88,26 +104,36 @@ public class Checkpoint : MonoBehaviour, IInteractable
     #region Activation Logic
     private void ActivateCheckpoint()
     {
-        isActiveCheckpoint = true;
-
         int activeSlot = saveSlotManager != null ? saveSlotManager.ActiveSlotIndex : 1;
         var runtimeStats = SessionManager.Instance.RuntimeStats;
 
         if (runtimeStats != null)
         {
             string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            Debug.Log($"[Checkpoint] Saving checkpoint '{checkpointID}' in scene '{currentScene}' (Slot {activeSlot})");
             SaveSystem.Save(activeSlot, runtimeStats, null, checkpointID);
-        }
-        else
-        {
-            Debug.LogWarning("[Checkpoint] Could not find runtime stats for saving!");
+            Debug.Log($"[Checkpoint] Saved at '{checkpointID}' (Scene '{currentScene}', Slot {activeSlot})");
         }
 
         if (SessionManager.Instance != null)
             SessionManager.Instance.CurrentCheckpointID = checkpointID;
 
+        OnCheckpointActivated?.Invoke(checkpointID);
+
         ToastPanelManager.Instance.ShowToast("Progress Saved", 2f);
+    }
+
+    private void HandleCheckpointActivated(string activeID)
+    {
+        bool wasActive = isActiveCheckpoint;
+        isActiveCheckpoint = (checkpointID == activeID);
+
+        if (wasActive != isActiveCheckpoint)
+            Debug.Log($"[Checkpoint] {checkpointID} active state = {isActiveCheckpoint}");
+    }
+
+    public static void BroadcastActivation(string checkpointID)
+    {
+        OnCheckpointActivated?.Invoke(checkpointID);
     }
     #endregion
 

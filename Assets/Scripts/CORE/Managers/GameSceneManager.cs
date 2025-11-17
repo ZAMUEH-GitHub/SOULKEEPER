@@ -99,6 +99,9 @@ public class GameSceneManager : Singleton<GameSceneManager>
             }
         }
 
+        if (SessionManager.Instance != null && !string.IsNullOrEmpty(SessionManager.Instance.CurrentCheckpointID))
+            Checkpoint.BroadcastActivation(SessionManager.Instance.CurrentCheckpointID);
+
         yield return PositionPlayerRoot();
 
         if (canvasManager != null)
