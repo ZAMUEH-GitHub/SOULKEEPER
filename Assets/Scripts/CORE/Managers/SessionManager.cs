@@ -6,6 +6,8 @@ public class SessionManager : Singleton<SessionManager>
 
     public PlayerStatsSO RuntimeStats { get; private set; }
 
+    public string CurrentCheckpointID { get; set; }
+
     public void StartSession(PlayerStatsSO baseStats)
     {
         EndSession();

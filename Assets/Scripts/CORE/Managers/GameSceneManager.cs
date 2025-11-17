@@ -17,42 +17,54 @@ public class GameSceneManager : Singleton<GameSceneManager>
     [SerializeField] private SceneLoadMode currentLoadMode;
     [SerializeField] private bool isLoadingScene;
     [SerializeField] private string targetDoorID;
+    [SerializeField] private string targetCheckpointID;
 
     private CanvasManager canvasManager;
     private SaveSlotManager saveSlotManager;
     private SceneDoorManager sceneDoorManager;
 
-    #region Unity Lifecycle
     protected override void Awake() => base.Awake();
 
     private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
     private void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
-    #endregion
 
-    #region Scene Loading
     public void LoadSceneFromDoor(SceneField scene, string targetDoor)
     {
         if (isLoadingScene) return;
-        StartCoroutine(LoadSceneRoutine(scene, SceneLoadMode.DoorTransition, targetDoor));
+        StartCoroutine(LoadSceneRoutine(scene, SceneLoadMode.DoorTransition, targetDoor, null));
     }
 
-    public void LoadSceneFromCheckpoint(SceneField scene)
+    public void LoadSceneFromCheckpoint(string checkpointID)
     {
         if (isLoadingScene) return;
-        StartCoroutine(LoadSceneRoutine(scene, SceneLoadMode.CheckpointSpawn, null));
+        StartCoroutine(LoadSceneRoutine(null, SceneLoadMode.CheckpointSpawn, null, checkpointID));
+    }
+
+    public void LoadSceneFromCheckpointSlot(int slotIndex)
+    {
+        if (isLoadingScene) return;
+
+        string sceneName = SaveSystem.GetSavedScene(slotIndex);
+        string checkpointID = SaveSystem.LastLoadedCheckpointID ?? SaveSystem.GetSavedCheckpoint(slotIndex);
+
+        if (string.IsNullOrEmpty(sceneName)) return;
+
+        SceneField targetScene = sceneName;
+        StartCoroutine(LoadSceneRoutine(targetScene, SceneLoadMode.CheckpointSpawn, null, checkpointID));
     }
 
     public void LoadSceneDirect(SceneField scene)
     {
         if (isLoadingScene) return;
-        StartCoroutine(LoadSceneRoutine(scene, SceneLoadMode.DirectLoad, null));
+        StartCoroutine(LoadSceneRoutine(scene, SceneLoadMode.DirectLoad, null, null));
     }
 
-    private IEnumerator LoadSceneRoutine(SceneField scene, SceneLoadMode mode, string doorID)
+    private IEnumerator LoadSceneRoutine(SceneField scene, SceneLoadMode mode, string doorID, string checkpointID)
     {
         isLoadingScene = true;
         currentLoadMode = mode;
         targetDoorID = doorID;
+        targetCheckpointID = checkpointID;
 
         canvasManager ??= CanvasManager.Instance;
         if (canvasManager != null)
@@ -62,9 +74,7 @@ public class GameSceneManager : Singleton<GameSceneManager>
 
         SceneManager.LoadScene(scene);
     }
-    #endregion
 
-    #region Scene Post-Load
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         StartCoroutine(PostSceneLoadRoutine());
@@ -128,21 +138,26 @@ public class GameSceneManager : Singleton<GameSceneManager>
             case SceneLoadMode.DoorTransition:
                 if (sceneDoorManager != null && !string.IsNullOrEmpty(targetDoorID))
                 {
-                    try
-                    {
-                        sceneDoorManager.ChooseDoor(targetDoorID);
-                    }
+                    try { sceneDoorManager.ChooseDoor(targetDoorID); }
                     catch (MissingReferenceException)
-                    {
-                        Debug.LogWarning("[GameSceneManager] Door reference missing during transition.");
-                    }
+                    { Debug.LogWarning("[GameSceneManager] Door reference missing during transition."); }
                 }
                 break;
 
             case SceneLoadMode.CheckpointSpawn:
-                var spawn = GameObject.FindGameObjectWithTag("Checkpoint");
-                if (spawn != null)
-                    player.transform.position = spawn.transform.position;
+                if (!string.IsNullOrEmpty(targetCheckpointID))
+                {
+                    var checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
+                    foreach (var cp in checkpoints)
+                    {
+                        var checkpoint = cp.GetComponent<Checkpoint>();
+                        if (checkpoint != null && checkpoint.checkpointID == targetCheckpointID)
+                        {
+                            player.transform.position = checkpoint.transform.position;
+                            break;
+                        }
+                    }
+                }
                 break;
 
             case SceneLoadMode.DirectLoad:
@@ -157,5 +172,4 @@ public class GameSceneManager : Singleton<GameSceneManager>
         var sceneDoorObj = GameObject.FindGameObjectWithTag("Scene Door Manager");
         sceneDoorManager = sceneDoorObj ? sceneDoorObj.GetComponent<SceneDoorManager>() : null;
     }
-    #endregion
 }

@@ -13,7 +13,8 @@ public class GameSaveData
     public int version = 1;
 
     [Header("Scene Transition Data")]
-    public string currentScene;
+    public string currentSceneID;
+    public string currentCheckpointID;
     public string lastDoorID;
 
     public GameSaveData()

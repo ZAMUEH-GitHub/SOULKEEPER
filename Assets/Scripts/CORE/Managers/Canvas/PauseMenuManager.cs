@@ -179,7 +179,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
                 $"Do you want to save your progress to Slot {slot}?",
                 () =>
                 {
-                    SaveSystem.Save(slot, stats);
+                    SaveSystem.Save(slot, stats, null, null);
                     Debug.Log($"[PauseMenuManager] Game saved to slot {slot}.");
                     canvasManager.ShowToast("Progress Saved", 3f);
                 },

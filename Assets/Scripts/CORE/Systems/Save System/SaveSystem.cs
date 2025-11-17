@@ -9,7 +9,9 @@ public static class SaveSystem
     private const int MaxSlots = 3;
     private const int CurrentVersion = 1;
 
-    public static async void Save(int slotIndex, PlayerStatsSO runtimeStats, string currentDoorID = "Cathedral_StartDoor")
+    public static string LastLoadedCheckpointID { get; private set; }
+
+    public static async void Save(int slotIndex, PlayerStatsSO runtimeStats, string currentDoorID = null, string currentCheckpointID = null)
     {
         if (slotIndex < 1 || slotIndex > MaxSlots)
         {
@@ -38,8 +40,9 @@ public static class SaveSystem
             GameSaveData saveData = new GameSaveData
             {
                 playerData = new PlayerSaveData(),
-                currentScene = SceneManager.GetActiveScene().name,
+                currentSceneID = SceneManager.GetActiveScene().name,
                 lastDoorID = currentDoorID,
+                currentCheckpointID = currentCheckpointID,
                 totalPlaytime = updatedPlaytime,
                 timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 version = CurrentVersion
@@ -98,6 +101,8 @@ public static class SaveSystem
 
             saveData.playerData.ApplyToRuntime(runtimeStats);
 
+            LastLoadedCheckpointID = saveData.currentCheckpointID;
+
             foreach (var altar in UnityEngine.Object.FindObjectsByType<AltarController>(FindObjectsSortMode.None))
             {
                 if (altar == null || altar.altarSO == null) continue;
@@ -125,13 +130,13 @@ public static class SaveSystem
             string json = File.ReadAllText(GetSlotPath(slotIndex));
             GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
 
-            if (!SceneExistsInBuild(data.currentScene))
+            if (!SceneExistsInBuild(data.currentSceneID))
             {
-                Debug.LogWarning($"[SaveSystem] Scene '{data.currentScene}' not found in build settings!");
+                Debug.LogWarning($"[SaveSystem] Scene '{data.currentSceneID}' not found in build settings!");
                 return null;
             }
 
-            return data.currentScene;
+            return data.currentSceneID;
         }
         catch (Exception ex)
         {
@@ -148,6 +153,21 @@ public static class SaveSystem
             string json = File.ReadAllText(GetSlotPath(slotIndex));
             GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
             return data.lastDoorID;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public static string GetSavedCheckpoint(int slotIndex)
+    {
+        try
+        {
+            if (!SaveExists(slotIndex)) return null;
+            string json = File.ReadAllText(GetSlotPath(slotIndex));
+            GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
+            return data.currentCheckpointID;
         }
         catch
         {
@@ -182,7 +202,7 @@ public static class SaveSystem
             GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
             if (data == null) return (false, "", "", 0f);
 
-            return (true, data.currentScene, data.timestamp, data.totalPlaytime);
+            return (true, data.currentSceneID, data.timestamp, data.totalPlaytime);
         }
         catch (Exception ex)
         {
