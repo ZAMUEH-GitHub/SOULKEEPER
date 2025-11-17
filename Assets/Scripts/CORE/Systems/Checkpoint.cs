@@ -111,6 +111,7 @@ public class Checkpoint : MonoBehaviour, IInteractable
         {
             string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             await SaveSystem.SaveAsync(activeSlot, runtimeStats, null, checkpointID);
+            if (!SaveSystem.SaveExists(activeSlot)) return;
             Debug.Log($"[Checkpoint] Saved at '{checkpointID}' (Scene '{currentScene}', Slot {activeSlot})");
         }
 
@@ -118,7 +119,7 @@ public class Checkpoint : MonoBehaviour, IInteractable
             SessionManager.Instance.CurrentCheckpointID = checkpointID;
 
         OnCheckpointActivated?.Invoke(checkpointID);
-        ToastPanelManager.Instance.ShowToast("Progress Saved", 2f);
+        ToastPanelManager.Instance.ShowToast("Progress Saved", 3f);
     }
 
     private void HandleCheckpointActivated(string activeID)

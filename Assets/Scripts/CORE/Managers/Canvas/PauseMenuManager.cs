@@ -21,6 +21,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [SerializeField] private SceneField mainMenuScene;
 
     private bool isPaused;
+    private bool isSaving = false;
     private GameObject gameplayCanvas;
 
     private CanvasManager canvasManager;
@@ -163,6 +164,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     #region Save Logic
     public void OnSaveGame()
     {
+        if (isSaving) return;
+        isSaving = true;
+
         var stats = SessionManager.Instance.RuntimeStats;
         if (stats == null)
         {
@@ -179,7 +183,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
                 $"Do you want to save your progress to Slot {slot}?",
                 async () =>
                 {
-                    await SaveSystem.SaveAsync(slot, stats, null, null);
+                    await SaveSystem.SaveAsync(slot, stats);
+                    isSaving = false; 
                     Debug.Log($"[PauseMenuManager] Game saved to slot {slot}.");
                     canvasManager.ShowToast("Progress Saved", 3f);
                 },
