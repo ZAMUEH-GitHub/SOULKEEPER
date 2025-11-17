@@ -20,8 +20,16 @@ public static class SaveSystem
             return;
         }
 
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
         try
         {
+            if (runtimeStats == null)
+            {
+                Debug.LogWarning("[SaveSystem] RuntimeStats is null, aborting save.");
+                return;
+            }
+
             if (!Directory.Exists(SaveFolder))
                 Directory.CreateDirectory(SaveFolder);
 
@@ -66,8 +74,30 @@ public static class SaveSystem
 
             string json = JsonUtility.ToJson(saveData, true);
 
-            using (StreamWriter writer = new StreamWriter(path, false))
-                await writer.WriteAsync(json);
+            await Task.Run(() =>
+            {
+                using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
+                using (var writer = new StreamWriter(fs))
+                {
+                    writer.Write(json);
+                    writer.Flush();
+                    fs.Flush(true);
+                }
+            });
+
+            stopwatch.Stop();
+            Debug.Log($"[SaveSystem] Save complete in {stopwatch.ElapsedMilliseconds} ms, flushing to disk.");
+
+            try
+            {
+                string verifyJson = File.ReadAllText(path);
+                GameSaveData verifyData = JsonUtility.FromJson<GameSaveData>(verifyJson);
+                Debug.Log($"[SaveSystem] File verification: checkpoint='{verifyData.currentCheckpointID}', scene='{verifyData.currentSceneID}'");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[SaveSystem] Verification read failed: {ex.Message}");
+            }
 
             TimeManager.Instance.ResetPlaytime();
         }
@@ -79,6 +109,8 @@ public static class SaveSystem
 
     public static async Task LoadAsync(int slotIndex, PlayerStatsSO runtimeStats)
     {
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
         try
         {
             string path = GetSlotPath(slotIndex);
@@ -89,6 +121,9 @@ public static class SaveSystem
             }
 
             string json = await File.ReadAllTextAsync(path);
+            stopwatch.Stop();
+            Debug.Log($"[SaveSystem] Load file read in {stopwatch.ElapsedMilliseconds} ms.");
+
             if (string.IsNullOrEmpty(json))
             {
                 Debug.LogError($"[SaveSystem] Empty save file for slot {slotIndex}");
@@ -102,11 +137,7 @@ public static class SaveSystem
                 return;
             }
 
-            if (saveData.version < CurrentVersion)
-            {
-                Debug.Log($"[SaveSystem] Upgrading slot {slotIndex} from version {saveData.version} to {CurrentVersion}");
-                UpgradeSaveData(ref saveData);
-            }
+            Debug.Log($"[SaveSystem] Loaded checkpoint='{saveData.currentCheckpointID}', scene='{saveData.currentSceneID}'");
 
             saveData.playerData.ApplyToRuntime(runtimeStats);
             LastLoadedCheckpointID = saveData.currentCheckpointID;

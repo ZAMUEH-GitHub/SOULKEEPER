@@ -19,15 +19,19 @@ public class GameSceneManager : Singleton<GameSceneManager>
     [SerializeField] private bool isLoadingScene;
     [SerializeField] private string targetDoorID;
     [SerializeField] private string targetCheckpointID;
+    [SerializeField] private Vector2 directSpawnPosition;
 
     private CanvasManager canvasManager;
     private SaveSlotManager saveSlotManager;
     private SceneDoorManager sceneDoorManager;
 
+    #region Unity Lifecycle
     protected override void Awake() => base.Awake();
     private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
     private void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
+    #endregion
 
+    #region Load Scene API
     public void LoadSceneFromDoor(SceneField scene, string targetDoor)
     {
         if (isLoadingScene) return;
@@ -43,6 +47,7 @@ public class GameSceneManager : Singleton<GameSceneManager>
     public void LoadSceneFromCheckpointSlot(int slotIndex)
     {
         if (isLoadingScene) return;
+        SessionManager.IsLoadingFromSave = true;
 
         string sceneName = SaveSystem.GetSavedScene(slotIndex);
         string checkpointID = SaveSystem.LastLoadedCheckpointID ?? SaveSystem.GetSavedCheckpoint(slotIndex);
@@ -53,12 +58,16 @@ public class GameSceneManager : Singleton<GameSceneManager>
         StartCoroutine(LoadSceneRoutine(targetScene, SceneLoadMode.CheckpointSpawn, null, checkpointID));
     }
 
-    public void LoadSceneDirect(SceneField scene)
+    public void LoadSceneDirect(SceneField scene, Vector2 spawnPosition)
     {
         if (isLoadingScene) return;
+
+        directSpawnPosition = spawnPosition;
         StartCoroutine(LoadSceneRoutine(scene, SceneLoadMode.DirectLoad, null, null));
     }
+    #endregion
 
+    #region Scene Loading Logic
     private IEnumerator LoadSceneRoutine(SceneField scene, SceneLoadMode mode, string doorID, string checkpointID)
     {
         isLoadingScene = true;
@@ -88,6 +97,8 @@ public class GameSceneManager : Singleton<GameSceneManager>
         canvasManager = CanvasManager.Instance;
         saveSlotManager = SaveSlotManager.Instance;
 
+        string loadedCheckpointID = null;
+
         if (saveSlotManager != null)
         {
             int slot = saveSlotManager.ActiveSlotIndex;
@@ -100,7 +111,10 @@ public class GameSceneManager : Singleton<GameSceneManager>
         }
 
         if (SessionManager.Instance != null && !string.IsNullOrEmpty(SessionManager.Instance.CurrentCheckpointID))
-            Checkpoint.BroadcastActivation(SessionManager.Instance.CurrentCheckpointID);
+            loadedCheckpointID = SessionManager.Instance.CurrentCheckpointID;
+
+        if (!string.IsNullOrEmpty(loadedCheckpointID))
+            targetCheckpointID = loadedCheckpointID;
 
         await PositionPlayerRootAsync();
 
@@ -114,9 +128,18 @@ public class GameSceneManager : Singleton<GameSceneManager>
         if (player != null)
             player.UnfreezeAllInputs();
 
-        isLoadingScene = false;
-    }
+        if (!string.IsNullOrEmpty(loadedCheckpointID))
+        {
+            Debug.Log($"[GameSceneManager] Broadcasting checkpoint activation for '{loadedCheckpointID}' after load (final)");
+            Checkpoint.BroadcastActivation(loadedCheckpointID);
+        }
 
+        isLoadingScene = false;
+        SessionManager.IsLoadingFromSave = false;
+    }
+    #endregion
+
+    #region Player Position & Utilities
     private async Task PositionPlayerRootAsync()
     {
         float timeout = 3f, timer = 0f;
@@ -141,7 +164,9 @@ public class GameSceneManager : Singleton<GameSceneManager>
                 {
                     try { sceneDoorManager.ChooseDoor(targetDoorID); }
                     catch (MissingReferenceException)
-                    { Debug.LogWarning("[GameSceneManager] Door reference missing during transition."); }
+                    {
+                        Debug.LogWarning("[GameSceneManager] Door reference missing during transition.");
+                    }
                 }
                 break;
 
@@ -149,19 +174,36 @@ public class GameSceneManager : Singleton<GameSceneManager>
                 if (!string.IsNullOrEmpty(targetCheckpointID))
                 {
                     var checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
+                    bool found = false;
+
                     foreach (var cp in checkpoints)
                     {
                         var checkpoint = cp.GetComponent<Checkpoint>();
                         if (checkpoint != null && checkpoint.checkpointID == targetCheckpointID)
                         {
                             player.transform.position = checkpoint.transform.position;
+                            found = true;
+                            Debug.Log($"[GameSceneManager] Loaded from checkpoint '{targetCheckpointID}' at {checkpoint.transform.position}");
                             break;
                         }
                     }
+
+                    if (!found)
+                    {
+                        Debug.LogWarning($"[GameSceneManager] Checkpoint '{targetCheckpointID}' not found in scene '{SceneManager.GetActiveScene().name}'. Spawning at (0,0).");
+                        player.transform.position = Vector2.zero;
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("[GameSceneManager] No checkpoint ID found in save data. Spawning at (0,0).");
+                    player.transform.position = Vector2.zero;
                 }
                 break;
 
             case SceneLoadMode.DirectLoad:
+                player.transform.position = directSpawnPosition;
+                Debug.Log($"[GameSceneManager] DirectLoad: Player spawned at {directSpawnPosition}");
                 break;
         }
 
@@ -173,4 +215,5 @@ public class GameSceneManager : Singleton<GameSceneManager>
         var sceneDoorObj = GameObject.FindGameObjectWithTag("Scene Door Manager");
         sceneDoorManager = sceneDoorObj ? sceneDoorObj.GetComponent<SceneDoorManager>() : null;
     }
+    #endregion
 }

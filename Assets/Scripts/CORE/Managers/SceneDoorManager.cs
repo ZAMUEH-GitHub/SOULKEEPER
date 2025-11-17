@@ -17,8 +17,6 @@ public class SceneDoorManager : MonoBehaviour
         FindAllDoors();
 
         player = GameObject.FindGameObjectWithTag("Player");
-
-        Debug.Log($"[SceneDoorManager] Initialized with {sceneDoors.Length} doors in scene '{gameObject.scene.name}'.");
     }
     #endregion
 
@@ -110,7 +108,6 @@ public class SceneDoorManager : MonoBehaviour
         if (player != null)
         {
             player.transform.position = targetDoor.transform.position;
-            Debug.Log($"[SceneDoorManager] Teleported player to '{targetDoor.name}' in scene '{gameObject.scene.name}'.");
         }
         else
         {

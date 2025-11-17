@@ -3,12 +3,14 @@ using TMPro;
 using UnityEngine.InputSystem;
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 
 [RequireComponent(typeof(Collider2D))]
 public class Checkpoint : MonoBehaviour, IInteractable
 {
     [Header("Checkpoint Settings")]
     public string checkpointID;
+    public GameObject activeObject;
     public bool isActiveCheckpoint;
 
     [Header("Interaction UI")]
@@ -18,6 +20,8 @@ public class Checkpoint : MonoBehaviour, IInteractable
 
     private SaveSlotManager saveSlotManager;
     private bool isPlayerInRange;
+
+    private static bool isSaving = false;
 
     public static event Action<string> OnCheckpointActivated;
 
@@ -31,6 +35,11 @@ public class Checkpoint : MonoBehaviour, IInteractable
             collider.isTrigger = true;
 
         SetTextInstantAlpha(interactTextMesh, 0f);
+    }
+
+    private void Update()
+    {
+        activeObject.SetActive(isActiveCheckpoint);
     }
 
     private void OnEnable()
@@ -50,6 +59,7 @@ public class Checkpoint : MonoBehaviour, IInteractable
         {
             string currentID = SessionManager.Instance.CurrentCheckpointID;
             isActiveCheckpoint = (checkpointID == currentID);
+            activeObject?.SetActive(isActiveCheckpoint);
         }
     }
 
@@ -58,31 +68,48 @@ public class Checkpoint : MonoBehaviour, IInteractable
         if (!other.CompareTag("Player")) return;
 
         isPlayerInRange = true;
-        if (!isActiveCheckpoint)
+
+        if (!isActiveCheckpoint && !SessionManager.IsLoadingFromSave)
             ShowInteractText();
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
-
         isPlayerInRange = false;
         HideInteractText();
     }
     #endregion
 
     #region Interaction System
-    public void Interact()
+    public async void Interact()
     {
-        if (!isPlayerInRange) return;
-        ActivateCheckpoint();
+        if (!isPlayerInRange || isSaving) return;
+        if (isActiveCheckpoint) return;
+        if (SessionManager.IsLoadingFromSave) return;
+
+        isSaving = true;
+        try
+        {
+            await ActivateCheckpointAsync();
+        }
+        finally
+        {
+            isSaving = false;
+        }
+
         HideInteractText();
+
+        Debug.Log($"[Checkpoint] Interact called for {checkpointID}, isActive={isActiveCheckpoint}, isLoading={SessionManager.IsLoadingFromSave}");
+
+        if (SessionManager.IsLoadingFromSave)
+        {
+            Debug.Log($"[Checkpoint] Interact ignored for {checkpointID} (still loading)");
+            return;
+        }
     }
 
-    public string GetInteractionText()
-    {
-        return $"{GetInteractionKeyName()} Save Progress";
-    }
+    public string GetInteractionText() => $"{GetInteractionKeyName()} Save Progress";
 
     private string GetInteractionKeyName()
     {
@@ -102,24 +129,43 @@ public class Checkpoint : MonoBehaviour, IInteractable
     #endregion
 
     #region Activation Logic
-    private async void ActivateCheckpoint()
+    private async Task ActivateCheckpointAsync()
     {
         int activeSlot = saveSlotManager != null ? saveSlotManager.ActiveSlotIndex : 1;
-        var runtimeStats = SessionManager.Instance.RuntimeStats;
+        var runtimeStats = SessionManager.Instance?.RuntimeStats;
+        string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
 
-        if (runtimeStats != null)
+        if (runtimeStats == null)
         {
-            string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            await SaveSystem.SaveAsync(activeSlot, runtimeStats, null, checkpointID);
-            if (!SaveSystem.SaveExists(activeSlot)) return;
-            Debug.Log($"[Checkpoint] Saved at '{checkpointID}' (Scene '{currentScene}', Slot {activeSlot})");
+            Debug.LogWarning("[Checkpoint] RuntimeStats is null, aborting save.");
+            return;
         }
 
         if (SessionManager.Instance != null)
+        {
             SessionManager.Instance.CurrentCheckpointID = checkpointID;
+            Debug.Log($"[Checkpoint] Updated SessionManager.CurrentCheckpointID -> {checkpointID}");
+        }
 
-        OnCheckpointActivated?.Invoke(checkpointID);
-        ToastPanelManager.Instance.ShowToast("Progress Saved", 3f);
+        try
+        {
+            await SaveSystem.SaveAsync(activeSlot, runtimeStats, null, checkpointID);
+
+            if (!SaveSystem.SaveExists(activeSlot))
+            {
+                Debug.LogError($"[Checkpoint] Save file missing after save attempt (Slot {activeSlot})!");
+                return;
+            }
+
+            Debug.Log($"[Checkpoint] Saved at '{checkpointID}' (Scene '{currentScene}', Slot {activeSlot})");
+
+            OnCheckpointActivated?.Invoke(checkpointID);
+            ToastPanelManager.Instance.ShowToast("Progress Saved", 3f);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[Checkpoint] Save failed for '{checkpointID}': {ex.Message}\n{ex.StackTrace}");
+        }
     }
 
     private void HandleCheckpointActivated(string activeID)

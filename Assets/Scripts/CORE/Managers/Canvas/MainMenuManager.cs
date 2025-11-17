@@ -11,8 +11,9 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] private PanelType fadePanel = PanelType.BlackScreen;
     [field: SerializeField] private PanelType currentPanel;
 
-    [Header("Scenes")]
+    [Header("New Game Defaults")]
     [SerializeField] private SceneField newGameScene;
+    [SerializeField] private Vector2 defaultSpawnPosition;
 
     private CanvasManager canvasManager;
     private GameSceneManager gameSceneManager;
@@ -155,9 +156,14 @@ public class MainMenuManager : Singleton<MainMenuManager>
         }
 
         if (gameSceneManager != null)
-            gameSceneManager.LoadSceneFromDoor(newGameScene, "Cathedral_StartDoor");
+        {
+            gameSceneManager.LoadSceneDirect(newGameScene, defaultSpawnPosition);
+            Debug.Log($"[MainMenuManager] Starting new game at {defaultSpawnPosition}");
+        }
         else
+        {
             Debug.LogError("[MainMenuManager] GameSceneManager.Instance not found!");
+        }
     }
     #endregion
 
@@ -173,30 +179,30 @@ public class MainMenuManager : Singleton<MainMenuManager>
         saveSlotManager ??= SaveSlotManager.Instance;
         saveSlotManager.SetActiveSlot(slotIndex);
 
-        string savedScene = SaveSystem.GetSavedScene(slotIndex);
-        string savedDoor = SaveSystem.GetSavedDoor(slotIndex);
-
-        if (string.IsNullOrEmpty(savedScene))
-        {
-            Debug.LogError("[MainMenuManager] Save data missing scene info!");
-            return;
-        }
-
-        StartCoroutine(LoadSavedGameRoutine(savedScene, savedDoor));
-    }
-
-    private IEnumerator LoadSavedGameRoutine(SceneField savedScene, string savedDoor)
-    {
         if (canvasManager != null)
         {
             canvasManager.FadeIn(fadePanel);
-            yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
+            StartCoroutine(LoadSavedGameRoutine(slotIndex));
         }
+        else
+        {
+            StartCoroutine(LoadSavedGameRoutine(slotIndex));
+        }
+    }
+
+    private IEnumerator LoadSavedGameRoutine(int slotIndex)
+    {
+        yield return new WaitForSeconds(canvasManager?.GetFadeDuration(fadePanel) ?? 0.5f);
 
         if (gameSceneManager != null)
-            gameSceneManager.LoadSceneFromCheckpoint(savedScene);
+        {
+            gameSceneManager.LoadSceneFromCheckpointSlot(slotIndex);
+            Debug.Log($"[MainMenuManager] Loading game from slot {slotIndex}...");
+        }
         else
+        {
             Debug.LogError("[MainMenuManager] GameSceneManager.Instance not found!");
+        }
     }
     #endregion
 

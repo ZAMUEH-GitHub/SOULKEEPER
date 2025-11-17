@@ -157,7 +157,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
             yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
         }
 
-        sceneManager?.LoadSceneDirect(mainMenuScene);
+        sceneManager?.LoadSceneDirect(mainMenuScene, Vector2.zero);
     }
     #endregion
 
