@@ -8,9 +8,10 @@ public class SingletonManager : Singleton<SingletonManager>
     [Header("UI & Manager References")]
     public GameObject _GameManager;
     public GameObject _GameSceneManager;
+    public GameObject _SessionManager;
+    public GameObject _CheckpointManager;
     public GameObject _AudioManager;
     public GameObject _TimeManager;
-    public GameObject _SessionManager;
     public GameObject _SaveSlotManager;
     public GameObject _CanvasGroup;
     public GameObject _GlobalCanvas;
@@ -63,8 +64,6 @@ public class SingletonManager : Singleton<SingletonManager>
     #region PlayerRoot Management
     private void SpawnPlayerRoot()
     {
-        Debug.Log("[SingletonManager] Spawning PlayerRoot");
-
         if (_PlayerRootPrefab == null)
         {
             Debug.LogError("[SingletonManager] PlayerRoot prefab is missing!");

@@ -12,13 +12,13 @@ public class AreaTitlePanelManager : Singleton<AreaTitlePanelManager>
 
     [Header("Display Settings")]
     [Tooltip("How long the title card remains visible before fading out.")]
-    [SerializeField] private float defaultDisplayDuration = 2.5f;
+    [SerializeField] private float defaultDisplayDuration = 5f;
     [Tooltip("Delay before subtitle fades in after title.")]
-    [SerializeField] private float subtitleFadeDelay = 0.5f;
+    [SerializeField] private float subtitleFadeDelay = 1f;
 
     private Coroutine currentRoutine;
 
-    public void ShowAreaTitle(string title, string subtitle = "", float displayDuration = -1f)
+    public void ShowAreaTitle(string title, string subtitle, float displayDuration)
     {
         if (titleText == null)
         {
@@ -29,7 +29,7 @@ public class AreaTitlePanelManager : Singleton<AreaTitlePanelManager>
         if (displayDuration <= 0f)
             displayDuration = defaultDisplayDuration;
 
-        titleText.text = title.ToUpperInvariant();
+        titleText.text = title;
 
         if (subtitleText != null)
         {

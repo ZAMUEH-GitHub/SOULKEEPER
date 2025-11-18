@@ -86,13 +86,11 @@ public static class SaveSystem
             });
 
             stopwatch.Stop();
-            Debug.Log($"[SaveSystem] Save complete in {stopwatch.ElapsedMilliseconds} ms, flushing to disk.");
 
             try
             {
                 string verifyJson = File.ReadAllText(path);
                 GameSaveData verifyData = JsonUtility.FromJson<GameSaveData>(verifyJson);
-                Debug.Log($"[SaveSystem] File verification: checkpoint='{verifyData.currentCheckpointID}', scene='{verifyData.currentSceneID}'");
             }
             catch (Exception ex)
             {
@@ -122,7 +120,6 @@ public static class SaveSystem
 
             string json = await File.ReadAllTextAsync(path);
             stopwatch.Stop();
-            Debug.Log($"[SaveSystem] Load file read in {stopwatch.ElapsedMilliseconds} ms.");
 
             if (string.IsNullOrEmpty(json))
             {
@@ -136,8 +133,6 @@ public static class SaveSystem
                 Debug.LogError($"[SaveSystem] Failed to parse save data for slot {slotIndex}");
                 return;
             }
-
-            Debug.Log($"[SaveSystem] Loaded checkpoint='{saveData.currentCheckpointID}', scene='{saveData.currentSceneID}'");
 
             saveData.playerData.ApplyToRuntime(runtimeStats);
             LastLoadedCheckpointID = saveData.currentCheckpointID;

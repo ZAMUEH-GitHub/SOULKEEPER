@@ -6245,9 +6245,10 @@ MonoBehaviour:
   _PlayerRootPrefab: {fileID: 5228247828123624382, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
   _GameManager: {fileID: 4809404467411561521}
   _GameSceneManager: {fileID: 7800335129840301034}
+  _SessionManager: {fileID: 1929322208758484817}
+  _CheckpointManager: {fileID: 8988156418122630399}
   _AudioManager: {fileID: 8962481308810028092}
   _TimeManager: {fileID: 2446640515453210229}
-  _SessionManager: {fileID: 1929322208758484817}
   _SaveSlotManager: {fileID: 2826421974173534316}
   _CanvasGroup: {fileID: 4991396322297136613}
   _GlobalCanvas: {fileID: 2634737170496486510}
@@ -10554,10 +10555,10 @@ Transform:
   - {fileID: 8907322033696831806}
   - {fileID: 8218138128076967331}
   - {fileID: 1053294794107167173}
+  - {fileID: 8504920242296787321}
   - {fileID: 554592594980798668}
   - {fileID: 7395049817852654350}
   - {fileID: 5235400610336440719}
-  - {fileID: 8504920242296787321}
   m_Father: {fileID: 602839755588710408}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2142286974824368016
@@ -15950,7 +15951,7 @@ MonoBehaviour:
   newGameScene:
     _sceneAsset: {fileID: 102900000, guid: 070f3d35612ad2846b21ab3828a2b878, type: 3}
     _sceneName: TheCathedralOfTheLost
-  defaultSpawnPosition: {x: 0, y: 0}
+  defaultSpawnPosition: {x: -75, y: -30}
 --- !u!114 &1602149875819462967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27480,14 +27481,14 @@ RectTransform:
   m_GameObject: {fileID: 5681990486698465426}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_LocalScale: {x: 0.5, y: 0.35, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7300150065955371367}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -386}
+  m_AnchoredPosition: {x: 0, y: -480}
   m_SizeDelta: {x: 1110, y: 476}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3249444324398550620
@@ -28161,7 +28162,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5733389232669152148}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -28192,7 +28193,7 @@ RectTransform:
   m_GameObject: {fileID: 5931092334319572733}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7300150065955371367}
@@ -28628,8 +28629,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -635}
-  m_SizeDelta: {x: 1000, y: 100}
+  m_AnchoredPosition: {x: 0, y: -625}
+  m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2639535751441752375
 CanvasRenderer:
@@ -28659,7 +28660,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Toast Message
+  m_text: SubTitle Message
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: edb098b62a69fdf47b9856cbdf28c438, type: 2}
   m_sharedMaterial: {fileID: 5537059235265448142, guid: edb098b62a69fdf47b9856cbdf28c438, type: 2}
@@ -28686,8 +28687,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -33846,7 +33847,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7199603868669616073}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -36944,8 +36945,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -415}
-  m_SizeDelta: {x: 1000, y: 250}
+  m_AnchoredPosition: {x: 0, y: -450}
+  m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &334561712390686213
 CanvasRenderer:
@@ -36975,7 +36976,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Title Message
+  m_text: 'Title Message
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: edb098b62a69fdf47b9856cbdf28c438, type: 2}
   m_sharedMaterial: {fileID: 5537059235265448142, guid: edb098b62a69fdf47b9856cbdf28c438, type: 2}
@@ -37002,8 +37005,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 75
+  m_fontSizeBase: 75
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -38872,6 +38875,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f890c9b17a9baf4db215a332468b360, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <ActiveCheckpointID>k__BackingField: 
+  <ActiveSceneName>k__BackingField: 
 --- !u!1 &9003084492244854393
 GameObject:
   m_ObjectHideFlags: 0
@@ -39035,14 +39040,14 @@ RectTransform:
   m_GameObject: {fileID: 9006735261224711789}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.5, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7300150065955371367}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -678}
+  m_AnchoredPosition: {x: 0, y: -620}
   m_SizeDelta: {x: 1110, y: 476}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7115077567498218685

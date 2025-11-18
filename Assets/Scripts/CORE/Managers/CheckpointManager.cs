@@ -29,8 +29,6 @@ public class CheckpointManager : Singleton<CheckpointManager>
 
         if (SessionManager.Instance != null)
             SessionManager.Instance.CurrentCheckpointID = checkpointID;
-
-        Debug.Log($"[CheckpointManager] Active checkpoint set to '{checkpointID}' in scene '{ActiveSceneName}'");
     }
 
     public bool IsCheckpointActive(string checkpointID)

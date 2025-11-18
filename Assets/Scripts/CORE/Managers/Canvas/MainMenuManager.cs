@@ -158,7 +158,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
         if (gameSceneManager != null)
         {
             gameSceneManager.LoadSceneDirect(newGameScene, defaultSpawnPosition);
-            Debug.Log($"[MainMenuManager] Starting new game at {defaultSpawnPosition}");
         }
         else
         {
@@ -197,7 +196,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
         if (gameSceneManager != null)
         {
             gameSceneManager.LoadSceneFromCheckpointSlot(slotIndex);
-            Debug.Log($"[MainMenuManager] Loading game from slot {slotIndex}...");
         }
         else
         {
