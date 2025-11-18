@@ -12,13 +12,11 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     private float nextDamage;
     public bool isKnockedBack;
 
-    [Header("GameObjects & Particle Systems")]
-    public GameObject soulObject;
+    [Header("Damage Particles")]
     public ParticleSystem damageParticles;
-    public ParticleSystem deathParticles;
 
     #region Script and Component References
-
+    private PlayerDeathController deathController;
     private PlayerController playerController;
     private PlayerDashController dashController;
     private Coroutine takeDamageCoroutine;
@@ -38,6 +36,7 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
         }
 
         playerController = GetComponent<PlayerController>();
+        deathController = GetComponent<PlayerDeathController>();
         dashController = GetComponent<PlayerDashController>();
         playerSprite = GetComponent<SpriteRenderer>();
         playerRB = GetComponent<Rigidbody2D>();
@@ -50,7 +49,6 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     }
 
     #region Knockback System
-
     public void Knockback(Vector2 knockbackVector, float knockbackForce, float knockbackDuration)
     {
         playerRB.AddForce(knockbackVector * knockbackForce, ForceMode2D.Impulse);
@@ -68,7 +66,6 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     #endregion
 
     #region Damage System
-
     public void TakeDamage(int damage, Vector2 damageVector)
     {
         Quaternion particleRotation = Quaternion.FromToRotation(Vector2.up, damageVector);
@@ -84,7 +81,6 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
         }
     }
 
-
     private IEnumerator ExecuteTakeDamage(int damage)
     {
         isTakingDamage = true;
@@ -99,20 +95,11 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
 
         if (playerHealth <= 0)
         {
-            Die();
+            //animator.SetTrigger("PlayerDeath");
+            playerController.FreezeAllInputs();
+
+            deathController.Die();      // Later called by Unity Animation Event
         }
     }
-
     #endregion
-
-    public void Die()
-    {
-        Instantiate(deathParticles, transform.position, Quaternion.identity);
-
-        for (int i = playerStats.score / 2; i > 0; i--)
-        {
-            GameObject soul = Instantiate(soulObject, transform.position, Quaternion.identity);
-            soul.transform.position = new Vector2(soul.transform.position.x + Random.Range(-2f, 2f), soul.transform.position.y + Random.Range(-1.5f, 2f));
-        }
-    }
 }

@@ -826,6 +826,7 @@ GameObject:
   - component: {fileID: 1003027536863533161}
   - component: {fileID: 5606568071707045412}
   - component: {fileID: 6199559819824216539}
+  - component: {fileID: 7072641820542826019}
   - component: {fileID: 1763274598465813667}
   - component: {fileID: 8654101761734434305}
   - component: {fileID: 5733063978835050522}
@@ -968,9 +969,22 @@ MonoBehaviour:
   playerStats: {fileID: 0}
   isTakingDamage: 0
   isKnockedBack: 0
-  soulObject: {fileID: 7296185017180021397, guid: 44300729b2eb8f64eb9c3d31a04fad52, type: 3}
   damageParticles: {fileID: 487942289725805393, guid: 1c785a88208007844aa5f5015a062b0b, type: 3}
+--- !u!114 &7072641820542826019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7813038737202545121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98ab16f75fb5cca43bd6ccf58cf0001a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 0}
   deathParticles: {fileID: 4231633206474095276, guid: 8eccf4353e5e4424293a563851595620, type: 3}
+  soulObject: {fileID: 7296185017180021397, guid: 44300729b2eb8f64eb9c3d31a04fad52, type: 3}
 --- !u!114 &1763274598465813667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1009,6 +1023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5616257d6ff6f7e44a0708d78ea86d28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attached: 0
 --- !u!114 &5476610616298259296
 MonoBehaviour:
   m_ObjectHideFlags: 0

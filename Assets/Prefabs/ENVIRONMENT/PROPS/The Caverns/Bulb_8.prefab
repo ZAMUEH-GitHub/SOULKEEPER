@@ -221,6 +221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92183b3f49015684cb69786a0fb6bc52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulbKnockbackForce: 10
+  bulbKnockbackDuration: 0.5
   bulbHitParticles: {fileID: 4467302524969899854}
 --- !u!1 &3656355456723730648
 GameObject:
@@ -328,7 +330,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1253664111215312162, guid: f172ae387b8a7b14887113392fa7f482, type: 3}
       propertyPath: ShapeModule.radiusThickness
-      value: 0.25
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1319777471775451800, guid: f172ae387b8a7b14887113392fa7f482, type: 3}
       propertyPath: m_Name

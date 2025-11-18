@@ -361,6 +361,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92183b3f49015684cb69786a0fb6bc52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulbKnockbackForce: 10
+  bulbKnockbackDuration: 0.5
   bulbHitParticles: {fileID: 5715493158453320582}
 --- !u!1001 &6788167512080901796
 PrefabInstance:
@@ -371,8 +373,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 7071026498332932034}
     m_Modifications:
     - target: {fileID: 1253664111215312162, guid: f172ae387b8a7b14887113392fa7f482, type: 3}
+      propertyPath: lengthInSec
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1253664111215312162, guid: f172ae387b8a7b14887113392fa7f482, type: 3}
       propertyPath: ShapeModule.radius.value
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1253664111215312162, guid: f172ae387b8a7b14887113392fa7f482, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 1253664111215312162, guid: f172ae387b8a7b14887113392fa7f482, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits

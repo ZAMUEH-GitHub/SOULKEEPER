@@ -29,8 +29,10 @@ public class SoulCollectible : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        PlayerController player = collision.GetComponent<PlayerController>(); 
+        if (collision.CompareTag("Player") || player != null)
         {
+            player.playerRuntimeStats.score += collectibleScore;
             Destroy(gameObject);
         }
     }
