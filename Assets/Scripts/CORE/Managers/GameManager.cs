@@ -96,10 +96,10 @@ public class GameManager : Singleton<GameManager>
         EnterGameplay();
     }
 
-    public void LoadGame(int slotIndex)
+    public async void LoadGame(int slotIndex)
     {
         sessionManager.StartSession(basePlayerStats);
-        SaveSystem.Load(slotIndex, sessionManager.RuntimeStats);
+        await SaveSystem.LoadAsync(slotIndex, sessionManager.RuntimeStats);
         EnterGameplay();
     }
 

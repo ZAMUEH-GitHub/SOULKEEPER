@@ -17,8 +17,6 @@ public class SceneDoorManager : MonoBehaviour
         FindAllDoors();
 
         player = GameObject.FindGameObjectWithTag("Player");
-
-        Debug.Log($"[SceneDoorManager] Initialized with {sceneDoors.Length} doors in scene '{gameObject.scene.name}'.");
     }
     #endregion
 
@@ -32,7 +30,7 @@ public class SceneDoorManager : MonoBehaviour
             Debug.LogWarning($"[SceneDoorManager] No doors found in scene '{gameObject.scene.name}'.");
     }
 
-    public void RegisterDoorUse(string doorID)
+    public async void RegisterDoorUse(string doorID)
     {
         lastUsedDoorID = doorID;
 
@@ -51,7 +49,7 @@ public class SceneDoorManager : MonoBehaviour
         }
 
         int slot = saveSlotManager.ActiveSlotIndex;
-        SaveSystem.Save(slot, runtimeStats, doorID);
+        await SaveSystem.SaveAsync(slot, runtimeStats, doorID, null);
     }
 
     public void ChooseDoor(string targetDoorID)
@@ -110,7 +108,6 @@ public class SceneDoorManager : MonoBehaviour
         if (player != null)
         {
             player.transform.position = targetDoor.transform.position;
-            Debug.Log($"[SceneDoorManager] Teleported player to '{targetDoor.name}' in scene '{gameObject.scene.name}'.");
         }
         else
         {

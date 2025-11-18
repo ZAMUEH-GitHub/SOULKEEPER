@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +10,9 @@ public static class SaveSystem
     private const int MaxSlots = 3;
     private const int CurrentVersion = 1;
 
-    public static async void Save(int slotIndex, PlayerStatsSO runtimeStats, string currentDoorID = "Cathedral_StartDoor")
+    public static string LastLoadedCheckpointID { get; private set; }
+
+    public static async Task SaveAsync(int slotIndex, PlayerStatsSO runtimeStats, string currentDoorID = null, string currentCheckpointID = null)
     {
         if (slotIndex < 1 || slotIndex > MaxSlots)
         {
@@ -17,20 +20,35 @@ public static class SaveSystem
             return;
         }
 
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
         try
         {
+            if (runtimeStats == null)
+            {
+                Debug.LogWarning("[SaveSystem] RuntimeStats is null, aborting save.");
+                return;
+            }
+
             if (!Directory.Exists(SaveFolder))
                 Directory.CreateDirectory(SaveFolder);
 
-            float previousPlaytime = 0f;
             string path = GetSlotPath(slotIndex);
+            float previousPlaytime = 0f;
 
             if (File.Exists(path))
             {
-                string oldJson = File.ReadAllText(path);
-                GameSaveData oldData = JsonUtility.FromJson<GameSaveData>(oldJson);
-                if (oldData != null)
-                    previousPlaytime = oldData.totalPlaytime;
+                try
+                {
+                    string oldJson = await File.ReadAllTextAsync(path);
+                    GameSaveData oldData = JsonUtility.FromJson<GameSaveData>(oldJson);
+                    if (oldData != null)
+                        previousPlaytime = oldData.totalPlaytime;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"[SaveSystem] Failed to read old save data: {ex.Message}");
+                }
             }
 
             float updatedPlaytime = previousPlaytime + TimeManager.Instance.GetTotalPlaytime();
@@ -38,8 +56,9 @@ public static class SaveSystem
             GameSaveData saveData = new GameSaveData
             {
                 playerData = new PlayerSaveData(),
-                currentScene = SceneManager.GetActiveScene().name,
+                currentSceneID = SceneManager.GetActiveScene().name,
                 lastDoorID = currentDoorID,
+                currentCheckpointID = currentCheckpointID,
                 totalPlaytime = updatedPlaytime,
                 timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 version = CurrentVersion
@@ -55,19 +74,43 @@ public static class SaveSystem
 
             string json = JsonUtility.ToJson(saveData, true);
 
-            using (StreamWriter writer = new StreamWriter(path, false))
-                await writer.WriteAsync(json);
+            await Task.Run(() =>
+            {
+                using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
+                using (var writer = new StreamWriter(fs))
+                {
+                    writer.Write(json);
+                    writer.Flush();
+                    fs.Flush(true);
+                }
+            });
+
+            stopwatch.Stop();
+            Debug.Log($"[SaveSystem] Save complete in {stopwatch.ElapsedMilliseconds} ms, flushing to disk.");
+
+            try
+            {
+                string verifyJson = File.ReadAllText(path);
+                GameSaveData verifyData = JsonUtility.FromJson<GameSaveData>(verifyJson);
+                Debug.Log($"[SaveSystem] File verification: checkpoint='{verifyData.currentCheckpointID}', scene='{verifyData.currentSceneID}'");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[SaveSystem] Verification read failed: {ex.Message}");
+            }
 
             TimeManager.Instance.ResetPlaytime();
         }
         catch (Exception ex)
         {
-            Debug.LogError($"[SaveSystem] Error saving slot {slotIndex}: {ex.Message}");
+            Debug.LogError($"[SaveSystem] Error saving slot {slotIndex}: {ex.Message}\n{ex.StackTrace}");
         }
     }
 
-    public static async void Load(int slotIndex, PlayerStatsSO runtimeStats)
+    public static async Task LoadAsync(int slotIndex, PlayerStatsSO runtimeStats)
     {
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
         try
         {
             string path = GetSlotPath(slotIndex);
@@ -77,10 +120,14 @@ public static class SaveSystem
                 return;
             }
 
-            string json;
-            using (StreamReader reader = new StreamReader(path))
+            string json = await File.ReadAllTextAsync(path);
+            stopwatch.Stop();
+            Debug.Log($"[SaveSystem] Load file read in {stopwatch.ElapsedMilliseconds} ms.");
+
+            if (string.IsNullOrEmpty(json))
             {
-                json = await reader.ReadToEndAsync();
+                Debug.LogError($"[SaveSystem] Empty save file for slot {slotIndex}");
+                return;
             }
 
             GameSaveData saveData = JsonUtility.FromJson<GameSaveData>(json);
@@ -90,18 +137,14 @@ public static class SaveSystem
                 return;
             }
 
-            if (saveData.version < CurrentVersion)
-            {
-                Debug.Log($"[SaveSystem] Upgrading slot {slotIndex} from version {saveData.version} to {CurrentVersion}");
-                UpgradeSaveData(ref saveData);
-            }
+            Debug.Log($"[SaveSystem] Loaded checkpoint='{saveData.currentCheckpointID}', scene='{saveData.currentSceneID}'");
 
             saveData.playerData.ApplyToRuntime(runtimeStats);
+            LastLoadedCheckpointID = saveData.currentCheckpointID;
 
             foreach (var altar in UnityEngine.Object.FindObjectsByType<AltarController>(FindObjectsSortMode.None))
             {
                 if (altar == null || altar.altarSO == null) continue;
-
                 var data = saveData.altarData.Find(a => a.altarID == altar.altarSO.displayName);
                 if (data != null)
                     altar.FromSaveData(data);
@@ -111,7 +154,7 @@ public static class SaveSystem
         }
         catch (Exception ex)
         {
-            Debug.LogError($"[SaveSystem] Error loading slot {slotIndex}: {ex.Message}");
+            Debug.LogError($"[SaveSystem] Error loading slot {slotIndex}: {ex.Message}\n{ex.StackTrace}");
         }
     }
 
@@ -125,13 +168,13 @@ public static class SaveSystem
             string json = File.ReadAllText(GetSlotPath(slotIndex));
             GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
 
-            if (!SceneExistsInBuild(data.currentScene))
+            if (!SceneExistsInBuild(data.currentSceneID))
             {
-                Debug.LogWarning($"[SaveSystem] Scene '{data.currentScene}' not found in build settings!");
+                Debug.LogWarning($"[SaveSystem] Scene '{data.currentSceneID}' not found in build settings!");
                 return null;
             }
 
-            return data.currentScene;
+            return data.currentSceneID;
         }
         catch (Exception ex)
         {
@@ -148,6 +191,21 @@ public static class SaveSystem
             string json = File.ReadAllText(GetSlotPath(slotIndex));
             GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
             return data.lastDoorID;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public static string GetSavedCheckpoint(int slotIndex)
+    {
+        try
+        {
+            if (!SaveExists(slotIndex)) return null;
+            string json = File.ReadAllText(GetSlotPath(slotIndex));
+            GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
+            return data.currentCheckpointID;
         }
         catch
         {
@@ -182,7 +240,7 @@ public static class SaveSystem
             GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
             if (data == null) return (false, "", "", 0f);
 
-            return (true, data.currentScene, data.timestamp, data.totalPlaytime);
+            return (true, data.currentSceneID, data.timestamp, data.totalPlaytime);
         }
         catch (Exception ex)
         {

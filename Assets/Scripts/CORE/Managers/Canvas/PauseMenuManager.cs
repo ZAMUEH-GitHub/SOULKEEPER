@@ -21,6 +21,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [SerializeField] private SceneField mainMenuScene;
 
     private bool isPaused;
+    private bool isSaving = false;
     private GameObject gameplayCanvas;
 
     private CanvasManager canvasManager;
@@ -156,13 +157,16 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
             yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
         }
 
-        sceneManager?.LoadSceneDirect(mainMenuScene);
+        sceneManager?.LoadSceneDirect(mainMenuScene, Vector2.zero);
     }
     #endregion
 
     #region Save Logic
     public void OnSaveGame()
     {
+        if (isSaving) return;
+        isSaving = true;
+
         var stats = SessionManager.Instance.RuntimeStats;
         if (stats == null)
         {
@@ -177,9 +181,10 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
             canvasManager.ShowConfirmation(
                 "SAVE GAME?",
                 $"Do you want to save your progress to Slot {slot}?",
-                () =>
+                async () =>
                 {
-                    SaveSystem.Save(slot, stats);
+                    await SaveSystem.SaveAsync(slot, stats);
+                    isSaving = false; 
                     Debug.Log($"[PauseMenuManager] Game saved to slot {slot}.");
                     canvasManager.ShowToast("Progress Saved", 3f);
                 },
@@ -188,7 +193,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         }
         else
         {
-            SaveSystem.Save(slot, stats);
+            _ = SaveSystem.SaveAsync(slot, stats, null, null);
             Debug.Log($"[PauseMenuManager] Game saved to slot {slot} (no canvas).");
         }
     }
