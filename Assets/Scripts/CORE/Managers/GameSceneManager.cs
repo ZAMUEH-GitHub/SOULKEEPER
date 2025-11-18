@@ -115,6 +115,9 @@ public class GameSceneManager : Singleton<GameSceneManager>
 
         await PositionPlayerRootAsync();
 
+        var sceneCheckpointManager = Object.FindFirstObjectByType<SceneCheckpointManager>();
+        sceneCheckpointManager?.RefreshActiveCheckpoint();
+
         if (canvasManager != null)
         {
             canvasManager.FadeOut(PanelType.BlackScreen);

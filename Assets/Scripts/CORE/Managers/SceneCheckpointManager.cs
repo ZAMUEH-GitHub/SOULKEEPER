@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,8 +15,9 @@ public class SceneCheckpointManager : MonoBehaviour
     }
 
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return null;
         RefreshActiveCheckpoint();
     }
 

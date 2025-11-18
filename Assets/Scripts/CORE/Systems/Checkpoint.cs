@@ -20,6 +20,7 @@ public class Checkpoint : MonoBehaviour, IInteractable
     private SaveSlotManager saveSlotManager;
     private bool isPlayerInRange;
     private static bool isSaving;
+    private Coroutine fadeRoutine;
 
     #region Unity Lifecycle
     private void Awake()
@@ -50,7 +51,8 @@ public class Checkpoint : MonoBehaviour, IInteractable
         if (!other.CompareTag("Player")) return;
 
         isPlayerInRange = true;
-        if (!isActiveCheckpoint && !SessionManager.IsLoadingFromSave)
+
+        if (!SessionManager.IsLoadingFromSave)
             ShowInteractText();
     }
 
@@ -66,7 +68,7 @@ public class Checkpoint : MonoBehaviour, IInteractable
     #region Interaction
     public async void Interact()
     {
-        if (!isPlayerInRange || isSaving || isActiveCheckpoint) return;
+        if (!isPlayerInRange || isSaving) return;
         if (SessionManager.IsLoadingFromSave) return;
 
         isSaving = true;
@@ -102,7 +104,10 @@ public class Checkpoint : MonoBehaviour, IInteractable
         await SaveSystem.SaveAsync(slot, runtimeStats, null, checkpointID);
 
         FindFirstObjectByType<SceneCheckpointManager>()?.NotifyCheckpointActivated(this);
-        ToastPanelManager.Instance?.ShowToast("Progress Saved", 3f);
+        ToastPanelManager.Instance?.ShowToast(
+            isActiveCheckpoint ? "Progress Updated" : "Progress Saved",
+            3f
+        );
 
         Debug.Log($"[Checkpoint] Activated '{checkpointID}' in scene '{sceneName}'.");
     }
@@ -120,9 +125,8 @@ public class Checkpoint : MonoBehaviour, IInteractable
         if (!gameObject.activeInHierarchy || interactTextMesh == null)
             return;
 
-        if (!interactTextMesh) return;
         interactTextMesh.text = GetInteractionText();
-        StartCoroutine(FadeText(interactTextMesh, 1f, false));
+        StartFade(1f, false);
     }
 
     private void HideInteractText()
@@ -130,36 +134,44 @@ public class Checkpoint : MonoBehaviour, IInteractable
         if (!gameObject.activeInHierarchy || interactTextMesh == null)
             return;
 
-        StartCoroutine(FadeText(interactTextMesh, 0f, true));
+        StartFade(0f, true);
     }
 
-    private string GetInteractionKeyName()
+    private void StartFade(float targetAlpha, bool disableAfter)
     {
-        if (interactActionRef == null || interactActionRef.action == null)
-            return "(E)";
-        try { return $"({interactActionRef.action.GetBindingDisplayString()})"; }
-        catch { return "(E)"; }
+        if (fadeRoutine != null)
+            StopCoroutine(fadeRoutine);
+
+        fadeRoutine = StartCoroutine(FadeText(interactTextMesh, targetAlpha, disableAfter));
     }
 
     private IEnumerator FadeText(TextMeshPro text, float targetAlpha, bool disableAfter)
     {
         if (!text) yield break;
         text.gameObject.SetActive(true);
-        Color c = text.color;
-        float start = c.a, t = 0f;
 
-        while (t < fadeDuration)
+        Color c = text.color;
+        float startAlpha = c.a;
+        float time = 0f;
+
+        while (time < fadeDuration)
         {
-            c.a = Mathf.Lerp(start, targetAlpha, t / fadeDuration);
+            if (!gameObject.activeInHierarchy) yield break;
+
+            time += Time.deltaTime;
+            float t = Mathf.Clamp01(time / fadeDuration);
+            c.a = Mathf.Lerp(startAlpha, targetAlpha, t);
             text.color = c;
-            t += Time.deltaTime;
             yield return null;
         }
 
         c.a = targetAlpha;
         text.color = c;
-        if (disableAfter && targetAlpha == 0f)
+
+        if (disableAfter && Mathf.Approximately(targetAlpha, 0f))
             text.gameObject.SetActive(false);
+
+        fadeRoutine = null;
     }
 
     private void SetTextInstantAlpha(TextMeshPro text, float alpha)
@@ -169,6 +181,14 @@ public class Checkpoint : MonoBehaviour, IInteractable
         c.a = alpha;
         text.color = c;
         text.gameObject.SetActive(alpha > 0f);
+    }
+
+    private string GetInteractionKeyName()
+    {
+        if (interactActionRef == null || interactActionRef.action == null)
+            return "(E)";
+        try { return $"({interactActionRef.action.GetBindingDisplayString()})"; }
+        catch { return "(E)"; }
     }
     #endregion
 }

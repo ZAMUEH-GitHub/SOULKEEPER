@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class CheckpointManager : Singleton<CheckpointManager>
 {
-    protected override bool IsPersistent => true;
+    protected override bool IsPersistent => false;
 
     [field: SerializeField] public string ActiveCheckpointID { get; private set; }
     [field: SerializeField] public string ActiveSceneName { get; private set; }
