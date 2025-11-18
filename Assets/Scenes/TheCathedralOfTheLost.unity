@@ -6402,6 +6402,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CHECKPOINT_1
       objectReference: {fileID: 0}
+    - target: {fileID: 6086955494362737723, guid: 1d6cf6dc2b94b48478e1bae1e9a32ec5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8851255933523667936, guid: 1d6cf6dc2b94b48478e1bae1e9a32ec5, type: 3}
       propertyPath: checkpointID
       value: Cathedral_Left
@@ -16512,6 +16516,10 @@ PrefabInstance:
     - target: {fileID: 4955942646237127473, guid: 1d6cf6dc2b94b48478e1bae1e9a32ec5, type: 3}
       propertyPath: m_Name
       value: CHECKPOINT_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6086955494362737723, guid: 1d6cf6dc2b94b48478e1bae1e9a32ec5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8851255933523667936, guid: 1d6cf6dc2b94b48478e1bae1e9a32ec5, type: 3}
       propertyPath: checkpointID
@@ -26624,6 +26632,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CHECKPOINT_2
       objectReference: {fileID: 0}
+    - target: {fileID: 6086955494362737723, guid: 1d6cf6dc2b94b48478e1bae1e9a32ec5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8851255933523667936, guid: 1d6cf6dc2b94b48478e1bae1e9a32ec5, type: 3}
       propertyPath: checkpointID
       value: Cathedral_TopRight
@@ -29298,6 +29310,10 @@ PrefabInstance:
     - target: {fileID: 4955942646237127473, guid: 1d6cf6dc2b94b48478e1bae1e9a32ec5, type: 3}
       propertyPath: m_Name
       value: CHECKPOINT_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6086955494362737723, guid: 1d6cf6dc2b94b48478e1bae1e9a32ec5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8851255933523667936, guid: 1d6cf6dc2b94b48478e1bae1e9a32ec5, type: 3}
       propertyPath: checkpointID
@@ -38135,6 +38151,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecaf6f33d80eb16498baece2d2032135, type: 3}
+--- !u!1001 &322779450526258033
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7244808403086515413, guid: 6f979d269f319ca439770958f8dcea20, type: 3}
+      propertyPath: m_Name
+      value: SCENE CHECKPOINT MANAGER
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243317638103798481, guid: 6f979d269f319ca439770958f8dcea20, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243317638103798481, guid: 6f979d269f319ca439770958f8dcea20, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243317638103798481, guid: 6f979d269f319ca439770958f8dcea20, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243317638103798481, guid: 6f979d269f319ca439770958f8dcea20, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243317638103798481, guid: 6f979d269f319ca439770958f8dcea20, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243317638103798481, guid: 6f979d269f319ca439770958f8dcea20, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243317638103798481, guid: 6f979d269f319ca439770958f8dcea20, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243317638103798481, guid: 6f979d269f319ca439770958f8dcea20, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243317638103798481, guid: 6f979d269f319ca439770958f8dcea20, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243317638103798481, guid: 6f979d269f319ca439770958f8dcea20, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6f979d269f319ca439770958f8dcea20, type: 3}
 --- !u!1001 &1509936277787511403
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38868,6 +38941,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CHECKPOINT
       objectReference: {fileID: 0}
+    - target: {fileID: 6086955494362737723, guid: 1d6cf6dc2b94b48478e1bae1e9a32ec5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8851255933523667936, guid: 1d6cf6dc2b94b48478e1bae1e9a32ec5, type: 3}
       propertyPath: checkpointID
       value: Cathedral_Center
@@ -38949,6 +39026,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 334219841}
+  - {fileID: 322779450526258033}
   - {fileID: 1404195978}
   - {fileID: 2014808294}
   - {fileID: 1111648609}

@@ -61,7 +61,6 @@ public class GameSceneManager : Singleton<GameSceneManager>
     public void LoadSceneDirect(SceneField scene, Vector2 spawnPosition)
     {
         if (isLoadingScene) return;
-
         directSpawnPosition = spawnPosition;
         StartCoroutine(LoadSceneRoutine(scene, SceneLoadMode.DirectLoad, null, null));
     }
@@ -80,7 +79,6 @@ public class GameSceneManager : Singleton<GameSceneManager>
             canvasManager.FadeIn(PanelType.BlackScreen);
 
         yield return new WaitForSeconds(canvasManager?.GetFadeDuration(PanelType.BlackScreen) ?? 0.5f);
-
         SceneManager.LoadScene(scene);
     }
 
@@ -97,8 +95,6 @@ public class GameSceneManager : Singleton<GameSceneManager>
         canvasManager = CanvasManager.Instance;
         saveSlotManager = SaveSlotManager.Instance;
 
-        string loadedCheckpointID = null;
-
         if (saveSlotManager != null)
         {
             int slot = saveSlotManager.ActiveSlotIndex;
@@ -107,14 +103,15 @@ public class GameSceneManager : Singleton<GameSceneManager>
                 var runtimeStats = SessionManager.Instance.RuntimeStats;
                 if (runtimeStats != null)
                     await SaveSystem.LoadAsync(slot, runtimeStats);
+
+                var global = CheckpointManager.Instance;
+                if (string.IsNullOrEmpty(global.ActiveCheckpointID) && !string.IsNullOrEmpty(SaveSystem.LastLoadedCheckpointID))
+                {
+                    global.RegisterActivation(SaveSystem.LastLoadedCheckpointID);
+                    Debug.Log($"[GameSceneManager] Synced CheckpointManager with '{SaveSystem.LastLoadedCheckpointID}' after load.");
+                }
             }
         }
-
-        if (SessionManager.Instance != null && !string.IsNullOrEmpty(SessionManager.Instance.CurrentCheckpointID))
-            loadedCheckpointID = SessionManager.Instance.CurrentCheckpointID;
-
-        if (!string.IsNullOrEmpty(loadedCheckpointID))
-            targetCheckpointID = loadedCheckpointID;
 
         await PositionPlayerRootAsync();
 
@@ -127,12 +124,6 @@ public class GameSceneManager : Singleton<GameSceneManager>
         var player = PlayerRoot.Instance?.GetComponentInChildren<PlayerController>();
         if (player != null)
             player.UnfreezeAllInputs();
-
-        if (!string.IsNullOrEmpty(loadedCheckpointID))
-        {
-            Debug.Log($"[GameSceneManager] Broadcasting checkpoint activation for '{loadedCheckpointID}' after load (final)");
-            Checkpoint.BroadcastActivation(loadedCheckpointID);
-        }
 
         isLoadingScene = false;
         SessionManager.IsLoadingFromSave = false;
@@ -161,44 +152,14 @@ public class GameSceneManager : Singleton<GameSceneManager>
         {
             case SceneLoadMode.DoorTransition:
                 if (sceneDoorManager != null && !string.IsNullOrEmpty(targetDoorID))
-                {
-                    try { sceneDoorManager.ChooseDoor(targetDoorID); }
-                    catch (MissingReferenceException)
-                    {
-                        Debug.LogWarning("[GameSceneManager] Door reference missing during transition.");
-                    }
-                }
+                    sceneDoorManager.ChooseDoor(targetDoorID);
                 break;
 
             case SceneLoadMode.CheckpointSpawn:
-                if (!string.IsNullOrEmpty(targetCheckpointID))
-                {
-                    var checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
-                    bool found = false;
-
-                    foreach (var cp in checkpoints)
-                    {
-                        var checkpoint = cp.GetComponent<Checkpoint>();
-                        if (checkpoint != null && checkpoint.checkpointID == targetCheckpointID)
-                        {
-                            player.transform.position = checkpoint.transform.position;
-                            found = true;
-                            Debug.Log($"[GameSceneManager] Loaded from checkpoint '{targetCheckpointID}' at {checkpoint.transform.position}");
-                            break;
-                        }
-                    }
-
-                    if (!found)
-                    {
-                        Debug.LogWarning($"[GameSceneManager] Checkpoint '{targetCheckpointID}' not found in scene '{SceneManager.GetActiveScene().name}'. Spawning at (0,0).");
-                        player.transform.position = Vector2.zero;
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("[GameSceneManager] No checkpoint ID found in save data. Spawning at (0,0).");
-                    player.transform.position = Vector2.zero;
-                }
+                var global = CheckpointManager.Instance;
+                Vector2 spawnPos = global.GetSpawnPosition();
+                player.transform.position = spawnPos;
+                Debug.Log($"[GameSceneManager] Spawned player from checkpoint '{global.ActiveCheckpointID}' at {spawnPos}");
                 break;
 
             case SceneLoadMode.DirectLoad:
@@ -212,8 +173,8 @@ public class GameSceneManager : Singleton<GameSceneManager>
 
     private void FindSceneDoorManager()
     {
-        var sceneDoorObj = GameObject.FindGameObjectWithTag("Scene Door Manager");
-        sceneDoorManager = sceneDoorObj ? sceneDoorObj.GetComponent<SceneDoorManager>() : null;
+        var obj = GameObject.FindGameObjectWithTag("Scene Door Manager");
+        sceneDoorManager = obj ? obj.GetComponent<SceneDoorManager>() : null;
     }
     #endregion
 }
