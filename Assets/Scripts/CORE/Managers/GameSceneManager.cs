@@ -124,9 +124,16 @@ public class GameSceneManager : Singleton<GameSceneManager>
             await Task.Delay((int)(canvasManager.GetFadeDuration(PanelType.BlackScreen) * 1000));
         }
 
-        var player = PlayerRoot.Instance?.GetComponentInChildren<PlayerController>();
+        var playerRoot = PlayerRoot.Instance;
+        var player = playerRoot?.GetComponentInChildren<PlayerController>();
         if (player != null)
+        {
+            var deathController = player.GetComponent<PlayerDeathController>();
+            if (deathController != null)
+                deathController.ResetAfterRespawn();
+
             player.UnfreezeAllInputs();
+        }
 
         isLoadingScene = false;
         SessionManager.IsLoadingFromSave = false;
