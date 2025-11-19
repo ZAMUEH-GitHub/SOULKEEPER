@@ -17306,6 +17306,83 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 291139903315571241, guid: 01a3553ea36b58a4f91bd870812074b1, type: 3}
   m_PrefabInstance: {fileID: 5376174995102895924}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &910381799
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3125562573324747794, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: titleMessage
+      value: Altar Sanctuary
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125562573324747794, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: messageDuration
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3125562573324747794, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: subtitleMessage
+      value: The Cathedral
+      objectReference: {fileID: 0}
+    - target: {fileID: 7149955715334667306, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_Size.x
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7149955715334667306, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_Size.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556623195772898073, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_Name
+      value: AreaTitleTrigger_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859146084816117098, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 71.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859146084816117098, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -26.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859146084816117098, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859146084816117098, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859146084816117098, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859146084816117098, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859146084816117098, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859146084816117098, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859146084816117098, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7859146084816117098, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
 --- !u!1 &915140347
 GameObject:
   m_ObjectHideFlags: 0
@@ -39351,7 +39428,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3125562573324747794, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
       propertyPath: messageDuration
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3125562573324747794, guid: b5e7895c8ccc07a4d98b5306979695a2, type: 3}
       propertyPath: subtitleMessage
@@ -40054,3 +40131,4 @@ SceneRoots:
   - {fileID: 3502407412377679140}
   - {fileID: 1462658012}
   - {fileID: 1186984393}
+  - {fileID: 910381799}
