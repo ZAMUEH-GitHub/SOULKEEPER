@@ -1,0 +1,114 @@
+using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public enum GameState
+{
+    MainMenu,
+    Gameplay
+}
+
+public class GameManager : Singleton<GameManager>
+{
+    protected override bool IsPersistent => true;
+
+    [Header("Scene References")]
+    [SerializeField] private SceneField mainMenuScene;
+    [field: SerializeField] public GameState CurrentState { get; private set; }
+    public static event Action<GameState> OnGameStateChanged;
+
+    [Header("Player Data Management")]
+    [SerializeField] private PlayerStatsSO basePlayerStats;
+
+    private SessionManager sessionManager;
+    private CanvasManager canvasManager;
+
+    #region Unity Lifecycle
+    protected override void Awake()
+    {
+        base.Awake();
+        sessionManager = SessionManager.Instance;
+    }
+
+    private void Start()
+    {
+        canvasManager ??= CanvasManager.Instance;
+        if (canvasManager != null)
+            canvasManager.FadeOut(PanelType.BlackScreen);
+
+        OnGameStateChanged += HandleGameStateChanged;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        OnGameStateChanged -= HandleGameStateChanged;
+    }
+
+    private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
+    private void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == mainMenuScene.SceneName)
+            SetState(GameState.MainMenu);
+        else
+            SetState(GameState.Gameplay);
+    }
+    #endregion
+
+    #region Game State Logic
+    public void SetState(GameState newState)
+    {
+        if (newState == CurrentState)
+            return;
+
+        CurrentState = newState;
+        OnGameStateChanged?.Invoke(newState);
+    }
+
+    private void HandleGameStateChanged(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.MainMenu:
+                sessionManager.EndSession();
+                break;
+
+            case GameState.Gameplay:
+                if (!sessionManager.HasActiveSession)
+                    sessionManager.StartSession(basePlayerStats);
+                break;
+        }
+    }
+    #endregion
+
+    #region Game Logic
+    public void StartNewGame()
+    {
+        if (basePlayerStats == null)
+        {
+            Debug.LogError("[GameManager] Missing base PlayerStatsSO reference!");
+            return;
+        }
+
+        sessionManager.StartSession(basePlayerStats);
+        EnterGameplay();
+    }
+
+    public async void LoadGame(int slotIndex)
+    {
+        sessionManager.StartSession(basePlayerStats);
+        await SaveSystem.LoadAsync(slotIndex, sessionManager.RuntimeStats);
+        EnterGameplay();
+    }
+
+    public void ReturnToMainMenu()
+    {
+        sessionManager.EndSession();
+        SetState(GameState.MainMenu);
+    }
+
+    public void EnterGameplay() => SetState(GameState.Gameplay);
+    #endregion
+}
