@@ -66,10 +66,31 @@ public static class SaveSystem
 
             saveData.playerData.FromRuntime(runtimeStats, slotIndex);
 
+            if (File.Exists(path))
+            {
+                try
+                {
+                    string oldJson = await File.ReadAllTextAsync(path);
+                    GameSaveData oldData = JsonUtility.FromJson<GameSaveData>(oldJson);
+                    if (oldData != null && oldData.altarData != null)
+                        saveData.altarData = new System.Collections.Generic.List<AltarSaveData>(oldData.altarData);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"[SaveSystem] Failed to merge old altar data: {ex.Message}");
+                }
+            }
+
             foreach (var altar in UnityEngine.Object.FindObjectsByType<AltarController>(FindObjectsSortMode.None))
             {
-                if (altar != null)
-                    saveData.altarData.Add(altar.ToSaveData());
+                if (altar == null) continue;
+
+                var data = altar.ToSaveData();
+                int index = saveData.altarData.FindIndex(a => a.altarID == data.altarID);
+                if (index >= 0)
+                    saveData.altarData[index] = data;
+                else
+                    saveData.altarData.Add(data);
             }
 
             string json = JsonUtility.ToJson(saveData, true);
@@ -162,33 +183,11 @@ public static class SaveSystem
             if (!SaveExists(slotIndex)) return null;
             string json = File.ReadAllText(GetSlotPath(slotIndex));
             GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
-
-            if (!SceneExistsInBuild(data.currentSceneID))
-            {
-                Debug.LogWarning($"[SaveSystem] Scene '{data.currentSceneID}' not found in build settings!");
-                return null;
-            }
-
             return data.currentSceneID;
         }
         catch (Exception ex)
         {
             Debug.LogError($"[SaveSystem] Error reading scene from slot {slotIndex}: {ex.Message}");
-            return null;
-        }
-    }
-
-    public static string GetSavedDoor(int slotIndex)
-    {
-        try
-        {
-            if (!SaveExists(slotIndex)) return null;
-            string json = File.ReadAllText(GetSlotPath(slotIndex));
-            GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
-            return data.lastDoorID;
-        }
-        catch
-        {
             return null;
         }
     }
@@ -206,21 +205,6 @@ public static class SaveSystem
         {
             return null;
         }
-    }
-
-    private static string GetSlotPath(int slotIndex) =>
-        Path.Combine(SaveFolder, $"SaveSlot_{slotIndex}.json");
-
-    private static bool SceneExistsInBuild(string sceneName)
-    {
-        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
-        {
-            string path = SceneUtility.GetScenePathByBuildIndex(i);
-            string name = Path.GetFileNameWithoutExtension(path);
-            if (name == sceneName)
-                return true;
-        }
-        return false;
     }
 
     public static (bool exists, string scene, string timestamp, float playtime) GetSlotMetadata(int slotIndex)
@@ -244,12 +228,5 @@ public static class SaveSystem
         }
     }
 
-    private static void UpgradeSaveData(ref GameSaveData saveData)
-    {
-        if (saveData.version < 2)
-        {
-            saveData.totalPlaytime = 0f;
-            saveData.version = 2;
-        }
-    }
+    private static string GetSlotPath(int slotIndex) => Path.Combine(SaveFolder, $"SaveSlot_{slotIndex}.json");
 }
