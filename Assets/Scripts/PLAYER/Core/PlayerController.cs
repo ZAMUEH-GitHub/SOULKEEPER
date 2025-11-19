@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     public bool interactInput;
     [Space(5)]
     public bool playerInputActive;
+    public bool isAlive;
 
     private List<IPlayerSubController> subControllers = new();
     private PlayerMovementController movementController;

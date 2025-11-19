@@ -29,6 +29,7 @@ public class PlayerDeathController : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
+        playerController.isAlive = false;
 
         if (playerController != null)
         {
@@ -77,6 +78,7 @@ public class PlayerDeathController : MonoBehaviour
     public void ResetAfterRespawn()
     {
         isDead = false;
+        playerController.isAlive = true;
 
         if (colliders != null)
         {
