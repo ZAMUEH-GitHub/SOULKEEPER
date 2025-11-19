@@ -31,51 +31,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3069741051866458445}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2385452249185080393
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7520775116294053491}
-  - component: {fileID: 7854773289817289797}
-  m_Layer: 6
-  m_Name: scarfDirector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7520775116294053491
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2385452249185080393}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 9158691707005243202}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7854773289817289797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2385452249185080393}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed0c269cf83a2824191da59f088249f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
 --- !u!1 &2755066238648662683
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,7 +283,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2357470064510203644}
-  - {fileID: 7520775116294053491}
   - {fileID: 6121034613155575115}
   m_Father: {fileID: 3484791985194641026}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -462,7 +416,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isIdle: 0
   isAttacking: 0
-  facing: 0
   segmentAmount: 15
   segmentDistance: 0.15
   maxDistance: 0.05
@@ -473,53 +426,7 @@ MonoBehaviour:
   targetDirection: {fileID: 8984743810285396589}
   playerController: {fileID: 0}
   lineRend: {fileID: 3493287161490128327}
-  scarfObjective: {fileID: 7520775116294053491}
-  leftScarfObjective: {fileID: 6121034613155575115}
---- !u!1 &7617771127877627187
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3149609023843774116}
-  - component: {fileID: 1216271235034759652}
-  m_Layer: 6
-  m_Name: scarfDirector (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3149609023843774116
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7617771127877627187}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3069741051866458445}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1216271235034759652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7617771127877627187}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed0c269cf83a2824191da59f088249f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
+  scarfObjective: {fileID: 0}
 --- !u!1 &8302347438420224513
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,7 +459,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7787294709045136350}
-  - {fileID: 3149609023843774116}
   - {fileID: 5692192443342555140}
   m_Father: {fileID: 3484791985194641026}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -686,7 +592,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isIdle: 0
   isAttacking: 0
-  facing: 0
   segmentAmount: 15
   segmentDistance: 0.15
   maxDistance: 0.05
@@ -697,5 +602,4 @@ MonoBehaviour:
   targetDirection: {fileID: 3832265111742859442}
   playerController: {fileID: 0}
   lineRend: {fileID: 4178563119324586328}
-  scarfObjective: {fileID: 3149609023843774116}
-  leftScarfObjective: {fileID: 5692192443342555140}
+  scarfObjective: {fileID: 0}
