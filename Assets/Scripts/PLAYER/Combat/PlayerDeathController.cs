@@ -11,17 +11,22 @@ public class PlayerDeathController : MonoBehaviour
 
     private const string CORPSE_LAYER = "Corpse";
 
+    private PlayerController playerController;
+
     private void Awake()
     {
         var controller = GetComponent<PlayerController>();
         if (controller != null)
         {
             playerStats = controller.playerRuntimeStats;
+            playerController = controller;
         }
     }
 
     public void Die()
     {
+        playerController.isAlive = false;
+        
         Instantiate(deathParticles, transform.position, Quaternion.identity);
 
         for (int i = playerStats.score / 2; i > 0; i--)

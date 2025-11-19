@@ -96,7 +96,6 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
         if (playerHealth <= 0)
         {
             //animator.SetTrigger("PlayerDeath");
-            playerController.FreezeAllInputs();
 
             deathController.Die();      // Later called by Unity Animation Event
         }

@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     public bool interactInput;
     [Space(5)]
     public bool playerInputActive;
+    public bool isAlive;
 
     private List<IPlayerSubController> subControllers = new();
     private PlayerMovementController movementController;
@@ -138,8 +139,15 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Player Input Lock Controls
-    public void FreezeAllInputs() => playerInputActive = false;
+    public void FreezeAllInputs()
+    {
+        playerInputActive = false;
+        moveVector = Vector2.zero;
+    }
 
-    public void UnfreezeAllInputs() => playerInputActive = true;
+    public void UnfreezeAllInputs() 
+    {
+        playerInputActive = true;
+    }
     #endregion
 }
