@@ -91,9 +91,11 @@ public class GameSceneManager : Singleton<GameSceneManager>
     {
         await Task.Yield();
 
+
         FindSceneDoorManager();
         canvasManager = CanvasManager.Instance;
         saveSlotManager = SaveSlotManager.Instance;
+
 
         if (saveSlotManager != null)
         {
@@ -104,7 +106,18 @@ public class GameSceneManager : Singleton<GameSceneManager>
                 if (runtimeStats != null)
                     await SaveSystem.LoadAsync(slot, runtimeStats);
 
+
+                float checkpointWait = 0f;
+                while (string.IsNullOrEmpty(SaveSystem.LastLoadedCheckpointID) && checkpointWait < 3f)
+                {
+                    checkpointWait += Time.unscaledDeltaTime;
+                    await Task.Yield();
+                }
+
+
                 var global = CheckpointManager.Instance;
+
+
                 if (string.IsNullOrEmpty(global.ActiveCheckpointID) && !string.IsNullOrEmpty(SaveSystem.LastLoadedCheckpointID))
                 {
                     global.RegisterActivation(SaveSystem.LastLoadedCheckpointID);
@@ -113,16 +126,48 @@ public class GameSceneManager : Singleton<GameSceneManager>
             }
         }
 
+
+        int safetyRecheck = 0;
+        while (string.IsNullOrEmpty(CheckpointManager.Instance.ActiveCheckpointID) && safetyRecheck < 5)
+        {
+            if (GameManager.Instance?.CurrentState != GameState.MainMenu)
+                Debug.LogWarning($"[GameSceneManager] Waiting for checkpoint sync... attempt {safetyRecheck + 1}");
+            safetyRecheck++;
+            await Task.Delay(200);
+
+
+            if (!string.IsNullOrEmpty(SaveSystem.LastLoadedCheckpointID))
+            {
+                CheckpointManager.Instance.RegisterActivation(SaveSystem.LastLoadedCheckpointID);
+                Debug.Log($"[GameSceneManager] Late re-sync of checkpoint '{SaveSystem.LastLoadedCheckpointID}'.");
+            }
+        }
+
+
+        await Task.Delay(100);
         await PositionPlayerRootAsync();
+
+
+        if (string.IsNullOrEmpty(CheckpointManager.Instance.ActiveCheckpointID))
+        {
+            if (!string.IsNullOrEmpty(SaveSystem.LastLoadedCheckpointID))
+            {
+                CheckpointManager.Instance.RegisterActivation(SaveSystem.LastLoadedCheckpointID);
+                Debug.Log($"[GameSceneManager] Final checkpoint correction to '{SaveSystem.LastLoadedCheckpointID}'.");
+            }
+        }
+
 
         var sceneCheckpointManager = Object.FindFirstObjectByType<SceneCheckpointManager>();
         sceneCheckpointManager?.RefreshActiveCheckpoint();
+
 
         if (canvasManager != null)
         {
             canvasManager.FadeOut(PanelType.BlackScreen);
             await Task.Delay((int)(canvasManager.GetFadeDuration(PanelType.BlackScreen) * 1000));
         }
+
 
         var playerRoot = PlayerRoot.Instance;
         var player = playerRoot?.GetComponentInChildren<PlayerController>();
@@ -132,11 +177,16 @@ public class GameSceneManager : Singleton<GameSceneManager>
             if (deathController != null)
                 deathController.ResetAfterRespawn();
 
+
             player.UnfreezeAllInputs();
         }
 
+
+        if (!string.IsNullOrEmpty(CheckpointManager.Instance.ActiveCheckpointID))
+            SessionManager.IsLoadingFromSave = false;
+
+
         isLoadingScene = false;
-        SessionManager.IsLoadingFromSave = false;
     }
     #endregion
 
@@ -158,6 +208,18 @@ public class GameSceneManager : Singleton<GameSceneManager>
         var player = playerRoot.GetComponentInChildren<PlayerController>();
         if (player == null) return;
 
+        SceneCheckpointManager scm = null;
+        float readyTimer = 0f;
+        while ((scm = Object.FindFirstObjectByType<SceneCheckpointManager>()) == null && readyTimer < 3f)
+        {
+            readyTimer += Time.unscaledDeltaTime;
+            await Task.Yield();
+        }
+
+        await Task.Yield();
+
+        var global = CheckpointManager.Instance;
+
         switch (currentLoadMode)
         {
             case SceneLoadMode.DoorTransition:
@@ -166,8 +228,28 @@ public class GameSceneManager : Singleton<GameSceneManager>
                 break;
 
             case SceneLoadMode.CheckpointSpawn:
-                var global = CheckpointManager.Instance;
+                float checkpointTimer = 0f;
+                while (string.IsNullOrEmpty(global.ActiveCheckpointID) && checkpointTimer < 2f)
+                {
+                    checkpointTimer += Time.unscaledDeltaTime;
+                    await Task.Yield();
+                }
+
                 Vector2 spawnPos = global.GetSpawnPosition();
+
+                int retryCount = 0;
+                while (spawnPos == Vector2.zero && retryCount < 3)
+                {
+                    await Task.Delay(100);
+                    spawnPos = global.GetSpawnPosition();
+                    retryCount++;
+                }
+
+                if (spawnPos == Vector2.zero)
+                {
+                    Debug.LogWarning($"[GameSceneManager] Could not resolve valid checkpoint position after {retryCount} retries. Using scene origin.");
+                }
+
                 player.transform.position = spawnPos;
                 Debug.Log($"[GameSceneManager] Spawned player from checkpoint '{global.ActiveCheckpointID}' at {spawnPos}");
                 break;

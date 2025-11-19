@@ -104,10 +104,7 @@ public class Checkpoint : MonoBehaviour, IInteractable
         await SaveSystem.SaveAsync(slot, runtimeStats, null, checkpointID);
 
         FindFirstObjectByType<SceneCheckpointManager>()?.NotifyCheckpointActivated(this);
-        ToastPanelManager.Instance?.ShowToast(
-            isActiveCheckpoint ? "Progress Updated" : "Progress Saved",
-            3f
-        );
+        ToastPanelManager.Instance?.ShowToast("Progress Saved", 3f);
 
         Debug.Log($"[Checkpoint] Activated '{checkpointID}' in scene '{sceneName}'.");
     }
