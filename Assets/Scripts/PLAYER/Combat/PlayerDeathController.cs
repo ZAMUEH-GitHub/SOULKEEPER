@@ -32,7 +32,6 @@ public class PlayerDeathController : MonoBehaviour
 
         if (playerController != null)
         {
-            playerController.isAlive = false;
             playerController.FreezeAllInputs();
         }
         /*
@@ -78,9 +77,6 @@ public class PlayerDeathController : MonoBehaviour
     public void ResetAfterRespawn()
     {
         isDead = false;
-
-        if (playerController != null)
-            playerController.isAlive = true;
 
         if (colliders != null)
         {
