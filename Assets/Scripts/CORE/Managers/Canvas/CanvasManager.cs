@@ -51,7 +51,6 @@ public class CanvasManager : Singleton<CanvasManager>
 
     private PlayerController playerController;
     private readonly Dictionary<PanelType, GameObject> _lastSelectedByPanel = new();
-
     private int inputFreezeCount = 0;
 
     #region Unity Lifecycle
@@ -250,12 +249,36 @@ public class CanvasManager : Singleton<CanvasManager>
 
     public void ToggleCanvasInteractivity(GameObject canvasObject, bool enable)
     {
-        if (canvasObject == null || canvasObject == _GlobalCanvas) return;
+        if (canvasObject == null || canvasObject == _GlobalCanvas)
+            return;
 
         var raycaster = canvasObject.GetComponent<GraphicRaycaster>();
-        if (raycaster != null) raycaster.enabled = enable;
+        if (raycaster != null)
+            raycaster.enabled = enable;
 
-        foreach (var t in canvasObject.GetComponentsInChildren<EventTrigger>(true))
-            t.enabled = enable;
+        foreach (var panel in panelSettings.Values)
+        {
+            if (panel.panel == null)
+                continue;
+
+            bool isGlobalPanel = panel.panelType == PanelType.ConfirmationPanel
+                              || panel.panelType == PanelType.ToastPanel
+                              || panel.panelType == PanelType.AreaTitlePanel
+                              || panel.panelType == PanelType.BlackScreen;
+
+            if (isGlobalPanel)
+                continue;
+
+            if (enable)
+            {
+                panel.panel.interactable = panel.interactable;
+                panel.panel.blocksRaycasts = panel.blockRaycasts;
+            }
+            else
+            {
+                panel.panel.interactable = false;
+                panel.panel.blocksRaycasts = false;
+            }
+        }
     }
 }

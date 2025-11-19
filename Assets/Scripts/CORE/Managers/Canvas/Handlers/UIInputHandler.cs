@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class UIInputHandler : MonoBehaviour
@@ -7,6 +9,11 @@ public class UIInputHandler : MonoBehaviour
     [Header("Input Actions")]
     [SerializeField] private InputActionReference uiBackAction;
     [SerializeField] private InputActionReference uiPauseAction;
+    [SerializeField] private InputActionReference uiNavigateAction;
+
+    [Header("Switching Settings")]
+    [Tooltip("How long (in seconds) after the mouse stops moving should keyboard control reactivate?")]
+    [SerializeField, Range(0f, 1f)] private float mouseIdleThreshold = 1.0f;
 
     private CanvasManager canvasManager;
     private PauseMenuManager pauseMenuManager;
@@ -15,6 +22,11 @@ public class UIInputHandler : MonoBehaviour
 
     private Dictionary<PanelType, System.Action> mainMenuBackMap;
     private Dictionary<PanelType, System.Action> pauseMenuBackMap;
+
+    private Vector2 lastMousePos;
+    private bool mouseActive;
+    private float mouseIdleTimer;
+    private GameObject lastKeyboardSelection;
 
     private void Awake()
     {
@@ -33,6 +45,9 @@ public class UIInputHandler : MonoBehaviour
 
         if (uiPauseAction != null)
             uiPauseAction.action.performed += OnPausePressed;
+
+        if (uiNavigateAction != null)
+            uiNavigateAction.action.performed += OnNavigatePressed;
     }
 
     private void OnDisable()
@@ -42,8 +57,79 @@ public class UIInputHandler : MonoBehaviour
 
         if (uiPauseAction != null)
             uiPauseAction.action.performed -= OnPausePressed;
+
+        if (uiNavigateAction != null)
+            uiNavigateAction.action.performed -= OnNavigatePressed;
     }
 
+    private void Update()
+    {
+        HandleMouseKeyboardSwitching();
+        CacheKeyboardSelection();
+    }
+
+    private void HandleMouseKeyboardSwitching()
+    {
+        if (Mouse.current == null || EventSystem.current == null)
+            return;
+
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        float distanceMoved = (mousePos - lastMousePos).sqrMagnitude;
+
+        if (distanceMoved > 1f)
+        {
+            mouseActive = true;
+            mouseIdleTimer = 0f;
+
+            if (EventSystem.current.currentSelectedGameObject != null)
+                EventSystem.current.SetSelectedGameObject(null);
+        }
+        else if (mouseActive)
+        {
+            mouseIdleTimer += Time.unscaledDeltaTime;
+            if (mouseIdleTimer > mouseIdleThreshold)
+                mouseActive = false; // Allows keyboard to regain control
+        }
+
+        lastMousePos = mousePos;
+    }
+
+    private void CacheKeyboardSelection()
+    {
+        if (EventSystem.current == null) return;
+
+        var current = EventSystem.current.currentSelectedGameObject;
+        if (current != null && !mouseActive)
+            lastKeyboardSelection = current;
+    }
+
+    private void OnNavigatePressed(InputAction.CallbackContext ctx)
+    {
+        // When keyboard/gamepad navigation is detected, restore focus if mouse not active
+        if (!mouseActive)
+        {
+            if (EventSystem.current.currentSelectedGameObject == null)
+            {
+                if (lastKeyboardSelection != null && lastKeyboardSelection.activeInHierarchy)
+                {
+                    EventSystem.current.SetSelectedGameObject(lastKeyboardSelection);
+                }
+                else
+                {
+                    // Try to find a suitable selectable element to focus again
+                    foreach (var panel in canvasManager.GetPanelSettings().Values)
+                    {
+                        if (panel.panel != null && panel.panel.alpha > 0.95f && panel.firstSelected != null)
+                        {
+                            EventSystem.current.SetSelectedGameObject(panel.firstSelected);
+                            lastKeyboardSelection = panel.firstSelected;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private void OnBackPressed(InputAction.CallbackContext ctx)
     {

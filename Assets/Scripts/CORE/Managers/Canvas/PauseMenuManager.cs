@@ -21,9 +21,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [SerializeField] private SceneField mainMenuScene;
 
     private bool isPaused;
-    private bool isSaving = false;
-    private GameObject gameplayCanvas;
 
+    private GameObject gameplayCanvas;
     private CanvasManager canvasManager;
     private GameSceneManager sceneManager;
     private GameManager gameManager;
@@ -78,15 +77,16 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         if (isPaused) return;
         isPaused = true;
 
-        if (canvasManager != null)
-            canvasManager.ToggleCanvasInteractivity(gameplayCanvas, true);
-
-        var raycaster = gameplayCanvas.GetComponent<GraphicRaycaster>();
-        if (raycaster != null && !raycaster.enabled)
-            raycaster.enabled = true;
-
         timeManager?.FreezeTime();
-        GoToPanel(pausePanel);
+
+        canvasManager.FadeOut(startPanel);
+        canvasManager.FadeIn(pausePanel);
+
+        currentPanel = pausePanel;
+
+        var pauseRaycaster = GetComponentInChildren<GraphicRaycaster>(true);
+        if (pauseRaycaster != null)
+            pauseRaycaster.enabled = true;
     }
 
     private void ResumeGame()
@@ -94,16 +94,16 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         if (!isPaused) return;
         isPaused = false;
 
-        var raycaster = gameplayCanvas.GetComponent<GraphicRaycaster>();
-        if (raycaster != null)
-            raycaster.enabled = false;
-
-        foreach (var t in gameplayCanvas.GetComponentsInChildren<EventTrigger>(true))
-            t.enabled = false;
-
         timeManager?.ResetTime();
-        StartCoroutine(CrossFadePanels(currentPanel, startPanel));
+
+        canvasManager.FadeOut(pausePanel);
+        canvasManager.FadeIn(startPanel);
+
         currentPanel = startPanel;
+
+        var pauseRaycaster = GetComponentInChildren<GraphicRaycaster>(true);
+        if (pauseRaycaster != null)
+            pauseRaycaster.enabled = false;
     }
     #endregion
 

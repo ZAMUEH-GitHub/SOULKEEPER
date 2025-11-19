@@ -15,6 +15,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] private SceneField newGameScene;
     [SerializeField] private Vector2 defaultSpawnPosition;
 
+    private static bool hasInitializedOnce = false;
+
     private CanvasManager canvasManager;
     private GameSceneManager gameSceneManager;
     private SaveSlotManager saveSlotManager;
@@ -83,15 +85,24 @@ public class MainMenuManager : Singleton<MainMenuManager>
     {
         canvasManager ??= CanvasManager.Instance;
 
-        if (canvasManager != null)
-        {
-            canvasManager.FadeOut(PanelType.PlayGame);
-            canvasManager.FadeOut(PanelType.Settings);
-            canvasManager.FadeOut(PanelType.VideoSettings);
-            canvasManager.FadeOut(PanelType.AudioSettings);
-            canvasManager.FadeOut(PanelType.KeyBindings);
-            canvasManager.FadeOut(PanelType.Credits);
+        if (canvasManager == null) return;
 
+        canvasManager.FadeOut(PanelType.MainMenu);
+        canvasManager.FadeOut(PanelType.PlayGame);
+        canvasManager.FadeOut(PanelType.Settings);
+        canvasManager.FadeOut(PanelType.VideoSettings);
+        canvasManager.FadeOut(PanelType.AudioSettings);
+        canvasManager.FadeOut(PanelType.KeyBindings);
+        canvasManager.FadeOut(PanelType.Credits);
+
+        if (!hasInitializedOnce && startPanel == PanelType.TitleScreen)
+        {
+            canvasManager.FadeIn(PanelType.TitleScreen);
+            currentPanel = PanelType.TitleScreen;
+            hasInitializedOnce = true;
+        }
+        else
+        {
             canvasManager.FadeIn(PanelType.MainMenu);
             currentPanel = PanelType.MainMenu;
         }

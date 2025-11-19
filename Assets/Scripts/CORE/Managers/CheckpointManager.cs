@@ -32,7 +32,6 @@ public class CheckpointManager : Singleton<CheckpointManager>
         if (string.IsNullOrEmpty(ActiveCheckpointID))
         {
             ActiveCheckpointID = "__NONE__";
-            Debug.LogWarning("[CheckpointManager] No active checkpoint found. System initialized in idle mode and ready for activation.");
         }
     }
 

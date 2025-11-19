@@ -3,11 +3,10 @@ using UnityEngine;
 public class SessionManager : Singleton<SessionManager>
 {
     protected override bool IsPersistent => false;
-
+    [field: SerializeField]
     public PlayerStatsSO RuntimeStats { get; private set; }
-
+    [field: SerializeField]
     public string CurrentCheckpointID { get; set; }
-
     public static bool IsLoadingFromSave { get; set; }
 
     public void StartSession(PlayerStatsSO baseStats)

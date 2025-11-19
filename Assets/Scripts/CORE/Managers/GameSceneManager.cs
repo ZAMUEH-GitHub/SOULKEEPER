@@ -17,6 +17,8 @@ public class GameSceneManager : Singleton<GameSceneManager>
     [Header("Scene Management")]
     [SerializeField] private SceneLoadMode currentLoadMode;
     [SerializeField] private bool isLoadingScene;
+
+    [Header("Player Targets")]
     [SerializeField] private string targetDoorID;
     [SerializeField] private string targetCheckpointID;
     [SerializeField] private Vector2 directSpawnPosition;
