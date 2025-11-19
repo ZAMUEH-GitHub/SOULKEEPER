@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [Serializable]
 public class GameSaveData
 {
@@ -12,10 +13,16 @@ public class GameSaveData
     public string timestamp;
     public int version = 1;
 
+
     [Header("Scene Transition Data")]
     public string currentSceneID;
     public string currentCheckpointID;
     public string lastDoorID;
+
+
+    [Header("Player Position")]
+    public Vector2 lastPlayerPosition;
+
 
     public GameSaveData()
     {

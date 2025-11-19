@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SceneCheckpointManager : MonoBehaviour
 {
-    private List<Checkpoint> checkpoints = new();
+    public List<Checkpoint> checkpoints = new();
 
 
     private void Awake()

@@ -91,11 +91,9 @@ public class GameSceneManager : Singleton<GameSceneManager>
     {
         await Task.Yield();
 
-
         FindSceneDoorManager();
         canvasManager = CanvasManager.Instance;
         saveSlotManager = SaveSlotManager.Instance;
-
 
         if (saveSlotManager != null)
         {
@@ -106,7 +104,6 @@ public class GameSceneManager : Singleton<GameSceneManager>
                 if (runtimeStats != null)
                     await SaveSystem.LoadAsync(slot, runtimeStats);
 
-
                 float checkpointWait = 0f;
                 while (string.IsNullOrEmpty(SaveSystem.LastLoadedCheckpointID) && checkpointWait < 3f)
                 {
@@ -114,9 +111,7 @@ public class GameSceneManager : Singleton<GameSceneManager>
                     await Task.Yield();
                 }
 
-
                 var global = CheckpointManager.Instance;
-
 
                 if (string.IsNullOrEmpty(global.ActiveCheckpointID) && !string.IsNullOrEmpty(SaveSystem.LastLoadedCheckpointID))
                 {
@@ -126,7 +121,6 @@ public class GameSceneManager : Singleton<GameSceneManager>
             }
         }
 
-
         int safetyRecheck = 0;
         while (string.IsNullOrEmpty(CheckpointManager.Instance.ActiveCheckpointID) && safetyRecheck < 5)
         {
@@ -135,7 +129,6 @@ public class GameSceneManager : Singleton<GameSceneManager>
             safetyRecheck++;
             await Task.Delay(200);
 
-
             if (!string.IsNullOrEmpty(SaveSystem.LastLoadedCheckpointID))
             {
                 CheckpointManager.Instance.RegisterActivation(SaveSystem.LastLoadedCheckpointID);
@@ -143,10 +136,14 @@ public class GameSceneManager : Singleton<GameSceneManager>
             }
         }
 
+        int safetyWait = 0;
+        while (Object.FindFirstObjectByType<SceneCheckpointManager>() == null && safetyWait++ < 100)
+        {
+            await Task.Delay(50);
+        }
 
         await Task.Delay(100);
         await PositionPlayerRootAsync();
-
 
         if (string.IsNullOrEmpty(CheckpointManager.Instance.ActiveCheckpointID))
         {
@@ -157,17 +154,14 @@ public class GameSceneManager : Singleton<GameSceneManager>
             }
         }
 
-
         var sceneCheckpointManager = Object.FindFirstObjectByType<SceneCheckpointManager>();
         sceneCheckpointManager?.RefreshActiveCheckpoint();
-
 
         if (canvasManager != null)
         {
             canvasManager.FadeOut(PanelType.BlackScreen);
             await Task.Delay((int)(canvasManager.GetFadeDuration(PanelType.BlackScreen) * 1000));
         }
-
 
         var playerRoot = PlayerRoot.Instance;
         var player = playerRoot?.GetComponentInChildren<PlayerController>();
@@ -177,14 +171,11 @@ public class GameSceneManager : Singleton<GameSceneManager>
             if (deathController != null)
                 deathController.ResetAfterRespawn();
 
-
             player.UnfreezeAllInputs();
         }
 
-
         if (!string.IsNullOrEmpty(CheckpointManager.Instance.ActiveCheckpointID))
             SessionManager.IsLoadingFromSave = false;
-
 
         isLoadingScene = false;
     }
@@ -207,6 +198,13 @@ public class GameSceneManager : Singleton<GameSceneManager>
 
         var player = playerRoot.GetComponentInChildren<PlayerController>();
         if (player == null) return;
+
+        var rb = player.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.simulated = false;
+            rb.linearVelocity = Vector2.zero;
+        }
 
         SceneCheckpointManager scm = null;
         float readyTimer = 0f;
@@ -258,6 +256,14 @@ public class GameSceneManager : Singleton<GameSceneManager>
                 player.transform.position = directSpawnPosition;
                 Debug.Log($"[GameSceneManager] DirectLoad: Player spawned at {directSpawnPosition}");
                 break;
+        }
+
+        await Task.Yield();
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.simulated = true;
         }
 
         player.FreezeAllInputs();
