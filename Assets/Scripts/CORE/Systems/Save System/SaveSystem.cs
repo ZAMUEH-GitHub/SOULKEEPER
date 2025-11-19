@@ -11,7 +11,10 @@ public static class SaveSystem
     private const int CurrentVersion = 1;
 
     public static string LastLoadedCheckpointID { get; private set; }
+    public static Vector2 LastLoadedPlayerPosition { get; private set; }
+    public static bool HasValidPlayerPosition { get; private set; } = false;
 
+    #region Save System
     public static async Task SaveAsync(int slotIndex, PlayerStatsSO runtimeStats, string currentDoorID = null, string currentCheckpointID = null)
     {
         if (slotIndex < 1 || slotIndex > MaxSlots)
@@ -63,6 +66,14 @@ public static class SaveSystem
                 timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 version = CurrentVersion
             };
+
+            var player = UnityEngine.Object.FindFirstObjectByType<PlayerController>();
+            if (player != null)
+            {
+                saveData.lastPlayerPosition = player.transform.position;
+                HasValidPlayerPosition = true;
+                Debug.Log($"[SaveSystem] Saved player position {saveData.lastPlayerPosition} for fallback.");
+            }
 
             saveData.playerData.FromRuntime(runtimeStats, slotIndex);
 
@@ -125,7 +136,9 @@ public static class SaveSystem
             Debug.LogError($"[SaveSystem] Error saving slot {slotIndex}: {ex.Message}\n{ex.StackTrace}");
         }
     }
+    #endregion
 
+    #region Load System
     public static async Task LoadAsync(int slotIndex, PlayerStatsSO runtimeStats)
     {
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -155,8 +168,26 @@ public static class SaveSystem
                 return;
             }
 
+            LastLoadedPlayerPosition = saveData.lastPlayerPosition;
+            HasValidPlayerPosition = saveData.lastPlayerPosition != Vector2.zero;
+            Debug.Log($"[SaveSystem] Loaded last player position {LastLoadedPlayerPosition}.");
+
             saveData.playerData.ApplyToRuntime(runtimeStats);
             LastLoadedCheckpointID = saveData.currentCheckpointID;
+
+            if (!string.IsNullOrEmpty(LastLoadedCheckpointID))
+            {
+                var manager = UnityEngine.Object.FindFirstObjectByType<CheckpointManager>();
+                if (manager != null)
+                {
+                    manager.RegisterActivation(LastLoadedCheckpointID);
+                    Debug.Log($"[SaveSystem] Auto-synced CheckpointManager with '{LastLoadedCheckpointID}' after load.");
+                }
+                else
+                {
+                    Debug.LogWarning($"[SaveSystem] CheckpointManager not found during auto-sync. Will retry when scene initializes.");
+                }
+            }
 
             foreach (var altar in UnityEngine.Object.FindObjectsByType<AltarController>(FindObjectsSortMode.None))
             {
@@ -174,6 +205,9 @@ public static class SaveSystem
         }
     }
 
+    #endregion
+
+    #region Utilities
     public static bool SaveExists(int slotIndex) => File.Exists(GetSlotPath(slotIndex));
 
     public static string GetSavedScene(int slotIndex)
@@ -229,4 +263,5 @@ public static class SaveSystem
     }
 
     private static string GetSlotPath(int slotIndex) => Path.Combine(SaveFolder, $"SaveSlot_{slotIndex}.json");
+    #endregion
 }

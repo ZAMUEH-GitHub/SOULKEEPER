@@ -15,7 +15,6 @@ public class SceneDoorManager : MonoBehaviour
     private void Start()
     {
         FindAllDoors();
-
         player = GameObject.FindGameObjectWithTag("Player");
     }
     #endregion
@@ -49,7 +48,19 @@ public class SceneDoorManager : MonoBehaviour
         }
 
         int slot = saveSlotManager.ActiveSlotIndex;
-        await SaveSystem.SaveAsync(slot, runtimeStats, doorID, null);
+
+        var currentCheckpoint = CheckpointManager.Instance?.ActiveCheckpointID;
+        if (string.IsNullOrEmpty(currentCheckpoint) || currentCheckpoint == "__NONE__")
+        {
+            currentCheckpoint = SaveSystem.LastLoadedCheckpointID;
+            if (string.IsNullOrEmpty(currentCheckpoint))
+            {
+                Debug.LogWarning("[SceneDoorManager] No valid checkpoint found — preserving last loaded checkpoint state.");
+            }
+        }
+
+        await SaveSystem.SaveAsync(slot, runtimeStats, doorID, currentCheckpoint);
+        Debug.Log($"[SceneDoorManager] Door '{doorID}' triggered autosave with checkpoint '{currentCheckpoint}'.");
     }
 
     public void ChooseDoor(string targetDoorID)
