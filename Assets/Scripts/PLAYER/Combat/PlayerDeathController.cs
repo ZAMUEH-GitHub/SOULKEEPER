@@ -9,8 +9,8 @@ public class PlayerDeathController : MonoBehaviour
     public ParticleSystem deathParticles;
     public GameObject soulObject;
 
-    private const string CORPSE_LAYER = "Corpse";
-
+    private Collider2D[] colliders;
+    private bool isDead;
     private PlayerController playerController;
 
     private void Awake()
@@ -21,12 +21,27 @@ public class PlayerDeathController : MonoBehaviour
             playerStats = controller.playerRuntimeStats;
             playerController = controller;
         }
+
+        colliders = GetComponents<Collider2D>();
     }
 
     public void Die()
     {
-        playerController.isAlive = false;
-        
+        if (isDead) return;
+        isDead = true;
+
+        if (playerController != null)
+        {
+            playerController.isAlive = false;
+            playerController.FreezeAllInputs();
+        }
+        /*
+        if (colliders != null)
+        {
+            foreach (var col in colliders)
+                col.enabled = false;
+        }
+        */
         Instantiate(deathParticles, transform.position, Quaternion.identity);
 
         for (int i = playerStats.score / 2; i > 0; i--)
@@ -35,15 +50,46 @@ public class PlayerDeathController : MonoBehaviour
             soul.transform.position = new Vector2(soul.transform.position.x + Random.Range(-2f, 2f), soul.transform.position.y + Random.Range(-1.5f, 2f));
         }
 
-        if (LayerMask.NameToLayer(CORPSE_LAYER) != -1)
-            gameObject.layer = LayerMask.NameToLayer(CORPSE_LAYER);
+        int corpseLayer = LayerMask.NameToLayer("Corpse");
+        if (corpseLayer != -1)
+            gameObject.layer = corpseLayer;
 
         StartCoroutine(DeathRoutine());
     }
 
     private IEnumerator DeathRoutine()
     {
-        yield return null;
-        // (¿) GameSceneManager.Instance.LoadSceneFromCheckpoint(); (?)
+        yield return new WaitForSeconds(0.5f);
+
+        int slotIndex = 1;
+        if (SaveSlotManager.Instance != null)
+            slotIndex = SaveSlotManager.Instance.ActiveSlotIndex;
+
+        if (GameSceneManager.Instance != null)
+        {
+            GameSceneManager.Instance.LoadSceneFromCheckpointSlot(slotIndex);
+        }
+        else
+        {
+            Debug.LogError("[PlayerDeathController] GameSceneManager.Instance not found!");
+        }
+    }
+
+    public void ResetAfterRespawn()
+    {
+        isDead = false;
+
+        if (playerController != null)
+            playerController.isAlive = true;
+
+        if (colliders != null)
+        {
+            foreach (var col in colliders)
+                col.enabled = true;
+        }
+
+        int playerLayer = LayerMask.NameToLayer("Player");
+        if (playerLayer != -1)
+            gameObject.layer = playerLayer;
     }
 }
