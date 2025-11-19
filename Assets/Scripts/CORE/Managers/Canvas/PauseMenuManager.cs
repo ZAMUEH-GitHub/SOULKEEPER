@@ -160,9 +160,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         sceneManager?.LoadSceneDirect(mainMenuScene, Vector2.zero);
     }
     #endregion
-
+    
     #region Save Logic
-    public void OnSaveGame()
+    /*public void OnSaveGame()
     {
         if (isSaving) return;
         isSaving = true;
@@ -196,9 +196,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
             _ = SaveSystem.SaveAsync(slot, stats, null, null);
             Debug.Log($"[PauseMenuManager] Game saved to slot {slot} (no canvas).");
         }
-    }
+    }*/
     #endregion
-
+    
     #region Reset
     public void ResetToGameplay()
     {
