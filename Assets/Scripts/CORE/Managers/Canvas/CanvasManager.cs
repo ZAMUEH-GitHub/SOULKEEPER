@@ -271,8 +271,16 @@ public class CanvasManager : Singleton<CanvasManager>
 
             if (enable)
             {
-                panel.panel.interactable = panel.interactable;
-                panel.panel.blocksRaycasts = panel.blockRaycasts;
+                if (panel.panel.alpha > 0f)
+                {
+                    panel.panel.interactable = panel.interactable;
+                    panel.panel.blocksRaycasts = panel.blockRaycasts;
+                }
+                else
+                {
+                    panel.panel.interactable = false;
+                    panel.panel.blocksRaycasts = false;
+                }
             }
             else
             {
