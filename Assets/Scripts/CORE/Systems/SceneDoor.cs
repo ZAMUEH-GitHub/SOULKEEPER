@@ -13,6 +13,7 @@ public class SceneDoor : MonoBehaviour, IInteractable
 
     [Header("Interaction UI")]
     [SerializeField] private TextMeshPro interactTextMesh;
+    [SerializeField] private string interactText = "Enter Door";
     [SerializeField] private InputActionReference interactActionRef;
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float interactionCooldown = 1.0f;
@@ -131,7 +132,6 @@ public class SceneDoor : MonoBehaviour, IInteractable
         catch { return "(E)"; }
     }
 
-    public string GetInteractionText() =>
-        $"{GetInteractionKeyName()} Enter Door";
+    public string GetInteractionText() => $"{GetInteractionKeyName()} " + interactText;
     #endregion
 }

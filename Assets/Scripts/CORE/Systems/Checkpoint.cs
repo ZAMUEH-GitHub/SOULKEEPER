@@ -12,6 +12,10 @@ public class Checkpoint : MonoBehaviour, IInteractable
     public GameObject activeObject;
     public bool isActiveCheckpoint;
 
+    [Header("VFX/SFX")]
+    public GameObject activationParticlesPrefab;
+    public AudioClip activationSound;
+
     [Header("Interaction UI")]
     [SerializeField] private TextMeshPro interactTextMesh;
     [SerializeField] private InputActionReference interactActionRef;
@@ -71,6 +75,9 @@ public class Checkpoint : MonoBehaviour, IInteractable
         if (!isPlayerInRange || isSaving) return;
         if (SessionManager.IsLoadingFromSave) return;
 
+        if (AudioManager.Instance != null && activationSound != null)
+            AudioManager.Instance.PlaySfxAtPoint(activationSound, transform.position);
+
         isSaving = true;
         try
         {
@@ -102,6 +109,12 @@ public class Checkpoint : MonoBehaviour, IInteractable
         }
 
         await SaveSystem.SaveAsync(slot, runtimeStats, null, checkpointID);
+
+        if (activationParticlesPrefab != null)
+        {
+            Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y + 3.5f, transform.position.z);
+            Instantiate(activationParticlesPrefab, spawnPos, Quaternion.identity);
+        }
 
         FindFirstObjectByType<SceneCheckpointManager>()?.NotifyCheckpointActivated(this);
         ToastPanelManager.Instance?.ShowToast("Progress Saved", 3f);

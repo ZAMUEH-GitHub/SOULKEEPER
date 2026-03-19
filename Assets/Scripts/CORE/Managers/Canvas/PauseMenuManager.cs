@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PauseMenuManager : Singleton<PauseMenuManager>
@@ -20,31 +19,27 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [Header("Scene Settings")]
     [SerializeField] private SceneField mainMenuScene;
 
-    private bool isPaused;
+    [Header("Keybindings Toggle")]
+    [SerializeField] private GameObject keyboardControlsImage;
+    [SerializeField] private GameObject gamepadControlsImage;
 
-    private GameObject gameplayCanvas;
+    private bool isPaused;
     private CanvasManager canvasManager;
     private GameSceneManager sceneManager;
-    private GameManager gameManager;
     private TimeManager timeManager;
-    private SaveSlotManager saveSlotManager;
 
     #region Unity Lifecycle
     protected override void Awake()
     {
         base.Awake();
-
         canvasManager ??= CanvasManager.Instance;
         sceneManager ??= GameSceneManager.Instance;
-        gameManager ??= GameManager.Instance;
         timeManager ??= TimeManager.Instance;
-        saveSlotManager ??= SaveSlotManager.Instance;
     }
 
     private void Start()
     {
         currentPanel = startPanel;
-
         if (canvasManager != null)
         {
             canvasManager.FadeIn(currentPanel);
@@ -53,8 +48,6 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
             canvasManager.FadeOut(pauseAudioSettings);
             canvasManager.FadeOut(pauseKeybindings);
         }
-
-        gameplayCanvas = gameObject;
     }
     #endregion
 
@@ -66,10 +59,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
     public void TogglePause()
     {
-        if (isPaused)
-            ResumeGame();
-        else
-            PauseGame();
+        if (isPaused) ResumeGame();
+        else PauseGame();
     }
 
     private void PauseGame()
@@ -78,15 +69,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         isPaused = true;
 
         timeManager?.FreezeTime();
-
         canvasManager.FadeOut(startPanel);
         canvasManager.FadeIn(pausePanel);
-
         currentPanel = pausePanel;
-
-        var pauseRaycaster = GetComponentInChildren<GraphicRaycaster>(true);
-        if (pauseRaycaster != null)
-            pauseRaycaster.enabled = true;
     }
 
     private void ResumeGame()
@@ -95,27 +80,19 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         isPaused = false;
 
         timeManager?.ResetTime();
-
         canvasManager.FadeOut(pausePanel);
         canvasManager.FadeIn(startPanel);
-
         currentPanel = startPanel;
-
-        var pauseRaycaster = GetComponentInChildren<GraphicRaycaster>(true);
-        if (pauseRaycaster != null)
-            pauseRaycaster.enabled = false;
     }
     #endregion
 
-    #region Inspector-Friendly UI Methods
+    #region Navigation
     public void OnResumeGame() => ResumeGame();
     public void GoToPauseMenu() => GoToPanel(pausePanel);
     public void GoToSettingsPanel() => GoToPanel(pauseSettings);
     public void GoToAudioSettings() => GoToPanel(pauseAudioSettings);
     public void GoToKeybindingsPanel() => GoToPanel(pauseKeybindings);
-    #endregion
 
-    #region Navigation
     public void GoToPanel(PanelType newPanel)
     {
         if (newPanel == currentPanel) return;
@@ -126,10 +103,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     private IEnumerator CrossFadePanels(PanelType fromPanel, PanelType toPanel)
     {
         if (canvasManager == null) yield break;
-
         canvasManager.FadeOut(fromPanel);
         canvasManager.FadeIn(toPanel);
-
         yield return new WaitForSeconds(canvasManager.GetFadeDuration(toPanel));
     }
     #endregion
@@ -142,64 +117,30 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         canvasManager.ShowConfirmation(
             "EXIT TO MAIN MENU?",
             "(All unsaved progress will be lost)",
-            () => StartCoroutine(ExitToMainMenuRoutine())
+            ExitToMainMenu
         );
     }
 
-    private IEnumerator ExitToMainMenuRoutine()
+    private void ExitToMainMenu()
     {
         timeManager?.ResetTime();
-
-        if (canvasManager != null)
-        {
-            canvasManager.FadeOut(pausePanel);
-            canvasManager.FadeIn(fadePanel);
-            yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
-        }
-
+        if (canvasManager != null) canvasManager.FadeOut(pausePanel);
         sceneManager?.LoadSceneDirect(mainMenuScene, Vector2.zero);
     }
     #endregion
-    
-    #region Save Logic
-    /*public void OnSaveGame()
+
+    #region Keybindings UI
+    public void ToggleControlImages()
     {
-        if (isSaving) return;
-        isSaving = true;
-
-        var stats = SessionManager.Instance.RuntimeStats;
-        if (stats == null)
+        if (keyboardControlsImage != null && gamepadControlsImage != null)
         {
-            Debug.LogWarning("[PauseMenuManager] No runtime PlayerStats found — cannot save!");
-            return;
+            bool isKeyboardActive = keyboardControlsImage.activeSelf;
+            keyboardControlsImage.SetActive(!isKeyboardActive);
+            gamepadControlsImage.SetActive(isKeyboardActive);
         }
-
-        int slot = saveSlotManager?.ActiveSlotIndex ?? 1;
-
-        if (canvasManager != null)
-        {
-            canvasManager.ShowConfirmation(
-                "SAVE GAME?",
-                $"Do you want to save your progress to Slot {slot}?",
-                async () =>
-                {
-                    await SaveSystem.SaveAsync(slot, stats);
-                    isSaving = false; 
-                    Debug.Log($"[PauseMenuManager] Game saved to slot {slot}.");
-                    canvasManager.ShowToast("Progress Saved", 3f);
-                },
-                () => Debug.Log("[PauseMenuManager] Save cancelled by player.")
-            );
-        }
-        else
-        {
-            _ = SaveSystem.SaveAsync(slot, stats, null, null);
-            Debug.Log($"[PauseMenuManager] Game saved to slot {slot} (no canvas).");
-        }
-    }*/
+    }
     #endregion
-    
-    #region Reset
+
     public void ResetToGameplay()
     {
         currentPanel = startPanel;
@@ -207,5 +148,4 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         isPaused = false;
         timeManager?.ResetTime();
     }
-    #endregion
 }

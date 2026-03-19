@@ -15,6 +15,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] private SceneField newGameScene;
     [SerializeField] private Vector2 defaultSpawnPosition;
 
+    [Header("Keybindings Toggle")]
+    [SerializeField] private GameObject keyboardControlsImage;
+    [SerializeField] private GameObject gamepadControlsImage;
+
     private static bool hasInitializedOnce = false;
 
     private CanvasManager canvasManager;
@@ -25,7 +29,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
     protected override void Awake()
     {
         base.Awake();
-
         canvasManager ??= CanvasManager.Instance;
         gameSceneManager ??= GameSceneManager.Instance;
         saveSlotManager ??= SaveSlotManager.Instance;
@@ -35,11 +38,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
     {
         currentPanel = startPanel;
 
-        if (canvasManager == null)
-        {
-            Debug.LogWarning("[MainMenuManager] CanvasManager.Instance not found!");
-            return;
-        }
+        if (canvasManager == null) return;
 
         if (startPanel == PanelType.TitleScreen)
         {
@@ -61,14 +60,10 @@ public class MainMenuManager : Singleton<MainMenuManager>
         bool pressed = false;
         while (!pressed)
         {
-            if (Input.anyKeyDown)
-            {
-                pressed = true;
-                break;
-            }
+            if (Input.anyKeyDown) { pressed = true; break; }
             if (UnityEngine.InputSystem.Gamepad.current != null &&
-            (UnityEngine.InputSystem.Gamepad.current.startButton.wasPressedThisFrame ||
-            UnityEngine.InputSystem.Gamepad.current.buttonSouth.wasPressedThisFrame))
+               (UnityEngine.InputSystem.Gamepad.current.startButton.wasPressedThisFrame ||
+                UnityEngine.InputSystem.Gamepad.current.buttonSouth.wasPressedThisFrame))
             {
                 pressed = true;
                 break;
@@ -84,7 +79,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
     private void OnEnable()
     {
         canvasManager ??= CanvasManager.Instance;
-
         if (canvasManager == null) return;
 
         canvasManager.FadeOut(PanelType.MainMenu);
@@ -107,7 +101,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
             currentPanel = PanelType.MainMenu;
         }
     }
-
     #endregion
 
     #region Panel Navigation
@@ -129,106 +122,46 @@ public class MainMenuManager : Singleton<MainMenuManager>
     private IEnumerator CrossFadePanels(PanelType fromPanel, PanelType toPanel)
     {
         if (canvasManager == null) yield break;
-
         canvasManager.FadeOut(fromPanel);
         canvasManager.FadeIn(toPanel);
         yield return new WaitForSeconds(canvasManager.GetFadeDuration(toPanel));
     }
     #endregion
 
-    #region New Game
+    #region Game Logic
     public void NewGame(int slotIndex)
     {
         saveSlotManager ??= SaveSlotManager.Instance;
-        if (saveSlotManager == null)
-        {
-            Debug.LogError("[MainMenuManager] SaveSlotManager not found!");
-            return;
-        }
+        if (saveSlotManager == null) return;
 
         saveSlotManager.SetActiveSlot(slotIndex);
 
         if (SaveSystem.SaveExists(slotIndex))
         {
-            Debug.Log($"[MainMenuManager] Overwriting previous save slot {slotIndex}");
             string path = Path.Combine(Application.persistentDataPath, $"Saves/SaveSlot_{slotIndex}.json");
             if (File.Exists(path)) File.Delete(path);
         }
 
-        StartCoroutine(StartNewGameRoutine());
-    }
-
-    private IEnumerator StartNewGameRoutine()
-    {
-        if (canvasManager != null)
-        {
-            canvasManager.FadeIn(fadePanel);
-            yield return new WaitForSeconds(canvasManager.GetFadeDuration(fadePanel));
-        }
-
         if (gameSceneManager != null)
-        {
             gameSceneManager.LoadSceneDirect(newGameScene, defaultSpawnPosition);
-        }
-        else
-        {
-            Debug.LogError("[MainMenuManager] GameSceneManager.Instance not found!");
-        }
     }
-    #endregion
 
-    #region Load Game
     public void OnLoadGameButton(int slotIndex)
     {
-        if (!SaveSystem.SaveExists(slotIndex))
-        {
-            Debug.LogWarning($"[MainMenuManager] No save found in slot {slotIndex}");
-            return;
-        }
+        if (!SaveSystem.SaveExists(slotIndex)) return;
 
         saveSlotManager ??= SaveSlotManager.Instance;
         saveSlotManager.SetActiveSlot(slotIndex);
 
-        if (canvasManager != null)
-        {
-            canvasManager.FadeIn(fadePanel);
-            StartCoroutine(LoadSavedGameRoutine(slotIndex));
-        }
-        else
-        {
-            StartCoroutine(LoadSavedGameRoutine(slotIndex));
-        }
-    }
-
-    private IEnumerator LoadSavedGameRoutine(int slotIndex)
-    {
-        yield return new WaitForSeconds(canvasManager?.GetFadeDuration(fadePanel) ?? 0.5f);
-
         if (gameSceneManager != null)
-        {
             gameSceneManager.LoadSceneFromCheckpointSlot(slotIndex);
-        }
-        else
-        {
-            Debug.LogError("[MainMenuManager] GameSceneManager.Instance not found!");
-        }
     }
-    #endregion
 
-    #region Exit Game
     public void OnExitGame()
     {
-        if (canvasManager == null)
-        {
-            ExitGameExecutor();
-            return;
-        }
+        if (canvasManager == null) { ExitGameExecutor(); return; }
 
-        canvasManager.ShowConfirmation(
-            "EXIT GAME?",
-            "(The application will close.)",
-            ExitGameExecutor
-        );
+        canvasManager.ShowConfirmation("EXIT GAME?", "(The application will close.)", ExitGameExecutor);
     }
 
     private void ExitGameExecutor()
@@ -238,6 +171,18 @@ public class MainMenuManager : Singleton<MainMenuManager>
 #else
         Application.Quit();
 #endif
+    }
+    #endregion
+
+    #region Keybindings UI
+    public void ToggleControlImages()
+    {
+        if (keyboardControlsImage != null && gamepadControlsImage != null)
+        {
+            bool isKeyboardActive = keyboardControlsImage.activeSelf;
+            keyboardControlsImage.SetActive(!isKeyboardActive);
+            gamepadControlsImage.SetActive(isKeyboardActive);
+        }
     }
     #endregion
 }

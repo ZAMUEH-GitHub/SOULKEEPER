@@ -33,17 +33,34 @@ public class HUDManager : MonoBehaviour
         if (session != null && session.HasActiveSession)
         {
             stats = session.RuntimeStats;
-            UpdateAllHealthIcons();
+            ForceUpdateUI();
         }
     }
 
     private void Update()
     {
-        if (stats == null) return;
+        if (stats == null)
+        {
+            var session = SessionManager.Instance;
+            if (session != null && session.HasActiveSession)
+            {
+                stats = session.RuntimeStats;
+                ForceUpdateUI();
+            }
+
+            if (stats == null) return;
+        }
 
         UpdateHealthUI();
         UpdateScoreUI();
         UpdatePowerUpsUI();
+    }
+
+    private void ForceUpdateUI()
+    {
+        UpdateAllHealthIcons();
+        UpdateScoreUI(true);
+        UpdatePowerUpsUI(true);
     }
 
     #region Health
@@ -76,10 +93,10 @@ public class HUDManager : MonoBehaviour
     #endregion
 
     #region Score
-    private void UpdateScoreUI()
+    private void UpdateScoreUI(bool force = false)
     {
         if (scoreText == null) return;
-        if (stats.score == lastScore) return;
+        if (!force && stats.score == lastScore) return;
 
         lastScore = stats.score;
         scoreText.text = $"{stats.score:N0}";
@@ -87,23 +104,23 @@ public class HUDManager : MonoBehaviour
     #endregion
 
     #region PowerUps
-    private void UpdatePowerUpsUI()
+    private void UpdatePowerUpsUI(bool force = false)
     {
         if (stats == null) return;
 
-        if (jumpIcon != null && stats.jumpUnlocked != lastJump)
+        if (jumpIcon != null && (force || stats.jumpUnlocked != lastJump))
             jumpIcon.SetActive(stats.jumpUnlocked);
 
-        if (dashIcon != null && stats.dashUnlocked != lastDash)
+        if (dashIcon != null && (force || stats.dashUnlocked != lastDash))
             dashIcon.SetActive(stats.dashUnlocked);
 
-        if (attackIcon != null && stats.attackUnlocked != lastAttack)
+        if (attackIcon != null && (force || stats.attackUnlocked != lastAttack))
             attackIcon.SetActive(stats.attackUnlocked);
 
-        if (wallSlideIcon != null && stats.wallSlideUnlocked != lastWallSlide)
+        if (wallSlideIcon != null && (force || stats.wallSlideUnlocked != lastWallSlide))
             wallSlideIcon.SetActive(stats.wallSlideUnlocked);
 
-        if (wallJumpIcon != null && stats.wallJumpUnlocked != lastWallJump)
+        if (wallJumpIcon != null && (force || stats.wallJumpUnlocked != lastWallJump))
             wallJumpIcon.SetActive(stats.wallJumpUnlocked);
 
         lastJump = stats.jumpUnlocked;
