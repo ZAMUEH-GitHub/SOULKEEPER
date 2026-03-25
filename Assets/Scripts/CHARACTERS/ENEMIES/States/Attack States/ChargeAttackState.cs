@@ -1,38 +1,71 @@
 using UnityEngine;
 
-public class ChargeAttackState : IMovementState
+public class ChargeAttackState : EnemyBaseState
 {
-    private readonly EnemyBaseController enemy;
-    private float chargeTimer;
+    private float attackTimer;
 
-    public ChargeAttackState(EnemyBaseController enemy)
-    {
-        this.enemy = enemy;
-    }
+    public ChargeAttackState(EnemyBaseController enemy) : base(enemy) { }
 
-    public void Enter()
+    public override void Enter()
     {
         enemy.Stop();
-        enemy.PauseVertical(true);
-
-        enemy.ResetVerticalStateIfGrounded();
+        enemy.RequestMovementLock("Attack");
 
         enemy.attackController.isChargingAttack = true;
-        enemy.animator.SetBool("isChargingAttack", true);
-
-        chargeTimer = enemy.enemyStats.chargeAttackDuration;
+        if (enemy.animator != null) enemy.animator.SetBool("isChargingAttack", true);
+        attackTimer = enemy.enemyStats.chargeAttackDuration;
     }
 
-    public void Update() { }
-
-    public void Exit()
+    public override void Update()
     {
-        enemy.attackController.isChargingAttack = false;
-        enemy.animator.SetBool("isChargingAttack", false);
+        if (TryEnterDeathState()) return;
+
+        attackTimer -= Time.deltaTime;
+
+        if (attackTimer <= 0 && enemy.attackController.isChargingAttack)
+        {
+            enemy.attackController.isChargingAttack = false;
+            enemy.attackController.isAttacking = true;
+
+            if (enemy.animator != null)
+            {
+                enemy.animator.SetBool("isChargingAttack", false);
+                enemy.animator.SetBool("isAttacking", true);
+            }
+
+            attackTimer = enemy.enemyStats.chargeAttackDuration;
+
+            float dir = Mathf.Sign(enemy.transform.localScale.x);
+            enemy.rigidBody.linearVelocity = new Vector2(dir * enemy.enemyStats.chargeAttackSpeed, enemy.rigidBody.linearVelocity.y);
+        }
+        else if (attackTimer <= 0 && enemy.attackController.isAttacking)
+        {
+            EndAttack();
+        }
     }
 
-    public void FinishCharge()
+    public override void Exit()
     {
-        enemy.ChangeMovementState(new AttackingState(enemy));
+        enemy.ReleaseMovementLock("Attack");
+
+        if (enemy.attackController != null)
+        {
+            enemy.attackController.isAttacking = false;
+            enemy.attackController.isChargingAttack = false;
+        }
+
+        if (enemy.animator != null)
+        {
+            enemy.animator.SetBool("isAttacking", false);
+            enemy.animator.SetBool("isChargingAttack", false);
+        }
+    }
+
+    private void EndAttack()
+    {
+        if (enemy.targetPlayer)
+            enemy.stateMachine.ChangeState(new ChaseState(enemy));
+        else
+            enemy.stateMachine.ChangeState(new PatrolState(enemy));
     }
 }

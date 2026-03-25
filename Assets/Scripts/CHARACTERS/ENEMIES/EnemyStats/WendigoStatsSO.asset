@@ -10,25 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b06e747c6070e74794724d30b4e3f2c, type: 3}
-  m_Name: GoblinStatsSO
+  m_Name: WendigoStatsSO
   m_EditorClassIdentifier: 
-  health: 5
-  score: 5
+  behaviorType: 0
+  health: 10
+  score: 15
   unlocker: 0
   speed: 2
   idleDuration: 2
-  canRun: 0
-  speedMultiplier: 0
+  canRun: 1
+  speedMultiplier: 2
+  patrolRadius: 10
+  visionRange: 15
+  visionAngle: 90
+  proximityRange: 3
+  chaseRange: 17.5
+  chaseAngle: 270
+  searchRadius: 10
+  searchDuration: 5
   canJump: 1
-  jumpForce: 15
-  jumpRate: 5
+  jumpForce: 20
+  jumpRate: 3
   jumpChargeDuration: 1
   damage: 1
-  canComboAttack: 0
-  hasChargedAttack: 1
-  attackRate: 3
-  attackRange: 5
-  chargeAttackSpeed: 15
-  chargeAttackDuration: 1.5
+  attackType: 2
+  attackRate: 1
+  attackRange: 2.5
+  chargeAttackSpeed: 0
+  chargeAttackDuration: 0
   knockback: 5
   knockbackDuration: 0.25

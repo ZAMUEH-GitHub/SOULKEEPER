@@ -1,68 +1,108 @@
 using UnityEngine;
 
-public class ComboAttackState : IMovementState
+public class ComboAttackState : EnemyBaseState
 {
-    private readonly EnemyBaseController enemy;
-    private int currentStep;
-    private bool cancelCombo;
+    private float attackTimer;
+    private float graceTimer;
+    private int comboStep = 1;
+    private bool inGracePeriod = false;
 
-    public ComboAttackState(EnemyBaseController enemy)
-    {
-        this.enemy = enemy;
-    }
+    private float comboGraceDuration = 0.5f;
 
-    public void Enter()
+    public ComboAttackState(EnemyBaseController enemy) : base(enemy) { }
+
+    public override void Enter()
     {
         enemy.Stop();
-        enemy.PauseVertical(true);
+        enemy.RequestMovementLock("Attack");
 
-        enemy.ResetVerticalStateIfGrounded();
-
-        enemy.attackController.isAttacking = true;
-        currentStep = 1;
-        cancelCombo = false;
-
-        enemy.animator.SetTrigger("EnemyAttack1");
+        comboStep = 1;
+        ExecuteAttack();
     }
 
-    public void Update()
+    public override void Update()
     {
-        if (!enemy.targetPlayer ||  Vector2.Distance(enemy.transform.position, enemy.player.position) > enemy.enemyStats.attackRange)
+        if (TryEnterDeathState()) return;
+
+        if (!inGracePeriod)
         {
-            cancelCombo = true;
-        }
-    }
+            attackTimer -= Time.deltaTime;
 
-    public void Exit()
-    {
-        enemy.attackController.isAttacking = false;
+            if (attackTimer <= 0)
+            {
+                if (comboStep >= 3)
+                {
+                    EndAttack();
+                }
+                else
+                {
+                    inGracePeriod = true;
+                    graceTimer = comboGraceDuration;
 
-        enemy.PauseVertical(false);
-    }
-
-    public void NextComboStep()
-    {
-        if (cancelCombo)
-        {
-            enemy.ChangeMovementState(enemy.targetPlayer ? new ChaseState(enemy) : new PatrolState(enemy));
-            return;
-        }
-
-        currentStep++;
-
-        if (currentStep == 2)
-        {
-            enemy.Stop();
-            enemy.animator.SetTrigger("EnemyAttack2");
-        }
-        else if (currentStep == 3)
-        {
-            enemy.Stop();
-            enemy.animator.SetTrigger("EnemyAttack3");
+                    if (enemy.attackController != null)
+                        enemy.attackController.isAttacking = false;
+                }
+            }
         }
         else
         {
-            enemy.ChangeMovementState(enemy.targetPlayer ? new ChaseState(enemy) : new PatrolState(enemy));
+            graceTimer -= Time.deltaTime;
+
+            float distanceToPlayer = Vector2.Distance(enemy.transform.position, enemy.player.position);
+
+            if (distanceToPlayer <= enemy.enemyStats.attackRange)
+            {
+                comboStep++;
+                ExecuteAttack();
+            }
+            else if (graceTimer <= 0)
+            {
+                EndAttack();
+            }
         }
+    }
+
+    public override void Exit()
+    {
+        enemy.ReleaseMovementLock("Attack");
+
+        if (enemy.attackController != null)
+        {
+            enemy.attackController.isAttacking = false;
+        }
+
+        if (enemy.animator != null)
+        {
+            enemy.animator.SetBool("isAttacking", false);
+        }
+    }
+
+    private void ExecuteAttack()
+    {
+        inGracePeriod = false;
+
+        if (enemy.player != null)
+        {
+            enemy.Flip(enemy.player.position);
+        }
+
+        if (enemy.attackController != null)
+            enemy.attackController.isAttacking = true;
+
+        if (enemy.animator != null)
+        {
+            enemy.animator.SetBool("isAttacking", true);
+            enemy.animator.SetTrigger("EnemyAttack" + comboStep);
+        }
+
+        attackTimer = enemy.enemyStats.attackRate;
+    }
+
+    private void EndAttack()
+    {
+        if (enemy.targetPlayer)
+            enemy.stateMachine.ChangeState(new ChaseState(enemy));
+        else
+            enemy.stateMachine.ChangeState(new PatrolState(enemy));
     }
 }

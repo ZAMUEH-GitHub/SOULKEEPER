@@ -1,40 +1,37 @@
 using UnityEngine;
 
-public class IdleState : IMovementState
+public class IdleState : EnemyBaseState
 {
-    private readonly EnemyBaseController enemy;
     private float idleTimer;
 
-    public IdleState(EnemyBaseController enemy) { this.enemy = enemy; }
+    public IdleState(EnemyBaseController enemy) : base(enemy) { }
 
-    public void Enter()
+    public override void Enter()
     {
         enemy.Stop();
         idleTimer = enemy.enemyStats.idleDuration;
-        enemy.animator.SetBool("isMoving", false);
+
+        if (enemy.animator != null)
+            enemy.animator.SetBool("isMoving", false);
     }
 
-    public void Update()
+    public override void Update()
     {
-        idleTimer -= Time.deltaTime;
+        if (TryEnterDeathState()) return;
 
         if (enemy.targetPlayer)
         {
-            enemy.ChangeMovementState(new ChaseState(enemy));
+            enemy.stateMachine.ChangeState(new ChaseState(enemy));
             return;
         }
 
+        idleTimer -= Time.deltaTime;
+
         if (idleTimer <= 0)
         {
-            enemy.ChangeMovementState(new PatrolState(enemy));
-        }
-
-        if (enemy.enemyStats.canJump && enemy.jumpController.CanJump &&
-            enemy.currentTarget.y > enemy.transform.position.y + 2f)
-        {
-            enemy.ChangeVerticalState(new JumpChargeState(enemy));
+            enemy.stateMachine.ChangeState(new PatrolState(enemy));
         }
     }
 
-    public void Exit() { }
+    public override void Exit() { }
 }

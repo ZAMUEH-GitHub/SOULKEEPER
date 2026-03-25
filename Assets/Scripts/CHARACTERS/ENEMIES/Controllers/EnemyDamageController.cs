@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Splines;
 
 public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
 {
@@ -9,7 +8,7 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
     public int enemyHealth;
     public int enemyScore;
     public bool isTakingDamage;
-    public bool isAlive;
+    public bool isAlive = true;
 
     public GameObject soulObject;
     public ParticleSystem damageParticles;
@@ -17,12 +16,9 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
 
     private float damageRate = 0.25f;
     private float nextDamage;
-    public bool isKnockedBack;
 
     private Coroutine takeDamageCoroutine;
-
     private EnemyBaseController enemyBaseController;
-
     private SpriteRenderer enemySprite;
     private Rigidbody2D enemyRB;
 
@@ -43,16 +39,7 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
 
     public void Knockback(Vector2 knockbackVector, float knockbackForce, float knockbackDuration)
     {
-        enemyRB.AddForce(knockbackVector * knockbackForce, ForceMode2D.Impulse);
-        enemyRB.linearVelocity = (new Vector2(knockbackVector.x, knockbackVector.y + 1) * knockbackForce);
-        isKnockedBack = true;
-        StartCoroutine(CancelKnockback(knockbackDuration));
-    }
-
-    public IEnumerator CancelKnockback(float knockbackDuration)
-    {
-        yield return new WaitForSeconds(knockbackDuration);
-        isKnockedBack = false;
+        enemyBaseController.stateMachine.ChangeState(new KnockbackState(enemyBaseController, knockbackVector, knockbackForce, knockbackDuration));
     }
 
     public void TakeDamage(int damage, Vector2 damageVector)

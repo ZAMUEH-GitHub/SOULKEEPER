@@ -1,41 +1,53 @@
 using UnityEngine;
 
-public class SimpleAttackState : IMovementState
+public class SimpleAttackState : EnemyBaseState
 {
-    private readonly EnemyBaseController enemy;
     private float attackTimer;
 
-    public SimpleAttackState(EnemyBaseController enemy) { this.enemy = enemy; }
+    public SimpleAttackState(EnemyBaseController enemy) : base(enemy) { }
 
-    public void Enter()
+    public override void Enter()
     {
         enemy.Stop();
-        enemy.PauseVertical(true);
-
-        enemy.ResetVerticalStateIfGrounded();
+        enemy.RequestMovementLock("Attack");
 
         enemy.attackController.isAttacking = true;
-        enemy.animator.SetTrigger("EnemyAttack");
+        if (enemy.animator != null) enemy.animator.SetTrigger("EnemyAttack");
         attackTimer = enemy.enemyStats.attackRate;
     }
 
-    public void Update()
+    public override void Update()
     {
+        if (TryEnterDeathState()) return;
+
         attackTimer -= Time.deltaTime;
-        if (attackTimer <= 0) EndAttack();
+
+        if (attackTimer <= 0)
+        {
+            EndAttack();
+        }
     }
 
-    public void Exit()
+    public override void Exit()
     {
-        enemy.PauseVertical(false);
-        enemy.attackController.isAttacking = false;
+        enemy.ReleaseMovementLock("Attack");
+
+        if (enemy.attackController != null)
+        {
+            enemy.attackController.isAttacking = false;
+        }
+
+        if (enemy.animator != null)
+        {
+            enemy.animator.SetBool("isAttacking", false);
+        }
     }
 
-    public void EndAttack()
+    private void EndAttack()
     {
         if (enemy.targetPlayer)
-            enemy.ChangeMovementState(new ChaseState(enemy));
+            enemy.stateMachine.ChangeState(new ChaseState(enemy));
         else
-            enemy.ChangeMovementState(new PatrolState(enemy));
+            enemy.stateMachine.ChangeState(new PatrolState(enemy));
     }
 }

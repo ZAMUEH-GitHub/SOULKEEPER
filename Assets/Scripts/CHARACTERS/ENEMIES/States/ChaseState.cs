@@ -1,52 +1,72 @@
 using UnityEngine;
+using static PlayerAttackController;
 
-public class ChaseState : IMovementState
+public class ChaseState : EnemyBaseState
 {
-    private readonly EnemyBaseController enemy;
+    public ChaseState(EnemyBaseController enemy) : base(enemy) { }
 
-    public ChaseState(EnemyBaseController enemy) { this.enemy = enemy; }
-
-    public void Enter() => enemy.animator.SetBool("isMoving", true);
-
-    public void Update()
+    public override void Enter()
     {
-        if (enemy.damageController.isKnockedBack) return;
+        if (enemy.animator != null)
+        {
+            enemy.animator.SetBool("isMoving", true);
+        }
+    }
+
+    public override void Update()
+    {
+        if (TryEnterDeathState()) return;
+
         if (!enemy.targetPlayer)
         {
-            enemy.ChangeMovementState(new PatrolState(enemy));
+            enemy.lastKnownPlayerPosition = enemy.player.position;
+            enemy.stateMachine.ChangeState(new SearchState(enemy));
             return;
         }
 
         float chaseSpeed = enemy.enemyStats.speed *
             (enemy.enemyStats.canRun ? enemy.enemyStats.speedMultiplier : 1f);
 
-        enemy.animator.SetFloat("WalkSpeed", chaseSpeed / enemy.enemyStats.speed);
-        enemy.MoveToTarget(new Vector2(enemy.player.position.x, enemy.transform.position.y), chaseSpeed);
+        if (enemy.animator != null)
+        {
+            enemy.animator.SetFloat("WalkSpeed", chaseSpeed / enemy.enemyStats.speed);
+        }
+
+        Vector2 targetPos = new Vector2(enemy.player.position.x, enemy.transform.position.y);
+        enemy.MoveToTarget(targetPos, chaseSpeed);
         enemy.Flip(enemy.player.position);
 
-        if (!enemy.IsInVerticalAction() &&
-            Vector2.Distance(enemy.transform.position, enemy.player.position) <= enemy.enemyStats.attackRange)
+        float distanceToPlayer = Vector2.Distance(enemy.transform.position, enemy.player.position);
+        if (distanceToPlayer <= enemy.enemyStats.attackRange)
         {
-            if (enemy.enemyStats.hasChargedAttack)
-                enemy.ChangeMovementState(new ChargeAttackState(enemy));
-            else if (enemy.enemyStats.canComboAttack)
-                enemy.ChangeMovementState(new ComboAttackState(enemy));
-            else
-                enemy.ChangeMovementState(new SimpleAttackState(enemy));
-
+            switch (enemy.enemyStats.attackType)
+            {
+                case EnemyStatsSO.EnemyAttackType.Simple:
+                    enemy.stateMachine.ChangeState(new SimpleAttackState(enemy));
+                    break;
+                case EnemyStatsSO.EnemyAttackType.Charge:
+                    enemy.stateMachine.ChangeState(new ChargeAttackState(enemy));
+                    break;
+                case EnemyStatsSO.EnemyAttackType.Combo:
+                    enemy.stateMachine.ChangeState(new ComboAttackState(enemy));
+                    break;
+            }
             return;
         }
 
-        if (enemy.enemyStats.canJump && enemy.jumpController.CanJump &&
-            enemy.player.position.y > enemy.transform.position.y + 2f)
+        if (enemy.enemyStats.canJump && enemy.jumpController != null && enemy.jumpController.CanJump && enemy.player.position.y > enemy.transform.position.y + 2f)
         {
-            enemy.ChangeVerticalState(new JumpChargeState(enemy));
+            enemy.stateMachine.ChangeState(new AirborneState(enemy));
+            return;
         }
     }
 
-    public void Exit()
+    public override void Exit()
     {
-        enemy.animator.SetBool("isMoving", false);
-        enemy.animator.SetFloat("WalkSpeed", 1f);
+        if (enemy.animator != null)
+        {
+            enemy.animator.SetBool("isMoving", false);
+            enemy.animator.SetFloat("WalkSpeed", 1f);
+        }
     }
 }

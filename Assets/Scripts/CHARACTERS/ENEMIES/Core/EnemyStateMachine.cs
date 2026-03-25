@@ -21,6 +21,3 @@ public class EnemyStateMachine
 
     public void Update() => CurrentState?.Update();
 }
-
-public class EnemyMovementStateMachine : EnemyStateMachine { }
-public class EnemyVerticalStateMachine : EnemyStateMachine { }
