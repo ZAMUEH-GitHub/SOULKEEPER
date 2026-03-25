@@ -14,15 +14,16 @@ public class EnemyJumpController : MonoBehaviour
     [HideInInspector] public float nextJump;
 
     private Rigidbody2D enemyRB;
-    private Animator animator;
+    private EnemyAnimationController animController;
 
     private float jumpForce;
     private float jumpRate;
 
+    #region Unity Lifecycle
     private void Awake()
     {
         enemyRB = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        animController = GetComponent<EnemyAnimationController>();
 
         if (enemyStats != null)
         {
@@ -36,17 +37,21 @@ public class EnemyJumpController : MonoBehaviour
         if (groundCheckPoint != null)
             isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
 
+        if (animController != null)
+            animController.SetGrounded(isGrounded);
+
         nextJump = Mathf.Max(0, nextJump - Time.deltaTime);
     }
+    #endregion
 
-
+    #region Jump Logic
     public void DoJump()
     {
         enemyRB.linearVelocity = new Vector2(enemyRB.linearVelocity.x, jumpForce);
         nextJump = jumpRate;
 
-        if (animator != null)
-            animator.SetTrigger("EnemyJump");
+        if (animController != null)
+            animController.TriggerEnemyJump();
     }
 
     public bool CanJump => isGrounded && nextJump <= 0;
@@ -58,4 +63,5 @@ public class EnemyJumpController : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundCheckPoint.position, groundCheckRadius);
     }
+    #endregion
 }

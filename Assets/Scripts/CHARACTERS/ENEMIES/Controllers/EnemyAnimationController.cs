@@ -14,8 +14,8 @@ public class EnemyAnimationController : MonoBehaviour
     [HideInInspector] public bool idleRollConsumed;
 
     public event System.Action OnAlertAnimationEndEvent;
-    private bool wasMovingLastFrame;
     private EnemyBaseController enemy;
+    private bool wasMovingLastFrame;
 
     private void Awake()
     {
@@ -25,52 +25,98 @@ public class EnemyAnimationController : MonoBehaviour
         enemy = GetComponent<EnemyBaseController>();
     }
 
-    private void Update()
-    {
-        UpdateMovementParameters();
-        HandleIdleEntry();
-    }
-
-    private void UpdateMovementParameters()
-    {
-        if (animator == null || enemy.rigidBody == null) return;
-
-        float currentSpeed = Mathf.Abs(enemy.rigidBody.linearVelocity.x);
-
-        animator.SetFloat("Speed", currentSpeed);
-
-        bool isMoving = currentSpeed > 0.05f;
-
-        float walkThreshold = (enemy.enemyStats != null) ? enemy.enemyStats.speed + 0.2f : 2f;
-        bool isRunning = currentSpeed >= walkThreshold;
-        bool isWalking = isMoving && !isRunning;
-
-        animator.SetBool("IsMoving", isMoving);
-        animator.SetBool("IsWalking", isWalking);
-        animator.SetBool("IsRunning", isRunning);
-
-        wasMovingLastFrame = isMoving;
-    }
-
-    private void HandleIdleEntry()
+    #region Movement Logic
+    public void SetMoving(bool isMoving)
     {
         if (animator == null) return;
 
-        bool isMoving = animator.GetBool("IsMoving");
+        animator.SetBool("IsMoving", isMoving);
+        HandleIdleEntry(isMoving);
+    }
+
+    public void SetWalkSpeed(float speed)
+    {
+        if (animator != null) animator.SetFloat("Speed", speed);
+    }
+
+    public void SetGrounded(bool isGrounded)
+    {
+        if (animator != null) animator.SetBool("IsGrounded", isGrounded);
+    }
+    #endregion
+
+    #region Attack Logic
+    public void TriggerEnemyAttack()
+    {
+        if (animator != null) animator.SetTrigger("Attack");
+    }
+
+    public void SetAttacking(bool isAttacking)
+    {
+        if (animator != null) animator.SetBool("IsAttacking", isAttacking);
+    }
+
+    public void SetChargingAttack(bool isCharging)
+    {
+        if (animator != null) animator.SetBool("IsChargingAttack", isCharging);
+    }
+
+    public void TriggerComboAttack(int comboStep)
+    {
+        if (animator != null) animator.SetTrigger("Attack" + comboStep);
+    }
+    #endregion
+
+    #region Airborne Logic
+    public void SetChargingJump(bool isCharging)
+    {
+        if (animator != null) animator.SetBool("IsChargingJump", isCharging);
+    }
+
+    public void TriggerEnemyJump()
+    {
+        if (animator != null) animator.SetTrigger("Jump");
+    }
+
+    public void SetJumping(bool isJumping)
+    {
+        if (animator != null) animator.SetBool("IsJumping", isJumping);
+    }
+
+    public void SetFalling(bool isFalling)
+    {
+        if (animator != null) animator.SetBool("IsFalling", isFalling);
+    }
+    #endregion
+
+    #region Alert Logic
+    public void TriggerAlert()
+    {
+        if (animator != null) animator.SetTrigger("Alert");
+    }
+    public void OnAlertAnimationEnd()
+    {
+        OnAlertAnimationEndEvent?.Invoke();
+    }
+    #endregion
+
+    #region Idle Logic
+    private void HandleIdleEntry(bool isCurrentlyMoving)
+    {
+        if (animator == null) return;
 
         if (idleRollConsumed)
         {
-            wasMovingLastFrame = isMoving;
+            wasMovingLastFrame = isCurrentlyMoving;
             return;
         }
 
-        if (!isMoving && wasMovingLastFrame)
+        if (!isCurrentlyMoving && wasMovingLastFrame)
         {
             if (Random.value <= idleBreakChance)
             {
                 int variant = Random.Range(idleVariantMin, idleVariantMax + 1);
                 animator.SetInteger("IdleVariant", variant);
-                animator.ResetTrigger("IdleBreak");
                 animator.SetTrigger("IdleBreak");
             }
             else
@@ -81,8 +127,12 @@ public class EnemyAnimationController : MonoBehaviour
 
             idleRollConsumed = true;
         }
+        else if (isCurrentlyMoving)
+        {
+            idleRollConsumed = false;
+        }
 
-        wasMovingLastFrame = isMoving;
+        wasMovingLastFrame = isCurrentlyMoving;
     }
 
     public void ForceIdleBreak()
@@ -90,54 +140,26 @@ public class EnemyAnimationController : MonoBehaviour
         if (animator == null) return;
 
         int variant = Random.Range(idleVariantMin, idleVariantMax + 1);
-
         animator.SetInteger("IdleVariant", variant);
-        animator.ResetTrigger("IdleBreak");
         animator.SetTrigger("IdleBreak");
 
         idleRollConsumed = true;
     }
+    #endregion
 
-    public void TriggerAlert()
-    {
-        if (animator == null) return;
-        animator.ResetTrigger("Alert");
-        animator.SetTrigger("Alert");
-    }
-
-    public void OnAlertAnimationEnd()
-    {
-        OnAlertAnimationEndEvent?.Invoke();
-    }
-
-    public void SetIsJumping(bool value)
-    {
-        if (animator == null) return;
-
-        bool current = animator.GetBool("IsJumping");
-        if (current != value)
-        {
-            animator.SetBool("IsJumping", value);
-        }
-    }
-
+    #region Damage & Death Logic
     public void TriggerHit()
     {
-        if (animator == null) return;
-        animator.ResetTrigger("Hit");
-        animator.SetTrigger("Hit");
+        if (animator != null) animator.SetTrigger("Hit");
+    }
+    public void TriggerDeath()
+    {
+        if (animator != null) animator.SetTrigger("Death");
     }
 
-    public void TriggerAttack()
+    public void TriggerStun()
     {
-        if (animator == null) return;
-        animator.ResetTrigger("Attack");
-        animator.SetTrigger("Attack");
+        if (animator != null) animator.SetTrigger("Stun");
     }
-
-    public void SetIsAttacking(bool isAttacking)
-    {
-        if (animator == null) return;
-        animator.SetBool("IsAttacking", isAttacking);
-    }
+    #endregion
 }

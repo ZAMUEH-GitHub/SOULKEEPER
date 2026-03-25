@@ -12,9 +12,9 @@ public class FleeState : EnemyBaseState
 
     public override void Enter()
     {
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetBool("isMoving", true);
+            enemy.animController.SetMoving(true);
         }
     }
 
@@ -34,9 +34,9 @@ public class FleeState : EnemyBaseState
 
         float fleeSpeed = enemy.enemyStats.speed * (enemy.enemyStats.canRun ? enemy.enemyStats.speedMultiplier : 1.2f);
 
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetFloat("WalkSpeed", fleeSpeed / enemy.enemyStats.speed);
+            enemy.animController.SetWalkSpeed(fleeSpeed / enemy.enemyStats.speed);
         }
 
         enemy.MoveToTarget(fleeTarget, fleeSpeed);
@@ -61,10 +61,10 @@ public class FleeState : EnemyBaseState
     public override void Exit()
     {
         enemy.Stop();
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetBool("isMoving", false);
-            enemy.animator.SetFloat("WalkSpeed", 1f);
+            enemy.animController.SetMoving(false);
+            enemy.animController.SetWalkSpeed(1f);
         }
     }
 }

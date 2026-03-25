@@ -97,7 +97,7 @@ Transform:
   m_GameObject: {fileID: 3176606683999004639}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2.5907574, y: -7.5281677, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -134,6 +134,7 @@ MonoBehaviour:
   patrolStart: {x: 0, y: 0}
   currentTarget: {x: 0, y: 0}
   enemySpeed: 0
+  moveSpeedMultiplier: 1
 --- !u!114 &4626161253241046307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,6 +413,10 @@ MonoBehaviour:
   enemyDamage: 1
   isAttacking: 0
   isChargingAttack: 0
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 100663296
+  hasHitObstacle: 0
   knockbackForce: 15
   knockbackDuration: 0.25
   enemy: {fileID: 6929525796127774032}

@@ -3,11 +3,15 @@ using UnityEngine;
 public class EnemyAttackController : MonoBehaviour
 {
     public EnemyStatsSO enemyStats;
-    
+
     [Header("Attack Settings")]
     public int enemyDamage;
     public bool isAttacking;
     public bool isChargingAttack;
+
+    [Header("Obstacle Detection")]
+    public LayerMask obstacleLayers;
+    public bool hasHitObstacle;
 
     [Header("Knockback Settings")]
     public float knockbackForce;
@@ -27,9 +31,15 @@ public class EnemyAttackController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isAttacking) return;
+        if (!isAttacking && !isChargingAttack) return;
 
-        if (collision.CompareTag("Player"))
+        if (((1 << collision.gameObject.layer) & obstacleLayers) != 0)
+        {
+            hasHitObstacle = true;
+            return;
+        }
+
+        if (isAttacking && collision.CompareTag("Player"))
         {
             IDamageable damageable = collision.GetComponent<IDamageable>();
             IKnockbackable knockbackable = collision.GetComponent<IKnockbackable>();

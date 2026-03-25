@@ -2,30 +2,26 @@ using UnityEngine;
 
 public class SimpleAttackState : EnemyBaseState
 {
-    private float attackTimer;
-
     public SimpleAttackState(EnemyBaseController enemy) : base(enemy) { }
 
     public override void Enter()
     {
-        enemy.Stop();
         enemy.RequestMovementLock("Attack");
 
         enemy.attackController.isAttacking = true;
-        if (enemy.animator != null) enemy.animator.SetTrigger("EnemyAttack");
-        attackTimer = enemy.enemyStats.attackRate;
+        if (enemy.animController != null)
+        {
+            enemy.animController.SetAttacking(true);
+            enemy.animController.TriggerEnemyAttack();
+        }
     }
 
     public override void Update()
     {
         if (TryEnterDeathState()) return;
 
-        attackTimer -= Time.deltaTime;
-
-        if (attackTimer <= 0)
-        {
-            EndAttack();
-        }
+        float direction = Mathf.Sign(enemy.transform.localScale.x);
+        enemy.rigidBody.linearVelocity = new Vector2(direction * (enemy.enemyStats.speed * enemy.moveSpeedMultiplier), enemy.rigidBody.linearVelocity.y);
     }
 
     public override void Exit()
@@ -37,10 +33,17 @@ public class SimpleAttackState : EnemyBaseState
             enemy.attackController.isAttacking = false;
         }
 
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetBool("isAttacking", false);
+            enemy.animController.SetAttacking(false);
         }
+
+        enemy.moveSpeedMultiplier = 1f;
+    }
+
+    public void AnimationFinished()
+    {
+        EndAttack();
     }
 
     private void EndAttack()

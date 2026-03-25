@@ -14,8 +14,8 @@ public class DeathState : EnemyBaseState
         if (LayerMask.NameToLayer(CORPSE_LAYER) != -1)
             enemy.gameObject.layer = LayerMask.NameToLayer(CORPSE_LAYER);
 
-        if (enemy.animator != null)
-            enemy.animator.SetTrigger("EnemyDeath");
+        if (enemy.animController != null)
+            enemy.animController.TriggerDeath();
 
         if (enemy.isAlive)
             enemy.Die();

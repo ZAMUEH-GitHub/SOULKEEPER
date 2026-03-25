@@ -14,9 +14,9 @@ public class AlertState : EnemyBaseState
         enemy.RequestMovementLock("Alert");
         alertTimer = 0f;
 
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetTrigger("Alert");
+            enemy.animController.TriggerAlert();
         }
 
         if (player != null)

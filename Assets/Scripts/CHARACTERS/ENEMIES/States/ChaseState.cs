@@ -7,9 +7,9 @@ public class ChaseState : EnemyBaseState
 
     public override void Enter()
     {
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetBool("isMoving", true);
+            enemy.animController.SetMoving(true);
         }
     }
 
@@ -27,9 +27,9 @@ public class ChaseState : EnemyBaseState
         float chaseSpeed = enemy.enemyStats.speed *
             (enemy.enemyStats.canRun ? enemy.enemyStats.speedMultiplier : 1f);
 
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetFloat("WalkSpeed", chaseSpeed / enemy.enemyStats.speed);
+            enemy.animController.SetWalkSpeed(chaseSpeed / enemy.enemyStats.speed);
         }
 
         Vector2 targetPos = new Vector2(enemy.player.position.x, enemy.transform.position.y);
@@ -63,10 +63,10 @@ public class ChaseState : EnemyBaseState
 
     public override void Exit()
     {
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetBool("isMoving", false);
-            enemy.animator.SetFloat("WalkSpeed", 1f);
+            enemy.animController.SetMoving(false);
+            enemy.animController.SetWalkSpeed(1f);
         }
     }
 }

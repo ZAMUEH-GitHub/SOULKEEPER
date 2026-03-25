@@ -20,9 +20,9 @@ public class KnockbackState : EnemyBaseState
 
         enemy.rigidBody.linearVelocity = new Vector2(knockbackVector.x * knockbackForce, knockbackVector.y * knockbackForce + knockbackForce);
 
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            // enemy.animator.SetTrigger("Hit"); 
+            // enemy.animController.TriggerHit(); 
         }
 
         elapsed = 0f;

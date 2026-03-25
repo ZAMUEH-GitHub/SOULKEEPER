@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class ComboAttackState : EnemyBaseState
 {
-    private float attackTimer;
     private float graceTimer;
     private int comboStep = 1;
     private bool inGracePeriod = false;
@@ -13,7 +12,6 @@ public class ComboAttackState : EnemyBaseState
 
     public override void Enter()
     {
-        enemy.Stop();
         enemy.RequestMovementLock("Attack");
 
         comboStep = 1;
@@ -24,27 +22,10 @@ public class ComboAttackState : EnemyBaseState
     {
         if (TryEnterDeathState()) return;
 
-        if (!inGracePeriod)
-        {
-            attackTimer -= Time.deltaTime;
+        float direction = Mathf.Sign(enemy.transform.localScale.x);
+        enemy.rigidBody.linearVelocity = new Vector2(direction * (enemy.enemyStats.speed * enemy.moveSpeedMultiplier), enemy.rigidBody.linearVelocity.y);
 
-            if (attackTimer <= 0)
-            {
-                if (comboStep >= 3)
-                {
-                    EndAttack();
-                }
-                else
-                {
-                    inGracePeriod = true;
-                    graceTimer = comboGraceDuration;
-
-                    if (enemy.attackController != null)
-                        enemy.attackController.isAttacking = false;
-                }
-            }
-        }
-        else
+        if (inGracePeriod)
         {
             graceTimer -= Time.deltaTime;
 
@@ -71,10 +52,12 @@ public class ComboAttackState : EnemyBaseState
             enemy.attackController.isAttacking = false;
         }
 
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetBool("isAttacking", false);
+            enemy.animController.SetAttacking(false);
         }
+
+        enemy.moveSpeedMultiplier = 1f;
     }
 
     private void ExecuteAttack()
@@ -89,13 +72,27 @@ public class ComboAttackState : EnemyBaseState
         if (enemy.attackController != null)
             enemy.attackController.isAttacking = true;
 
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetBool("isAttacking", true);
-            enemy.animator.SetTrigger("EnemyAttack" + comboStep);
+            enemy.animController.SetAttacking(true);
+            enemy.animController.TriggerComboAttack(comboStep);
         }
+    }
 
-        attackTimer = enemy.enemyStats.attackRate;
+    public void AnimationFinished()
+    {
+        if (comboStep >= 3)
+        {
+            EndAttack();
+        }
+        else
+        {
+            inGracePeriod = true;
+            graceTimer = comboGraceDuration;
+
+            if (enemy.attackController != null)
+                enemy.attackController.isAttacking = false;
+        }
     }
 
     private void EndAttack()

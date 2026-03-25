@@ -8,17 +8,26 @@ public class ChargeAttackState : EnemyBaseState
 
     public override void Enter()
     {
-        enemy.Stop();
         enemy.RequestMovementLock("Attack");
 
         enemy.attackController.isChargingAttack = true;
-        if (enemy.animator != null) enemy.animator.SetBool("isChargingAttack", true);
+        enemy.attackController.hasHitObstacle = false;
+
+        if (enemy.animController != null) enemy.animController.SetChargingAttack(true);
         attackTimer = enemy.enemyStats.chargeAttackDuration;
     }
 
     public override void Update()
     {
         if (TryEnterDeathState()) return;
+
+        if (enemy.attackController.hasHitObstacle)
+        {
+            enemy.stateMachine.ChangeState(new StunnedState(enemy));
+            return;
+        }
+
+        float direction = Mathf.Sign(enemy.transform.localScale.x);
 
         attackTimer -= Time.deltaTime;
 
@@ -27,20 +36,25 @@ public class ChargeAttackState : EnemyBaseState
             enemy.attackController.isChargingAttack = false;
             enemy.attackController.isAttacking = true;
 
-            if (enemy.animator != null)
+            if (enemy.animController != null)
             {
-                enemy.animator.SetBool("isChargingAttack", false);
-                enemy.animator.SetBool("isAttacking", true);
+                enemy.animController.SetChargingAttack(false);
+                enemy.animController.SetAttacking(true);
             }
 
             attackTimer = enemy.enemyStats.chargeAttackDuration;
-
-            float dir = Mathf.Sign(enemy.transform.localScale.x);
-            enemy.rigidBody.linearVelocity = new Vector2(dir * enemy.enemyStats.chargeAttackSpeed, enemy.rigidBody.linearVelocity.y);
         }
         else if (attackTimer <= 0 && enemy.attackController.isAttacking)
         {
             EndAttack();
+        }
+        else if (enemy.attackController.isChargingAttack)
+        {
+            enemy.rigidBody.linearVelocity = new Vector2(direction * (enemy.enemyStats.speed * enemy.moveSpeedMultiplier), enemy.rigidBody.linearVelocity.y);
+        }
+        else if (enemy.attackController.isAttacking)
+        {
+            enemy.rigidBody.linearVelocity = new Vector2(direction * enemy.enemyStats.chargeAttackSpeed, enemy.rigidBody.linearVelocity.y);
         }
     }
 
@@ -52,13 +66,16 @@ public class ChargeAttackState : EnemyBaseState
         {
             enemy.attackController.isAttacking = false;
             enemy.attackController.isChargingAttack = false;
+            enemy.attackController.hasHitObstacle = false;
         }
 
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetBool("isAttacking", false);
-            enemy.animator.SetBool("isChargingAttack", false);
+            enemy.animController.SetAttacking(false);
+            enemy.animController.SetChargingAttack(false);
         }
+
+        enemy.moveSpeedMultiplier = 1f;
     }
 
     private void EndAttack()

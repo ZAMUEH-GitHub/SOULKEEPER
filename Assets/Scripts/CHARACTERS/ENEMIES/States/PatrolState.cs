@@ -6,10 +6,10 @@ public class PatrolState : EnemyBaseState
 
     public override void Enter()
     {
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetBool("isMoving", true);
-            enemy.animator.SetFloat("WalkSpeed", 1f);
+            enemy.animController.SetMoving(true);
+            enemy.animController.SetWalkSpeed(1f);
         }
     }
 
@@ -47,7 +47,7 @@ public class PatrolState : EnemyBaseState
     public override void Exit()
     {
         enemy.Stop();
-        if (enemy.animator != null)
-            enemy.animator.SetBool("isMoving", false);
+        if (enemy.animController != null)
+            enemy.animController.SetMoving(false);
     }
 }

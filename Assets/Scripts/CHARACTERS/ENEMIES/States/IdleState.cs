@@ -11,8 +11,8 @@ public class IdleState : EnemyBaseState
         enemy.Stop();
         idleTimer = enemy.enemyStats.idleDuration;
 
-        if (enemy.animator != null)
-            enemy.animator.SetBool("isMoving", false);
+        if (enemy.animController != null)
+            enemy.animController.SetMoving(false);
     }
 
     public override void Update()

@@ -37,6 +37,7 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
     public Vector2 patrolStart;
     public Vector2 currentTarget;
     public float enemySpeed;
+    public float moveSpeedMultiplier = 1f;
 
     public EnemyStateMachine stateMachine;
 
@@ -153,7 +154,6 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
 
         if (distanceToPlayer > visionRange)
         {
-            Debug.Log($"[{gameObject.name}] DETECTION FAILED: Out of range. Distance is {distanceToPlayer}, Vision Range is {visionRange}");
             return false;
         }
 
@@ -164,7 +164,6 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
 
             if (angleToPlayer > visionAngle / 2f)
             {
-                Debug.Log($"[{gameObject.name}] DETECTION FAILED: Player is outside of vision angle. Angle is {angleToPlayer}");
                 return false;
             }
         }
@@ -173,7 +172,6 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
 
         if (hit.collider != null)
         {
-            Debug.Log($"[{gameObject.name}] DETECTION FAILED: Raycast hit '{hit.collider.name}' instead of the Player.");
             return false;
         }
 
@@ -216,6 +214,28 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
         OnEnemyDied?.Invoke(this);
 
         Destroy(gameObject);
+    }
+    #endregion
+
+    #region Animation Events
+    public void EndAttack()
+    {
+        if (stateMachine.CurrentState is SimpleAttackState simpleState)
+        {
+            simpleState.AnimationFinished();
+        }
+        else if (stateMachine.CurrentState is ComboAttackState comboState)
+        {
+            comboState.AnimationFinished();
+        }
+    }
+
+    public void EndStun()
+    {
+        if (stateMachine.CurrentState is StunnedState stunState)
+        {
+            stunState.AnimationFinished();
+        }
     }
     #endregion
 }

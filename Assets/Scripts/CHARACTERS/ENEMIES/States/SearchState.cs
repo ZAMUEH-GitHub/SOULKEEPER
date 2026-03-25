@@ -17,9 +17,9 @@ public class SearchState : EnemyBaseState
         searchTimer = 0f;
         moveTimeout = 0f;
 
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetBool("isMoving", true);
+            enemy.animController.SetMoving(true);
         }
 
         float searchRadius = enemy.enemyStats.searchRadius > 0 ? enemy.enemyStats.searchRadius : 4f;
@@ -53,7 +53,7 @@ public class SearchState : EnemyBaseState
                 enemy.Stop();
                 enemy.RequestMovementLock("SearchWait");
                 searchTimer = 0f;
-                if (enemy.animator != null) enemy.animator.SetBool("isMoving", false);
+                if (enemy.animController != null) enemy.animController.SetMoving(false);
             }
             return;
         }
@@ -70,6 +70,6 @@ public class SearchState : EnemyBaseState
     public override void Exit()
     {
         enemy.ReleaseMovementLock("SearchWait");
-        if (enemy.animator != null) enemy.animator.SetBool("isMoving", false);
+        if (enemy.animController != null) enemy.animController.SetMoving(false);
     }
 }

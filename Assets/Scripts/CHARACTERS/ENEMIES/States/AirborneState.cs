@@ -19,8 +19,8 @@ public class AirborneState : EnemyBaseState
             enemy.Stop();
             enemy.RequestMovementLock("JumpCharge");
 
-            if (enemy.animator != null)
-                enemy.animator.SetBool("isChargingJump", true);
+            if (enemy.animController != null)
+                enemy.animController.SetChargingJump(true);
         }
         else
         {
@@ -48,8 +48,8 @@ public class AirborneState : EnemyBaseState
 
             if (enemy.rigidBody.linearVelocity.y <= 0)
             {
-                if (enemy.animator != null)
-                    enemy.animator.SetBool("isFalling", true);
+                if (enemy.animController != null)
+                    enemy.animController.SetFalling(true);
             }
 
             if (enemy.rigidBody.linearVelocity.y <= 0 && enemy.jumpController != null && enemy.jumpController.isGrounded)
@@ -63,9 +63,10 @@ public class AirborneState : EnemyBaseState
     {
         enemy.ReleaseMovementLock("JumpCharge");
 
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetBool("isChargingJump", false);
+            enemy.animController.SetChargingJump(false);
+            enemy.animController.SetJumping(true);
         }
 
         if (enemy.targetPlayer && player != null)
@@ -98,10 +99,11 @@ public class AirborneState : EnemyBaseState
     {
         enemy.ReleaseMovementLock("JumpCharge");
 
-        if (enemy.animator != null)
+        if (enemy.animController != null)
         {
-            enemy.animator.SetBool("isChargingJump", false);
-            enemy.animator.SetBool("isFalling", false);
+            enemy.animController.SetChargingJump(false);
+            enemy.animController.SetFalling(false);
+            enemy.animController.SetJumping(false);
         }
     }
 }
