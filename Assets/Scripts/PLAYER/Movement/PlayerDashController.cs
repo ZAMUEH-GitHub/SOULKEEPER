@@ -30,7 +30,7 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
         wallController = GetComponent<PlayerWallController>();
     }
 
-    private void Update()
+    public void UpdateDashState()
     {
         bufferCount = Mathf.Max(0, bufferCount - Time.deltaTime);
         nextDash = Mathf.Max(0, nextDash - Time.deltaTime);

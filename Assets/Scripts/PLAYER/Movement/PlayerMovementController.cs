@@ -24,12 +24,12 @@ public class PlayerMovementController : MonoBehaviour, IPlayerSubController
         damageController = GetComponent<PlayerDamageController>();
     }
 
-    private void Update()
+    public void HandleFlip()
     {
         PlayerFlip();
     }
 
-    private void FixedUpdate()
+    public void ExecuteMove()
     {
         PlayerMove();
     }

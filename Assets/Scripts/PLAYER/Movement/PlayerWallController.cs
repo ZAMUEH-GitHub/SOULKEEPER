@@ -34,7 +34,7 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
         jumpController = GetComponent<PlayerJumpController>();
     }
 
-    private void Update()
+    public void UpdateWallState()
     {
         isWalled = Physics2D.OverlapCircle(wallCheckPoint.position, wallCheckRadius, wallLayer);
 
@@ -43,8 +43,27 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
 
         if (playerStats == null) return;
 
+        // --- CHANGED: Evaluate the slide condition here in Update ---
+        bool wasWallSliding = isWallSliding;
+
+        if (playerStats.wallSlideUnlocked && isWalled && !jumpController.isGrounded && moveVector.x != 0 && !jumpController.isJumping && !isWallJumping)
+        {
+            isWallSliding = true;
+            jumpController.jumpCount = jumpController.maxJumpCount; // Reset jumps when clinging
+        }
+        else
+        {
+            isWallSliding = false;
+        }
+
+        if (isWallSliding != wasWallSliding)
+        {
+            OnWallSlideStateChanged?.Invoke(isWallSliding);
+        }
+
+        // --- Wall Jump Check ---
         if (playerStats.wallJumpUnlocked &&
-            IsWallSliding && bufferCount > 0 &&
+            isWallSliding && bufferCount > 0 &&
             !jumpController.isGrounded && jumpController.jumpCount > 0 &&
             nextWallJump <= 0)
         {
@@ -57,12 +76,16 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
         }
     }
 
-    private void FixedUpdate()
+    public void ExecuteWallPhysics()
     {
         if (playerStats == null) return;
 
-        if (playerStats.wallSlideUnlocked)
-            PlayerWallSlide();
+        // --- CHANGED: Only apply the velocity clamp here ---
+        if (isWallSliding)
+        {
+            playerRB.linearVelocity = new Vector2(playerRB.linearVelocity.x,
+                Mathf.Clamp(playerRB.linearVelocity.y, -playerStats.wallSlidingSpeed, float.MaxValue));
+        }
     }
 
     public void SetWallInput(Vector2 moveVector, bool moveInput)

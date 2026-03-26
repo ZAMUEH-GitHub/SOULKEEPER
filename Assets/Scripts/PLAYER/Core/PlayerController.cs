@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour
     public PlayerStatsSO playerBaseStats;
     public PlayerStatsSO playerRuntimeStats;
 
+    [Header("Debug States")]
+    [SerializeField] private string currentState;
+
     [Header("Player Input")]
     public Vector2 moveVector;
     public bool moveInput;
@@ -33,12 +36,20 @@ public class PlayerController : MonoBehaviour
     public bool playerInputActive;
     public bool isAlive;
 
+    // --- NEW: State Machine Hub ---
+    public PlayerStateMachine stateMachine;
+
+    // CHANGED: Made sub-controllers public so states can access them
+    [HideInInspector] public PlayerMovementController movementController;
+    [HideInInspector] public PlayerJumpController jumpController;
+    [HideInInspector] public PlayerWallController wallController;
+    [HideInInspector] public PlayerDashController dashController;
+    [HideInInspector] public PlayerAttackController attackController;
+    [HideInInspector] public PlayerInteractController interactController;
+    [HideInInspector] public PlayerDamageController damageController;
+    [HideInInspector] public PlayerAnimationController animController;
+
     private List<IPlayerSubController> subControllers = new();
-    private PlayerMovementController movementController;
-    private PlayerWallController wallController;
-    private PlayerDashController dashController;
-    private PlayerAttackController attackController;
-    private PlayerInteractController interactController;
 
     #region Unity Lifecycle
     private void Awake()
@@ -69,13 +80,19 @@ public class PlayerController : MonoBehaviour
 
         #region Player SubControllers
         movementController = GetComponent<PlayerMovementController>();
+        jumpController = GetComponent<PlayerJumpController>();
         wallController = GetComponent<PlayerWallController>();
         dashController = GetComponent<PlayerDashController>();
         attackController = GetComponentInChildren<PlayerAttackController>();
         interactController = GetComponent<PlayerInteractController>();
+        damageController = GetComponent<PlayerDamageController>();
+        animController = GetComponent<PlayerAnimationController>();
 
         subControllers.AddRange(GetComponents<IPlayerSubController>());
         #endregion
+
+        // --- NEW: Initialize State Machine ---
+        stateMachine = new PlayerStateMachine();
     }
 
     private void Start()
@@ -84,29 +101,30 @@ public class PlayerController : MonoBehaviour
             sub.Initialize(playerRuntimeStats);
 
         playerInputActive = true;
+
+        stateMachine.Initialize(new PlayerGroundedState(this));
     }
 
     private void Update()
     {
         if (!playerInputActive) return;
 
-        movementController.SetMoveInput(moveVector, moveInput);
-        wallController.SetWallInput(moveVector, moveInput);
-        dashController.SetDashInput(dashInput);
-        attackController.SetAttackInput(attackInput, moveVector);
-        interactController.SetInteractInput(interactInput);
+        // --- NEW: Route update to the active state ---
+        stateMachine?.Update();
 
-        if (jumpInput)
-        {
-            if (wallController.IsWallSliding)
-                wallController.SetWallJumpInput(true);
-            else
-                GetComponent<PlayerJumpController>().SetJumpInput(true);
+        // --- NEW: Update the inspector debug string ---
+        currentState = stateMachine?.CurrentStateName;
 
-            jumpInput = false;
-        }
+        // Clear single-frame inputs after the state machine has processed them
+        jumpInput = dashInput = attackInput = interactInput = false;
+    }
 
-        dashInput = attackInput = interactInput = false;
+    private void FixedUpdate()
+    {
+        if (!playerInputActive) return;
+
+        // --- NEW: Route physics updates to the active state ---
+        stateMachine?.FixedUpdate();
     }
     #endregion
 
@@ -145,7 +163,7 @@ public class PlayerController : MonoBehaviour
         moveVector = Vector2.zero;
     }
 
-    public void UnfreezeAllInputs() 
+    public void UnfreezeAllInputs()
     {
         playerInputActive = true;
     }

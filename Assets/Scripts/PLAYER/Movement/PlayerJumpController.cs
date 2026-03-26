@@ -34,7 +34,7 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
         playerRB = GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
+    public void UpdateJumpState()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
         if (isGrounded && !wasGrounded) jumpCount = maxJumpCount;
