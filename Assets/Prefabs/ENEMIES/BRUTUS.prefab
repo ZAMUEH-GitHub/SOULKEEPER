@@ -80,6 +80,10 @@ MonoBehaviour:
   enemyDamage: 0
   isAttacking: 0
   isChargingAttack: 0
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  hasHitObstacle: 0
   knockbackForce: 0
   knockbackDuration: 0.2
   enemy: {fileID: 4030027386351102324}
@@ -222,6 +226,7 @@ MonoBehaviour:
   patrolStart: {x: 0, y: 0}
   currentTarget: {x: 0, y: 0}
   enemySpeed: 0
+  moveSpeedMultiplier: 1
 --- !u!114 &8295560821838457183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,7 +385,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 5
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

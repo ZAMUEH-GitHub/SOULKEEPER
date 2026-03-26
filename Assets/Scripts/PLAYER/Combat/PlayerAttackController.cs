@@ -1,8 +1,12 @@
 using UnityEngine;
+using System;
 
 public class PlayerAttackController : MonoBehaviour
 {
     [SerializeField] private PlayerStatsSO playerStats;
+
+    public event Action<string> OnAttackTriggered;
+    public event Action OnBulbBounced;
 
     [Header("AttackSettings")]
     public bool isAttacking;
@@ -30,9 +34,6 @@ public class PlayerAttackController : MonoBehaviour
     private PlayerWallController wallController;
     private PlayerDashController dashController;
     private PlayerDamageController damageController;
-
-    private Animator playerAnimator;
-
     #endregion
 
     private void Awake()
@@ -45,12 +46,10 @@ public class PlayerAttackController : MonoBehaviour
             playerStats = controller.playerRuntimeStats;
         }
 
-        jumpController = GetComponentInParent< PlayerJumpController>();
-        wallController = GetComponentInParent< PlayerWallController>();
-        dashController = GetComponentInParent< PlayerDashController>();
-        damageController = GetComponentInParent< PlayerDamageController>();
-        playerAnimator = GetComponentInParent<Animator>();
-       
+        jumpController = GetComponentInParent<PlayerJumpController>();
+        wallController = GetComponentInParent<PlayerWallController>();
+        dashController = GetComponentInParent<PlayerDashController>();
+        damageController = GetComponentInParent<PlayerDamageController>();
         #endregion
     }
 
@@ -76,7 +75,7 @@ public class PlayerAttackController : MonoBehaviour
     public void PlayerAttack(bool attackInput)
     {
         if (playerStats.attackUnlocked)
-        
+
             if (!dashController.isDashing && !wallController.isWallSliding)
             {
                 if (attackInput && playerOrientation.y == 0)
@@ -122,47 +121,47 @@ public class PlayerAttackController : MonoBehaviour
         }
     }
 
-        #region Player Side Attacks
-        private void SideAttack1()
-        {         
-            playerAnimator.SetTrigger("PlayerSideAttack1");
-            scarfController.SetAttackInput(attackInput, playerOrientation);
+    #region Player Side Attacks
+    private void SideAttack1()
+    {
+        OnAttackTriggered?.Invoke("PlayerSideAttack1");
+        scarfController.SetAttackInput(attackInput, playerOrientation);
 
-            currentAttackState = AttackState.Attack2;
+        currentAttackState = AttackState.Attack2;
 
-            attackTimer = attackRate + comboGrace;
-            nextAttack = Mathf.Max(0f, attackRate - comboGrace);
-        }
+        attackTimer = attackRate + comboGrace;
+        nextAttack = Mathf.Max(0f, attackRate - comboGrace);
+    }
 
-        private void SideAttack2()
-        {
-            playerAnimator.SetTrigger("PlayerSideAttack2");
-            scarfController2.SetAttackInput(attackInput, playerOrientation);
-            
-            currentAttackState = AttackState.Attack3;
+    private void SideAttack2()
+    {
+        OnAttackTriggered?.Invoke("PlayerSideAttack2");
+        scarfController2.SetAttackInput(attackInput, playerOrientation);
 
-            attackTimer = attackRate + comboGrace;
-            nextAttack = Mathf.Max(0f, attackRate - comboGrace);
-        }
+        currentAttackState = AttackState.Attack3;
 
-        private void SideAttack3()
-        {
-            playerAnimator.SetTrigger("PlayerSideAttack3");
-            scarfController.SetAttackInput(attackInput, playerOrientation);
-            scarfController2.SetAttackInput(attackInput, playerOrientation);
+        attackTimer = attackRate + comboGrace;
+        nextAttack = Mathf.Max(0f, attackRate - comboGrace);
+    }
 
-            currentAttackState = AttackState.Attack1;
+    private void SideAttack3()
+    {
+        OnAttackTriggered?.Invoke("PlayerSideAttack3");
+        scarfController.SetAttackInput(attackInput, playerOrientation);
+        scarfController2.SetAttackInput(attackInput, playerOrientation);
 
-            attackTimer = comboGrace;
-            nextAttack = Mathf.Max(0f, attackRate - comboGrace);
-        }
+        currentAttackState = AttackState.Attack1;
+
+        attackTimer = comboGrace;
+        nextAttack = Mathf.Max(0f, attackRate - comboGrace);
+    }
     #endregion
 
     private void PlayerUpAttack()
     {
         if (nextAttack == 0)
         {
-            playerAnimator.SetTrigger("PlayerUpAttack");
+            OnAttackTriggered?.Invoke("PlayerUpAttack");
             scarfController.SetAttackInput(attackInput, playerOrientation);
             scarfController2.SetAttackInput(attackInput, playerOrientation);
 
@@ -174,7 +173,7 @@ public class PlayerAttackController : MonoBehaviour
     {
         if (nextAttack == 0)
         {
-            playerAnimator.SetTrigger("PlayerDownAttack");
+            OnAttackTriggered?.Invoke("PlayerDownAttack");
             scarfController.SetAttackInput(attackInput, playerOrientation);
             scarfController2.SetAttackInput(attackInput, playerOrientation);
 
@@ -202,12 +201,12 @@ public class PlayerAttackController : MonoBehaviour
             {
                 damageController.Knockback(-damageVector, knockbackForce, knockbackDuration);
             }
-            else damageController.Knockback(-damageVector, knockbackForce/2 , knockbackDuration);
+            else damageController.Knockback(-damageVector, knockbackForce / 2, knockbackDuration);
         }
 
         if (collision.CompareTag("Bulb"))
         {
-            playerAnimator.SetTrigger("PlayerJump");
+            OnBulbBounced?.Invoke();
 
             if (player.position.y > collision.transform.position.y + 1)
             {
@@ -215,6 +214,11 @@ public class PlayerAttackController : MonoBehaviour
             }
             else damageController.Knockback(-damageVector, knockbackForce * 1.5f, knockbackDuration);
         }
+    }
+
+    public void EndAttack()
+    {
+        isAttacking = false;
     }
 
     public bool IsAttacking => isAttacking;

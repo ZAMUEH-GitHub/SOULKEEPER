@@ -1,10 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class PlayerJumpController : MonoBehaviour, IPlayerSubController
 {
     private PlayerStatsSO playerStats;
     public void Initialize(PlayerStatsSO stats) => playerStats = stats;
+
+    public event Action OnJumpPerformed;
 
     [Header("Jump Parameters")]
     public float jumpForce => playerStats.jumpForce;
@@ -25,12 +28,10 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
     public LayerMask groundLayer;
 
     private Rigidbody2D playerRB;
-    private Animator playerAnimator;
 
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
-        playerAnimator = GetComponentInParent<Animator>();
     }
 
     private void Update()
@@ -67,7 +68,9 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
     private void DoJump()
     {
         playerRB.linearVelocity = new Vector2(playerRB.linearVelocity.x, jumpForce);
-        playerAnimator.SetTrigger("PlayerJump");
+
+        OnJumpPerformed?.Invoke();
+
         isJumping = true;
         jumpCount--;
         StartCoroutine(CancelPlayerJump());

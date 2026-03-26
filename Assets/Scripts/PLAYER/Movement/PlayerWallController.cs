@@ -1,14 +1,19 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class PlayerWallController : MonoBehaviour, IPlayerSubController
 {
     private PlayerStatsSO playerStats;
     public void Initialize(PlayerStatsSO stats) => playerStats = stats;
 
-    [Header("Wall Settings")]
-    public bool isWalled, isWallSliding, isWallJumping;
+    public event Action<bool> OnWallSlideStateChanged;
+    public event Action<bool> OnWallJumpStateChanged;
 
+    [Header("Wall Settings")]
+    public bool isWalled;
+    public bool isWallSliding;
+    public bool isWallJumping;
     private float nextWallJump, bufferCount;
     private Vector2 moveVector;
     private bool moveInput, wallJumpInput;
@@ -38,9 +43,6 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
 
         if (playerStats == null) return;
 
-        if (playerStats.wallSlideUnlocked)
-            PlayerWallSlide();
-
         if (playerStats.wallJumpUnlocked &&
             IsWallSliding && bufferCount > 0 &&
             !jumpController.isGrounded && jumpController.jumpCount > 0 &&
@@ -53,6 +55,14 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
             isWallJumping = true;
             StartCoroutine(CancelPlayerWallJump());
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (playerStats == null) return;
+
+        if (playerStats.wallSlideUnlocked)
+            PlayerWallSlide();
     }
 
     public void SetWallInput(Vector2 moveVector, bool moveInput)
@@ -69,7 +79,9 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
 
     private void PlayerWallSlide()
     {
-        if (isWalled && !jumpController.isGrounded && moveVector.x != 0 && !jumpController.isJumping)
+        bool wasWallSliding = isWallSliding;
+
+        if (isWalled && !jumpController.isGrounded && moveVector.x != 0 && !jumpController.isJumping && !isWallJumping)
         {
             playerRB.linearVelocity = new Vector2(playerRB.linearVelocity.x,
                 Mathf.Clamp(playerRB.linearVelocity.y, -playerStats.wallSlidingSpeed, float.MaxValue));
@@ -77,6 +89,11 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
             isWallSliding = true;
         }
         else isWallSliding = false;
+
+        if (isWallSliding != wasWallSliding)
+        {
+            OnWallSlideStateChanged?.Invoke(isWallSliding);
+        }
     }
 
     private void DoWallJump()
@@ -86,6 +103,8 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
         isWallSliding = false;
         jumpController.jumpCount--;
         transform.localScale = new Vector2(-moveVector.x, 1);
+
+        OnWallJumpStateChanged?.Invoke(true);
     }
 
     private IEnumerator CancelPlayerWallJump()
@@ -93,6 +112,8 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
         yield return new WaitForSeconds(playerStats.wallJumpLenght);
         isWallJumping = false;
         movementController.PlayerFlip();
+
+        OnWallJumpStateChanged?.Invoke(false);
     }
 
     public bool IsWallSliding => isWallSliding;

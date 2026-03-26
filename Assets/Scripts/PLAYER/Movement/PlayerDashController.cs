@@ -1,10 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class PlayerDashController : MonoBehaviour, IPlayerSubController
 {
     private PlayerStatsSO playerStats;
     public void Initialize(PlayerStatsSO stats) => playerStats = stats;
+
+    public event Action<bool> OnDashStateChanged;
 
     public float dashForce => playerStats.dashForce;
     private bool dashInput;
@@ -55,6 +58,9 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
         playerCL.isTrigger = true;
         isDashing = true;
         playerRB.gravityScale = 0;
+
+        OnDashStateChanged?.Invoke(true);
+
         StartCoroutine(CancelPlayerDash());
     }
 
@@ -63,7 +69,9 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
         yield return new WaitForSeconds(dashLenght);
         isDashing = false;
         playerCL.isTrigger = false;
-        playerRB.gravityScale = 5;
+        playerRB.gravityScale = 1;
+
+        OnDashStateChanged?.Invoke(false);
     }
 
     public bool IsDashing => isDashing;

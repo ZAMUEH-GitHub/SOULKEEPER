@@ -26,8 +26,12 @@ public class PlayerMovementController : MonoBehaviour, IPlayerSubController
 
     private void Update()
     {
-        PlayerMove();
         PlayerFlip();
+    }
+
+    private void FixedUpdate()
+    {
+        PlayerMove();
     }
 
     public void SetMoveInput(Vector2 moveVector, bool moveInput)

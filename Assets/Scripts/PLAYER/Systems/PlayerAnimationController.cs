@@ -12,6 +12,8 @@ public class PlayerAnimationController : MonoBehaviour
     private PlayerJumpController jumpController;
     private PlayerWallController wallController;
     private PlayerDashController dashController;
+
+    private PlayerAttackController attackController;
     #endregion
 
     private void Start()
@@ -25,8 +27,55 @@ public class PlayerAnimationController : MonoBehaviour
         jumpController = GetComponent<PlayerJumpController>();
         wallController = GetComponent<PlayerWallController>();
         dashController = GetComponent<PlayerDashController>();
-
+        attackController = GetComponentInChildren<PlayerAttackController>();
         #endregion
+
+        if (jumpController != null)
+        {
+            jumpController.OnJumpPerformed += HandleJumpAnimation;
+        }
+
+        if (attackController != null)
+        {
+            attackController.OnAttackTriggered += HandleAttackAnimation;
+            attackController.OnBulbBounced += HandleJumpAnimation;
+        }
+
+        if (dashController != null)
+        {
+            dashController.OnDashStateChanged += HandleDashAnimation;
+        }
+
+        if (wallController != null)
+        {
+            wallController.OnWallSlideStateChanged += HandleWallSlideAnimation;
+            wallController.OnWallJumpStateChanged += HandleWallJumpAnimation;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (jumpController != null)
+        {
+            jumpController.OnJumpPerformed -= HandleJumpAnimation;
+        }
+
+        if (attackController != null)
+        {
+            attackController.OnAttackTriggered -= HandleAttackAnimation;
+            attackController.OnBulbBounced -= HandleJumpAnimation;
+        }
+
+        if (dashController != null)
+        {
+            dashController.OnDashStateChanged -= HandleDashAnimation;
+        }
+
+        if (wallController != null)
+        {
+            wallController.OnWallSlideStateChanged -= HandleWallSlideAnimation;
+            wallController.OnWallJumpStateChanged -= HandleWallJumpAnimation;
+        }
     }
 
     private void Update()
@@ -34,8 +83,44 @@ public class PlayerAnimationController : MonoBehaviour
         PlayerAnimation();
     }
 
+    private void HandleJumpAnimation()
+    {
+        playerAnimator.SetTrigger("PlayerJump");
+    }
+
+    private void HandleAttackAnimation(string triggerName)
+    {
+        playerAnimator.SetTrigger(triggerName);
+    }
+
+    private void HandleDashAnimation(bool isDashing)
+    {
+        playerAnimator.SetBool("isDashing", isDashing);
+    }
+
+    private void HandleWallSlideAnimation(bool isSliding)
+    {
+        playerAnimator.SetBool("isWallSliding", isSliding);
+        if (isSliding) playerAnimator.SetBool("isWallJumping", false);
+    }
+
+    private void HandleWallJumpAnimation(bool isWallJumping)
+    {
+        playerAnimator.SetBool("isWallJumping", isWallJumping);
+        if (isWallJumping) playerAnimator.SetBool("isWallSliding", false);
+    }
+
     private void PlayerAnimation()
     {
+        playerAnimator.SetBool("isGrounded", jumpController.isGrounded);
+        playerAnimator.SetBool("isWalled", wallController.isWalled);
+        playerAnimator.SetBool("isJumping", jumpController.isJumping);
+
+        if (attackController != null)
+        {
+            playerAnimator.SetBool("isAttacking", attackController.IsAttacking);
+        }
+
         if (movementController.playerOrientation.x != 0 && jumpController.isGrounded)
         {
             playerAnimator.SetBool("isMoving", true);
@@ -49,22 +134,13 @@ public class PlayerAnimationController : MonoBehaviour
             playerAnimator.SetBool("isWallSliding", false);
         }
         else { playerAnimator.SetBool("isFalling", false); }
+    }
 
-        if (dashController.isDashing)
+    public void OnAttackAnimationEnd()
+    {
+        if (attackController != null)
         {
-            playerAnimator.SetBool("isDashing", true);
-        }
-        else { playerAnimator.SetBool("isDashing", false); }
-
-        if (wallController.IsWallSliding)
-        {
-            playerAnimator.SetBool("isWallSliding", true);
-            playerAnimator.SetBool("PlayerWallJump", false);
-        }
-        else if (wallController.IsWallJumping)
-        {
-            playerAnimator.SetBool("PlayerWallJump", true);
-            playerAnimator.SetBool("isWallSliding", false);
+            attackController.EndAttack();
         }
     }
 }
