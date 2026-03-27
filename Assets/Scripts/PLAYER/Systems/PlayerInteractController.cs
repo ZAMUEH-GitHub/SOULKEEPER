@@ -5,22 +5,11 @@ public class PlayerInteractController : MonoBehaviour
     public bool isInteractable;
     private IInteractable interactable;
 
-    private bool interactInput;
-    private bool interactReleased = true;
-
     private void Update()
     {
-        bool currentInteractInput = PlayerController.Instance.interactInput;
-
-        if (isInteractable && currentInteractInput && interactReleased && interactable != null)
+        if (isInteractable && PlayerController.Instance.ConsumeInteractInput() && interactable != null)
         {
             interactable.Interact();
-            interactReleased = false;
-        }
-
-        if (!currentInteractInput)
-        {
-            interactReleased = true;
         }
     }
 

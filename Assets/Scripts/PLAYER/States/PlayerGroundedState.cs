@@ -13,6 +13,7 @@ public class PlayerGroundedState : PlayerBaseState
         player.movementController.HandleFlip();
         player.jumpController.UpdateJumpState();
         player.dashController.UpdateDashState();
+        player.wallController.UpdateWallState();
 
         if (player.damageController.isKnockedBack)
         {

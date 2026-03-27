@@ -34,6 +34,7 @@ public class PlayerAttackController : MonoBehaviour
     private PlayerDamageController damageController;
     #endregion
 
+    #region Unity Lifecycle
     private void Awake()
     {
         #region Script and Variable Suscriptions
@@ -63,11 +64,13 @@ public class PlayerAttackController : MonoBehaviour
 
     public void UpdateAttackState()
     {
-        attackInput = PlayerController.Instance.attackInput;
+        attackInput = PlayerController.Instance.ConsumeAttackInput();
         playerOrientation = PlayerController.Instance.moveVector;
         PlayerAttack(attackInput);
     }
+    #endregion
 
+    #region Player Attack Logic
     public void PlayerAttack(bool attackInput)
     {
         if (playerStats.attackUnlocked)
@@ -214,6 +217,7 @@ public class PlayerAttackController : MonoBehaviour
     {
         isAttacking = false;
     }
+    #endregion
 
     public bool IsAttacking => isAttacking;
 }

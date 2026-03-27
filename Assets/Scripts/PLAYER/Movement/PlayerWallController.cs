@@ -14,7 +14,7 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
     public bool isWalled;
     public bool isWallSliding;
     public bool isWallJumping;
-    private float nextWallJump, bufferCount;
+    private float nextWallJump;
     private Vector2 moveVector => PlayerController.Instance.moveVector;
 
     private PlayerMovementController movementController;
@@ -34,7 +34,6 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
 
     private void Update()
     {
-        bufferCount = Mathf.Max(0, bufferCount - Time.deltaTime);
         nextWallJump = Mathf.Max(0, nextWallJump - Time.deltaTime);
     }
     #endregion
@@ -42,15 +41,15 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
     #region Wall Sliding Logic
     public void UpdateWallState()
     {
-        if (PlayerController.Instance.jumpInput) bufferCount = playerStats.bufferTime;
+        bool isPressingAgainstWall = moveVector.x != 0 && Mathf.Sign(moveVector.x) == Mathf.Sign(transform.localScale.x);
 
-        isWalled = collisionController.isWalled;
+        isWalled = collisionController.isWalled && isPressingAgainstWall;
 
         if (playerStats == null) return;
 
         bool wasWallSliding = isWallSliding;
 
-        if (playerStats.wallSlideUnlocked && isWalled && !jumpController.isGrounded && moveVector.x != 0 && !jumpController.isJumping && !isWallJumping)
+        if (playerStats.wallSlideUnlocked && isWalled && !jumpController.isGrounded && !jumpController.isJumping && !isWallJumping)
         {
             isWallSliding = true;
             jumpController.jumpCount = jumpController.maxJumpCount;
@@ -66,16 +65,18 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
         }
 
         if (playerStats.wallJumpUnlocked &&
-            isWallSliding && bufferCount > 0 &&
+            isWallSliding &&
             !jumpController.isGrounded && jumpController.jumpCount > 0 &&
             nextWallJump <= 0)
         {
-            DoWallJump();
-            jumpController.nextJump = playerStats.wallJumpLenght;
-            nextWallJump = playerStats.wallJumpRate;
-            bufferCount = 0;
-            isWallJumping = true;
-            StartCoroutine(CancelPlayerWallJump());
+            if (PlayerController.Instance.ConsumeJumpInput())
+            {
+                DoWallJump();
+                jumpController.nextJump = playerStats.wallJumpLenght;
+                nextWallJump = playerStats.wallJumpRate;
+                isWallJumping = true;
+                StartCoroutine(CancelPlayerWallJump());
+            }
         }
     }
 

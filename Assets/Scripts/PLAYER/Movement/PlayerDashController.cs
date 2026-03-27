@@ -15,8 +15,6 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
     public float dashLenght => playerStats.dashLenght;
     public float dashRate => playerStats.dashRate;
     private float nextDash;
-    public float bufferTime => playerStats.bufferTime;
-    private float bufferCount;
 
     private Rigidbody2D playerRB;
     private CapsuleCollider2D playerCL;
@@ -29,20 +27,18 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
 
     private void Update()
     {
-        bufferCount = Mathf.Max(0, bufferCount - Time.deltaTime);
         nextDash = Mathf.Max(0, nextDash - Time.deltaTime);
     }
 
     public void UpdateDashState()
     {
-        if (PlayerController.Instance.dashInput && !IsDashing)
-            bufferCount = bufferTime;
-
-        if (playerStats != null && playerStats.dashUnlocked && bufferCount > 0 && nextDash <= 0)
+        if (playerStats != null && playerStats.dashUnlocked && nextDash <= 0)
         {
-            DoDash();
-            nextDash = dashRate;
-            bufferCount = 0;
+            if (!IsDashing && PlayerController.Instance.ConsumeDashInput())
+            {
+                DoDash();
+                nextDash = dashRate;
+            }
         }
 
         dashVector = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
