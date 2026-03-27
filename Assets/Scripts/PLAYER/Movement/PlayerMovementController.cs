@@ -10,39 +10,39 @@ public class PlayerMovementController : MonoBehaviour, IPlayerSubController
     public bool isMoving;
 
     private Rigidbody2D playerRB;
-    private PlayerDashController dashController;
     private PlayerWallController wallController;
-    private PlayerDamageController damageController;
 
     public void Initialize(PlayerStatsSO stats) => playerStats = stats;
 
+    #region Unity Lifecycle
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
-        dashController = GetComponent<PlayerDashController>();
-        wallController = GetComponent<PlayerWallController>();
-        damageController = GetComponent<PlayerDamageController>();
+
+        wallController = PlayerController.Instance.wallController;
     }
 
     private void Update()
     {
+        playerOrientation = PlayerController.Instance.moveVector;
+        isMoving = PlayerController.Instance.moveInput;
+    }
+    #endregion
+
+    #region Movement & Flip Logic
+    public void HandleFlip()
+    {
         PlayerFlip();
     }
 
-    private void FixedUpdate()
+    public void ExecuteMove()
     {
         PlayerMove();
     }
 
-    public void SetMoveInput(Vector2 moveVector, bool moveInput)
-    {
-        playerOrientation = moveVector;
-        isMoving = moveInput;
-    }
-
     private void PlayerMove()
     {
-        if (damageController.isKnockedBack || dashController.IsDashing || wallController.IsWallJumping) return;
+        if (wallController.IsWallJumping) return;
         playerRB.linearVelocity = new Vector2(playerOrientation.x * playerSpeed, playerRB.linearVelocityY);
     }
 
@@ -52,6 +52,7 @@ public class PlayerMovementController : MonoBehaviour, IPlayerSubController
         if (playerOrientation.x > 0) transform.localScale = new Vector2(1, 1);
         else if (playerOrientation.x < 0) transform.localScale = new Vector2(-1, 1);
     }
+    #endregion
 
     public bool IsMoving => isMoving;
 }

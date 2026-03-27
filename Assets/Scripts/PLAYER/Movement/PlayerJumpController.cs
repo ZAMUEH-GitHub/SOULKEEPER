@@ -11,58 +11,58 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
 
     [Header("Jump Parameters")]
     public float jumpForce => playerStats.jumpForce;
-    private bool jumpInput;
     public bool isGrounded, wasGrounded, isJumping;
     public int jumpCount;
     public int maxJumpCount => playerStats.maxJumpCount;
     public float jumpRate => playerStats.jumpRate;
     public float coyoteTime => playerStats.coyoteTime;
-    public float bufferTime => playerStats.bufferTime;
     [HideInInspector] public float nextJump;
 
-    private float coyoteCount, bufferCount;
+    private float coyoteCount;
 
-    [Header("Ground Check (Overlap Circle)")]
-    public Transform groundCheckPoint;
-    public float groundCheckRadius = 0.2f;
-    public LayerMask groundLayer;
+    private Coroutine jumpCoroutine;
 
     private Rigidbody2D playerRB;
+    private PlayerCollisionController collisionController;
+    private PlayerWallController wallController;
 
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
+        collisionController = GetComponent<PlayerCollisionController>();
+
+        wallController = PlayerController.Instance.wallController;
     }
 
     private void Update()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
+        HandleCounters();
+    }
+
+    public void UpdateJumpState()
+    {
+        isGrounded = collisionController.isGrounded;
+
         if (isGrounded && !wasGrounded) jumpCount = maxJumpCount;
         wasGrounded = isGrounded;
 
-        HandleCounters();
-
         if (playerStats != null && playerStats.jumpUnlocked &&
-            nextJump <= 0 && bufferCount > 0 &&
-            (isGrounded || jumpCount > 0 || coyoteCount > 0))
+            nextJump <= 0 &&
+            (isGrounded || jumpCount > 0 || coyoteCount > 0) &&
+            !wallController.IsWallSliding && !wallController.IsWallJumping)
         {
-            DoJump();
-            nextJump = jumpRate;
-            bufferCount = 0;
+            if (PlayerController.Instance.ConsumeJumpInput())
+            {
+                DoJump();
+                nextJump = jumpRate;
+            }
         }
     }
 
     private void HandleCounters()
     {
         coyoteCount = isGrounded ? coyoteTime : Mathf.Max(0, coyoteCount - Time.deltaTime);
-        bufferCount = Mathf.Max(0, bufferCount - Time.deltaTime);
         nextJump = Mathf.Max(0, nextJump - Time.deltaTime);
-    }
-
-    public void SetJumpInput(bool jumpInput)
-    {
-        this.jumpInput = jumpInput;
-        if (jumpInput) bufferCount = bufferTime;
     }
 
     private void DoJump()
@@ -73,7 +73,9 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
 
         isJumping = true;
         jumpCount--;
-        StartCoroutine(CancelPlayerJump());
+
+        if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
+        jumpCoroutine = StartCoroutine(CancelPlayerJump());
     }
 
     private IEnumerator CancelPlayerJump()

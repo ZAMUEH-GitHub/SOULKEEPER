@@ -14,88 +14,87 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
     public bool isWalled;
     public bool isWallSliding;
     public bool isWallJumping;
-    private float nextWallJump, bufferCount;
-    private Vector2 moveVector;
-    private bool moveInput, wallJumpInput;
-
-    [Header("Wall Check (Overlap Circle)")]
-    public Transform wallCheckPoint;
-    public float wallCheckRadius = 0.2f;
-    public LayerMask wallLayer;
+    private float nextWallJump;
+    private Vector2 moveVector => PlayerController.Instance.moveVector;
 
     private PlayerMovementController movementController;
     private PlayerJumpController jumpController;
     private Rigidbody2D playerRB;
+    private PlayerCollisionController collisionController;
 
+    #region Unity Lifecycle
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
-        movementController = GetComponent<PlayerMovementController>();
-        jumpController = GetComponent<PlayerJumpController>();
+        collisionController = GetComponent<PlayerCollisionController>();
+
+        movementController = PlayerController.Instance.movementController;
+        jumpController = PlayerController.Instance.jumpController;
     }
 
     private void Update()
     {
-        isWalled = Physics2D.OverlapCircle(wallCheckPoint.position, wallCheckRadius, wallLayer);
-
-        bufferCount = Mathf.Max(0, bufferCount - Time.deltaTime);
         nextWallJump = Mathf.Max(0, nextWallJump - Time.deltaTime);
+    }
+    #endregion
+
+    #region Wall Sliding Logic
+    public void UpdateWallState()
+    {
+        bool isPressingAgainstWall = moveVector.x != 0 && Mathf.Sign(moveVector.x) == Mathf.Sign(transform.localScale.x);
+
+        isWalled = collisionController.isWalled && isPressingAgainstWall;
 
         if (playerStats == null) return;
 
-        if (playerStats.wallJumpUnlocked &&
-            IsWallSliding && bufferCount > 0 &&
-            !jumpController.isGrounded && jumpController.jumpCount > 0 &&
-            nextWallJump <= 0)
-        {
-            DoWallJump();
-            jumpController.nextJump = playerStats.wallJumpLenght;
-            nextWallJump = playerStats.wallJumpRate;
-            bufferCount = 0;
-            isWallJumping = true;
-            StartCoroutine(CancelPlayerWallJump());
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (playerStats == null) return;
-
-        if (playerStats.wallSlideUnlocked)
-            PlayerWallSlide();
-    }
-
-    public void SetWallInput(Vector2 moveVector, bool moveInput)
-    {
-        this.moveVector = moveVector;
-        this.moveInput = moveInput;
-    }
-
-    public void SetWallJumpInput(bool jumpInput)
-    {
-        wallJumpInput = jumpInput;
-        if (jumpInput) bufferCount = playerStats.bufferTime;
-    }
-
-    private void PlayerWallSlide()
-    {
         bool wasWallSliding = isWallSliding;
 
-        if (isWalled && !jumpController.isGrounded && moveVector.x != 0 && !jumpController.isJumping && !isWallJumping)
+        if (playerStats.wallSlideUnlocked && isWalled && !jumpController.isGrounded && !jumpController.isJumping && !isWallJumping)
         {
-            playerRB.linearVelocity = new Vector2(playerRB.linearVelocity.x,
-                Mathf.Clamp(playerRB.linearVelocity.y, -playerStats.wallSlidingSpeed, float.MaxValue));
-            jumpController.jumpCount = jumpController.maxJumpCount;
             isWallSliding = true;
+            jumpController.jumpCount = jumpController.maxJumpCount;
         }
-        else isWallSliding = false;
+        else
+        {
+            isWallSliding = false;
+        }
 
         if (isWallSliding != wasWallSliding)
         {
             OnWallSlideStateChanged?.Invoke(isWallSliding);
         }
+
+        if (playerStats.wallJumpUnlocked &&
+            isWallSliding &&
+            !jumpController.isGrounded && jumpController.jumpCount > 0 &&
+            nextWallJump <= 0)
+        {
+            if (PlayerController.Instance.ConsumeJumpInput())
+            {
+                DoWallJump();
+                jumpController.nextJump = playerStats.wallJumpLenght;
+                nextWallJump = playerStats.wallJumpRate;
+                isWallJumping = true;
+                StartCoroutine(CancelPlayerWallJump());
+            }
+        }
     }
 
+    public void ExecuteWallPhysics()
+    {
+        if (playerStats == null) return;
+
+        if (isWallSliding)
+        {
+            float pushVelocity = moveVector.x * movementController.playerSpeed;
+
+            playerRB.linearVelocity = new Vector2(pushVelocity,
+                Mathf.Clamp(playerRB.linearVelocity.y, -playerStats.wallSlidingSpeed, float.MaxValue));
+        }
+    }
+    #endregion
+
+    #region Wall Jump Logic
     private void DoWallJump()
     {
         playerRB.linearVelocity = new Vector2(-moveVector.x / playerStats.wallJumpDivider * playerStats.wallJumpForce, playerStats.wallJumpForce);
@@ -115,6 +114,7 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
 
         OnWallJumpStateChanged?.Invoke(false);
     }
+    #endregion
 
     public bool IsWallSliding => isWallSliding;
     public bool IsWallJumping => isWallJumping;
