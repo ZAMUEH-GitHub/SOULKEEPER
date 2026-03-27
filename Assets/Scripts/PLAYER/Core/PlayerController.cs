@@ -36,10 +36,16 @@ public class PlayerController : MonoBehaviour
     public bool playerInputActive;
     public bool isAlive;
 
-    // --- NEW: State Machine Hub ---
+    #region Cached Variables and Controllers
     public PlayerStateMachine stateMachine;
 
-    // CHANGED: Made sub-controllers public so states can access them
+    public PlayerGroundedState groundedState;
+    public PlayerAirborneState airborneState;
+    public PlayerDashState dashState;
+    public PlayerWallSlideState wallSlideState;
+    public PlayerKnockbackState knockbackState;
+    public PlayerDeathState deathState;
+
     [HideInInspector] public PlayerMovementController movementController;
     [HideInInspector] public PlayerJumpController jumpController;
     [HideInInspector] public PlayerWallController wallController;
@@ -50,6 +56,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public PlayerAnimationController animController;
 
     private List<IPlayerSubController> subControllers = new();
+    #endregion
 
     #region Unity Lifecycle
     private void Awake()
@@ -78,7 +85,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        #region Player SubControllers
+        #region Player SubControllers & States
         movementController = GetComponent<PlayerMovementController>();
         jumpController = GetComponent<PlayerJumpController>();
         wallController = GetComponent<PlayerWallController>();
@@ -89,10 +96,16 @@ public class PlayerController : MonoBehaviour
         animController = GetComponent<PlayerAnimationController>();
 
         subControllers.AddRange(GetComponents<IPlayerSubController>());
-        #endregion
 
-        // --- NEW: Initialize State Machine ---
         stateMachine = new PlayerStateMachine();
+
+        groundedState = new PlayerGroundedState(this);
+        airborneState = new PlayerAirborneState(this);
+        dashState = new PlayerDashState(this);
+        wallSlideState = new PlayerWallSlideState(this);
+        knockbackState = new PlayerKnockbackState(this);
+        deathState = new PlayerDeathState(this);
+        #endregion
     }
 
     private void Start()
@@ -102,29 +115,28 @@ public class PlayerController : MonoBehaviour
 
         playerInputActive = true;
 
-        stateMachine.Initialize(new PlayerGroundedState(this));
+        stateMachine.Initialize(groundedState);
     }
 
     private void Update()
     {
         if (!playerInputActive) return;
 
-        // --- NEW: Route update to the active state ---
         stateMachine?.Update();
 
-        // --- NEW: Update the inspector debug string ---
         currentState = stateMachine?.CurrentStateName;
-
-        // Clear single-frame inputs after the state machine has processed them
-        jumpInput = dashInput = attackInput = interactInput = false;
     }
 
     private void FixedUpdate()
     {
         if (!playerInputActive) return;
 
-        // --- NEW: Route physics updates to the active state ---
         stateMachine?.FixedUpdate();
+    }
+
+    private void LateUpdate()
+    {
+        jumpInput = dashInput = attackInput = interactInput = false;
     }
     #endregion
 
@@ -159,8 +171,8 @@ public class PlayerController : MonoBehaviour
     #region Player Input Lock Controls
     public void FreezeAllInputs()
     {
-        playerInputActive = false;
         moveVector = Vector2.zero;
+        playerInputActive = false;
     }
 
     public void UnfreezeAllInputs()

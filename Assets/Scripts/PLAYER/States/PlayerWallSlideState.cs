@@ -4,31 +4,24 @@ public class PlayerWallSlideState : PlayerBaseState
 
     public override void Update()
     {
-        // 1. Pass inputs
-        player.wallController.SetWallInput(player.moveVector, player.moveInput);
-
-        if (player.jumpInput) player.wallController.SetWallJumpInput(true);
-
-        // 2. Execute wall logic checks
         player.wallController.UpdateWallState();
+        player.jumpController.UpdateJumpState();
 
-        // 3. Handle Transitions
         if (player.wallController.IsWallJumping || !player.wallController.IsWallSliding)
         {
-            player.stateMachine.ChangeState(new PlayerAirborneState(player));
+            player.stateMachine.ChangeState(player.airborneState);
             return;
         }
 
         if (player.jumpController.isGrounded)
         {
-            player.stateMachine.ChangeState(new PlayerGroundedState(player));
+            player.stateMachine.ChangeState(player.groundedState);
             return;
         }
     }
 
     public override void FixedUpdate()
     {
-        // Execute wall sliding friction/gravity
         player.wallController.ExecuteWallPhysics();
     }
 }

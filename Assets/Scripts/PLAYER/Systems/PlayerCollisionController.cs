@@ -4,7 +4,19 @@ public class PlayerCollisionController : MonoBehaviour
 {
     private PlayerStatsSO playerStats;
 
-    #region Script and Variable References
+    [Header("Environment Checks")]
+    public Transform groundCheckPoint;
+    public float groundCheckRadius = 0.2f;
+    public LayerMask groundLayer;
+    public bool isGrounded;
+
+    [Space(5)]
+    public Transform wallCheckPoint;
+    public float wallCheckRadius = 0.2f;
+    public LayerMask wallLayer;
+    public bool isWalled;
+
+    [Header("State Flags")]
     public bool isTrapped;
 
     private Rigidbody2D playerRigidBody;
@@ -12,7 +24,6 @@ public class PlayerCollisionController : MonoBehaviour
     private Animator playerAnimator;
     private PlayerDamageController damageController;
     private PlayerAttachmentController platformAttachment;
-    #endregion
 
     private void Awake()
     {
@@ -25,6 +36,12 @@ public class PlayerCollisionController : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         damageController = GetComponent<PlayerDamageController>();
         platformAttachment = GetComponent<PlayerAttachmentController>();
+    }
+
+    private void FixedUpdate()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
+        isWalled = Physics2D.OverlapCircle(wallCheckPoint.position, wallCheckRadius, wallLayer);
     }
 
     #region Collision Management

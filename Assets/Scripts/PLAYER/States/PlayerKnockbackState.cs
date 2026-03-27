@@ -1,28 +1,31 @@
 public class PlayerKnockbackState : PlayerBaseState
 {
+    private float knockbackTimer;
+
     public PlayerKnockbackState(PlayerController player) : base(player) { }
 
     public override void Enter()
     {
-        // Clear out any residual movement inputs so the player doesn't slide 
-        // after the knockback force finishes.
-        player.movementController.SetMoveInput(UnityEngine.Vector2.zero, false);
+        knockbackTimer = player.damageController.currentKnockbackDuration;
     }
 
     public override void Update()
     {
-        if (base.CheckGlobalTransitions()) return; // Catches Death during Knockback
+        if (base.CheckGlobalTransitions()) return;
 
-        // Wait for the PlayerDamageController's CancelKnockback coroutine to finish
-        if (!player.damageController.isKnockedBack)
+        knockbackTimer -= UnityEngine.Time.deltaTime;
+
+        if (knockbackTimer <= 0f)
         {
+            player.damageController.EndKnockback();
+
             if (player.jumpController.isGrounded)
             {
-                player.stateMachine.ChangeState(new PlayerGroundedState(player));
+                player.stateMachine.ChangeState(player.groundedState);
             }
             else
             {
-                player.stateMachine.ChangeState(new PlayerAirborneState(player));
+                player.stateMachine.ChangeState(player.airborneState);
             }
         }
     }

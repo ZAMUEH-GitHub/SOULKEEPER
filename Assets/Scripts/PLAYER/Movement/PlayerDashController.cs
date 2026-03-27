@@ -10,7 +10,6 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
     public event Action<bool> OnDashStateChanged;
 
     public float dashForce => playerStats.dashForce;
-    private bool dashInput;
     public bool isDashing;
     public Vector2 dashVector;
     public float dashLenght => playerStats.dashLenght;
@@ -21,19 +20,23 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
 
     private Rigidbody2D playerRB;
     private CapsuleCollider2D playerCL;
-    private PlayerWallController wallController;
 
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
         playerCL = GetComponent<CapsuleCollider2D>();
-        wallController = GetComponent<PlayerWallController>();
+    }
+
+    private void Update()
+    {
+        bufferCount = Mathf.Max(0, bufferCount - Time.deltaTime);
+        nextDash = Mathf.Max(0, nextDash - Time.deltaTime);
     }
 
     public void UpdateDashState()
     {
-        bufferCount = Mathf.Max(0, bufferCount - Time.deltaTime);
-        nextDash = Mathf.Max(0, nextDash - Time.deltaTime);
+        if (PlayerController.Instance.dashInput && !IsDashing)
+            bufferCount = bufferTime;
 
         if (playerStats != null && playerStats.dashUnlocked && bufferCount > 0 && nextDash <= 0)
         {
@@ -45,13 +48,6 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
         dashVector = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
     }
 
-    public void SetDashInput(bool dashInput)
-    {
-        this.dashInput = dashInput;
-        if (!IsDashing && !wallController.IsWallSliding && dashInput)
-            bufferCount = bufferTime;
-    }
-
     private void DoDash()
     {
         playerRB.linearVelocity = new Vector2(dashVector.x * dashForce, 0);
@@ -60,13 +56,10 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
         playerRB.gravityScale = 0;
 
         OnDashStateChanged?.Invoke(true);
-
-        StartCoroutine(CancelPlayerDash());
     }
 
-    private IEnumerator CancelPlayerDash()
+    public void EndDash()
     {
-        yield return new WaitForSeconds(dashLenght);
         isDashing = false;
         playerCL.isTrigger = false;
         playerRB.gravityScale = 1;

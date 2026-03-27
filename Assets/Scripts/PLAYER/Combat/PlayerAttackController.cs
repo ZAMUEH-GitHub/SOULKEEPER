@@ -31,8 +31,6 @@ public class PlayerAttackController : MonoBehaviour
 
     #region Script & Component References
     private PlayerJumpController jumpController;
-    private PlayerWallController wallController;
-    private PlayerDashController dashController;
     private PlayerDamageController damageController;
     #endregion
 
@@ -40,16 +38,14 @@ public class PlayerAttackController : MonoBehaviour
     {
         #region Script and Variable Suscriptions
 
-        var controller = GetComponentInParent<PlayerController>();
+        var controller = PlayerController.Instance;
         if (controller != null)
         {
             playerStats = controller.playerRuntimeStats;
         }
 
-        jumpController = GetComponentInParent<PlayerJumpController>();
-        wallController = GetComponentInParent<PlayerWallController>();
-        dashController = GetComponentInParent<PlayerDashController>();
-        damageController = GetComponentInParent<PlayerDamageController>();
+        jumpController = PlayerController.Instance.jumpController;
+        damageController = PlayerController.Instance.damageController;
         #endregion
     }
 
@@ -65,40 +61,38 @@ public class PlayerAttackController : MonoBehaviour
         attackTimer = Mathf.Max(0, attackTimer - Time.deltaTime);
     }
 
-    public void SetAttackInput(bool attackInput, Vector2 moveVector)
+    public void UpdateAttackState()
     {
-        this.attackInput = attackInput;
-        playerOrientation = moveVector;
+        attackInput = PlayerController.Instance.attackInput;
+        playerOrientation = PlayerController.Instance.moveVector;
         PlayerAttack(attackInput);
     }
 
     public void PlayerAttack(bool attackInput)
     {
         if (playerStats.attackUnlocked)
-
-            if (!dashController.isDashing && !wallController.isWallSliding)
+        {
+            if (attackInput && playerOrientation.y == 0)
             {
-                if (attackInput && playerOrientation.y == 0)
-                {
-                    attackOrientation = (player.localScale.x > 0) ? Vector2.right : Vector2.left;
-                    isAttacking = true;
-                    PlayerSideAttack();
-                }
-
-                if (attackInput && playerOrientation.y > 0)
-                {
-                    attackOrientation = Vector2.up;
-                    isAttacking = true;
-                    PlayerUpAttack();
-                }
-
-                if (attackInput && playerOrientation.y < 0 && !jumpController.isGrounded)
-                {
-                    attackOrientation = Vector2.down;
-                    isAttacking = true;
-                    PlayerDownAttack();
-                }
+                attackOrientation = (player.localScale.x > 0) ? Vector2.right : Vector2.left;
+                isAttacking = true;
+                PlayerSideAttack();
             }
+
+            if (attackInput && playerOrientation.y > 0)
+            {
+                attackOrientation = Vector2.up;
+                isAttacking = true;
+                PlayerUpAttack();
+            }
+
+            if (attackInput && playerOrientation.y < 0 && !jumpController.isGrounded)
+            {
+                attackOrientation = Vector2.down;
+                isAttacking = true;
+                PlayerDownAttack();
+            }
+        }
     }
 
     #region Player Attacks

@@ -11,7 +11,6 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
 
     [Header("Jump Parameters")]
     public float jumpForce => playerStats.jumpForce;
-    private bool jumpInput;
     public bool isGrounded, wasGrounded, isJumping;
     public int jumpCount;
     public int maxJumpCount => playerStats.maxJumpCount;
@@ -22,29 +21,36 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
 
     private float coyoteCount, bufferCount;
 
-    [Header("Ground Check (Overlap Circle)")]
-    public Transform groundCheckPoint;
-    public float groundCheckRadius = 0.2f;
-    public LayerMask groundLayer;
-
     private Rigidbody2D playerRB;
+    private PlayerCollisionController collisionController;
+    private PlayerWallController wallController;
 
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
+        collisionController = GetComponent<PlayerCollisionController>();
+
+        wallController = PlayerController.Instance.wallController;
+    }
+
+    private void Update()
+    {
+        HandleCounters();
     }
 
     public void UpdateJumpState()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
+        if (PlayerController.Instance.jumpInput) bufferCount = bufferTime;
+
+        isGrounded = collisionController.isGrounded;
+
         if (isGrounded && !wasGrounded) jumpCount = maxJumpCount;
         wasGrounded = isGrounded;
 
-        HandleCounters();
-
         if (playerStats != null && playerStats.jumpUnlocked &&
             nextJump <= 0 && bufferCount > 0 &&
-            (isGrounded || jumpCount > 0 || coyoteCount > 0))
+            (isGrounded || jumpCount > 0 || coyoteCount > 0) &&
+            !wallController.IsWallSliding && !wallController.IsWallJumping)
         {
             DoJump();
             nextJump = jumpRate;
@@ -57,12 +63,6 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
         coyoteCount = isGrounded ? coyoteTime : Mathf.Max(0, coyoteCount - Time.deltaTime);
         bufferCount = Mathf.Max(0, bufferCount - Time.deltaTime);
         nextJump = Mathf.Max(0, nextJump - Time.deltaTime);
-    }
-
-    public void SetJumpInput(bool jumpInput)
-    {
-        this.jumpInput = jumpInput;
-        if (jumpInput) bufferCount = bufferTime;
     }
 
     private void DoJump()

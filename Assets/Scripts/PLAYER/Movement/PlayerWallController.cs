@@ -15,41 +15,45 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
     public bool isWallSliding;
     public bool isWallJumping;
     private float nextWallJump, bufferCount;
-    private Vector2 moveVector;
-    private bool moveInput, wallJumpInput;
-
-    [Header("Wall Check (Overlap Circle)")]
-    public Transform wallCheckPoint;
-    public float wallCheckRadius = 0.2f;
-    public LayerMask wallLayer;
+    private Vector2 moveVector => PlayerController.Instance.moveVector;
 
     private PlayerMovementController movementController;
     private PlayerJumpController jumpController;
     private Rigidbody2D playerRB;
+    private PlayerCollisionController collisionController;
 
+    #region Unity Lifecycle
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
-        movementController = GetComponent<PlayerMovementController>();
-        jumpController = GetComponent<PlayerJumpController>();
+        collisionController = GetComponent<PlayerCollisionController>();
+
+        movementController = PlayerController.Instance.movementController;
+        jumpController = PlayerController.Instance.jumpController;
     }
 
-    public void UpdateWallState()
+    private void Update()
     {
-        isWalled = Physics2D.OverlapCircle(wallCheckPoint.position, wallCheckRadius, wallLayer);
-
         bufferCount = Mathf.Max(0, bufferCount - Time.deltaTime);
         nextWallJump = Mathf.Max(0, nextWallJump - Time.deltaTime);
+    }
+    #endregion
+
+    #region Wall Sliding Logic
+    public void UpdateWallState()
+    {
+        if (PlayerController.Instance.jumpInput) bufferCount = playerStats.bufferTime;
+
+        isWalled = collisionController.isWalled;
 
         if (playerStats == null) return;
 
-        // --- CHANGED: Evaluate the slide condition here in Update ---
         bool wasWallSliding = isWallSliding;
 
         if (playerStats.wallSlideUnlocked && isWalled && !jumpController.isGrounded && moveVector.x != 0 && !jumpController.isJumping && !isWallJumping)
         {
             isWallSliding = true;
-            jumpController.jumpCount = jumpController.maxJumpCount; // Reset jumps when clinging
+            jumpController.jumpCount = jumpController.maxJumpCount;
         }
         else
         {
@@ -61,7 +65,6 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
             OnWallSlideStateChanged?.Invoke(isWallSliding);
         }
 
-        // --- Wall Jump Check ---
         if (playerStats.wallJumpUnlocked &&
             isWallSliding && bufferCount > 0 &&
             !jumpController.isGrounded && jumpController.jumpCount > 0 &&
@@ -80,45 +83,17 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
     {
         if (playerStats == null) return;
 
-        // --- CHANGED: Only apply the velocity clamp here ---
         if (isWallSliding)
         {
-            playerRB.linearVelocity = new Vector2(playerRB.linearVelocity.x,
+            float pushVelocity = moveVector.x * movementController.playerSpeed;
+
+            playerRB.linearVelocity = new Vector2(pushVelocity,
                 Mathf.Clamp(playerRB.linearVelocity.y, -playerStats.wallSlidingSpeed, float.MaxValue));
         }
     }
+    #endregion
 
-    public void SetWallInput(Vector2 moveVector, bool moveInput)
-    {
-        this.moveVector = moveVector;
-        this.moveInput = moveInput;
-    }
-
-    public void SetWallJumpInput(bool jumpInput)
-    {
-        wallJumpInput = jumpInput;
-        if (jumpInput) bufferCount = playerStats.bufferTime;
-    }
-
-    private void PlayerWallSlide()
-    {
-        bool wasWallSliding = isWallSliding;
-
-        if (isWalled && !jumpController.isGrounded && moveVector.x != 0 && !jumpController.isJumping && !isWallJumping)
-        {
-            playerRB.linearVelocity = new Vector2(playerRB.linearVelocity.x,
-                Mathf.Clamp(playerRB.linearVelocity.y, -playerStats.wallSlidingSpeed, float.MaxValue));
-            jumpController.jumpCount = jumpController.maxJumpCount;
-            isWallSliding = true;
-        }
-        else isWallSliding = false;
-
-        if (isWallSliding != wasWallSliding)
-        {
-            OnWallSlideStateChanged?.Invoke(isWallSliding);
-        }
-    }
-
+    #region Wall Jump Logic
     private void DoWallJump()
     {
         playerRB.linearVelocity = new Vector2(-moveVector.x / playerStats.wallJumpDivider * playerStats.wallJumpForce, playerStats.wallJumpForce);
@@ -138,6 +113,7 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
 
         OnWallJumpStateChanged?.Invoke(false);
     }
+    #endregion
 
     public bool IsWallSliding => isWallSliding;
     public bool IsWallJumping => isWallJumping;

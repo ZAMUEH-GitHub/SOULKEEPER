@@ -11,6 +11,7 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     public float damageRate => playerStats.damageRate;
     private float nextDamage;
     public bool isKnockedBack;
+    [HideInInspector] public float currentKnockbackDuration;
 
     [Header("Damage Particles")]
     public ParticleSystem damageParticles;
@@ -29,15 +30,16 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     {
         #region Script, Component and Variable Suscriptions
 
-        var controller = GetComponent<PlayerController>();
+        var controller = PlayerController.Instance;
         if (controller != null)
         {
             playerStats = controller.playerRuntimeStats;
         }
 
-        playerController = GetComponent<PlayerController>();
+        playerController = PlayerController.Instance;
         deathController = GetComponent<PlayerDeathController>();
-        dashController = GetComponent<PlayerDashController>();
+        dashController = PlayerController.Instance.dashController;
+
         playerSprite = GetComponent<SpriteRenderer>();
         playerRB = GetComponent<Rigidbody2D>();
         #endregion
@@ -54,12 +56,12 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
         playerRB.AddForce(knockbackVector * knockbackForce, ForceMode2D.Impulse);
         playerRB.linearVelocity = (new Vector2(knockbackVector.x, knockbackVector.y + 1) * knockbackForce);
         isKnockedBack = true;
-        StartCoroutine(CancelKnockback(knockbackDuration));
+
+        currentKnockbackDuration = knockbackDuration;
     }
 
-    public IEnumerator CancelKnockback(float knockbackDuration)
+    public void EndKnockback()
     {
-        yield return new WaitForSeconds(knockbackDuration);
         isKnockedBack = false;
     }
 

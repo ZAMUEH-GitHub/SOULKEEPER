@@ -23,11 +23,11 @@ public class PlayerAnimationController : MonoBehaviour
         playerRigidBody = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
 
-        movementController = GetComponent<PlayerMovementController>();
-        jumpController = GetComponent<PlayerJumpController>();
-        wallController = GetComponent<PlayerWallController>();
-        dashController = GetComponent<PlayerDashController>();
-        attackController = GetComponentInChildren<PlayerAttackController>();
+        movementController = PlayerController.Instance.movementController;
+        jumpController = PlayerController.Instance.jumpController;
+        wallController = PlayerController.Instance.wallController;
+        dashController = PlayerController.Instance.dashController;
+        attackController = PlayerController.Instance.attackController;
         #endregion
 
         if (jumpController != null)

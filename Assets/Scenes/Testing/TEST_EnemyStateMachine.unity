@@ -968,10 +968,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3473225188053575640, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
-      propertyPath: groundLayer.m_Bits
-      value: 83886080
-      objectReference: {fileID: 0}
     - target: {fileID: 4030027386351102324, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.09433365
@@ -1012,17 +1008,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5319863570445165762, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
-      propertyPath: patrolTarget
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8137694784229910153, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
       propertyPath: m_Name
       value: BRUTUS
-      objectReference: {fileID: 0}
-    - target: {fileID: 8137694784229910153, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1040,10 +1028,6 @@ PrefabInstance:
     - target: {fileID: 3176606683999004639, guid: 1ee3dd1310c804d46bf066dbcd933ce8, type: 3}
       propertyPath: m_Name
       value: GOBLIN
-      objectReference: {fileID: 0}
-    - target: {fileID: 3176606683999004639, guid: 1ee3dd1310c804d46bf066dbcd933ce8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6929525796127774032, guid: 1ee3dd1310c804d46bf066dbcd933ce8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1101,18 +1085,6 @@ PrefabInstance:
     - target: {fileID: 608714813369096779, guid: e836f8072a52abf4182e6806a1808c82, type: 3}
       propertyPath: m_Name
       value: WENDIGO
-      objectReference: {fileID: 0}
-    - target: {fileID: 608714813369096779, guid: e836f8072a52abf4182e6806a1808c82, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5375086555416154777, guid: e836f8072a52abf4182e6806a1808c82, type: 3}
-      propertyPath: groundLayer.m_Bits
-      value: 83886080
-      objectReference: {fileID: 0}
-    - target: {fileID: 6388838409217335219, guid: e836f8072a52abf4182e6806a1808c82, type: 3}
-      propertyPath: patrolTarget
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6939822052252632426, guid: e836f8072a52abf4182e6806a1808c82, type: 3}
       propertyPath: m_LocalPosition.x

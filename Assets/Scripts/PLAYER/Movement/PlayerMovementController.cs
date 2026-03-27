@@ -6,22 +6,20 @@ public class PlayerMovementController : MonoBehaviour, IPlayerSubController
 
     [Header("Movement Settings")]
     public float playerSpeed => playerStats.speed;
-    public Vector2 playerOrientation;
-    public bool isMoving;
+
+    public Vector2 playerOrientation => PlayerController.Instance.moveVector;
+    public bool isMoving => PlayerController.Instance.moveInput;
 
     private Rigidbody2D playerRB;
-    private PlayerDashController dashController;
     private PlayerWallController wallController;
-    private PlayerDamageController damageController;
 
     public void Initialize(PlayerStatsSO stats) => playerStats = stats;
 
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
-        dashController = GetComponent<PlayerDashController>();
-        wallController = GetComponent<PlayerWallController>();
-        damageController = GetComponent<PlayerDamageController>();
+
+        wallController = PlayerController.Instance.wallController;
     }
 
     public void HandleFlip()
@@ -34,15 +32,9 @@ public class PlayerMovementController : MonoBehaviour, IPlayerSubController
         PlayerMove();
     }
 
-    public void SetMoveInput(Vector2 moveVector, bool moveInput)
-    {
-        playerOrientation = moveVector;
-        isMoving = moveInput;
-    }
-
     private void PlayerMove()
     {
-        if (damageController.isKnockedBack || dashController.IsDashing || wallController.IsWallJumping) return;
+        if (wallController.IsWallJumping) return;
         playerRB.linearVelocity = new Vector2(playerOrientation.x * playerSpeed, playerRB.linearVelocityY);
     }
 

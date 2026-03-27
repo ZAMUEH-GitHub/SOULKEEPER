@@ -5,7 +5,6 @@ public class PlayerDeathState : PlayerBaseState
     public override void Enter()
     {
         // Zero out inputs just to be absolutely certain
-        player.movementController.SetMoveInput(UnityEngine.Vector2.zero, false);
     }
 
     public override void Update()

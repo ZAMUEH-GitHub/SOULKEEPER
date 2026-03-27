@@ -10,21 +10,18 @@ public class PlayerInteractController : MonoBehaviour
 
     private void Update()
     {
-        if (isInteractable && interactInput && interactReleased && interactable != null)
+        bool currentInteractInput = PlayerController.Instance.interactInput;
+
+        if (isInteractable && currentInteractInput && interactReleased && interactable != null)
         {
             interactable.Interact();
             interactReleased = false;
         }
 
-        if (!interactInput)
+        if (!currentInteractInput)
         {
             interactReleased = true;
         }
-    }
-
-    public void SetInteractInput(bool interactInput)
-    {
-        this.interactInput = interactInput;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
