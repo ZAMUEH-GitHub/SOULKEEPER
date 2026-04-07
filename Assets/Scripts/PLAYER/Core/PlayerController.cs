@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
         attackController = GetComponentInChildren<PlayerAttackController>();
         interactController = GetComponent<PlayerInteractController>();
         damageController = GetComponent<PlayerDamageController>();
-        animController = GetComponent<PlayerAnimationController>();
+        animController = GetComponentInChildren<PlayerAnimationController>();
 
         subControllers.AddRange(GetComponents<IPlayerSubController>());
 
