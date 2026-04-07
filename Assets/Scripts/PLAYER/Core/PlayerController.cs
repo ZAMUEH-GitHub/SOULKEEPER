@@ -25,14 +25,10 @@ public class PlayerController : MonoBehaviour
     [Header("Debug States")]
     [SerializeField] private string currentState;
 
-    [Header("Player Input")]
-    public Vector2 moveVector;
-    public bool moveInput;
-    [Space(5)]
+    [Header("Player Input & Buffers")]
     public bool playerInputActive;
     public bool isAlive;
-
-    [Header("Input Buffers")]
+    [Space(5)]
     public float jumpBufferTimer;
     public float dashBufferTimer;
     public float attackBufferTimer;
@@ -58,6 +54,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public PlayerAnimationController animController;
 
     private List<IPlayerSubController> subControllers = new();
+    [HideInInspector] public Vector2 moveVector;
+    [HideInInspector] public bool moveInput;
     #endregion
 
     #region Unity Lifecycle
