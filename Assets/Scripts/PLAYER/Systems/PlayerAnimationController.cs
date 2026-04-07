@@ -21,7 +21,7 @@ public class PlayerAnimationController : MonoBehaviour
         #region Player Script & Component Subscriptions
 
         playerRigidBody = GetComponent<Rigidbody2D>();
-        playerAnimator = GetComponent<Animator>();
+        playerAnimator = GetComponentInChildren<Animator>();
 
         movementController = PlayerController.Instance.movementController;
         jumpController = PlayerController.Instance.jumpController;

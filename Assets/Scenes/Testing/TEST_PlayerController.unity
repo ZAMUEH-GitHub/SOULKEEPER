@@ -273,9 +273,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 329947012315367695, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
+      propertyPath: orthographic size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784956238532811798, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2945257837818756061, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.3856404
+      objectReference: {fileID: 0}
+    - target: {fileID: 2945257837818756061, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329914418782051918, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5228247828123624382, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
       propertyPath: m_Name
       value: PLAYER ROOT
+      objectReference: {fileID: 0}
+    - target: {fileID: 5457519168481037339, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5954748013209884157, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.3856404
+      objectReference: {fileID: 0}
+    - target: {fileID: 5954748013209884157, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 6735503505630863554, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -316,6 +348,10 @@ PrefabInstance:
     - target: {fileID: 6735503505630863554, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607603886518058130, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
+      propertyPath: CameraDistance
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
