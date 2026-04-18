@@ -160,9 +160,6 @@ public class UIInputHandler : MonoBehaviour
         if (GameManager.Instance?.CurrentState != GameState.Gameplay)
             return;
 
-        if (IsPanelVisible(PanelType.TutorialPanel))
-            return;
-
         bool isOnHUD = IsPanelVisible(PanelType.HUD);
         bool isOnPauseMenu = IsPanelVisible(PanelType.PauseMenu);
 

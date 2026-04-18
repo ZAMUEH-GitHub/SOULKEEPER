@@ -94,11 +94,14 @@ public class AltarController : MonoBehaviour, IInteractable
                 lastInteractionTime = Time.time;
                 UpdateStatusText();
                 if (interactTextMesh) interactTextMesh.text = GetInteractionText();
+
                 Debug.Log($"[AltarController] {altarSO.displayName} activated!");
+                ToastPanelManager.Instance?.ShowToast($"{altarSO.displayName} Activated");
             }
             else
             {
                 Debug.Log($"[AltarController] You need the map object ({requiredItemFlag}) to activate this altar.");
+                ToastPanelManager.Instance?.ShowToast("Relic Needed");
             }
             return;
         }
@@ -118,10 +121,12 @@ public class AltarController : MonoBehaviour, IInteractable
                 HideInteractText();
 
             UpdateStatusText();
+            ToastPanelManager.Instance?.ShowToast("Upgrade Purchased");
         }
         else
         {
             Debug.Log($"[AltarController] Not enough score! Need {def.cost}.");
+            ToastPanelManager.Instance?.ShowToast($"Insufficient Score");
         }
     }
 
@@ -253,7 +258,7 @@ public class AltarController : MonoBehaviour, IInteractable
         {
             if (!isActivated)
             {
-                statusTextMesh.text = "Requires Relic";
+                statusTextMesh.text = "";
             }
             else if (completed)
             {
@@ -263,7 +268,7 @@ public class AltarController : MonoBehaviour, IInteractable
             {
                 var def = altarSO.GetStage(currentStageIndex);
                 int cost = def != null ? def.cost : 0;
-                statusTextMesh.text = $"Stage {currentStageIndex + 1}/{altarSO.StageCount} (Cost: {cost})";
+                statusTextMesh.text = $"{currentStageIndex}/{altarSO.StageCount} (Cost: {cost})";
             }
         }
     }
