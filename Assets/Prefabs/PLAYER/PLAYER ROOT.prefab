@@ -1381,7 +1381,7 @@ Transform:
   m_GameObject: {fileID: 9217555472443320545}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.79193, y: 3.5434456, z: -14.4}
+  m_LocalPosition: {x: 0, y: 2.5980756, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1745,6 +1745,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: d63d0c41e39cb7d4b9c6bfdfaebdf26d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2247189790367835969}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: d63d0c41e39cb7d4b9c6bfdfaebdf26d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5379116437045574429}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: d63d0c41e39cb7d4b9c6bfdfaebdf26d, type: 3}
 --- !u!1 &580236377486443637 stripped
 GameObject:
@@ -1773,6 +1776,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5379116437045574429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580236377486443637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ee2381ba1ba1942b5442114d67afdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventRelay
 --- !u!4 &1784956238532811798 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7552582706839291426, guid: d63d0c41e39cb7d4b9c6bfdfaebdf26d, type: 3}
