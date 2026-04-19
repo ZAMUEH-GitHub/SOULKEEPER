@@ -14,7 +14,7 @@ public enum PanelType
     HUD, PauseMenu, PauseSettings, PauseAudioSettings, PauseKeybindings,
 
     [Header("Global Panels")]
-    BlackScreen, LoadingScreen, ConfirmationPanel, ToastPanel, AreaTitlePanel
+    BlackScreen, LoadingScreen, ConfirmationPanel, ToastPanel, AreaTitlePanel, DialoguePanel
 }
 
 [Serializable]

@@ -33,7 +33,7 @@ public class PlayerCollisionController : MonoBehaviour
 
         playerRigidBody = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<CapsuleCollider2D>();
-        playerAnimator = GetComponent<Animator>();
+        playerAnimator = GetComponentInChildren<Animator>();
         damageController = GetComponent<PlayerDamageController>();
         platformAttachment = GetComponent<PlayerAttachmentController>();
     }

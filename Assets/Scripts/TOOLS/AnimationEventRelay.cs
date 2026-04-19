@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class AnimationEventRelay : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private PlayerAnimationController animationController;
+
+    private void Start()
     {
-        
+        animationController = GetComponent<PlayerAnimationController>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AttackEnd()
     {
-        
+        if (animationController != null)
+            animationController.OnAttackAnimationEnd();
     }
 }
