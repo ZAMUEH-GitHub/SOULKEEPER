@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
 {
-    [SerializeField] private PlayerStatsSO playerStats;
+    private PlayerStatsSO playerStats;
 
     [Header("Damage Settings")]
     public int playerHealth => playerStats.health;
@@ -13,8 +13,9 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     public bool isKnockedBack;
     [HideInInspector] public float currentKnockbackDuration;
 
-    [Header("Damage Particles")]
-    public ParticleSystem damageParticles;
+    [Header("Visual Effects")]
+    [SerializeField] private ParticleSystem damageParticles;
+    [SerializeField] private SpriteRenderer[] playerSprite;
 
     #region Script and Component References
     private PlayerDeathController deathController;
@@ -22,10 +23,10 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     private PlayerDashController dashController;
     private Coroutine takeDamageCoroutine;
 
-    private SpriteRenderer playerSprite;
     private Rigidbody2D playerRB;
     #endregion
 
+    #region Unity Lifecycle
     private void Awake()
     {
         #region Script, Component and Variable Suscriptions
@@ -40,7 +41,6 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
         deathController = GetComponent<PlayerDeathController>();
         dashController = PlayerController.Instance.dashController;
 
-        playerSprite = GetComponent<SpriteRenderer>();
         playerRB = GetComponent<Rigidbody2D>();
         #endregion
     }
@@ -49,6 +49,7 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     {
         nextDamage = Mathf.Max(0, nextDamage - Time.deltaTime);
     }
+    #endregion
 
     #region Knockback System
     public void Knockback(Vector2 knockbackVector, float knockbackForce, float knockbackDuration)
@@ -88,18 +89,25 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
         isTakingDamage = true;
         playerStats.health -= damage;
         nextDamage = damageRate;
-        playerSprite.color = Color.red;
+
+        for (int i = 0; i < playerSprite.Length; i++)
+        {
+            if (playerSprite[i] != null) playerSprite[i].color = Color.red;
+        }
 
         yield return new WaitForSeconds(0.25f);
 
-        playerSprite.color = Color.white;
+        for (int i = 0; i < playerSprite.Length; i++)
+        {
+            if (playerSprite[i] != null) playerSprite[i].color = Color.white;
+        }
+
         isTakingDamage = false;
 
         if (playerHealth <= 0)
         {
-            //animator.SetTrigger("PlayerDeath");
 
-            deathController.Die();      // Later called by Unity Animation Event
+            deathController.Die();
         }
     }
     #endregion

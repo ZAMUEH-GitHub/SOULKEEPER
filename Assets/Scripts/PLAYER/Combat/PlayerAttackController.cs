@@ -29,6 +29,9 @@ public class PlayerAttackController : MonoBehaviour
     public Transform player;
     public BaseScarfController scarfController, scarfController2;
 
+    [Header("Attack Collider Setup")]
+    private Vector2 defaultColliderPosition;
+
     #region Script & Component References
     private PlayerJumpController jumpController;
     private PlayerDamageController damageController;
@@ -48,6 +51,8 @@ public class PlayerAttackController : MonoBehaviour
         jumpController = PlayerController.Instance.jumpController;
         damageController = PlayerController.Instance.damageController;
         #endregion
+
+        defaultColliderPosition = transform.localPosition;
     }
 
     void Update()
@@ -55,7 +60,12 @@ public class PlayerAttackController : MonoBehaviour
         if (attackTimer <= 0)
         {
             currentAttackState = AttackState.Attack1;
-            isAttacking = false;
+
+            if (isAttacking)
+            {
+                isAttacking = false;
+                transform.localPosition = defaultColliderPosition;
+            }
         }
 
         nextAttack = Mathf.Max(0, nextAttack - Time.deltaTime);
@@ -77,22 +87,19 @@ public class PlayerAttackController : MonoBehaviour
         {
             if (attackInput && playerOrientation.y == 0)
             {
-                attackOrientation = (player.localScale.x > 0) ? Vector2.right : Vector2.left;
-                isAttacking = true;
+                attackOrientation = Vector2.right;
                 PlayerSideAttack();
             }
 
             if (attackInput && playerOrientation.y > 0)
             {
                 attackOrientation = Vector2.up;
-                isAttacking = true;
                 PlayerUpAttack();
             }
 
             if (attackInput && playerOrientation.y < 0 && !jumpController.isGrounded)
             {
                 attackOrientation = Vector2.down;
-                isAttacking = true;
                 PlayerDownAttack();
             }
         }
@@ -121,6 +128,7 @@ public class PlayerAttackController : MonoBehaviour
     #region Player Side Attacks
     private void SideAttack1()
     {
+        isAttacking = true;
         OnAttackTriggered?.Invoke("PlayerSideAttack1");
         scarfController.SetAttackInput(attackInput, playerOrientation);
 
@@ -132,6 +140,7 @@ public class PlayerAttackController : MonoBehaviour
 
     private void SideAttack2()
     {
+        isAttacking = true;
         OnAttackTriggered?.Invoke("PlayerSideAttack2");
         scarfController2.SetAttackInput(attackInput, playerOrientation);
 
@@ -143,6 +152,7 @@ public class PlayerAttackController : MonoBehaviour
 
     private void SideAttack3()
     {
+        isAttacking = true;
         OnAttackTriggered?.Invoke("PlayerSideAttack3");
         scarfController.SetAttackInput(attackInput, playerOrientation);
         scarfController2.SetAttackInput(attackInput, playerOrientation);
@@ -158,10 +168,12 @@ public class PlayerAttackController : MonoBehaviour
     {
         if (nextAttack == 0)
         {
+            isAttacking = true;
             OnAttackTriggered?.Invoke("PlayerUpAttack");
             scarfController.SetAttackInput(attackInput, playerOrientation);
             scarfController2.SetAttackInput(attackInput, playerOrientation);
 
+            attackTimer = attackRate + comboGrace;
             nextAttack = Mathf.Max(0f, attackRate - comboGrace);
         }
     }
@@ -170,10 +182,12 @@ public class PlayerAttackController : MonoBehaviour
     {
         if (nextAttack == 0)
         {
+            isAttacking = true;
             OnAttackTriggered?.Invoke("PlayerDownAttack");
             scarfController.SetAttackInput(attackInput, playerOrientation);
             scarfController2.SetAttackInput(attackInput, playerOrientation);
 
+            attackTimer = attackRate + comboGrace;
             nextAttack = Mathf.Max(0f, attackRate - comboGrace);
         }
     }
@@ -216,8 +230,16 @@ public class PlayerAttackController : MonoBehaviour
     public void EndAttack()
     {
         isAttacking = false;
+        transform.localPosition = defaultColliderPosition;
     }
     #endregion
 
+    public void UpdateAttackColliderPosition(float progress)
+    {
+        if (playerStats != null)
+        {
+            transform.localPosition = defaultColliderPosition + (attackOrientation * (progress * playerStats.attackRange));
+        }
+    }
     public bool IsAttacking => isAttacking;
 }

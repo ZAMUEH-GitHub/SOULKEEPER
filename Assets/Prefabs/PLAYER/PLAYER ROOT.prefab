@@ -331,7 +331,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e01f98204597c48b58b3b165c78500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDamageController
-  playerStats: {fileID: 0}
   isTakingDamage: 0
   isKnockedBack: 0
   currentKnockbackDuration: 0
@@ -374,7 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb507757e0f26e243a4f05689b809bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationController
-  playerAnimator: {fileID: 2247189790367835969}
+  playerAnimator: {fileID: 0}
   playerRigidBody: {fileID: 8959570138659948825}
 --- !u!114 &1939774117807723393
 MonoBehaviour:
@@ -899,7 +898,7 @@ GameObject:
   m_Layer: 23
   m_Name: Ground Check
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1098,6 +1097,7 @@ MonoBehaviour:
   player: {fileID: 1537833885994529045}
   scarfController: {fileID: 1928710652267134895}
   scarfController2: {fileID: 614527656434283533}
+  attackColliderTransform: {fileID: 0}
 --- !u!58 &2530833109937345789
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1300,7 +1300,7 @@ GameObject:
   m_Layer: 23
   m_Name: Wall Check
   m_TagString: Untagged
-  m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1744,7 +1744,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: d63d0c41e39cb7d4b9c6bfdfaebdf26d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2247189790367835969}
+      addedObject: {fileID: 4151644387690702635}
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: d63d0c41e39cb7d4b9c6bfdfaebdf26d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5379116437045574429}
@@ -1754,7 +1754,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: -8653719598885068355, guid: d63d0c41e39cb7d4b9c6bfdfaebdf26d, type: 3}
   m_PrefabInstance: {fileID: 1146911810126374344}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &2247189790367835969
+--- !u!95 &4151644387690702635
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
@@ -1788,6 +1788,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35ee2381ba1ba1942b5442114d67afdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimationEventRelay
+  attackProgress: 0
 --- !u!4 &1784956238532811798 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7552582706839291426, guid: d63d0c41e39cb7d4b9c6bfdfaebdf26d, type: 3}
