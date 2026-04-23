@@ -4,6 +4,7 @@ public class AnimationEventRelay : MonoBehaviour
 {
     private PlayerAnimationController animationController;
     private PlayerAttackController attackController;
+    private EnemyBaseController enemyBaseController;
 
     [Header("Animation Driven Variables")]
     public float attackProgress;
@@ -12,6 +13,8 @@ public class AnimationEventRelay : MonoBehaviour
     {
         animationController = PlayerController.Instance.animController;
         attackController = PlayerController.Instance.attackController;
+
+        enemyBaseController = GetComponentInParent<EnemyBaseController>();
     }
 
     private void Update()
@@ -24,7 +27,7 @@ public class AnimationEventRelay : MonoBehaviour
 
     public void AttackEnd()
     {
-        if (animationController != null)
-            animationController.OnAttackAnimationEnd();
+        if (enemyBaseController != null)
+            enemyBaseController.EndAttack();
     }
 }

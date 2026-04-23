@@ -1017,6 +1017,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1894633815 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3243761891948014023, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
+  m_PrefabInstance: {fileID: 1060651606546642489}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1060651606546642489
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1025,6 +1030,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 164332524090484785, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1894633815}
     - target: {fileID: 4030027386351102324, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.09433365
@@ -1068,10 +1077,6 @@ PrefabInstance:
     - target: {fileID: 8137694784229910153, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
       propertyPath: m_Name
       value: BRUTUS
-      objectReference: {fileID: 0}
-    - target: {fileID: 8137694784229910153, guid: 1d46ad18957f4c347bf52a8b5a7fefbb, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1158,6 +1163,10 @@ PrefabInstance:
     - target: {fileID: 608714813369096779, guid: e836f8072a52abf4182e6806a1808c82, type: 3}
       propertyPath: m_Name
       value: WENDIGO
+      objectReference: {fileID: 0}
+    - target: {fileID: 608714813369096779, guid: e836f8072a52abf4182e6806a1808c82, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 642703971794937067, guid: e836f8072a52abf4182e6806a1808c82, type: 3}
       propertyPath: m_LocalRotation.z
