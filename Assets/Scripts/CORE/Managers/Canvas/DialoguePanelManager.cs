@@ -13,10 +13,17 @@ public class DialoguePanelManager : Singleton<DialoguePanelManager>
     [SerializeField] private TMP_Text dialogueContentText;
     [SerializeField] private GameObject nextButton;
 
+    [Header("Animation Settings")]
+    [Tooltip("Time in seconds between each letter appearing.")]
+    [SerializeField] private float typingSpeed = 0.02f;
+
     private DialogueSequenceSO currentSequence;
     private int currentNodeIndex = 0;
     private bool isClosingDialogue = false;
     private GameObject previousSelectedObject = null;
+
+    private Coroutine typingCoroutine;
+    private bool isTyping = false;
 
     public void StartDialogue(DialogueSequenceSO sequence)
     {
@@ -42,6 +49,7 @@ public class DialoguePanelManager : Singleton<DialoguePanelManager>
             return;
         }
 
+        currentNodeIndex = index;
         DialogueNode node = currentSequence.nodes[index];
 
         if (!string.IsNullOrEmpty(node.requiredFlag) && SessionManager.Instance != null)
@@ -54,7 +62,16 @@ public class DialoguePanelManager : Singleton<DialoguePanelManager>
         }
 
         if (speakerNameText != null) speakerNameText.text = node.speakerName;
-        if (dialogueContentText != null) dialogueContentText.text = node.dialogueText;
+
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+        }
+
+        if (dialogueContentText != null)
+        {
+            typingCoroutine = StartCoroutine(TypeDialogue(node.dialogueText));
+        }
 
         if (!string.IsNullOrEmpty(node.unlockFlag) && SessionManager.Instance != null)
         {
@@ -62,11 +79,33 @@ public class DialoguePanelManager : Singleton<DialoguePanelManager>
         }
     }
 
+    private IEnumerator TypeDialogue(string text)
+    {
+        isTyping = true;
+        dialogueContentText.text = "";
+
+        foreach (char c in text.ToCharArray())
+        {
+            dialogueContentText.text += c;
+            yield return new WaitForSecondsRealtime(typingSpeed);
+        }
+
+        isTyping = false;
+    }
+
     public void OnNextPressed()
     {
         if (currentSequence == null) return;
 
         DialogueNode currentNode = currentSequence.nodes[currentNodeIndex];
+
+        if (isTyping)
+        {
+            if (typingCoroutine != null) StopCoroutine(typingCoroutine);
+            dialogueContentText.text = currentNode.dialogueText;
+            isTyping = false;
+            return;
+        }
 
         if (currentNode.nextNodeIndex == -1)
         {
