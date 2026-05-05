@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerDeathController : MonoBehaviour
 {
-    [SerializeField] private PlayerStatsSO playerStats;
+    private PlayerStatsSO playerStats;
 
     [Header("Death Particles and Souls")]
     public ParticleSystem deathParticles;
@@ -34,14 +34,10 @@ public class PlayerDeathController : MonoBehaviour
         if (playerController != null)
         {
             playerController.FreezeAllInputs();
+
+            playerController.stateMachine.ChangeState(playerController.deathState);
         }
-        /*
-        if (colliders != null)
-        {
-            foreach (var col in colliders)
-                col.enabled = false;
-        }
-        */
+
         Instantiate(deathParticles, transform.position, Quaternion.identity);
 
         for (int i = playerStats.score / 2; i > 0; i--)
@@ -89,5 +85,7 @@ public class PlayerDeathController : MonoBehaviour
         int playerLayer = LayerMask.NameToLayer("Player");
         if (playerLayer != -1)
             gameObject.layer = playerLayer;
+
+        playerController.stateMachine.ChangeState(playerController.respawnState);
     }
 }

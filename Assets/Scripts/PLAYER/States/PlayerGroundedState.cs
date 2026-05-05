@@ -4,26 +4,36 @@ public class PlayerGroundedState : PlayerBaseState
 
     public override void Enter()
     {
-        // Any specific grounded resets can go here
+        player.jumpController.jumpCount = player.jumpController.maxJumpCount;
+        player.animController.SetBool("isGrounded", true);
+    }
+
+    public override void Exit()
+    {
+        player.animController.SetBool("isGrounded", false);
+        player.animController.SetBool("isMoving", false);
     }
 
     public override void Update()
     {
-        player.attackController.UpdateAttackState();
         player.movementController.HandleFlip();
-        player.jumpController.UpdateJumpState();
-        player.dashController.UpdateDashState();
-        player.wallController.UpdateWallState();
+        player.attackController.UpdateAttackState();
 
-        if (player.damageController.isKnockedBack)
+        bool isMoving = player.movementController.playerOrientation.x != 0;
+        player.animController.SetBool("isMoving", isMoving);
+
+        if (player.damageController.isKnockedBack) return;
+
+        if (player.dashController.CanDash() && player.ConsumeDashInput())
         {
-            // player.stateMachine.ChangeState(player.knockbackState); 
+            player.stateMachine.ChangeState(player.dashState);
             return;
         }
 
-        if (player.dashController.IsDashing)
+        if (player.jumpController.jumpCount > 0 && player.ConsumeJumpInput())
         {
-            player.stateMachine.ChangeState(player.dashState);
+            player.jumpController.ExecuteJump();
+            player.stateMachine.ChangeState(player.airborneState);
             return;
         }
 
@@ -34,8 +44,5 @@ public class PlayerGroundedState : PlayerBaseState
         }
     }
 
-    public override void FixedUpdate()
-    {
-        player.movementController.ExecuteMove();
-    }
+    public override void FixedUpdate() => player.movementController.ExecuteMove();
 }

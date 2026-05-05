@@ -19,7 +19,6 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
     [HideInInspector] public float nextJump;
 
     private float coyoteCount;
-
     private Coroutine jumpCoroutine;
 
     private Rigidbody2D playerRB;
@@ -30,33 +29,21 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
     {
         playerRB = GetComponent<Rigidbody2D>();
         collisionController = GetComponent<PlayerCollisionController>();
-
         wallController = PlayerController.Instance.wallController;
     }
 
     private void Update()
     {
         HandleCounters();
+        UpdateGroundedStatus();
     }
 
-    public void UpdateJumpState()
+    private void UpdateGroundedStatus()
     {
         isGrounded = collisionController.isGrounded;
 
         if (isGrounded && !wasGrounded) jumpCount = maxJumpCount;
         wasGrounded = isGrounded;
-
-        if (playerStats != null && playerStats.jumpUnlocked &&
-            nextJump <= 0 &&
-            (isGrounded || jumpCount > 0 || coyoteCount > 0) &&
-            !wallController.IsWallSliding && !wallController.IsWallJumping)
-        {
-            if (PlayerController.Instance.ConsumeJumpInput())
-            {
-                DoJump();
-                nextJump = jumpRate;
-            }
-        }
     }
 
     private void HandleCounters()
@@ -65,7 +52,15 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
         nextJump = Mathf.Max(0, nextJump - Time.deltaTime);
     }
 
-    private void DoJump()
+    public bool CanJump()
+    {
+        return playerStats != null && playerStats.jumpUnlocked &&
+               nextJump <= 0 &&
+               (isGrounded || jumpCount > 0 || coyoteCount > 0) &&
+               !wallController.IsWallSliding && !wallController.IsWallJumping;
+    }
+
+    public void ExecuteJump()
     {
         playerRB.linearVelocity = new Vector2(playerRB.linearVelocity.x, jumpForce);
 
@@ -73,6 +68,7 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
 
         isJumping = true;
         jumpCount--;
+        nextJump = jumpRate;
 
         if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
         jumpCoroutine = StartCoroutine(CancelPlayerJump());

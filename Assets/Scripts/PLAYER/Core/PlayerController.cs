@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     public PlayerWallSlideState wallSlideState;
     public PlayerKnockbackState knockbackState;
     public PlayerDeathState deathState;
+    public PlayerRespawnState respawnState;
 
     [HideInInspector] public PlayerMovementController movementController;
     [HideInInspector] public PlayerJumpController jumpController;
@@ -105,6 +106,7 @@ public class PlayerController : MonoBehaviour
         wallSlideState = new PlayerWallSlideState(this);
         knockbackState = new PlayerKnockbackState(this);
         deathState = new PlayerDeathState(this);
+        respawnState = new PlayerRespawnState(this);
         #endregion
     }
 
@@ -200,7 +202,6 @@ public class PlayerController : MonoBehaviour
         moveVector = Vector2.zero;
         playerInputActive = false;
 
-        // Wipe buffers on freeze
         jumpBufferTimer = dashBufferTimer = attackBufferTimer = interactBufferTimer = 0;
     }
 

@@ -6,7 +6,15 @@ public class PlayerDashState : PlayerBaseState
 
     public override void Enter()
     {
+        player.dashController.ExecuteDash();
         dashTimer = player.dashController.dashLenght;
+
+        player.animController.SetBool("isDashing", true);
+    }
+
+    public override void Exit()
+    {
+        player.animController.SetBool("isDashing", false);
     }
 
     public override void Update()
@@ -28,9 +36,5 @@ public class PlayerDashState : PlayerBaseState
         }
     }
 
-    public override void FixedUpdate()
-    {
-        // The DashController directly applies velocity when it starts, 
-        // so no extra physics calls are needed here.
-    }
+    public override void FixedUpdate() { }
 }
