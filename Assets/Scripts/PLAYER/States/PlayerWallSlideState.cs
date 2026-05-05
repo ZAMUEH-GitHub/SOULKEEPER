@@ -5,7 +5,6 @@ public class PlayerWallSlideState : PlayerBaseState
     public override void Update()
     {
         player.wallController.UpdateWallState();
-        player.jumpController.UpdateJumpState();
 
         if (player.wallController.IsWallJumping || !player.wallController.IsWallSliding)
         {

@@ -8,19 +8,21 @@ public class PlayerAirborneState : PlayerBaseState
         player.movementController.HandleFlip();
 
         player.wallController.UpdateWallState();
-        player.jumpController.UpdateJumpState();
+        if (player.wallController.IsWallSliding)
+        {
+            player.stateMachine.ChangeState(player.wallSlideState);
+            return;
+        }
 
-        player.dashController.UpdateDashState();
-
-        if (player.dashController.IsDashing)
+        if (player.dashController.CanDash() && player.ConsumeDashInput())
         {
             player.stateMachine.ChangeState(player.dashState);
             return;
         }
 
-        if (player.wallController.IsWallSliding)
+        if (player.jumpController.CanJump() && player.ConsumeJumpInput())
         {
-            player.stateMachine.ChangeState(player.wallSlideState);
+            player.jumpController.ExecuteJump();
             return;
         }
 

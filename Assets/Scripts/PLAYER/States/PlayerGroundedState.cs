@@ -4,16 +4,14 @@ public class PlayerGroundedState : PlayerBaseState
 
     public override void Enter()
     {
-        // Any specific grounded resets can go here
+        player.jumpController.jumpCount = player.jumpController.maxJumpCount;
     }
 
     public override void Update()
     {
-        player.attackController.UpdateAttackState();
         player.movementController.HandleFlip();
-        player.jumpController.UpdateJumpState();
-        player.dashController.UpdateDashState();
-        player.wallController.UpdateWallState();
+
+        player.attackController.UpdateAttackState();
 
         if (player.damageController.isKnockedBack)
         {
@@ -21,9 +19,16 @@ public class PlayerGroundedState : PlayerBaseState
             return;
         }
 
-        if (player.dashController.IsDashing)
+        if (player.dashController.CanDash() && player.ConsumeDashInput())
         {
             player.stateMachine.ChangeState(player.dashState);
+            return;
+        }
+
+        if (player.jumpController.jumpCount > 0 && player.ConsumeJumpInput())
+        {
+            player.jumpController.ExecuteJump();
+            player.stateMachine.ChangeState(player.airborneState);
             return;
         }
 
