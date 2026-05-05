@@ -262,6 +262,7 @@ GameObject:
   - component: {fileID: 3379434040333594768}
   - component: {fileID: 1939774117807723393}
   - component: {fileID: 8925653627577615284}
+  - component: {fileID: 9212027443585630048}
   - component: {fileID: 7737023596611011452}
   - component: {fileID: 8959570138659948825}
   - component: {fileID: 7825921775206927642}
@@ -383,6 +384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDashController
   isDashing: 0
   dashVector: {x: 0, y: 0}
+  nextDash: 0
 --- !u!114 &7277342940922148283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -427,7 +429,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76b4d6c6e1915fb4bbeb3a39fd1842d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractController
-  isInteractable: 0
 --- !u!114 &4276711709541245836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,7 +455,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationController
   playerAnimator: {fileID: 4151644387690702635}
-  playerRigidBody: {fileID: 8959570138659948825}
 --- !u!114 &1939774117807723393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,6 +492,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 730481c9ba8c1124e93f3de24aec4d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPowerUpController
+--- !u!114 &9212027443585630048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304184695831621541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98ab16f75fb5cca43bd6ccf58cf0001a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDeathController
+  deathParticles: {fileID: 4231633206474095276, guid: 8eccf4353e5e4424293a563851595620, type: 3}
+  soulObject: {fileID: 0}
 --- !u!70 &7737023596611011452
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -3245,7 +3259,7 @@ Transform:
   m_GameObject: {fileID: 7314299177506325032}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.7320504, z: -10}
+  m_LocalPosition: {x: 0, y: 2.5980756, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3306,7 +3320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886251e9a18ece04ea8e61686c173e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraDistance: 10
+  CameraDistance: 15
   DeadZoneDepth: 0
   Composition:
     ScreenPosition: {x: 0, y: 0.15}
@@ -3849,7 +3863,7 @@ Transform:
   m_GameObject: {fileID: 9217555472443320545}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.7320504, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3890,7 +3904,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 10
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
