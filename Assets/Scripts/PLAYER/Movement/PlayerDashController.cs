@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
 public class PlayerDashController : MonoBehaviour, IPlayerSubController
@@ -14,42 +13,37 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
     public Vector2 dashVector;
     public float dashLenght => playerStats.dashLenght;
     public float dashRate => playerStats.dashRate;
-    private float nextDash;
+    [HideInInspector] public float nextDash;
 
     private Rigidbody2D playerRB;
-    private CapsuleCollider2D playerCL;
+    private int originalLayer;
 
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
-        playerCL = GetComponent<CapsuleCollider2D>();
+        originalLayer = gameObject.layer;
     }
 
     private void Update()
     {
         nextDash = Mathf.Max(0, nextDash - Time.deltaTime);
-    }
-
-    public void UpdateDashState()
-    {
-        if (playerStats != null && playerStats.dashUnlocked && nextDash <= 0)
-        {
-            if (!IsDashing && PlayerController.Instance.ConsumeDashInput())
-            {
-                DoDash();
-                nextDash = dashRate;
-            }
-        }
-
         dashVector = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
     }
 
-    private void DoDash()
+    public bool CanDash()
+    {
+        return playerStats != null && playerStats.dashUnlocked && nextDash <= 0;
+    }
+
+    public void ExecuteDash()
     {
         playerRB.linearVelocity = new Vector2(dashVector.x * dashForce, 0);
-        playerCL.isTrigger = true;
+
+        gameObject.layer = LayerMask.NameToLayer("Dashing");
+
         isDashing = true;
         playerRB.gravityScale = 0;
+        nextDash = dashRate;
 
         OnDashStateChanged?.Invoke(true);
     }
@@ -57,7 +51,9 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
     public void EndDash()
     {
         isDashing = false;
-        playerCL.isTrigger = false;
+
+        gameObject.layer = originalLayer;
+
         playerRB.gravityScale = 1;
 
         OnDashStateChanged?.Invoke(false);

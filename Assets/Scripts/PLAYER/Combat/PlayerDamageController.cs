@@ -59,6 +59,8 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
         isKnockedBack = true;
 
         currentKnockbackDuration = knockbackDuration;
+
+        playerController.stateMachine.ChangeState(playerController.knockbackState);
     }
 
     public void EndKnockback()
@@ -106,7 +108,6 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
 
         if (playerHealth <= 0)
         {
-
             deathController.Die();
         }
     }
