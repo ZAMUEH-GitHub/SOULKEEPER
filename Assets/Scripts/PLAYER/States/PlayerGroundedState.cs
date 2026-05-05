@@ -5,19 +5,24 @@ public class PlayerGroundedState : PlayerBaseState
     public override void Enter()
     {
         player.jumpController.jumpCount = player.jumpController.maxJumpCount;
+        player.animController.SetBool("isGrounded", true);
+    }
+
+    public override void Exit()
+    {
+        player.animController.SetBool("isGrounded", false);
+        player.animController.SetBool("isMoving", false);
     }
 
     public override void Update()
     {
         player.movementController.HandleFlip();
-
         player.attackController.UpdateAttackState();
 
-        if (player.damageController.isKnockedBack)
-        {
-            // player.stateMachine.ChangeState(player.knockbackState); 
-            return;
-        }
+        bool isMoving = player.movementController.playerOrientation.x != 0;
+        player.animController.SetBool("isMoving", isMoving);
+
+        if (player.damageController.isKnockedBack) return;
 
         if (player.dashController.CanDash() && player.ConsumeDashInput())
         {
@@ -39,8 +44,5 @@ public class PlayerGroundedState : PlayerBaseState
         }
     }
 
-    public override void FixedUpdate()
-    {
-        player.movementController.ExecuteMove();
-    }
+    public override void FixedUpdate() => player.movementController.ExecuteMove();
 }

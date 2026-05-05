@@ -8,6 +8,13 @@ public class PlayerDashState : PlayerBaseState
     {
         player.dashController.ExecuteDash();
         dashTimer = player.dashController.dashLenght;
+
+        player.animController.SetBool("isDashing", true);
+    }
+
+    public override void Exit()
+    {
+        player.animController.SetBool("isDashing", false);
     }
 
     public override void Update()
@@ -29,8 +36,5 @@ public class PlayerDashState : PlayerBaseState
         }
     }
 
-    public override void FixedUpdate()
-    {
-
-    }
+    public override void FixedUpdate() { }
 }

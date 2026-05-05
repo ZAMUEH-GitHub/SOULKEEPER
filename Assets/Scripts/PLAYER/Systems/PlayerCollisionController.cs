@@ -20,7 +20,6 @@ public class PlayerCollisionController : MonoBehaviour
     public bool isTrapped;
 
     private Rigidbody2D playerRigidBody;
-    private CapsuleCollider2D playerCollider;
     private Animator playerAnimator;
     private PlayerDamageController damageController;
     private PlayerAttachmentController platformAttachment;
@@ -32,7 +31,6 @@ public class PlayerCollisionController : MonoBehaviour
             playerStats = controller.playerRuntimeStats;
 
         playerRigidBody = GetComponent<Rigidbody2D>();
-        playerCollider = GetComponent<CapsuleCollider2D>();
         playerAnimator = GetComponentInChildren<Animator>();
         damageController = GetComponent<PlayerDamageController>();
         platformAttachment = GetComponent<PlayerAttachmentController>();
@@ -47,19 +45,13 @@ public class PlayerCollisionController : MonoBehaviour
     #region Collision Management
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.CompareTag("Wall") || other.CompareTag("Obstacle"))
-            playerCollider.isTrigger = false;
-
         if (other.CompareTag("MovingObstacle") || other.CompareTag("Parenting Collider"))
         {
             var platformRb = other.attachedRigidbody;
             if (platformAttachment != null)
             {
-                if (platformAttachment != null)
-                    platformAttachment.AttachToPlatform(other);
+                platformAttachment.AttachToPlatform(other);
             }
-
-            playerCollider.isTrigger = false;
         }
 
         if (other.CompareTag("Minos Grab Collider"))
@@ -75,12 +67,10 @@ public class PlayerCollisionController : MonoBehaviour
         if (other.CompareTag("MovingObstacle") || other.CompareTag("Parenting Collider"))
         {
             platformAttachment?.DetachFromPlatform();
-            playerCollider.isTrigger = false;
         }
 
         if (other.CompareTag("Minos Grab Collider"))
         {
-            playerCollider.isTrigger = false;
             playerRigidBody.gravityScale = 5f;
             isTrapped = false;
         }

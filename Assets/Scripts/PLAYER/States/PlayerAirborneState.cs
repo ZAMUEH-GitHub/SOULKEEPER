@@ -1,13 +1,25 @@
+using UnityEngine;
+
 public class PlayerAirborneState : PlayerBaseState
 {
     public PlayerAirborneState(PlayerController player) : base(player) { }
+
+    public override void Enter() { }
+
+    public override void Exit()
+    {
+        player.animController.SetBool("isFalling", false);
+    }
 
     public override void Update()
     {
         player.attackController.UpdateAttackState();
         player.movementController.HandleFlip();
-
         player.wallController.UpdateWallState();
+
+        bool isFalling = player.GetComponent<Rigidbody2D>().linearVelocityY < -0.1f;
+        player.animController.SetBool("isFalling", isFalling);
+
         if (player.wallController.IsWallSliding)
         {
             player.stateMachine.ChangeState(player.wallSlideState);
@@ -33,8 +45,5 @@ public class PlayerAirborneState : PlayerBaseState
         }
     }
 
-    public override void FixedUpdate()
-    {
-        player.movementController.ExecuteMove();
-    }
+    public override void FixedUpdate() => player.movementController.ExecuteMove();
 }

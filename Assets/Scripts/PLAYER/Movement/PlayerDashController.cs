@@ -16,12 +16,12 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
     [HideInInspector] public float nextDash;
 
     private Rigidbody2D playerRB;
-    private CapsuleCollider2D playerCL;
+    private int originalLayer;
 
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
-        playerCL = GetComponent<CapsuleCollider2D>();
+        originalLayer = gameObject.layer;
     }
 
     private void Update()
@@ -38,7 +38,9 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
     public void ExecuteDash()
     {
         playerRB.linearVelocity = new Vector2(dashVector.x * dashForce, 0);
-        playerCL.isTrigger = true;
+
+        gameObject.layer = LayerMask.NameToLayer("Dashing");
+
         isDashing = true;
         playerRB.gravityScale = 0;
         nextDash = dashRate;
@@ -49,7 +51,9 @@ public class PlayerDashController : MonoBehaviour, IPlayerSubController
     public void EndDash()
     {
         isDashing = false;
-        playerCL.isTrigger = false;
+
+        gameObject.layer = originalLayer;
+
         playerRB.gravityScale = 1;
 
         OnDashStateChanged?.Invoke(false);

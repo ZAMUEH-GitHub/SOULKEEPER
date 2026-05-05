@@ -7,12 +7,19 @@ public class PlayerKnockbackState : PlayerBaseState
     public override void Enter()
     {
         knockbackTimer = player.damageController.currentKnockbackDuration;
+
+        player.animController.SetBool("isMoving", false);
+        player.animController.SetBool("isDashing", false);
+        player.animController.SetBool("isWallSliding", false);
+    }
+
+    public override void Exit()
+    {
+
     }
 
     public override void Update()
     {
-        if (base.CheckGlobalTransitions()) return;
-
         knockbackTimer -= UnityEngine.Time.deltaTime;
 
         if (knockbackTimer <= 0f)
@@ -32,6 +39,6 @@ public class PlayerKnockbackState : PlayerBaseState
 
     public override void FixedUpdate()
     {
-        // Do nothing. We let the Rigidbody physics handle the knockback force.
+
     }
 }
