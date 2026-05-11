@@ -79,4 +79,18 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
         yield return new WaitForSeconds(jumpRate);
         isJumping = false;
     }
+
+    #region Custom Bounce / Pogo Logic
+    public void ExecuteBounce(Vector2 direction, float force)
+    {
+        playerRB.linearVelocity = direction * force;
+
+        jumpCount = maxJumpCount;
+
+        if (PlayerController.Instance.stateMachine.CurrentStateName != "PlayerAirborneState")
+        {
+            PlayerController.Instance.stateMachine.ChangeState(PlayerController.Instance.airborneState);
+        }
+    }
+    #endregion
 }

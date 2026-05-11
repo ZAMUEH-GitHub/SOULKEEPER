@@ -8,16 +8,16 @@ public class PlayerAttackController : MonoBehaviour
     public event Action<string> OnAttackTriggered;
     public event Action OnBulbBounced;
 
-    [Header("AttackSettings")]
+    [Header("Attack Settings")]
     public bool isAttacking;
     private bool attackInput;
-    private int playerDamage => playerStats.damage;
-    private float attackRate => playerStats.attackRate;
+    private int playerDamage => playerStats != null ? playerStats.damage : 1;
+    private float attackRate => playerStats != null ? playerStats.attackRate : 1f;
     private float nextAttack;
     private float comboGrace = 0.2f;
     private float attackTimer;
-    private float knockbackForce => playerStats.knockback;
-    private float knockbackDuration => playerStats.knockbackLenght;
+    private float knockbackForce => playerStats != null ? playerStats.knockback : 5f;
+    private float knockbackDuration => playerStats != null ? playerStats.knockbackLenght : 0.2f;
 
     public AttackState currentAttackState = AttackState.Attack1;
     public enum AttackState { Attack1, Attack2, Attack3 }
@@ -25,12 +25,20 @@ public class PlayerAttackController : MonoBehaviour
     private Vector2 playerOrientation;
     public Vector2 attackOrientation;
 
+    [Header("Thrust & Retract Settings")]
+    [SerializeField, Tooltip("Time in seconds to thrust outward to full attackRange.")]
+    private float attackExtendDuration = 0.05f;
+    [SerializeField, Tooltip("Time in seconds to pull back to the starting position.")]
+    private float attackRetractDuration = 0.06f;
+    private float currentTravelTime;
+
     [Header("GameObjects & Scripts")]
     public Transform player;
     public BaseScarfController scarfController, scarfController2;
 
     [Header("Attack Collider Setup")]
     private Vector2 defaultColliderPosition;
+    private Collider2D attackCollider;
 
     #region Script & Component References
     private PlayerJumpController jumpController;
@@ -40,22 +48,31 @@ public class PlayerAttackController : MonoBehaviour
     #region Unity Lifecycle
     private void Awake()
     {
-        #region Script and Variable Suscriptions
-
-        var controller = PlayerController.Instance;
-        if (controller != null)
+        attackCollider = GetComponent<Collider2D>();
+        if (attackCollider != null)
         {
-            playerStats = controller.playerRuntimeStats;
+            attackCollider.enabled = false;
         }
-
-        jumpController = PlayerController.Instance.jumpController;
-        damageController = PlayerController.Instance.damageController;
-        #endregion
 
         defaultColliderPosition = transform.localPosition;
     }
 
-    void Update()
+    private void Start()
+    {
+        var controller = PlayerController.Instance;
+        if (controller != null)
+        {
+            playerStats = controller.playerRuntimeStats;
+            jumpController = controller.jumpController;
+            damageController = controller.damageController;
+        }
+        else
+        {
+            Debug.LogWarning("[PlayerAttackController] PlayerController.Instance is null on Start!");
+        }
+    }
+
+    private void Update()
     {
         if (attackTimer <= 0)
         {
@@ -63,17 +80,44 @@ public class PlayerAttackController : MonoBehaviour
 
             if (isAttacking)
             {
-                isAttacking = false;
-                transform.localPosition = defaultColliderPosition;
+                EndAttack();
             }
         }
 
         nextAttack = Mathf.Max(0, nextAttack - Time.deltaTime);
         attackTimer = Mathf.Max(0, attackTimer - Time.deltaTime);
+
+        if (isAttacking && playerStats != null)
+        {
+            currentTravelTime += Time.deltaTime;
+            float progress = 0f;
+
+            if (currentTravelTime <= attackExtendDuration)
+            {
+                progress = Mathf.Clamp01(currentTravelTime / attackExtendDuration);
+            }
+            else if (currentTravelTime <= attackExtendDuration + attackRetractDuration)
+            {
+                float retractTime = currentTravelTime - attackExtendDuration;
+                progress = 1f - Mathf.Clamp01(retractTime / attackRetractDuration);
+            }
+            else
+            {
+                progress = 0f;
+                if (attackCollider != null && attackCollider.enabled)
+                {
+                    attackCollider.enabled = false;
+                }
+            }
+
+            UpdateAttackColliderPosition(progress);
+        }
     }
 
     public void UpdateAttackState()
     {
+        if (PlayerController.Instance == null) return;
+
         attackInput = PlayerController.Instance.ConsumeAttackInput();
         playerOrientation = PlayerController.Instance.moveVector;
         PlayerAttack(attackInput);
@@ -83,43 +127,38 @@ public class PlayerAttackController : MonoBehaviour
     #region Player Attack Logic
     public void PlayerAttack(bool attackInput)
     {
-        if (playerStats.attackUnlocked)
+        if (playerStats != null && playerStats.attackUnlocked && attackInput)
         {
-            if (attackInput && playerOrientation.y == 0)
-            {
-                attackOrientation = Vector2.right;
-                PlayerSideAttack();
-            }
-
-            if (attackInput && playerOrientation.y > 0)
+            if (playerOrientation.y >= 0.5f)
             {
                 attackOrientation = Vector2.up;
                 PlayerUpAttack();
             }
-
-            if (attackInput && playerOrientation.y < 0 && !jumpController.isGrounded)
+            else if (playerOrientation.y <= -0.5f && jumpController != null && !jumpController.isGrounded)
             {
                 attackOrientation = Vector2.down;
                 PlayerDownAttack();
+            }
+            else
+            {
+                attackOrientation = Vector2.right;
+                PlayerSideAttack();
             }
         }
     }
 
     #region Player Attacks
-
     private void PlayerSideAttack()
     {
         if (currentAttackState == AttackState.Attack1 && nextAttack == 0)
         {
             SideAttack1();
         }
-
-        if (currentAttackState == AttackState.Attack2 && attackTimer > 0 && nextAttack == 0)
+        else if (currentAttackState == AttackState.Attack2 && attackTimer > 0 && nextAttack == 0)
         {
             SideAttack2();
         }
-
-        if (currentAttackState == AttackState.Attack3 && attackTimer > 0 && nextAttack == 0)
+        else if (currentAttackState == AttackState.Attack3 && attackTimer > 0 && nextAttack == 0)
         {
             SideAttack3();
         }
@@ -129,8 +168,10 @@ public class PlayerAttackController : MonoBehaviour
     private void SideAttack1()
     {
         isAttacking = true;
+        currentTravelTime = 0f;
+        if (attackCollider != null) attackCollider.enabled = true;
         OnAttackTriggered?.Invoke("PlayerSideAttack1");
-        scarfController.SetAttackInput(attackInput, playerOrientation);
+        if (scarfController != null) scarfController.SetAttackInput(attackInput, playerOrientation);
 
         currentAttackState = AttackState.Attack2;
 
@@ -141,8 +182,10 @@ public class PlayerAttackController : MonoBehaviour
     private void SideAttack2()
     {
         isAttacking = true;
+        currentTravelTime = 0f;
+        if (attackCollider != null) attackCollider.enabled = true;
         OnAttackTriggered?.Invoke("PlayerSideAttack2");
-        scarfController2.SetAttackInput(attackInput, playerOrientation);
+        if (scarfController2 != null) scarfController2.SetAttackInput(attackInput, playerOrientation);
 
         currentAttackState = AttackState.Attack3;
 
@@ -153,9 +196,11 @@ public class PlayerAttackController : MonoBehaviour
     private void SideAttack3()
     {
         isAttacking = true;
+        currentTravelTime = 0f;
+        if (attackCollider != null) attackCollider.enabled = true;
         OnAttackTriggered?.Invoke("PlayerSideAttack3");
-        scarfController.SetAttackInput(attackInput, playerOrientation);
-        scarfController2.SetAttackInput(attackInput, playerOrientation);
+        if (scarfController != null) scarfController.SetAttackInput(attackInput, playerOrientation);
+        if (scarfController2 != null) scarfController2.SetAttackInput(attackInput, playerOrientation);
 
         currentAttackState = AttackState.Attack1;
 
@@ -169,9 +214,11 @@ public class PlayerAttackController : MonoBehaviour
         if (nextAttack == 0)
         {
             isAttacking = true;
+            currentTravelTime = 0f;
+            if (attackCollider != null) attackCollider.enabled = true;
             OnAttackTriggered?.Invoke("PlayerUpAttack");
-            scarfController.SetAttackInput(attackInput, playerOrientation);
-            scarfController2.SetAttackInput(attackInput, playerOrientation);
+            if (scarfController != null) scarfController.SetAttackInput(attackInput, playerOrientation);
+            if (scarfController2 != null) scarfController2.SetAttackInput(attackInput, playerOrientation);
 
             attackTimer = attackRate + comboGrace;
             nextAttack = Mathf.Max(0f, attackRate - comboGrace);
@@ -183,9 +230,11 @@ public class PlayerAttackController : MonoBehaviour
         if (nextAttack == 0)
         {
             isAttacking = true;
+            currentTravelTime = 0f;
+            if (attackCollider != null) attackCollider.enabled = true;
             OnAttackTriggered?.Invoke("PlayerDownAttack");
-            scarfController.SetAttackInput(attackInput, playerOrientation);
-            scarfController2.SetAttackInput(attackInput, playerOrientation);
+            if (scarfController != null) scarfController.SetAttackInput(attackInput, playerOrientation);
+            if (scarfController2 != null) scarfController2.SetAttackInput(attackInput, playerOrientation);
 
             attackTimer = attackRate + comboGrace;
             nextAttack = Mathf.Max(0f, attackRate - comboGrace);
@@ -195,6 +244,8 @@ public class PlayerAttackController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (player == null || damageController == null) return;
+
         IDamageable damageable = collision.GetComponent<IDamageable>();
         IKnockbackable knockbackable = collision.GetComponent<IKnockbackable>();
 
@@ -230,16 +281,29 @@ public class PlayerAttackController : MonoBehaviour
     public void EndAttack()
     {
         isAttacking = false;
+        currentTravelTime = 0f;
+        if (attackCollider != null) attackCollider.enabled = false;
         transform.localPosition = defaultColliderPosition;
     }
     #endregion
 
     public void UpdateAttackColliderPosition(float progress)
     {
-        if (playerStats != null)
+        if (playerStats == null) return;
+
+        Vector2 baseOrigin = defaultColliderPosition;
+
+        if (attackOrientation == Vector2.up)
         {
-            transform.localPosition = defaultColliderPosition + (attackOrientation * (progress * playerStats.attackRange));
+            baseOrigin = new Vector2(0f, Mathf.Abs(defaultColliderPosition.x));
         }
+        else if (attackOrientation == Vector2.down)
+        {
+            baseOrigin = new Vector2(0f, -Mathf.Abs(defaultColliderPosition.x));
+        }
+
+        transform.localPosition = baseOrigin + (attackOrientation * (progress * playerStats.attackRange));
     }
+
     public bool IsAttacking => isAttacking;
 }
