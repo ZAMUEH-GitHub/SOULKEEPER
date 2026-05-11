@@ -8,6 +8,7 @@ public class PlayerMovementController : MonoBehaviour, IPlayerSubController
     public float playerSpeed => playerStats.speed;
     public Vector2 playerOrientation;
     public bool isMoving;
+    [SerializeField] private float groundFriction = 40f;
 
     private Rigidbody2D playerRB;
     private PlayerWallController wallController;
@@ -43,7 +44,16 @@ public class PlayerMovementController : MonoBehaviour, IPlayerSubController
     private void PlayerMove()
     {
         if (wallController.IsWallJumping) return;
-        playerRB.linearVelocity = new Vector2(playerOrientation.x * playerSpeed, playerRB.linearVelocityY);
+
+        if (isMoving)
+        {
+            playerRB.linearVelocity = new Vector2(playerOrientation.x * playerSpeed, playerRB.linearVelocityY);
+        }
+        else
+        {
+            float newX = Mathf.MoveTowards(playerRB.linearVelocity.x, 0, groundFriction * Time.fixedDeltaTime);
+            playerRB.linearVelocity = new Vector2(newX, playerRB.linearVelocityY);
+        }
     }
 
     public void PlayerFlip()

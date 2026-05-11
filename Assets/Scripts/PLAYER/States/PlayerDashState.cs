@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class PlayerDashState : PlayerBaseState
 {
     private float dashTimer;
@@ -14,17 +16,20 @@ public class PlayerDashState : PlayerBaseState
 
     public override void Exit()
     {
+        if (player.dashController.IsDashing)
+        {
+            player.dashController.EndDash();
+        }
+
         player.animController.SetBool("isDashing", false);
     }
 
     public override void Update()
     {
-        dashTimer -= UnityEngine.Time.deltaTime;
+        dashTimer -= Time.deltaTime;
 
         if (dashTimer <= 0f)
         {
-            player.dashController.EndDash();
-
             if (player.jumpController.isGrounded)
             {
                 player.stateMachine.ChangeState(player.groundedState);
