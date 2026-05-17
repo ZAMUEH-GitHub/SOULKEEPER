@@ -230,11 +230,16 @@ PrefabInstance:
       value: PLAYER
       objectReference: {fileID: 0}
     - target: {fileID: 6177854793517519879, guid: 40e644a300582a94b824e1eb9af37336, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6177854793517519879, guid: 40e644a300582a94b824e1eb9af37336, type: 3}
       propertyPath: attackTravelDuration
       value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3229049338140469121, guid: 40e644a300582a94b824e1eb9af37336, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40e644a300582a94b824e1eb9af37336, type: 3}
