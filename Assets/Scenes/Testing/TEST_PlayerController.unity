@@ -159,6 +159,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3379434040333594768, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
+      propertyPath: playerAnimator
+      value: 
+      objectReference: {fileID: 1974458169}
     - target: {fileID: 5228247828123624382, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
       propertyPath: m_Name
       value: PLAYER ROOT
@@ -576,6 +580,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1974458169 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8683192487985211652, guid: b355f60e3d8156f43bc094cc3ed9ffdc, type: 3}
+  m_PrefabInstance: {fileID: 770591442}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2010909417
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,6 +811,10 @@ PrefabInstance:
     - target: {fileID: 1109705406109150364, guid: e42560610df9f014d8c80f1fae5bc0f6, type: 3}
       propertyPath: m_Name
       value: SPIKES
+      objectReference: {fileID: 0}
+    - target: {fileID: 1109705406109150364, guid: e42560610df9f014d8c80f1fae5bc0f6, type: 3}
+      propertyPath: m_TagString
+      value: Spike
       objectReference: {fileID: 0}
     - target: {fileID: 3360110798372097199, guid: e42560610df9f014d8c80f1fae5bc0f6, type: 3}
       propertyPath: m_LocalPosition.x

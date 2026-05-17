@@ -43,12 +43,15 @@ public class PlayerAttackController : MonoBehaviour
     #region Script & Component References
     private PlayerJumpController jumpController;
     private PlayerDamageController damageController;
+    private PlayerAnimationController animationController;
     #endregion
 
     #region Unity Lifecycle
     private void Awake()
     {
         attackCollider = GetComponent<Collider2D>();
+        animationController = GetComponentInParent<PlayerAnimationController>();
+
         if (attackCollider != null)
         {
             attackCollider.enabled = false;
@@ -73,7 +76,7 @@ public class PlayerAttackController : MonoBehaviour
     }
 
     private void Update()
-    {
+    {       
         if (attackTimer <= 0)
         {
             currentAttackState = AttackState.Attack1;
@@ -83,6 +86,8 @@ public class PlayerAttackController : MonoBehaviour
                 EndAttack();
             }
         }
+
+        animationController.SetBool("isAttacking", isAttacking);
 
         nextAttack = Mathf.Max(0, nextAttack - Time.deltaTime);
         attackTimer = Mathf.Max(0, attackTimer - Time.deltaTime);
