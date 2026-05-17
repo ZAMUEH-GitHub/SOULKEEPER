@@ -22,7 +22,7 @@ public class KnockbackState : EnemyBaseState
 
         if (enemy.animController != null)
         {
-            // enemy.animController.TriggerHit(); 
+            enemy.animController.TriggerHit();
         }
 
         elapsed = 0f;

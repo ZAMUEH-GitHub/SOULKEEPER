@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyAttackController : MonoBehaviour
 {
-    public EnemyStatsSO enemyStats;
+    private EnemyBaseController enemy;
 
     [Header("Attack Settings")]
     public int enemyDamage;
@@ -17,16 +17,20 @@ public class EnemyAttackController : MonoBehaviour
     public float knockbackForce;
     public float knockbackDuration;
 
-    [SerializeField] private Transform enemy;
-
     private void Awake()
     {
-        if (enemy == null)
-            enemy = GetComponentInParent<Transform>();
+        enemy = GetComponentInParent<EnemyBaseController>();
 
-        enemyDamage = enemyStats.damage;
-        knockbackForce = enemyStats.knockback;
-        knockbackDuration = enemyStats.knockbackDuration;
+        if (enemy != null && enemy.enemyStats != null)
+        {
+            enemyDamage = enemy.enemyStats.damage;
+            knockbackForce = enemy.enemyStats.knockback;
+            knockbackDuration = enemy.enemyStats.knockbackDuration;
+        }
+        else
+        {
+            Debug.LogError("[EnemyAttackController] EnemyBaseController or EnemyStatsSO is missing!");
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -44,7 +48,7 @@ public class EnemyAttackController : MonoBehaviour
             IDamageable damageable = collision.GetComponent<IDamageable>();
             IKnockbackable knockbackable = collision.GetComponent<IKnockbackable>();
 
-            Vector2 knockbackVector = (collision.transform.position - enemy.position).normalized;
+            Vector2 knockbackVector = (collision.transform.position - enemy.transform.position).normalized;
 
             if (damageable != null)
             {

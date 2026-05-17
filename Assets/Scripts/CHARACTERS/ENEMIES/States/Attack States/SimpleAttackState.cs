@@ -28,6 +28,8 @@ public class SimpleAttackState : EnemyBaseState
     {
         enemy.ReleaseMovementLock("Attack");
 
+        enemy.nextAttackTimer = enemy.enemyStats.attackRate;
+
         if (enemy.attackController != null)
         {
             enemy.attackController.isAttacking = false;

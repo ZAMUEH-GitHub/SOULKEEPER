@@ -52,6 +52,8 @@ public class PlayerAttackController : MonoBehaviour
         attackCollider = GetComponent<Collider2D>();
         animationController = GetComponentInParent<PlayerAnimationController>();
 
+        player = GetComponentInParent<PlayerController>().transform;
+
         if (attackCollider != null)
         {
             attackCollider.enabled = false;

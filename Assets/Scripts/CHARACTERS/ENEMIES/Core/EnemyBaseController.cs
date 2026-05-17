@@ -38,6 +38,7 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
     public Vector2 currentTarget;
     public float enemySpeed;
     public float moveSpeedMultiplier = 1f;
+    [HideInInspector] public float nextAttackTimer;
 
     public EnemyStateMachine stateMachine;
 
@@ -71,6 +72,8 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
     void Update()
     {
         if (!isAlive || isDead) return;
+
+        if (nextAttackTimer > 0) nextAttackTimer -= Time.deltaTime;
 
         stateMachine?.Update();
         currentState = stateMachine?.CurrentStateName;

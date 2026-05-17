@@ -19,13 +19,13 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
 
     private Coroutine takeDamageCoroutine;
     private EnemyBaseController enemyBaseController;
-    private SpriteRenderer enemySprite;
+    private SpriteRenderer[] enemySprites;
     private Rigidbody2D enemyRB;
 
     private void Awake()
     {
         enemyBaseController = GetComponent<EnemyBaseController>();
-        enemySprite = GetComponent<SpriteRenderer>();
+        enemySprites = GetComponentsInChildren<SpriteRenderer>();
         enemyRB = GetComponent<Rigidbody2D>();
 
         enemyHealth = enemyStats.health;
@@ -62,11 +62,19 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
         isTakingDamage = true;
         enemyHealth -= damage;
         nextDamage = damageRate;
-        enemySprite.color = Color.red;
+
+        foreach (SpriteRenderer sr in enemySprites)
+        {
+            sr.color = Color.red;
+        }
 
         yield return new WaitForSeconds(0.25f);
 
-        enemySprite.color = Color.white;
+        foreach (SpriteRenderer sr in enemySprites)
+        {
+            sr.color = Color.white;
+        }
+
         isTakingDamage = false;
 
         if (enemyHealth <= 0)

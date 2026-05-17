@@ -37,7 +37,7 @@ public class ChaseState : EnemyBaseState
         enemy.Flip(enemy.player.position);
 
         float distanceToPlayer = Vector2.Distance(enemy.transform.position, enemy.player.position);
-        if (distanceToPlayer <= enemy.enemyStats.attackRange)
+        if (distanceToPlayer <= enemy.enemyStats.attackRange && enemy.nextAttackTimer <= 0)
         {
             switch (enemy.enemyStats.attackType)
             {
