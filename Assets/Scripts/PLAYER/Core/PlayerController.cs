@@ -28,11 +28,6 @@ public class PlayerController : MonoBehaviour
     [Header("Player Input & Buffers")]
     public bool playerInputActive;
     public bool isAlive;
-    [Space(5)]
-    public float jumpBufferTimer;
-    public float dashBufferTimer;
-    public float attackBufferTimer;
-    public float interactBufferTimer;
 
     #region Cached Variables and Controllers
     public PlayerStateMachine stateMachine;
@@ -57,6 +52,13 @@ public class PlayerController : MonoBehaviour
     private List<IPlayerSubController> subControllers = new();
     [HideInInspector] public Vector2 moveVector;
     [HideInInspector] public bool moveInput;
+
+    [HideInInspector] public Vector3 lastSafePosition;
+
+    [HideInInspector] public float jumpBufferTimer;
+    [HideInInspector] public float dashBufferTimer;
+    [HideInInspector] public float attackBufferTimer;
+    [HideInInspector] public float interactBufferTimer;
     #endregion
 
     #region Unity Lifecycle
