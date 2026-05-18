@@ -31,12 +31,15 @@ MonoBehaviour:
   canJump: 0
   jumpForce: 15
   jumpRate: 5
-  jumpChargeDuration: 1
+  hasJumpCharge: 0
   damage: 2
-  attackType: 0
   attackRate: 3
-  attackRange: 5
+  attackRange: 7
+  attackType: 0
   chargeAttackSpeed: 0
   chargeAttackDuration: 0
+  maxComboSteps: 0
+  comboStepRanges: []
   knockback: 10
   knockbackDuration: 0.25
+  stunDuration: 0

@@ -9,7 +9,7 @@ public class PatrolState : EnemyBaseState
         if (enemy.animController != null)
         {
             enemy.animController.SetMoving(true);
-            enemy.animController.SetWalkSpeed(1f);
+            enemy.animController.SetWalkSpeed(enemy.enemyStats.speed);
         }
     }
 

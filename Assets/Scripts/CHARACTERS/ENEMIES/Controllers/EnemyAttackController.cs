@@ -3,11 +3,33 @@ using UnityEngine;
 public class EnemyAttackController : MonoBehaviour
 {
     private EnemyBaseController enemy;
+    private Collider2D attackCollider;
 
     [Header("Attack Settings")]
     public int enemyDamage;
-    public bool isAttacking;
-    public bool isChargingAttack;
+
+    // Changing these to Properties automates the Physics Collider!
+    [SerializeField] private bool _isAttacking;
+    public bool isAttacking
+    {
+        get { return _isAttacking; }
+        set
+        {
+            _isAttacking = value;
+            UpdateCollider();
+        }
+    }
+
+    [SerializeField] private bool _isChargingAttack;
+    public bool isChargingAttack
+    {
+        get { return _isChargingAttack; }
+        set
+        {
+            _isChargingAttack = value;
+            UpdateCollider();
+        }
+    }
 
     [Header("Obstacle Detection")]
     public LayerMask obstacleLayers;
@@ -20,6 +42,7 @@ public class EnemyAttackController : MonoBehaviour
     private void Awake()
     {
         enemy = GetComponentInParent<EnemyBaseController>();
+        attackCollider = GetComponent<Collider2D>();
 
         if (enemy != null && enemy.enemyStats != null)
         {
@@ -31,11 +54,24 @@ public class EnemyAttackController : MonoBehaviour
         {
             Debug.LogError("[EnemyAttackController] EnemyBaseController or EnemyStatsSO is missing!");
         }
+
+        if (attackCollider != null)
+        {
+            attackCollider.enabled = false;
+        }
+    }
+
+    private void UpdateCollider()
+    {
+        if (attackCollider != null)
+        {
+            attackCollider.enabled = _isAttacking || _isChargingAttack;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isAttacking && !isChargingAttack) return;
+        if (!_isAttacking && !_isChargingAttack) return;
 
         if (((1 << collision.gameObject.layer) & obstacleLayers) != 0)
         {
@@ -43,7 +79,7 @@ public class EnemyAttackController : MonoBehaviour
             return;
         }
 
-        if (isAttacking && collision.CompareTag("Player"))
+        if (_isAttacking && collision.CompareTag("Player"))
         {
             IDamageable damageable = collision.GetComponent<IDamageable>();
             IKnockbackable knockbackable = collision.GetComponent<IKnockbackable>();

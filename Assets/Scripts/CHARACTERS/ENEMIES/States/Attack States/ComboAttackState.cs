@@ -3,6 +3,7 @@ using UnityEngine;
 public class ComboAttackState : EnemyBaseState
 {
     private int comboStep = 1;
+    private float stepTimer = 0f;
 
     public ComboAttackState(EnemyBaseController enemy) : base(enemy) { }
 
@@ -16,6 +17,8 @@ public class ComboAttackState : EnemyBaseState
     public override void Update()
     {
         if (TryEnterDeathState()) return;
+
+        stepTimer += Time.deltaTime;
 
         float direction = Mathf.Sign(enemy.transform.localScale.x);
         enemy.rigidBody.linearVelocity = new Vector2(direction * (enemy.enemyStats.speed * enemy.moveSpeedMultiplier), enemy.rigidBody.linearVelocity.y);
@@ -42,6 +45,8 @@ public class ComboAttackState : EnemyBaseState
 
     private void ExecuteAttack()
     {
+        stepTimer = 0f;
+
         if (enemy.player != null)
         {
             enemy.Flip(enemy.player.position);
@@ -59,8 +64,9 @@ public class ComboAttackState : EnemyBaseState
 
     public void AnimationFinished()
     {
-        float distanceToPlayer = Vector2.Distance(enemy.transform.position, enemy.player.position);
+        if (stepTimer < 0.1f) return;
 
+        float distanceToPlayer = Vector2.Distance(enemy.transform.position, enemy.player.position);
         float requiredRange = enemy.enemyStats.attackRange;
 
         if (enemy.enemyStats.comboStepRanges != null && (comboStep - 1) < enemy.enemyStats.comboStepRanges.Length)

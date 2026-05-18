@@ -1,24 +1,38 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Enemy Settings")]
-    [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private Transform patrolTarget;
+    public enum SpawnerMode { SingleSpawn, SpawnerPoint }
 
-    [Header("Spawn Settings")]
+    [Header("Spawner Mode")]
+    [SerializeField] private SpawnerMode mode = SpawnerMode.SingleSpawn;
+
+    [Header("Single Spawn Settings")]
+    [SerializeField] private GameObject singleEnemyPrefab;
+
+    [Header("Spawner Point Settings")]
+    [SerializeField] private GameObject[] enemyPrefabs;
+    [SerializeField] private Vector2 spawnRateRange = new Vector2(3f, 7f);
+    [SerializeField] private int maxActiveEnemies = 5;
+
+    [Header("General Settings")]
     [SerializeField] private float spawnDistanceToPlayer = 10f;
     [SerializeField] private float despawnDistanceToPlayer = 14f;
     [SerializeField] private float respawnDelay = 3f;
 
     [Header("Debug Info")]
     [SerializeField] private float currentDistanceToPlayer;
+    [SerializeField] private int currentActiveEnemies;
 
-    private GameObject spawnedEnemy;
+    private GameObject spawnedSingleEnemy;
+    private List<GameObject> spawnedPointEnemies = new List<GameObject>();
     private Transform playerTransform;
-    private bool canRespawn = true;
-    private bool enemyDiedPermanently = false;
+
+    private bool canRespawnSingle = true;
+    private bool singleEnemyDiedPermanently = false;
     private float respawnTimer;
+    private float nextSpawnTime;
 
     private void Start()
     {
@@ -26,68 +40,140 @@ public class EnemySpawner : MonoBehaviour
             playerTransform = PlayerController.Instance.transform;
         else
             Debug.LogError("[EnemySpawner] PlayerController Instance not found!");
+
+        SetNextSpawnTime();
     }
 
     private void Update()
     {
-        if (playerTransform == null || enemyDiedPermanently) return;
+        if (playerTransform == null) return;
 
         currentDistanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
-        if (spawnedEnemy != null && currentDistanceToPlayer > despawnDistanceToPlayer)
+        if (mode == SpawnerMode.SingleSpawn)
         {
-            Destroy(spawnedEnemy);
-            spawnedEnemy = null;
-            canRespawn = false;
+            HandleSingleSpawnUpdate();
+        }
+        else if (mode == SpawnerMode.SpawnerPoint)
+        {
+            HandleSpawnerPointUpdate();
+        }
+    }
+
+    private void HandleSingleSpawnUpdate()
+    {
+        if (singleEnemyDiedPermanently) return;
+
+        if (spawnedSingleEnemy != null && currentDistanceToPlayer > despawnDistanceToPlayer)
+        {
+            Destroy(spawnedSingleEnemy);
+            spawnedSingleEnemy = null;
+            canRespawnSingle = false;
             respawnTimer = 0f;
         }
 
-        if (!canRespawn)
+        if (!canRespawnSingle)
         {
             respawnTimer += Time.deltaTime;
             if (respawnTimer >= respawnDelay)
-                canRespawn = true;
+                canRespawnSingle = true;
         }
 
-        if (spawnedEnemy == null && canRespawn && currentDistanceToPlayer <= spawnDistanceToPlayer)
-            SpawnEnemy();
+        if (spawnedSingleEnemy == null && canRespawnSingle && currentDistanceToPlayer <= spawnDistanceToPlayer)
+        {
+            SpawnSingleEnemy();
+        }
     }
 
-    private void SpawnEnemy()
+    private void HandleSpawnerPointUpdate()
     {
-        if (enemyPrefab == null)
+        spawnedPointEnemies.RemoveAll(item => item == null);
+        currentActiveEnemies = spawnedPointEnemies.Count;
+
+        for (int i = spawnedPointEnemies.Count - 1; i >= 0; i--)
         {
-            Debug.LogWarning("[EnemySpawner] No enemy prefab assigned.");
+            if (spawnedPointEnemies[i] != null && Vector2.Distance(spawnedPointEnemies[i].transform.position, playerTransform.position) > despawnDistanceToPlayer)
+            {
+                Destroy(spawnedPointEnemies[i]);
+                spawnedPointEnemies.RemoveAt(i);
+            }
+        }
+
+        if (currentDistanceToPlayer <= spawnDistanceToPlayer && spawnedPointEnemies.Count < maxActiveEnemies)
+        {
+            nextSpawnTime -= Time.deltaTime;
+            if (nextSpawnTime <= 0f)
+            {
+                SpawnRandomEnemy();
+                SetNextSpawnTime();
+            }
+        }
+    }
+
+    private void SpawnSingleEnemy()
+    {
+        if (singleEnemyPrefab == null)
+        {
+            Debug.LogWarning("[EnemySpawner] No single enemy prefab assigned.");
             return;
         }
 
-        spawnedEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
-        var enemyController = spawnedEnemy.GetComponent<EnemyBaseController>();
+        spawnedSingleEnemy = Instantiate(singleEnemyPrefab, transform.position, Quaternion.identity);
+        SetupEnemy(spawnedSingleEnemy, true);
+    }
+
+    private void SpawnRandomEnemy()
+    {
+        if (enemyPrefabs == null || enemyPrefabs.Length == 0)
+        {
+            Debug.LogWarning("[EnemySpawner] No enemy prefabs assigned to array.");
+            return;
+        }
+
+        GameObject prefabToSpawn = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+        GameObject newEnemy = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
+
+        spawnedPointEnemies.Add(newEnemy);
+        SetupEnemy(newEnemy, false);
+    }
+
+    private void SetupEnemy(GameObject enemyObj, bool isSingleSpawn)
+    {
+        var enemyController = enemyObj.GetComponent<EnemyBaseController>();
 
         if (enemyController != null)
         {
-            enemyController.patrolStart = transform.position;
-            enemyController.currentTarget = patrolTarget != null ? patrolTarget.position : transform.position;
-
-            if (patrolTarget != null)
-                enemyController.patrolTarget = patrolTarget;
+            if (isSingleSpawn)
+                enemyController.OnEnemyDied += HandleSingleEnemyDeath;
             else
-                Debug.LogWarning($"[EnemySpawner] No patrol target assigned for {name}");
-
-            enemyController.OnEnemyDied += HandleEnemyDeath;
+                enemyController.OnEnemyDied += HandlePointEnemyDeath;
         }
     }
 
-    private void HandleEnemyDeath(EnemyBaseController enemy)
+    private void HandleSingleEnemyDeath(EnemyBaseController enemy)
     {
-        enemy.OnEnemyDied -= HandleEnemyDeath;
-        if (spawnedEnemy != null)
+        enemy.OnEnemyDied -= HandleSingleEnemyDeath;
+        if (spawnedSingleEnemy != null)
         {
-            Destroy(spawnedEnemy);
-            spawnedEnemy = null;
+            Destroy(spawnedSingleEnemy);
+            spawnedSingleEnemy = null;
         }
 
-        enemyDiedPermanently = true;
+        singleEnemyDiedPermanently = true;
+    }
+
+    private void HandlePointEnemyDeath(EnemyBaseController enemy)
+    {
+        enemy.OnEnemyDied -= HandlePointEnemyDeath;
+        if (spawnedPointEnemies.Contains(enemy.gameObject))
+        {
+            spawnedPointEnemies.Remove(enemy.gameObject);
+        }
+    }
+
+    private void SetNextSpawnTime()
+    {
+        nextSpawnTime = Random.Range(spawnRateRange.x, spawnRateRange.y);
     }
 
 #if UNITY_EDITOR

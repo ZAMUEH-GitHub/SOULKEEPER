@@ -19,7 +19,7 @@ MonoBehaviour:
   speed: 2
   idleDuration: 2
   canRun: 1
-  speedMultiplier: 2
+  speedMultiplier: 1
   patrolRadius: 10
   visionRange: 15
   visionAngle: 90
@@ -34,13 +34,13 @@ MonoBehaviour:
   hasJumpCharge: 1
   damage: 1
   attackRate: 1
-  attackRange: 3
+  attackRange: 2
   attackType: 2
   chargeAttackSpeed: 0
   chargeAttackDuration: 0
   maxComboSteps: 2
   comboStepRanges:
-  - 5
+  - 4
   knockback: 5
   knockbackDuration: 0.25
   stunDuration: 0

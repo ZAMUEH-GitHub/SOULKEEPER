@@ -25,11 +25,11 @@ public class ChaseState : EnemyBaseState
         }
 
         float chaseSpeed = enemy.enemyStats.speed *
-            (enemy.enemyStats.canRun ? enemy.enemyStats.speedMultiplier : 1f);
+                    (enemy.enemyStats.canRun ? enemy.enemyStats.speedMultiplier : 1f);
 
         if (enemy.animController != null)
         {
-            enemy.animController.SetWalkSpeed(chaseSpeed / enemy.enemyStats.speed);
+            enemy.animController.SetWalkSpeed(chaseSpeed);
         }
 
         Vector2 targetPos = new Vector2(enemy.player.position.x, enemy.transform.position.y);
