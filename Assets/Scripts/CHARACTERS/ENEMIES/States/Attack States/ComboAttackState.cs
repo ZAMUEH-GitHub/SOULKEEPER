@@ -2,18 +2,13 @@ using UnityEngine;
 
 public class ComboAttackState : EnemyBaseState
 {
-    private float graceTimer;
     private int comboStep = 1;
-    private bool inGracePeriod = false;
-
-    private float comboGraceDuration = 0.5f;
 
     public ComboAttackState(EnemyBaseController enemy) : base(enemy) { }
 
     public override void Enter()
     {
         enemy.RequestMovementLock("Attack");
-
         comboStep = 1;
         ExecuteAttack();
     }
@@ -24,28 +19,13 @@ public class ComboAttackState : EnemyBaseState
 
         float direction = Mathf.Sign(enemy.transform.localScale.x);
         enemy.rigidBody.linearVelocity = new Vector2(direction * (enemy.enemyStats.speed * enemy.moveSpeedMultiplier), enemy.rigidBody.linearVelocity.y);
-
-        if (inGracePeriod)
-        {
-            graceTimer -= Time.deltaTime;
-
-            float distanceToPlayer = Vector2.Distance(enemy.transform.position, enemy.player.position);
-
-            if (distanceToPlayer <= enemy.enemyStats.attackRange)
-            {
-                comboStep++;
-                ExecuteAttack();
-            }
-            else if (graceTimer <= 0)
-            {
-                EndAttack();
-            }
-        }
     }
 
     public override void Exit()
     {
         enemy.ReleaseMovementLock("Attack");
+
+        enemy.nextAttackTimer = enemy.enemyStats.attackRate;
 
         if (enemy.attackController != null)
         {
@@ -62,8 +42,6 @@ public class ComboAttackState : EnemyBaseState
 
     private void ExecuteAttack()
     {
-        inGracePeriod = false;
-
         if (enemy.player != null)
         {
             enemy.Flip(enemy.player.position);
@@ -81,17 +59,23 @@ public class ComboAttackState : EnemyBaseState
 
     public void AnimationFinished()
     {
-        if (comboStep >= 3)
+        float distanceToPlayer = Vector2.Distance(enemy.transform.position, enemy.player.position);
+
+        float requiredRange = enemy.enemyStats.attackRange;
+
+        if (enemy.enemyStats.comboStepRanges != null && (comboStep - 1) < enemy.enemyStats.comboStepRanges.Length)
         {
-            EndAttack();
+            requiredRange = enemy.enemyStats.comboStepRanges[comboStep - 1];
+        }
+
+        if (comboStep < enemy.enemyStats.maxComboSteps && distanceToPlayer <= requiredRange)
+        {
+            comboStep++;
+            ExecuteAttack();
         }
         else
         {
-            inGracePeriod = true;
-            graceTimer = comboGraceDuration;
-
-            if (enemy.attackController != null)
-                enemy.attackController.isAttacking = false;
+            EndAttack();
         }
     }
 

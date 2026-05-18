@@ -157,9 +157,14 @@ public class EnemyAnimationController : MonoBehaviour
         if (animator != null) animator.SetTrigger("Death");
     }
 
-    public void TriggerStun()
+    public void SetStunned(bool isStunned)
     {
-        if (animator != null) animator.SetTrigger("Stun");
+        if (animator != null) animator.SetBool("IsStunned", isStunned);
+    }
+
+    public void SetImpacting(bool isImpacting)
+    {
+        if (animator != null) animator.SetBool("IsImpacting", isImpacting);
     }
     #endregion
 }

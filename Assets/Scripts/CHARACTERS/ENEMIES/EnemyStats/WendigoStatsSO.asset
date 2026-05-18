@@ -33,10 +33,13 @@ MonoBehaviour:
   jumpRate: 3
   jumpChargeDuration: 1
   damage: 1
-  attackType: 2
   attackRate: 1
-  attackRange: 2.5
+  attackRange: 3
+  attackType: 2
   chargeAttackSpeed: 0
   chargeAttackDuration: 0
+  maxComboSteps: 2
+  comboStepRanges:
+  - 5
   knockback: 5
   knockbackDuration: 0.25

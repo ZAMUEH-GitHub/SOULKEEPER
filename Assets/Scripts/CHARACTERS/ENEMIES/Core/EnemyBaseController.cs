@@ -233,11 +233,19 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
         }
     }
 
-    public void EndStun()
+    public void StartChargeLunge()
     {
-        if (stateMachine.CurrentState is StunnedState stunState)
+        if (stateMachine.CurrentState is ChargeAttackState chargeState)
         {
-            stunState.AnimationFinished();
+            chargeState.StartLunge();
+        }
+    }
+
+    public void ImpactFinished()
+    {
+        if (stateMachine.CurrentState is ChargeAttackState chargeState)
+        {
+            chargeState.ImpactFinished();
         }
     }
     #endregion

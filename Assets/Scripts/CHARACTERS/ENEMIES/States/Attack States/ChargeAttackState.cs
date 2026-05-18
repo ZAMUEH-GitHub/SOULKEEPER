@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class ChargeAttackState : EnemyBaseState
 {
-    private float attackTimer;
+    private float lungeTimer;
+    private bool isLunging;
+    private bool hasImpacted;
 
     public ChargeAttackState(EnemyBaseController enemy) : base(enemy) { }
 
@@ -10,52 +12,78 @@ public class ChargeAttackState : EnemyBaseState
     {
         enemy.RequestMovementLock("Attack");
 
-        enemy.attackController.isChargingAttack = true;
         enemy.attackController.hasHitObstacle = false;
+        enemy.attackController.isChargingAttack = false;
+        enemy.attackController.isAttacking = false;
 
-        if (enemy.animController != null) enemy.animController.SetChargingAttack(true);
-        attackTimer = enemy.enemyStats.chargeAttackDuration;
+        isLunging = false;
+        hasImpacted = false;
+
+        if (enemy.animController != null)
+            enemy.animController.SetChargingAttack(true);
     }
 
     public override void Update()
     {
         if (TryEnterDeathState()) return;
 
-        if (enemy.attackController.hasHitObstacle)
+        float direction = Mathf.Sign(enemy.transform.localScale.x);
+
+        if (hasImpacted)
         {
-            enemy.stateMachine.ChangeState(new StunnedState(enemy));
+            enemy.rigidBody.linearVelocity = new Vector2(0, enemy.rigidBody.linearVelocity.y);
             return;
         }
 
-        float direction = Mathf.Sign(enemy.transform.localScale.x);
-
-        attackTimer -= Time.deltaTime;
-
-        if (attackTimer <= 0 && enemy.attackController.isChargingAttack)
+        if (isLunging)
         {
-            enemy.attackController.isChargingAttack = false;
-            enemy.attackController.isAttacking = true;
-
-            if (enemy.animController != null)
+            if (enemy.attackController.hasHitObstacle)
             {
-                enemy.animController.SetChargingAttack(false);
-                enemy.animController.SetAttacking(true);
+                hasImpacted = true;
+                isLunging = false;
+                enemy.attackController.isAttacking = false;
+
+                enemy.rigidBody.linearVelocity = new Vector2(0, enemy.rigidBody.linearVelocity.y);
+
+                if (enemy.animController != null)
+                {
+                    enemy.animController.SetAttacking(false);
+                    enemy.animController.SetImpacting(true);
+                }
+                return;
             }
 
-            attackTimer = enemy.enemyStats.chargeAttackDuration;
+            lungeTimer -= Time.deltaTime;
+            enemy.rigidBody.linearVelocity = new Vector2(direction * (enemy.enemyStats.chargeAttackSpeed * enemy.moveSpeedMultiplier), enemy.rigidBody.linearVelocity.y);
+
+            if (lungeTimer <= 0)
+            {
+                EndAttack();
+            }
         }
-        else if (attackTimer <= 0 && enemy.attackController.isAttacking)
-        {
-            EndAttack();
-        }
-        else if (enemy.attackController.isChargingAttack)
+        else
         {
             enemy.rigidBody.linearVelocity = new Vector2(direction * (enemy.enemyStats.speed * enemy.moveSpeedMultiplier), enemy.rigidBody.linearVelocity.y);
         }
-        else if (enemy.attackController.isAttacking)
+    }
+
+    public void StartLunge()
+    {
+        isLunging = true;
+        lungeTimer = enemy.enemyStats.chargeAttackDuration;
+
+        enemy.attackController.isAttacking = true;
+
+        if (enemy.animController != null)
         {
-            enemy.rigidBody.linearVelocity = new Vector2(direction * enemy.enemyStats.chargeAttackSpeed, enemy.rigidBody.linearVelocity.y);
+            enemy.animController.SetChargingAttack(false);
+            enemy.animController.SetAttacking(true);
         }
+    }
+
+    public void ImpactFinished()
+    {
+        enemy.stateMachine.ChangeState(new StunnedState(enemy));
     }
 
     public override void Exit()
@@ -73,9 +101,11 @@ public class ChargeAttackState : EnemyBaseState
         {
             enemy.animController.SetAttacking(false);
             enemy.animController.SetChargingAttack(false);
+            enemy.animController.SetImpacting(false);
         }
 
         enemy.moveSpeedMultiplier = 1f;
+        enemy.nextAttackTimer = enemy.enemyStats.attackRate;
     }
 
     private void EndAttack()

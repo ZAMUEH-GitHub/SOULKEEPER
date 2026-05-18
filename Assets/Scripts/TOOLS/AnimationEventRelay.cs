@@ -39,4 +39,16 @@ public class AnimationEventRelay : MonoBehaviour
             enemyController.EndAttack();
         }
     }
+
+    public void StartChargeLunge()
+    {
+        if (enemyController != null)
+            enemyController.StartChargeLunge();
+    }
+
+    public void ImpactFinished()
+    {
+        if (enemyController != null)
+            enemyController.ImpactFinished();
+    }
 }

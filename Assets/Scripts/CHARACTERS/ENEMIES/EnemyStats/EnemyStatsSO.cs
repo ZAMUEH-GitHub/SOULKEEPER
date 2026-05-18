@@ -39,17 +39,22 @@ public class EnemyStatsSO : ScriptableObject
 
     [Header("Attack Stats")]
     public int damage;
-    public EnemyAttackType attackType = EnemyAttackType.Simple;
     [Space(5)]
     public float attackRate;
     public float attackRange;
+    public EnemyAttackType attackType = EnemyAttackType.Simple;
     [Space(5)]
     public float chargeAttackSpeed;
     public float chargeAttackDuration;
+    [Space(5)]
+    public int maxComboSteps;
+    public float[] comboStepRanges;
 
     [Header("Knockback Stats")]
     public float knockback;
     public float knockbackDuration;
+    [Space(5)]
+    public float stunDuration;
 
     public enum EnemyBehaviorType
     {
