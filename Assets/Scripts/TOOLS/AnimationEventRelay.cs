@@ -28,6 +28,12 @@ public class AnimationEventRelay : MonoBehaviour
         }
     }
 
+    public void FinishJumpCharge()
+    {
+        if (enemyController != null)
+            enemyController.FinishJumpCharge();
+    }
+
     public void AttackEnd()
     {
         if (attackController != null)

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class AirborneState : EnemyBaseState
 {
-    private float chargeTimer;
     private bool isCharging;
     private bool hasJumped;
 
@@ -10,12 +9,11 @@ public class AirborneState : EnemyBaseState
 
     public override void Enter()
     {
-        isCharging = enemy.enemyStats.jumpChargeDuration > 0;
+        isCharging = enemy.enemyStats.hasJumpCharge;
         hasJumped = false;
 
         if (isCharging)
         {
-            chargeTimer = enemy.enemyStats.jumpChargeDuration;
             enemy.Stop();
             enemy.RequestMovementLock("JumpCharge");
 
@@ -32,24 +30,17 @@ public class AirborneState : EnemyBaseState
     {
         if (TryEnterDeathState()) return;
 
-        if (isCharging)
-        {
-            chargeTimer -= Time.deltaTime;
-            if (chargeTimer <= 0)
-            {
-                isCharging = false;
-                ExecuteJump();
-            }
-            return;
-        }
+        if (isCharging) return;
 
         if (hasJumped)
         {
-
             if (enemy.rigidBody.linearVelocity.y <= 0)
             {
                 if (enemy.animController != null)
+                {
+                    enemy.animController.SetJumping(false);
                     enemy.animController.SetFalling(true);
+                }
             }
 
             if (enemy.rigidBody.linearVelocity.y <= 0 && enemy.jumpController != null && enemy.jumpController.isGrounded)
@@ -59,8 +50,9 @@ public class AirborneState : EnemyBaseState
         }
     }
 
-    private void ExecuteJump()
+    public void ExecuteJump()
     {
+        isCharging = false;
         enemy.ReleaseMovementLock("JumpCharge");
 
         if (enemy.animController != null)

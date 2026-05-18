@@ -221,6 +221,14 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
     #endregion
 
     #region Animation Events
+    public void FinishJumpCharge()
+    {
+        if (stateMachine.CurrentState is AirborneState airborneState)
+        {
+            airborneState.ExecuteJump();
+        }
+    }
+
     public void EndAttack()
     {
         if (stateMachine.CurrentState is SimpleAttackState simpleState)

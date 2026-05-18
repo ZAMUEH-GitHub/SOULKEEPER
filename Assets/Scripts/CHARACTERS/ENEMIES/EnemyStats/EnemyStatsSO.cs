@@ -35,7 +35,7 @@ public class EnemyStatsSO : ScriptableObject
     public bool canJump;
     public float jumpForce;
     public float jumpRate;
-    public float jumpChargeDuration;
+    public bool hasJumpCharge;
 
     [Header("Attack Stats")]
     public int damage;
