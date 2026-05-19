@@ -12,6 +12,13 @@ public class SimpleAttackState : EnemyBaseState
         if (enemy.animController != null)
         {
             enemy.animController.SetAttacking(true);
+
+            if (enemy.animController.animator != null)
+            {
+                int randomAttackIndex = Random.Range(0, enemy.enemyStats.simpleAttackVariations);
+                enemy.animController.animator.SetInteger("AttackIndex", randomAttackIndex);
+            }
+
             enemy.animController.TriggerEnemyAttack();
         }
     }

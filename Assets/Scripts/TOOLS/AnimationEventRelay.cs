@@ -7,7 +7,7 @@ public class AnimationEventRelay : MonoBehaviour
     private EnemyBaseController enemyController;
 
     [HideInInspector] public float attackProgress;
-    [HideInInspector] public float speedMultiplier;
+    [HideInInspector] public float speedMultiplier = 1f;
 
     private void Start()
     {

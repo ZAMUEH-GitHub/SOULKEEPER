@@ -118,6 +118,9 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
         if (!CanMove) return;
 
         float speed = (speedOverride > 0) ? speedOverride : enemyStats.speed;
+
+        speed *= moveSpeedMultiplier;
+
         float direction = Mathf.Sign(target.x - transform.position.x);
         Vector2 newVelocity = new Vector2(direction * speed, rigidBody.linearVelocity.y);
         rigidBody.linearVelocity = newVelocity;

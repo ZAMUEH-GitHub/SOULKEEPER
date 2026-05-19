@@ -8,14 +8,25 @@ public class BulbController : MonoBehaviour
     [SerializeField] private float bulbAttackMultiplier = 1.5f;
 
     [Header("Effects")]
-    public ParticleSystem bulbHitParticles;
+    [SerializeField] private ParticleSystem bulbHitParticles;
+    [SerializeField] private Transform customParticlesTransform;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player Attack Collider"))
         {
             if (bulbHitParticles != null)
-                Instantiate(bulbHitParticles, transform.position, Quaternion.identity);
+            {
+                if (customParticlesTransform != null)
+                {
+                    ParticleSystem spawnedParticles = Instantiate(bulbHitParticles, customParticlesTransform.position, Quaternion.identity);
+                    spawnedParticles.transform.localScale = customParticlesTransform.localScale;
+                }
+                else
+                {
+                    Instantiate(bulbHitParticles, transform.position, Quaternion.identity);
+                }
+            }
 
             PlayerController player = collision.GetComponentInParent<PlayerController>();
             if (player != null)

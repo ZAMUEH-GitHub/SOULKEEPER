@@ -43,6 +43,7 @@ public class EnemyStatsSO : ScriptableObject
     public float attackRate;
     public float attackRange;
     public EnemyAttackType attackType = EnemyAttackType.Simple;
+    public int simpleAttackVariations = 1;
     [Space(5)]
     public float chargeAttackSpeed;
     public float chargeAttackDuration;
