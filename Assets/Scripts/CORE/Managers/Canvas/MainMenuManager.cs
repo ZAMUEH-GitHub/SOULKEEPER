@@ -11,6 +11,9 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] private PanelType fadePanel = PanelType.BlackScreen;
     [field: SerializeField] private PanelType currentPanel;
 
+    [Header("Transition Settings")]
+    [SerializeField] private float transitionDelay = 0.15f;
+
     [Header("New Game Defaults")]
     [SerializeField] private SceneField newGameScene;
     [SerializeField] private Vector2 defaultSpawnPosition;
@@ -20,6 +23,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] private GameObject gamepadControlsImage;
 
     private static bool hasInitializedOnce = false;
+    private bool isTransitioning = false;
 
     private CanvasManager canvasManager;
     private GameSceneManager gameSceneManager;
@@ -114,7 +118,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     public void GoToPanel(PanelType newPanel)
     {
-        if (newPanel == currentPanel) return;
+        if (isTransitioning || newPanel == currentPanel) return;
+
         StartCoroutine(CrossFadePanels(currentPanel, newPanel));
         currentPanel = newPanel;
     }
@@ -122,9 +127,17 @@ public class MainMenuManager : Singleton<MainMenuManager>
     private IEnumerator CrossFadePanels(PanelType fromPanel, PanelType toPanel)
     {
         if (canvasManager == null) yield break;
+
+        isTransitioning = true;
+
+        yield return new WaitForSecondsRealtime(transitionDelay);
+
         canvasManager.FadeOut(fromPanel);
         canvasManager.FadeIn(toPanel);
-        yield return new WaitForSeconds(canvasManager.GetFadeDuration(toPanel));
+
+        yield return new WaitForSecondsRealtime(canvasManager.GetFadeDuration(toPanel));
+
+        isTransitioning = false;
     }
     #endregion
 

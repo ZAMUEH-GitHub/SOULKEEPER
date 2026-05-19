@@ -71,8 +71,13 @@ public class PlayerController : MonoBehaviour
 
         var session = SessionManager.Instance;
 
-        if (session != null && session.HasActiveSession)
+        if (session != null)
         {
+            if (!session.HasActiveSession && playerBaseStats != null)
+            {
+                session.StartSession(playerBaseStats);
+            }
+
             playerRuntimeStats = session.RuntimeStats;
         }
         else
@@ -80,7 +85,7 @@ public class PlayerController : MonoBehaviour
             if (playerBaseStats != null)
             {
                 playerRuntimeStats = playerBaseStats.Clone();
-                Debug.LogWarning("[PlayerController] No active session found! Using a cloned fallback base stats.");
+                Debug.LogWarning("[PlayerController] SessionManager is entirely missing! Using a cloned fallback base stats.");
             }
             else
             {

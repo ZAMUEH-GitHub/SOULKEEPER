@@ -34,6 +34,14 @@ public class VoidTriggerZone : MonoBehaviour
 
         isProcessingVoid = true;
 
+        if (voidBehavior == VoidType.BackToGround && player.damageController != null && player.damageController.playerHealth <= voidDamage)
+        {
+            player.stateMachine.ChangeState(player.deathState);
+            player.damageController.TakeDamage(voidDamage, Vector2.up);
+            isProcessingVoid = false;
+            yield break;
+        }
+
         if (voidBehavior == VoidType.InstantDeath)
         {
             player.stateMachine.ChangeState(player.deathState);
