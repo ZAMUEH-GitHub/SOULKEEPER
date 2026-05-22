@@ -88,7 +88,7 @@ public class UIInputHandler : MonoBehaviour
         {
             mouseIdleTimer += Time.unscaledDeltaTime;
             if (mouseIdleTimer > mouseIdleThreshold)
-                mouseActive = false; // Allows keyboard to regain control
+                mouseActive = false;
         }
 
         lastMousePos = mousePos;
@@ -105,7 +105,6 @@ public class UIInputHandler : MonoBehaviour
 
     private void OnNavigatePressed(InputAction.CallbackContext ctx)
     {
-        // When keyboard/gamepad navigation is detected, restore focus if mouse not active
         if (!mouseActive)
         {
             if (EventSystem.current.currentSelectedGameObject == null)
@@ -116,7 +115,6 @@ public class UIInputHandler : MonoBehaviour
                 }
                 else
                 {
-                    // Try to find a suitable selectable element to focus again
                     foreach (var panel in canvasManager.GetPanelSettings().Values)
                     {
                         if (panel.panel != null && panel.panel.alpha > 0.95f && panel.firstSelected != null)

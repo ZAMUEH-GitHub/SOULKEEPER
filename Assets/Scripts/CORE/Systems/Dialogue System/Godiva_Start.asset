@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e2d1b3fc6aa734ea882d0a4ec1d085, type: 3}
+  m_Name: Godiva_Start
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueSequenceSO
+  nodes:
+  - speakerName: Unkown
+    dialogueText: Hey there little one...
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 1
+    unlockFlag: 
+  - speakerName: You
+    dialogueText: Where am I? What is this place?
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 2
+    unlockFlag: 
+  - speakerName: Unknown
+    dialogueText: Im sure you have a lot of questions, but right now we gotta move
+      before they find you too... They felt your awakening...
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 3
+    unlockFlag: 
+  - speakerName: You
+    dialogueText: Who are you? What is your name?
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 4
+    unlockFlag: 
+  - speakerName: Godiva
+    dialogueText: My name is Godiva, we will have time for a proper introduction
+      later... LETS GO
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: -1
+    unlockFlag: 
+  - speakerName: Godiva
+    dialogueText: My name is Godiva, we will have time for a proper introduction
+      later... LETS GO
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: -1
+    unlockFlag: 

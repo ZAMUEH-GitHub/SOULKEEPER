@@ -1,68 +1,95 @@
 using UnityEngine;
 
-public class ComboAttackState : IMovementState
+public class ComboAttackState : EnemyBaseState
 {
-    private readonly EnemyBaseController enemy;
-    private int currentStep;
-    private bool cancelCombo;
+    private int comboStep = 1;
+    private float stepTimer = 0f;
 
-    public ComboAttackState(EnemyBaseController enemy)
+    public ComboAttackState(EnemyBaseController enemy) : base(enemy) { }
+
+    public override void Enter()
     {
-        this.enemy = enemy;
+        enemy.RequestMovementLock("Attack");
+        comboStep = 1;
+        ExecuteAttack();
     }
 
-    public void Enter()
+    public override void Update()
     {
-        enemy.Stop();
-        enemy.PauseVertical(true);
+        if (TryEnterDeathState()) return;
 
-        enemy.ResetVerticalStateIfGrounded();
+        stepTimer += Time.deltaTime;
 
-        enemy.attackController.isAttacking = true;
-        currentStep = 1;
-        cancelCombo = false;
-
-        enemy.animator.SetTrigger("EnemyAttack1");
+        float direction = Mathf.Sign(enemy.transform.localScale.x);
+        enemy.rigidBody.linearVelocity = new Vector2(direction * (enemy.enemyStats.speed * enemy.moveSpeedMultiplier), enemy.rigidBody.linearVelocity.y);
     }
 
-    public void Update()
+    public override void Exit()
     {
-        if (!enemy.targetPlayer ||  Vector2.Distance(enemy.transform.position, enemy.player.position) > enemy.enemyStats.attackRange)
+        enemy.ReleaseMovementLock("Attack");
+
+        enemy.nextAttackTimer = enemy.enemyStats.attackRate;
+
+        if (enemy.attackController != null)
         {
-            cancelCombo = true;
+            enemy.attackController.isAttacking = false;
+        }
+
+        if (enemy.animController != null)
+        {
+            enemy.animController.SetAttacking(false);
+        }
+
+        enemy.moveSpeedMultiplier = 1f;
+    }
+
+    private void ExecuteAttack()
+    {
+        stepTimer = 0f;
+
+        if (enemy.player != null)
+        {
+            enemy.Flip(enemy.player.position);
+        }
+
+        if (enemy.attackController != null)
+            enemy.attackController.isAttacking = true;
+
+        if (enemy.animController != null)
+        {
+            enemy.animController.SetAttacking(true);
+            enemy.animController.TriggerComboAttack(comboStep);
         }
     }
 
-    public void Exit()
+    public void AnimationFinished()
     {
-        enemy.attackController.isAttacking = false;
+        if (stepTimer < 0.1f) return;
 
-        enemy.PauseVertical(false);
-    }
+        float distanceToPlayer = Vector2.Distance(enemy.transform.position, enemy.player.position);
+        float requiredRange = enemy.enemyStats.attackRange;
 
-    public void NextComboStep()
-    {
-        if (cancelCombo)
+        if (enemy.enemyStats.comboStepRanges != null && (comboStep - 1) < enemy.enemyStats.comboStepRanges.Length)
         {
-            enemy.ChangeMovementState(enemy.targetPlayer ? new ChaseState(enemy) : new PatrolState(enemy));
-            return;
+            requiredRange = enemy.enemyStats.comboStepRanges[comboStep - 1];
         }
 
-        currentStep++;
-
-        if (currentStep == 2)
+        if (comboStep < enemy.enemyStats.maxComboSteps && distanceToPlayer <= requiredRange)
         {
-            enemy.Stop();
-            enemy.animator.SetTrigger("EnemyAttack2");
-        }
-        else if (currentStep == 3)
-        {
-            enemy.Stop();
-            enemy.animator.SetTrigger("EnemyAttack3");
+            comboStep++;
+            ExecuteAttack();
         }
         else
         {
-            enemy.ChangeMovementState(enemy.targetPlayer ? new ChaseState(enemy) : new PatrolState(enemy));
+            EndAttack();
         }
+    }
+
+    private void EndAttack()
+    {
+        if (enemy.targetPlayer)
+            enemy.stateMachine.ChangeState(new ChaseState(enemy));
+        else
+            enemy.stateMachine.ChangeState(new PatrolState(enemy));
     }
 }

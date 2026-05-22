@@ -12,10 +12,11 @@ public class CheckpointManager : Singleton<CheckpointManager>
     [Header("Fallback Settings")]
     [SerializeField] private string defaultFallbackScene = "TheCathedralOfTheLost";
     [SerializeField] private string defaultFallbackCheckpoint = "Cathedral_Center";
-    [SerializeField] private Vector2 defaultFallbackPosition = new Vector2(0f, 0f);
+    [SerializeField] private Vector3 defaultFallbackPosition;
 
     private static bool isFallbackActive = false;
 
+    #region Unity Lifecycle
     private new void Awake()
     {
         base.Awake();
@@ -35,21 +36,16 @@ public class CheckpointManager : Singleton<CheckpointManager>
         }
     }
 
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += TryRestoreCheckpointOnSceneLoad;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= TryRestoreCheckpointOnSceneLoad;
-    }
+    private void OnEnable() => SceneManager.sceneLoaded += TryRestoreCheckpointOnSceneLoad;
+    private void OnDisable() => SceneManager.sceneLoaded -= TryRestoreCheckpointOnSceneLoad;
 
     private void Start()
     {
         StartCoroutine(DelayedCheckpointRestore());
     }
+    #endregion
 
+    #region Checkpoint API
     private IEnumerator DelayedCheckpointRestore()
     {
         yield return new WaitForSeconds(0.5f);
@@ -111,38 +107,25 @@ public class CheckpointManager : Singleton<CheckpointManager>
                 return cp.transform.position;
         }
 
-        if (SaveSystem.LastLoadedPlayerPosition != Vector2.zero || SaveSystem.HasValidPlayerPosition)
+        if ((Vector3)SaveSystem.LastLoadedPlayerPosition != Vector3.zero || SaveSystem.HasValidPlayerPosition)
         {
-            Debug.LogWarning($"[CheckpointManager] Fallback to last saved player position {SaveSystem.LastLoadedPlayerPosition}.");
             return SaveSystem.LastLoadedPlayerPosition;
         }
 
         if (!isFallbackActive)
         {
             isFallbackActive = true;
-            Debug.LogWarning($"[CheckpointManager] Could not find active checkpoint '{ActiveCheckpointID}' in this scene. Performing direct safe zone load.");
-
             var sceneManager = Object.FindFirstObjectByType<GameSceneManager>();
             if (sceneManager != null)
             {
-                Debug.Log($"[CheckpointManager] Executing DirectLoad to '{defaultFallbackScene}' at '{defaultFallbackCheckpoint}'.");
                 sceneManager.LoadSceneDirect(defaultFallbackScene, defaultFallbackPosition);
                 isFallbackActive = false;
                 return defaultFallbackPosition;
             }
-
             isFallbackActive = false;
         }
 
-        var fallbackSCM = Object.FindFirstObjectByType<SceneCheckpointManager>();
-        var fallbackCP = fallbackSCM?.GetCheckpoint(defaultFallbackCheckpoint);
-        if (fallbackCP != null)
-        {
-            Debug.Log($"[CheckpointManager] Fallback checkpoint '{defaultFallbackCheckpoint}' found in safe zone.");
-            return fallbackCP.transform.position;
-        }
-
-        Debug.LogWarning("[CheckpointManager] Default fallback checkpoint not found. Spawning at default manual position.");
         return defaultFallbackPosition;
     }
+    #endregion
 }

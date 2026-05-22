@@ -7,6 +7,7 @@ public class PlayerRoot : Singleton<PlayerRoot>
     [Header("Root's Game Objects")]
     public GameObject _Player;
     public GameObject _Camera;
+    public GameObject _Godiva;
 
     private PlayerController _PlayerController;
 
@@ -63,5 +64,14 @@ public class PlayerRoot : Singleton<PlayerRoot>
         _Player.SetActive(true);
     }
 
+    public void DisableGodivaObject()
+    {
+        if (_Godiva != null) _Godiva.SetActive(false);
+    }
+
+    public void EnableGodivaObject()
+    {
+        if (_Godiva != null) _Godiva.SetActive(true);
+    }
     #endregion
 }

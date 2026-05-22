@@ -12,10 +12,12 @@ public class UIAudioHandler : MonoBehaviour
     [SerializeField] private Toggle muteToggle;
 
     private AudioManager audioManager;
+    private SettingsManager settingsManager;
 
     private void Awake()
     {
         audioManager = AudioManager.Instance;
+        settingsManager = SettingsManager.Instance;
 
         if (audioManager == null)
         {
@@ -25,10 +27,13 @@ public class UIAudioHandler : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void OnEnable()
     {
         InitializeUI();
+    }
 
+    private void Start()
+    {
         if (masterSlider != null) masterSlider.onValueChanged.AddListener(OnMasterChanged);
         if (musicSlider != null) musicSlider.onValueChanged.AddListener(OnMusicChanged);
         if (sfxSlider != null) sfxSlider.onValueChanged.AddListener(OnSfxChanged);
@@ -45,16 +50,43 @@ public class UIAudioHandler : MonoBehaviour
 
     private void InitializeUI()
     {
-        if (audioManager == null) return;
+        audioManager ??= AudioManager.Instance;
+        settingsManager ??= SettingsManager.Instance;
 
-        if (masterSlider != null) masterSlider.value = audioManager.MasterVolume;
-        if (musicSlider != null) musicSlider.value = audioManager.MusicVolume;
-        if (sfxSlider != null) sfxSlider.value = audioManager.SfxVolume;
-        if (muteToggle != null) muteToggle.isOn = audioManager.IsMuted;
+        if (audioManager == null || settingsManager == null) return;
+
+        if (masterSlider != null) masterSlider.SetValueWithoutNotify(settingsManager.CurrentSettings.masterVolume);
+        if (musicSlider != null) musicSlider.SetValueWithoutNotify(settingsManager.CurrentSettings.musicVolume);
+        if (sfxSlider != null) sfxSlider.SetValueWithoutNotify(settingsManager.CurrentSettings.sfxVolume);
+        if (muteToggle != null) muteToggle.SetIsOnWithoutNotify(settingsManager.CurrentSettings.isMuted);
     }
 
-    private void OnMasterChanged(float v) => audioManager?.SetMasterVolume(v);
-    private void OnMusicChanged(float v) => audioManager?.SetMusicVolume(v);
-    private void OnSfxChanged(float v) => audioManager?.SetSfxVolume(v);
-    private void OnMuteToggled(bool on) => audioManager?.ToggleMute(on);
+    private void OnMasterChanged(float v)
+    {
+        audioManager?.SetMasterVolume(v);
+        if (settingsManager != null) settingsManager.CurrentSettings.masterVolume = v;
+    }
+
+    private void OnMusicChanged(float v)
+    {
+        audioManager?.SetMusicVolume(v);
+        if (settingsManager != null) settingsManager.CurrentSettings.musicVolume = v;
+    }
+
+    private void OnSfxChanged(float v)
+    {
+        audioManager?.SetSfxVolume(v);
+        if (settingsManager != null) settingsManager.CurrentSettings.sfxVolume = v;
+    }
+
+    private void OnMuteToggled(bool on)
+    {
+        audioManager?.ToggleMute(on);
+        if (settingsManager != null) settingsManager.CurrentSettings.isMuted = on;
+    }
+
+    public void SaveAudioSettings()
+    {
+        settingsManager?.SaveSettings();
+    }
 }

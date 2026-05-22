@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Collider2D))]
 public class ChestController : MonoBehaviour, IInteractable
 {
+    [SerializeField] private string chestFlagID;
+
     [Header("Interaction UI")]
     [SerializeField] private TextMeshPro interactTextMesh;
     [SerializeField] private InputActionReference interactActionRef;
@@ -18,6 +20,19 @@ public class ChestController : MonoBehaviour, IInteractable
     private Coroutine fadeRoutine;
 
     #region Unity Lifecycle
+    private void Start()
+    {
+        // If the SessionManager knows this chest's ID is unlocked, keep it open
+        if (SessionManager.Instance != null && !string.IsNullOrEmpty(chestFlagID))
+        {
+            if (SessionManager.Instance.UnlockedFlags.Contains(chestFlagID))
+            {
+                opened = true;
+                // Note: If you have an Animator or SpriteRenderer, you would set it to the "Open" visual state here!
+            }
+        }
+    }
+
     private void Awake()
     {
         SetTextInstantAlpha(interactTextMesh, 0f);
@@ -49,6 +64,11 @@ public class ChestController : MonoBehaviour, IInteractable
         opened = true;
         lastInteractionTime = Time.time;
         HideInteractText();
+
+        if (SessionManager.Instance != null && !string.IsNullOrEmpty(chestFlagID))
+        {
+            SessionManager.Instance.UnlockProgressFlag(chestFlagID);
+        }
     }
 
     private bool CanInteract() =>

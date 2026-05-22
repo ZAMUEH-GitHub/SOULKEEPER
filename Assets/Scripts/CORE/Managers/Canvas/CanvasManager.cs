@@ -14,7 +14,7 @@ public enum PanelType
     HUD, PauseMenu, PauseSettings, PauseAudioSettings, PauseKeybindings,
 
     [Header("Global Panels")]
-    BlackScreen, ConfirmationPanel, ToastPanel, AreaTitlePanel
+    BlackScreen, LoadingScreen, ConfirmationPanel, ToastPanel, AreaTitlePanel, DialoguePanel, LorePanel
 }
 
 [Serializable]
@@ -78,13 +78,14 @@ public class CanvasManager : Singleton<CanvasManager>
     private void HandleGameStateChanged(GameState state)
     {
         bool isMainMenu = state == GameState.MainMenu;
+        bool isGameplay = state == GameState.Gameplay;
 
         ToggleCanvasInteractivity(_MainMenuCanvas, isMainMenu);
-        ToggleCanvasInteractivity(_GameplayCanvas, !isMainMenu);
+        ToggleCanvasInteractivity(_GameplayCanvas, isGameplay);
         ToggleCanvasInteractivity(_GlobalCanvas, true);
 
         if (isMainMenu) FadeIn(PanelType.MainMenu);
-        else FadeIn(PanelType.HUD);
+        else if (isGameplay) FadeIn(PanelType.HUD);
     }
     #endregion
 
@@ -264,7 +265,8 @@ public class CanvasManager : Singleton<CanvasManager>
             bool isGlobalPanel = panel.panelType == PanelType.ConfirmationPanel
                               || panel.panelType == PanelType.ToastPanel
                               || panel.panelType == PanelType.AreaTitlePanel
-                              || panel.panelType == PanelType.BlackScreen;
+                              || panel.panelType == PanelType.BlackScreen
+                              || panel.panelType == PanelType.LoadingScreen;
 
             if (isGlobalPanel)
                 continue;

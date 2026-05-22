@@ -10,7 +10,11 @@ public class AltarController : MonoBehaviour, IInteractable
 {
     [Header("Altar Setup")]
     public AltarStatsSO altarSO;
+    public PlayerStatsSO playerStats;
+    [SerializeField] private string requiredItemFlag;
+    [SerializeField] private bool startsActivated = false;
     [SerializeField] private int currentStageIndex = 0;
+    [SerializeField] private bool isActivated = false;
     [SerializeField] private bool completed = false;
 
     [Header("Interaction Settings")]
@@ -26,8 +30,6 @@ public class AltarController : MonoBehaviour, IInteractable
 
     private readonly Dictionary<TextMeshPro, Coroutine> fadeRoutines = new();
 
-    public static event Action<PowerUpDefinition> OnPowerUpUnlocked;
-
     public bool IsUsed => completed;
     public bool IsCompleted => completed;
     public int CurrentStage => currentStageIndex;
@@ -41,6 +43,8 @@ public class AltarController : MonoBehaviour, IInteractable
             Debug.LogWarning($"[AltarController] Missing AltarStatsSO on {name}");
             completed = true;
         }
+
+        if (startsActivated) isActivated = true;
 
         HideAllTextsInstant();
     }
@@ -82,11 +86,48 @@ public class AltarController : MonoBehaviour, IInteractable
         if (!CanInteract()) return;
         if (completed || altarSO == null) return;
 
-        UnlockNextPowerUpStage();
+        if (!isActivated)
+        {
+            if (SessionManager.Instance != null && SessionManager.Instance.UnlockedFlags.Contains(requiredItemFlag))
+            {
+                isActivated = true;
+                lastInteractionTime = Time.time;
+                UpdateStatusText();
+                if (interactTextMesh) interactTextMesh.text = GetInteractionText();
 
-        lastInteractionTime = Time.time;
-        HideInteractText();
-        UpdateStatusText();
+                Debug.Log($"[AltarController] {altarSO.displayName} activated!");
+                ToastPanelManager.Instance?.ShowToast($"{altarSO.displayName} Activated");
+            }
+            else
+            {
+                Debug.Log($"[AltarController] You need the map object ({requiredItemFlag}) to activate this altar.");
+                ToastPanelManager.Instance?.ShowToast("Relic Needed");
+            }
+            return;
+        }
+
+        var def = altarSO.GetStage(currentStageIndex);
+        if (def == null) return;
+
+        if (playerStats != null && playerStats.score >= def.cost)
+        {
+            playerStats.score -= def.cost;
+            UnlockNextPowerUpStage();
+            lastInteractionTime = Time.time;
+
+            if (!completed && interactTextMesh)
+                interactTextMesh.text = GetInteractionText();
+            else
+                HideInteractText();
+
+            UpdateStatusText();
+            ToastPanelManager.Instance?.ShowToast("Upgrade Purchased");
+        }
+        else
+        {
+            Debug.Log($"[AltarController] Not enough score! Need {def.cost}.");
+            ToastPanelManager.Instance?.ShowToast($"Insufficient Score");
+        }
     }
 
     private bool CanInteract() => !completed && Time.time - lastInteractionTime >= interactionCooldown;
@@ -100,7 +141,7 @@ public class AltarController : MonoBehaviour, IInteractable
             return;
         }
 
-        OnPowerUpUnlocked?.Invoke(def);
+        GameEvents.TriggerPowerUpUnlocked(def);
 
         currentStageIndex++;
 
@@ -129,7 +170,7 @@ public class AltarController : MonoBehaviour, IInteractable
 
         if (statusTextMesh)
         {
-            statusTextMesh.text = completed ? "Completed" : $"Stage {currentStageIndex + 1}/{altarSO.StageCount}";
+            UpdateStatusText();
             StartFade(statusTextMesh, 1f, false);
         }
 
@@ -214,7 +255,22 @@ public class AltarController : MonoBehaviour, IInteractable
     private void UpdateStatusText()
     {
         if (statusTextMesh != null)
-            statusTextMesh.text = completed ? "Completed" : $"Stage {currentStageIndex + 1}/{altarSO.StageCount}";
+        {
+            if (!isActivated)
+            {
+                statusTextMesh.text = "";
+            }
+            else if (completed)
+            {
+                statusTextMesh.text = "Completed";
+            }
+            else
+            {
+                var def = altarSO.GetStage(currentStageIndex);
+                int cost = def != null ? def.cost : 0;
+                statusTextMesh.text = $"{currentStageIndex}/{altarSO.StageCount} (Cost: {cost})";
+            }
+        }
     }
 
     private string GetInteractionKeyName()
@@ -226,12 +282,17 @@ public class AltarController : MonoBehaviour, IInteractable
         catch { return "(E)"; }
     }
 
-    public string GetInteractionText() => $"{GetInteractionKeyName()} Interact";
+    public string GetInteractionText()
+    {
+        if (!isActivated) return $"{GetInteractionKeyName()} Activate Altar";
+        return $"{GetInteractionKeyName()} Buy Upgrade";
+    }
 
     public AltarSaveData ToSaveData() => new AltarSaveData(
         altarSO ? altarSO.displayName : "UnknownAltar",
         completed,
-        currentStageIndex
+        currentStageIndex,
+        isActivated
     );
 
     public void FromSaveData(AltarSaveData data)
@@ -240,6 +301,7 @@ public class AltarController : MonoBehaviour, IInteractable
 
         completed = data.completed;
         currentStageIndex = data.currentStage;
+        isActivated = data.isActivated;
         HideAllTextsInstant();
     }
     #endregion

@@ -1,70 +1,60 @@
 using UnityEngine;
-using UnityEngine.Splines;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    #region Player Script & Component References
-
     [SerializeField] private Animator playerAnimator;
-    [SerializeField] private Rigidbody2D playerRigidBody;
 
-    private PlayerMovementController movementController;
+    private PlayerAttackController attackController;
     private PlayerJumpController jumpController;
     private PlayerWallController wallController;
-    private PlayerDashController dashController;
-    #endregion
 
     private void Start()
     {
-        #region Player Script & Component Subscriptions
+        playerAnimator = GetComponentInChildren<Animator>();
 
-        playerRigidBody = GetComponent<Rigidbody2D>();
-        playerAnimator = GetComponent<Animator>();
+        attackController = PlayerController.Instance.attackController;
+        jumpController = PlayerController.Instance.jumpController;
+        wallController = PlayerController.Instance.wallController;
 
-        movementController = GetComponent<PlayerMovementController>();
-        jumpController = GetComponent<PlayerJumpController>();
-        wallController = GetComponent<PlayerWallController>();
-        dashController = GetComponent<PlayerDashController>();
+        if (jumpController != null)
+            jumpController.OnJumpPerformed += HandleJumpAnimation;
 
-        #endregion
+        if (attackController != null)
+        {
+            attackController.OnAttackTriggered += HandleAttackAnimation;
+            attackController.OnBulbBounced += HandleJumpAnimation;
+        }
+
+        if (wallController != null)
+            wallController.OnWallJumpStateChanged += HandleWallJumpAnimation;
     }
 
-    private void Update()
+    private void OnDestroy()
     {
-        PlayerAnimation();
+        if (jumpController != null)
+            jumpController.OnJumpPerformed -= HandleJumpAnimation;
+
+        if (attackController != null)
+        {
+            attackController.OnAttackTriggered -= HandleAttackAnimation;
+            attackController.OnBulbBounced -= HandleJumpAnimation;
+        }
+
+        if (wallController != null)
+            wallController.OnWallJumpStateChanged -= HandleWallJumpAnimation;
     }
 
-    private void PlayerAnimation()
+    public void SetBool(string paramName, bool value)
     {
-        if (movementController.playerOrientation.x != 0 && jumpController.isGrounded)
-        {
-            playerAnimator.SetBool("isMoving", true);
-            playerAnimator.SetBool("isWallSliding", false);
-        }
-        else { playerAnimator.SetBool("isMoving", false); }
+        if (playerAnimator != null) playerAnimator.SetBool(paramName, value);
+    }
 
-        if (!jumpController.isGrounded && playerRigidBody.linearVelocityY < -1 && !wallController.IsWallSliding)
-        {
-            playerAnimator.SetBool("isFalling", true);
-            playerAnimator.SetBool("isWallSliding", false);
-        }
-        else { playerAnimator.SetBool("isFalling", false); }
+    private void HandleJumpAnimation() => playerAnimator.SetTrigger("PlayerJump");
+    private void HandleAttackAnimation(string triggerName) => playerAnimator.SetTrigger(triggerName);
+    private void HandleWallJumpAnimation(bool isWallJumping) => playerAnimator.SetBool("isWallJumping", isWallJumping);
 
-        if (dashController.isDashing)
-        {
-            playerAnimator.SetBool("isDashing", true);
-        }
-        else { playerAnimator.SetBool("isDashing", false); }
-
-        if (wallController.IsWallSliding)
-        {
-            playerAnimator.SetBool("isWallSliding", true);
-            playerAnimator.SetBool("PlayerWallJump", false);
-        }
-        else if (wallController.IsWallJumping)
-        {
-            playerAnimator.SetBool("PlayerWallJump", true);
-            playerAnimator.SetBool("isWallSliding", false);
-        }
+    public void OnAttackAnimationEnd()
+    {
+        if (attackController != null) attackController.EndAttack();
     }
 }

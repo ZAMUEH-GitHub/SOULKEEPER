@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b06e747c6070e74794724d30b4e3f2c, type: 3}
+  m_Name: AntStatsSO
+  m_EditorClassIdentifier: 
+  behaviorType: 0
+  health: 5
+  score: 5
+  unlocker: 0
+  speed: 1
+  idleDuration: 2
+  canRun: 1
+  speedMultiplier: 3
+  patrolRadius: 10
+  visionRange: 15
+  visionAngle: 90
+  proximityRange: 3
+  chaseRange: 17.5
+  chaseAngle: 270
+  searchRadius: 10
+  searchDuration: 5
+  canJump: 0
+  jumpForce: 0
+  jumpRate: 0
+  hasJumpCharge: 0
+  damage: 1
+  attackRate: 1
+  attackRange: 2
+  attackType: 0
+  chargeAttackSpeed: 0
+  chargeAttackDuration: 0
+  maxComboSteps: 0
+  comboStepRanges: []
+  knockback: 5
+  knockbackDuration: 0.25
+  stunDuration: 0

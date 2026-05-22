@@ -5,5 +5,6 @@ using UnityEngine;
 public class PowerUpDefinition : ScriptableObject
 {
     public string displayName;
+    public int cost;
     public List<PowerUp> effects = new List<PowerUp>();
 }

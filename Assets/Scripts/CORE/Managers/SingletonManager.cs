@@ -45,12 +45,14 @@ public class SingletonManager : Singleton<SingletonManager>
     private void HandleGameStateChanged(GameState state)
     {
         bool isMainMenu = state == GameState.MainMenu;
+        bool isGameplay = state == GameState.Gameplay;
+        bool isCinematic = state == GameState.Cinematic;
 
         SafeSetActive(_MainMenuCanvas, isMainMenu);
-        SafeSetActive(_GameplayCanvas, !isMainMenu);
+        SafeSetActive(_GameplayCanvas, isGameplay);
         SafeSetActive(_GlobalCanvas, true);
 
-        if (isMainMenu)
+        if (isMainMenu || isCinematic)
         {
             DestroyPlayerRoot();
         }

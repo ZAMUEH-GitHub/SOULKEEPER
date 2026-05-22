@@ -64,7 +64,9 @@ public static class SaveSystem
                 currentCheckpointID = currentCheckpointID,
                 totalPlaytime = updatedPlaytime,
                 timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                version = CurrentVersion
+                version = CurrentVersion,
+                currentStoryState = SessionManager.Instance.CurrentStoryState,
+                unlockedFlags = new System.Collections.Generic.List<string>(SessionManager.Instance.UnlockedFlags)
             };
 
             var player = UnityEngine.Object.FindFirstObjectByType<PlayerController>();
@@ -167,7 +169,9 @@ public static class SaveSystem
                 Debug.LogError($"[SaveSystem] Failed to parse save data for slot {slotIndex}");
                 return;
             }
-
+                
+            SessionManager.Instance.CurrentStoryState = saveData.currentStoryState;
+            SessionManager.Instance.UnlockedFlags = new System.Collections.Generic.HashSet<string>(saveData.unlockedFlags);
             LastLoadedPlayerPosition = saveData.lastPlayerPosition;
             HasValidPlayerPosition = saveData.lastPlayerPosition != Vector2.zero;
             Debug.Log($"[SaveSystem] Loaded last player position {LastLoadedPlayerPosition}.");

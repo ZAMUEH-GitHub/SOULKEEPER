@@ -7,17 +7,16 @@ public class HUDManager : MonoBehaviour
 {
     [Header("Health UI")]
     [SerializeField] private Image[] healthIcons;
-    [SerializeField] private Sprite fullHeartSprite;
-    [SerializeField] private Sprite emptyHeartSprite;
+    [SerializeField] private Animator[] healthAnimators;
 
     [Header("Score UI")]
     [SerializeField] private TMP_Text scoreText;
 
     [Header("Power-Up Icons")]
+    [SerializeField] private Animator decorLineAnimator;
+    [SerializeField] private GameObject attackIcon;
     [SerializeField] private GameObject jumpIcon;
     [SerializeField] private GameObject dashIcon;
-    [SerializeField] private GameObject attackIcon;
-    [SerializeField] private GameObject wallSlideIcon;
     [SerializeField] private GameObject wallJumpIcon;
 
     private PlayerStatsSO stats;
@@ -25,7 +24,8 @@ public class HUDManager : MonoBehaviour
     private int lastMaxHealth = -1;
     private int lastScore = -1;
 
-    private bool lastJump, lastDash, lastAttack, lastWallSlide, lastWallJump;
+    private int lastUnlockCount = -1;
+    private bool lastJump, lastDash, lastAttack, lastWallJump;
 
     private void OnEnable()
     {
@@ -33,29 +33,36 @@ public class HUDManager : MonoBehaviour
         if (session != null && session.HasActiveSession)
         {
             stats = session.RuntimeStats;
-            UpdateAllHealthIcons();
+            ForceUpdateUI();
         }
     }
 
     private void Update()
     {
-        if (stats == null) return;
+        if (stats == null)
+        {
+            var session = SessionManager.Instance;
+            if (session != null && session.HasActiveSession)
+            {
+                stats = session.RuntimeStats;
+                ForceUpdateUI();
+            }
+
+            if (stats == null && PlayerController.Instance != null && PlayerController.Instance.playerRuntimeStats != null)
+            {
+                stats = PlayerController.Instance.playerRuntimeStats;
+                ForceUpdateUI();
+            }
+
+            if (stats == null) return;
+        }
 
         UpdateHealthUI();
         UpdateScoreUI();
         UpdatePowerUpsUI();
     }
 
-    #region Health
-    private void UpdateHealthUI()
-    {
-        if (stats.health == lastHealth && stats.maxHealth == lastMaxHealth)
-            return;
-
-        UpdateAllHealthIcons();
-    }
-
-    private void UpdateAllHealthIcons()
+    private void ForceUpdateUI()
     {
         lastHealth = stats.health;
         lastMaxHealth = stats.maxHealth;
@@ -64,22 +71,71 @@ public class HUDManager : MonoBehaviour
         {
             if (i < stats.maxHealth)
             {
-                healthIcons[i].enabled = true;
-                healthIcons[i].sprite = (i < stats.health) ? fullHeartSprite : emptyHeartSprite;
+                healthIcons[i].gameObject.SetActive(true);
+
+                if (i < healthAnimators.Length && healthAnimators[i] != null)
+                {
+                    healthAnimators[i].ResetTrigger("Damage");
+                    healthAnimators[i].ResetTrigger("Heal");
+
+                    if (i < stats.health)
+                    {
+                        healthAnimators[i].Play("Health_Idle");
+                    }
+                    else
+                    {
+                        healthAnimators[i].Play("Health_Empty");
+                    }
+                }
             }
             else
             {
-                healthIcons[i].enabled = false;
+                healthIcons[i].gameObject.SetActive(false);
             }
         }
+
+        UpdateScoreUI(true);
+        UpdatePowerUpsUI(true);
+    }
+
+    #region Health
+    private void UpdateHealthUI()
+    {
+        if (stats.health == lastHealth && stats.maxHealth == lastMaxHealth)
+            return;
+
+        if (stats.maxHealth != lastMaxHealth)
+        {
+            ForceUpdateUI();
+            return;
+        }
+
+        if (lastHealth != -1 && healthAnimators != null)
+        {
+            if (stats.health < lastHealth)
+            {
+                for (int i = stats.health; i < lastHealth; i++)
+                    if (i < healthAnimators.Length && healthAnimators[i] != null)
+                        healthAnimators[i].SetTrigger("Damage");
+            }
+            else if (stats.health > lastHealth)
+            {
+                for (int i = lastHealth; i < stats.health; i++)
+                    if (i < healthAnimators.Length && healthAnimators[i] != null)
+                        healthAnimators[i].SetTrigger("Heal");
+            }
+        }
+
+        lastHealth = stats.health;
+        lastMaxHealth = stats.maxHealth;
     }
     #endregion
 
     #region Score
-    private void UpdateScoreUI()
+    private void UpdateScoreUI(bool force = false)
     {
         if (scoreText == null) return;
-        if (stats.score == lastScore) return;
+        if (!force && stats.score == lastScore) return;
 
         lastScore = stats.score;
         scoreText.text = $"{stats.score:N0}";
@@ -87,30 +143,54 @@ public class HUDManager : MonoBehaviour
     #endregion
 
     #region PowerUps
-    private void UpdatePowerUpsUI()
+    private void UpdatePowerUpsUI(bool force = false)
     {
         if (stats == null) return;
 
-        if (jumpIcon != null && stats.jumpUnlocked != lastJump)
-            jumpIcon.SetActive(stats.jumpUnlocked);
-
-        if (dashIcon != null && stats.dashUnlocked != lastDash)
-            dashIcon.SetActive(stats.dashUnlocked);
-
-        if (attackIcon != null && stats.attackUnlocked != lastAttack)
+        if (attackIcon != null && (force || stats.attackUnlocked != lastAttack))
             attackIcon.SetActive(stats.attackUnlocked);
 
-        if (wallSlideIcon != null && stats.wallSlideUnlocked != lastWallSlide)
-            wallSlideIcon.SetActive(stats.wallSlideUnlocked);
+        if (jumpIcon != null && (force || stats.jumpUnlocked != lastJump))
+            jumpIcon.SetActive(stats.jumpUnlocked);
 
-        if (wallJumpIcon != null && stats.wallJumpUnlocked != lastWallJump)
+        if (dashIcon != null && (force || stats.dashUnlocked != lastDash))
+            dashIcon.SetActive(stats.dashUnlocked);
+
+        if (wallJumpIcon != null && (force || stats.wallJumpUnlocked != lastWallJump))
             wallJumpIcon.SetActive(stats.wallJumpUnlocked);
 
+        lastAttack = stats.attackUnlocked;
         lastJump = stats.jumpUnlocked;
         lastDash = stats.dashUnlocked;
-        lastAttack = stats.attackUnlocked;
-        lastWallSlide = stats.wallSlideUnlocked;
         lastWallJump = stats.wallJumpUnlocked;
+
+        int currentUnlocks = 0;
+        if (stats.attackUnlocked) currentUnlocks++;
+        if (stats.jumpUnlocked) currentUnlocks++;
+        if (stats.dashUnlocked) currentUnlocks++;
+        if (stats.wallJumpUnlocked) currentUnlocks++;
+
+        if (force || lastUnlockCount == -1)
+        {
+            if (decorLineAnimator != null)
+            {
+                if (currentUnlocks == 0) decorLineAnimator.Play("HUD_Bar_Idle");
+                else if (currentUnlocks == 1) decorLineAnimator.Play("HUD_Bar_PowerUp1");
+                else if (currentUnlocks == 2) decorLineAnimator.Play("HUD_Bar_PowerUp2");
+                else if (currentUnlocks == 3) decorLineAnimator.Play("HUD_Bar_PowerUp3");
+                else if (currentUnlocks >= 4) decorLineAnimator.Play("HUD_Bar_PowerUp4");
+            }
+        }
+        else if (currentUnlocks > lastUnlockCount && decorLineAnimator != null)
+        {
+            int gained = currentUnlocks - lastUnlockCount;
+            for (int i = 0; i < gained; i++)
+            {
+                decorLineAnimator.SetTrigger("NextUnlock");
+            }
+        }
+
+        lastUnlockCount = currentUnlocks;
     }
     #endregion
 }

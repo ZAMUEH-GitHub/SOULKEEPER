@@ -8,38 +8,52 @@ public class PlayerMovementController : MonoBehaviour, IPlayerSubController
     public float playerSpeed => playerStats.speed;
     public Vector2 playerOrientation;
     public bool isMoving;
+    [SerializeField] private float groundFriction = 40f;
 
     private Rigidbody2D playerRB;
-    private PlayerDashController dashController;
     private PlayerWallController wallController;
-    private PlayerDamageController damageController;
 
     public void Initialize(PlayerStatsSO stats) => playerStats = stats;
 
+    #region Unity Lifecycle
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
-        dashController = GetComponent<PlayerDashController>();
-        wallController = GetComponent<PlayerWallController>();
-        damageController = GetComponent<PlayerDamageController>();
+
+        wallController = PlayerController.Instance.wallController;
     }
 
     private void Update()
     {
-        PlayerMove();
+        playerOrientation = PlayerController.Instance.moveVector;
+        isMoving = PlayerController.Instance.moveInput;
+    }
+    #endregion
+
+    #region Movement & Flip Logic
+    public void HandleFlip()
+    {
         PlayerFlip();
     }
 
-    public void SetMoveInput(Vector2 moveVector, bool moveInput)
+    public void ExecuteMove()
     {
-        playerOrientation = moveVector;
-        isMoving = moveInput;
+        PlayerMove();
     }
 
     private void PlayerMove()
     {
-        if (damageController.isKnockedBack || dashController.IsDashing || wallController.IsWallJumping) return;
-        playerRB.linearVelocity = new Vector2(playerOrientation.x * playerSpeed, playerRB.linearVelocityY);
+        if (wallController.IsWallJumping) return;
+
+        if (isMoving)
+        {
+            playerRB.linearVelocity = new Vector2(playerOrientation.x * playerSpeed, playerRB.linearVelocityY);
+        }
+        else
+        {
+            float newX = Mathf.MoveTowards(playerRB.linearVelocity.x, 0, groundFriction * Time.fixedDeltaTime);
+            playerRB.linearVelocity = new Vector2(newX, playerRB.linearVelocityY);
+        }
     }
 
     public void PlayerFlip()
@@ -48,6 +62,7 @@ public class PlayerMovementController : MonoBehaviour, IPlayerSubController
         if (playerOrientation.x > 0) transform.localScale = new Vector2(1, 1);
         else if (playerOrientation.x < 0) transform.localScale = new Vector2(-1, 1);
     }
+    #endregion
 
     public bool IsMoving => isMoving;
 }

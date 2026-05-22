@@ -1,76 +1,77 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class PlayerJumpController : MonoBehaviour, IPlayerSubController
 {
     private PlayerStatsSO playerStats;
     public void Initialize(PlayerStatsSO stats) => playerStats = stats;
 
+    public event Action OnJumpPerformed;
+
     [Header("Jump Parameters")]
     public float jumpForce => playerStats.jumpForce;
-    private bool jumpInput;
     public bool isGrounded, wasGrounded, isJumping;
     public int jumpCount;
     public int maxJumpCount => playerStats.maxJumpCount;
     public float jumpRate => playerStats.jumpRate;
     public float coyoteTime => playerStats.coyoteTime;
-    public float bufferTime => playerStats.bufferTime;
     [HideInInspector] public float nextJump;
 
-    private float coyoteCount, bufferCount;
-
-    [Header("Ground Check (Overlap Circle)")]
-    public Transform groundCheckPoint;
-    public float groundCheckRadius = 0.2f;
-    public LayerMask groundLayer;
+    private float coyoteCount;
+    private Coroutine jumpCoroutine;
 
     private Rigidbody2D playerRB;
-    private Animator playerAnimator;
+    private PlayerCollisionController collisionController;
+    private PlayerWallController wallController;
 
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
-        playerAnimator = GetComponentInParent<Animator>();
+        collisionController = GetComponent<PlayerCollisionController>();
+        wallController = PlayerController.Instance.wallController;
     }
 
     private void Update()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
+        HandleCounters();
+        UpdateGroundedStatus();
+    }
+
+    private void UpdateGroundedStatus()
+    {
+        isGrounded = collisionController.isGrounded;
+
         if (isGrounded && !wasGrounded) jumpCount = maxJumpCount;
         wasGrounded = isGrounded;
-
-        HandleCounters();
-
-        if (playerStats != null && playerStats.jumpUnlocked &&
-            nextJump <= 0 && bufferCount > 0 &&
-            (isGrounded || jumpCount > 0 || coyoteCount > 0))
-        {
-            DoJump();
-            nextJump = jumpRate;
-            bufferCount = 0;
-        }
     }
 
     private void HandleCounters()
     {
         coyoteCount = isGrounded ? coyoteTime : Mathf.Max(0, coyoteCount - Time.deltaTime);
-        bufferCount = Mathf.Max(0, bufferCount - Time.deltaTime);
         nextJump = Mathf.Max(0, nextJump - Time.deltaTime);
     }
 
-    public void SetJumpInput(bool jumpInput)
+    public bool CanJump()
     {
-        this.jumpInput = jumpInput;
-        if (jumpInput) bufferCount = bufferTime;
+        return playerStats != null && playerStats.jumpUnlocked &&
+               nextJump <= 0 &&
+               (isGrounded || jumpCount > 0 || coyoteCount > 0) &&
+               !wallController.IsWallSliding && !wallController.IsWallJumping;
     }
 
-    private void DoJump()
+    public void ExecuteJump()
     {
         playerRB.linearVelocity = new Vector2(playerRB.linearVelocity.x, jumpForce);
-        playerAnimator.SetTrigger("PlayerJump");
+
+        OnJumpPerformed?.Invoke();
+
         isJumping = true;
         jumpCount--;
-        StartCoroutine(CancelPlayerJump());
+        nextJump = jumpRate;
+
+        if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
+        jumpCoroutine = StartCoroutine(CancelPlayerJump());
     }
 
     private IEnumerator CancelPlayerJump()
@@ -78,4 +79,18 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
         yield return new WaitForSeconds(jumpRate);
         isJumping = false;
     }
+
+    #region Custom Bounce / Pogo Logic
+    public void ExecuteBounce(Vector2 direction, float force)
+    {
+        playerRB.linearVelocity = direction * force;
+
+        jumpCount = maxJumpCount;
+
+        if (PlayerController.Instance.stateMachine.CurrentStateName != "PlayerAirborneState")
+        {
+            PlayerController.Instance.stateMachine.ChangeState(PlayerController.Instance.airborneState);
+        }
+    }
+    #endregion
 }

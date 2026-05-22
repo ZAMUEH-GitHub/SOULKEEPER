@@ -1,41 +1,65 @@
 using UnityEngine;
 
-public class SimpleAttackState : IMovementState
+public class SimpleAttackState : EnemyBaseState
 {
-    private readonly EnemyBaseController enemy;
-    private float attackTimer;
+    public SimpleAttackState(EnemyBaseController enemy) : base(enemy) { }
 
-    public SimpleAttackState(EnemyBaseController enemy) { this.enemy = enemy; }
-
-    public void Enter()
+    public override void Enter()
     {
-        enemy.Stop();
-        enemy.PauseVertical(true);
-
-        enemy.ResetVerticalStateIfGrounded();
+        enemy.RequestMovementLock("Attack");
 
         enemy.attackController.isAttacking = true;
-        enemy.animator.SetTrigger("EnemyAttack");
-        attackTimer = enemy.enemyStats.attackRate;
+        if (enemy.animController != null)
+        {
+            enemy.animController.SetAttacking(true);
+
+            if (enemy.animController.animator != null)
+            {
+                int randomAttackIndex = Random.Range(0, enemy.enemyStats.simpleAttackVariations);
+                enemy.animController.animator.SetInteger("AttackIndex", randomAttackIndex);
+            }
+
+            enemy.animController.TriggerEnemyAttack();
+        }
     }
 
-    public void Update()
+    public override void Update()
     {
-        attackTimer -= Time.deltaTime;
-        if (attackTimer <= 0) EndAttack();
+        if (TryEnterDeathState()) return;
+
+        float direction = Mathf.Sign(enemy.transform.localScale.x);
+        enemy.rigidBody.linearVelocity = new Vector2(direction * (enemy.enemyStats.speed * enemy.moveSpeedMultiplier), enemy.rigidBody.linearVelocity.y);
     }
 
-    public void Exit()
+    public override void Exit()
     {
-        enemy.PauseVertical(false);
-        enemy.attackController.isAttacking = false;
+        enemy.ReleaseMovementLock("Attack");
+
+        enemy.nextAttackTimer = enemy.enemyStats.attackRate;
+
+        if (enemy.attackController != null)
+        {
+            enemy.attackController.isAttacking = false;
+        }
+
+        if (enemy.animController != null)
+        {
+            enemy.animController.SetAttacking(false);
+        }
+
+        enemy.moveSpeedMultiplier = 1f;
     }
 
-    public void EndAttack()
+    public void AnimationFinished()
+    {
+        EndAttack();
+    }
+
+    private void EndAttack()
     {
         if (enemy.targetPlayer)
-            enemy.ChangeMovementState(new ChaseState(enemy));
+            enemy.stateMachine.ChangeState(new ChaseState(enemy));
         else
-            enemy.ChangeMovementState(new PatrolState(enemy));
+            enemy.stateMachine.ChangeState(new PatrolState(enemy));
     }
 }

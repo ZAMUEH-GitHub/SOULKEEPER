@@ -10,9 +10,12 @@ public class SceneDoor : MonoBehaviour, IInteractable
     public string doorID;
     public SceneField targetScene;
     public string targetDoorID;
+    [Tooltip("If true, requires player input. If false, triggers automatically on enter.")]
+    public bool requiresInteraction = true;
 
     [Header("Interaction UI")]
     [SerializeField] private TextMeshPro interactTextMesh;
+    [SerializeField] private string interactText = "Enter Door";
     [SerializeField] private InputActionReference interactActionRef;
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float interactionCooldown = 1.0f;
@@ -24,7 +27,14 @@ public class SceneDoor : MonoBehaviour, IInteractable
     #region Unity Lifecycle
     private void Awake()
     {
-        SetTextInstantAlpha(interactTextMesh, 0f);
+        if (requiresInteraction)
+        {
+            SetTextInstantAlpha(interactTextMesh, 0f);
+        }
+        else if (interactTextMesh)
+        {
+            interactTextMesh.gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -32,7 +42,15 @@ public class SceneDoor : MonoBehaviour, IInteractable
         if (!collision.CompareTag("Player") || !gameObject.activeInHierarchy) return;
 
         playerInRange = true;
-        ShowInteractText();
+
+        if (requiresInteraction)
+        {
+            ShowInteractText();
+        }
+        else
+        {
+            Interact();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -40,7 +58,11 @@ public class SceneDoor : MonoBehaviour, IInteractable
         if (!collision.CompareTag("Player") || !gameObject.activeInHierarchy) return;
 
         playerInRange = false;
-        HideInteractText();
+
+        if (requiresInteraction)
+        {
+            HideInteractText();
+        }
     }
     #endregion
 
@@ -56,7 +78,11 @@ public class SceneDoor : MonoBehaviour, IInteractable
         sceneManager?.LoadSceneFromDoor(targetScene, targetDoorID);
 
         lastInteractionTime = Time.time;
-        HideInteractText();
+
+        if (requiresInteraction)
+        {
+            HideInteractText();
+        }
     }
 
     private bool CanInteract() =>
@@ -131,7 +157,6 @@ public class SceneDoor : MonoBehaviour, IInteractable
         catch { return "(E)"; }
     }
 
-    public string GetInteractionText() =>
-        $"{GetInteractionKeyName()} Enter Door";
+    public string GetInteractionText() => $"{GetInteractionKeyName()} " + interactText;
     #endregion
 }

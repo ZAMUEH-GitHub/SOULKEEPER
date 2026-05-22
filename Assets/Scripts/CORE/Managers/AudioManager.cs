@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : Singleton<AudioManager>
 {
@@ -12,6 +14,16 @@ public class AudioManager : Singleton<AudioManager>
     [Header("Music Clips")]
     [SerializeField] private AudioClip mainMenuMusic;
     [SerializeField] private AudioClip gameplayMusic;
+
+    [Header("Scene Specific Music")]
+    [SerializeField] private List<SceneMusicMapping> sceneMusicMappings = new List<SceneMusicMapping>();
+
+    [System.Serializable]
+    public struct SceneMusicMapping
+    {
+        public string sceneName;
+        public AudioClip musicClip;
+    }
 
     [Header("Volume Levels")]
     [Range(0f, 1f)][SerializeField] private float masterVolume = 1f;
@@ -38,6 +50,7 @@ public class AudioManager : Singleton<AudioManager>
     private void OnEnable()
     {
         GameManager.OnGameStateChanged += HandleGameStateChange;
+        SceneManager.sceneLoaded += HandleSceneLoaded;
         ApplyVolumes();
     }
 
@@ -45,6 +58,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         base.OnDestroy();
         GameManager.OnGameStateChanged -= HandleGameStateChange;
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
     }
 
     private void Start()
@@ -109,14 +123,49 @@ public class AudioManager : Singleton<AudioManager>
                 CrossFadeMusic(mainMenuMusic, 2f);
                 break;
             case GameState.Gameplay:
-                CrossFadeMusic(gameplayMusic, 2f);
+                PlayGameplayMusicForCurrentScene();
+                break;
+            case GameState.Cinematic:
+                CrossFadeMusic(null, 1f);
                 break;
         }
     }
 
+    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name.Contains("Cinematic"))
+        {
+            CrossFadeMusic(null, 1f);
+            return;
+        }
+
+        if (GameManager.Instance != null && GameManager.Instance.CurrentState == GameState.Gameplay)
+        {
+            PlayGameplayMusicForCurrentScene();
+        }
+    }
+
+    private void PlayGameplayMusicForCurrentScene()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+        AudioClip clipToPlay = gameplayMusic;
+
+        foreach (var mapping in sceneMusicMappings)
+        {
+            if (mapping.sceneName == currentScene)
+            {
+                clipToPlay = mapping.musicClip;
+                break;
+            }
+        }
+
+        CrossFadeMusic(clipToPlay, 2f);
+    }
+
     private void CrossFadeMusic(AudioClip newClip, float duration)
     {
-        if (musicSource == null || newClip == null) return;
+        if (musicSource == null) return;
+        if (musicSource.clip == newClip) return;
 
         if (fadeRoutine != null)
             StopCoroutine(fadeRoutine);
@@ -136,7 +185,11 @@ public class AudioManager : Singleton<AudioManager>
         }
 
         musicSource.clip = newClip;
-        musicSource.Play();
+
+        if (newClip != null)
+        {
+            musicSource.Play();
+        }
 
         float target = (isMuted ? 0f : masterVolume) * musicVolume;
         for (float t = 0; t < half; t += Time.unscaledDeltaTime)

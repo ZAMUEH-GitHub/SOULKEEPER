@@ -22,23 +22,44 @@ public class PlayerController : MonoBehaviour
     public PlayerStatsSO playerBaseStats;
     public PlayerStatsSO playerRuntimeStats;
 
-    [Header("Player Input")]
-    public Vector2 moveVector;
-    public bool moveInput;
-    public bool jumpInput;
-    public bool dashInput;
-    public bool attackInput;
-    public bool interactInput;
-    [Space(5)]
+    [Header("Debug States")]
+    [SerializeField] private string currentState;
+
+    [Header("Player Input & Buffers")]
     public bool playerInputActive;
     public bool isAlive;
 
+    #region Cached Variables and Controllers
+    public PlayerStateMachine stateMachine;
+
+    public PlayerGroundedState groundedState;
+    public PlayerAirborneState airborneState;
+    public PlayerDashState dashState;
+    public PlayerWallSlideState wallSlideState;
+    public PlayerKnockbackState knockbackState;
+    public PlayerDeathState deathState;
+    public PlayerRespawnState respawnState;
+
+    [HideInInspector] public PlayerMovementController movementController;
+    [HideInInspector] public PlayerJumpController jumpController;
+    [HideInInspector] public PlayerWallController wallController;
+    [HideInInspector] public PlayerDashController dashController;
+    [HideInInspector] public PlayerAttackController attackController;
+    [HideInInspector] public PlayerInteractController interactController;
+    [HideInInspector] public PlayerDamageController damageController;
+    [HideInInspector] public PlayerAnimationController animController;
+
     private List<IPlayerSubController> subControllers = new();
-    private PlayerMovementController movementController;
-    private PlayerWallController wallController;
-    private PlayerDashController dashController;
-    private PlayerAttackController attackController;
-    private PlayerInteractController interactController;
+    [HideInInspector] public Vector2 moveVector;
+    [HideInInspector] public bool moveInput;
+
+    [HideInInspector] public Vector3 lastSafePosition;
+
+    [HideInInspector] public float jumpBufferTimer;
+    [HideInInspector] public float dashBufferTimer;
+    [HideInInspector] public float attackBufferTimer;
+    [HideInInspector] public float interactBufferTimer;
+    #endregion
 
     #region Unity Lifecycle
     private void Awake()
@@ -50,8 +71,13 @@ public class PlayerController : MonoBehaviour
 
         var session = SessionManager.Instance;
 
-        if (session != null && session.HasActiveSession)
+        if (session != null)
         {
+            if (!session.HasActiveSession && playerBaseStats != null)
+            {
+                session.StartSession(playerBaseStats);
+            }
+
             playerRuntimeStats = session.RuntimeStats;
         }
         else
@@ -59,7 +85,7 @@ public class PlayerController : MonoBehaviour
             if (playerBaseStats != null)
             {
                 playerRuntimeStats = playerBaseStats.Clone();
-                Debug.LogWarning("[PlayerController] No active session found! Using a cloned fallback base stats.");
+                Debug.LogWarning("[PlayerController] SessionManager is entirely missing! Using a cloned fallback base stats.");
             }
             else
             {
@@ -67,14 +93,27 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        #region Player SubControllers
+        #region Player SubControllers & States
         movementController = GetComponent<PlayerMovementController>();
+        jumpController = GetComponent<PlayerJumpController>();
         wallController = GetComponent<PlayerWallController>();
         dashController = GetComponent<PlayerDashController>();
         attackController = GetComponentInChildren<PlayerAttackController>();
         interactController = GetComponent<PlayerInteractController>();
+        damageController = GetComponent<PlayerDamageController>();
+        animController = GetComponentInChildren<PlayerAnimationController>();
 
         subControllers.AddRange(GetComponents<IPlayerSubController>());
+
+        stateMachine = new PlayerStateMachine();
+
+        groundedState = new PlayerGroundedState(this);
+        airborneState = new PlayerAirborneState(this);
+        dashState = new PlayerDashState(this);
+        wallSlideState = new PlayerWallSlideState(this);
+        knockbackState = new PlayerKnockbackState(this);
+        deathState = new PlayerDeathState(this);
+        respawnState = new PlayerRespawnState(this);
         #endregion
     }
 
@@ -84,29 +123,29 @@ public class PlayerController : MonoBehaviour
             sub.Initialize(playerRuntimeStats);
 
         playerInputActive = true;
+
+        stateMachine.Initialize(groundedState);
     }
 
     private void Update()
     {
         if (!playerInputActive) return;
 
-        movementController.SetMoveInput(moveVector, moveInput);
-        wallController.SetWallInput(moveVector, moveInput);
-        dashController.SetDashInput(dashInput);
-        attackController.SetAttackInput(attackInput, moveVector);
-        interactController.SetInteractInput(interactInput);
+        jumpBufferTimer = Mathf.Max(0, jumpBufferTimer - Time.deltaTime);
+        dashBufferTimer = Mathf.Max(0, dashBufferTimer - Time.deltaTime);
+        attackBufferTimer = Mathf.Max(0, attackBufferTimer - Time.deltaTime);
+        interactBufferTimer = Mathf.Max(0, interactBufferTimer - Time.deltaTime);
 
-        if (jumpInput)
-        {
-            if (wallController.IsWallSliding)
-                wallController.SetWallJumpInput(true);
-            else
-                GetComponent<PlayerJumpController>().SetJumpInput(true);
+        stateMachine?.Update();
 
-            jumpInput = false;
-        }
+        currentState = stateMachine?.CurrentStateName;
+    }
 
-        dashInput = attackInput = interactInput = false;
+    private void FixedUpdate()
+    {
+        if (!playerInputActive) return;
+
+        stateMachine?.FixedUpdate();
     }
     #endregion
 
@@ -119,33 +158,61 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerInputJump(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed) jumpInput = true;
+        if (ctx.performed) jumpBufferTimer = playerRuntimeStats.bufferTime;
     }
 
     public void PlayerInputDash(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed) dashInput = true;
+        if (ctx.performed) dashBufferTimer = playerRuntimeStats.bufferTime;
     }
 
     public void PlayerInputAttack(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed) attackInput = true;
+        if (ctx.performed) attackBufferTimer = playerRuntimeStats.bufferTime;
     }
 
     public void PlayerInputInteract(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed) interactInput = true;
+        if (ctx.performed) interactBufferTimer = playerRuntimeStats.bufferTime;
+    }
+    #endregion
+
+    #region Consume Methods
+    public bool ConsumeJumpInput()
+    {
+        if (jumpBufferTimer > 0) { jumpBufferTimer = 0; return true; }
+        return false;
+    }
+
+    public bool ConsumeDashInput()
+    {
+        if (dashBufferTimer > 0) { dashBufferTimer = 0; return true; }
+        return false;
+    }
+
+    public bool ConsumeAttackInput()
+    {
+        if (attackBufferTimer > 0) { attackBufferTimer = 0; return true; }
+        return false;
+    }
+
+    public bool ConsumeInteractInput()
+    {
+        if (interactBufferTimer > 0) { interactBufferTimer = 0; return true; }
+        return false;
     }
     #endregion
 
     #region Player Input Lock Controls
     public void FreezeAllInputs()
     {
-        playerInputActive = false;
         moveVector = Vector2.zero;
+        playerInputActive = false;
+
+        jumpBufferTimer = dashBufferTimer = attackBufferTimer = interactBufferTimer = 0;
     }
 
-    public void UnfreezeAllInputs() 
+    public void UnfreezeAllInputs()
     {
         playerInputActive = true;
     }

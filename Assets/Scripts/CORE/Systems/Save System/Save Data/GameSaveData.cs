@@ -13,16 +13,17 @@ public class GameSaveData
     public string timestamp;
     public int version = 1;
 
-
     [Header("Scene Transition Data")]
     public string currentSceneID;
     public string currentCheckpointID;
     public string lastDoorID;
 
+    [Header("Story Progress")]
+    public int currentStoryState;
+    public List<string> unlockedFlags = new List<string>();
 
     [Header("Player Position")]
     public Vector2 lastPlayerPosition;
-
 
     public GameSaveData()
     {

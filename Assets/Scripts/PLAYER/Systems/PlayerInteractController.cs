@@ -1,49 +1,46 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInteractController : MonoBehaviour
 {
-    public bool isInteractable;
-    private IInteractable interactable;
+    public bool isInteractable => interactablesInRange.Count > 0;
 
-    private bool interactInput;
-    private bool interactReleased = true;
+    private List<IInteractable> interactablesInRange = new List<IInteractable>();
 
     private void Update()
     {
-        if (isInteractable && interactInput && interactReleased && interactable != null)
+        if (isInteractable && PlayerController.Instance.ConsumeInteractInput())
         {
-            interactable.Interact();
-            interactReleased = false;
-        }
+            IInteractable target = interactablesInRange[interactablesInRange.Count - 1];
 
-        if (!interactInput)
-        {
-            interactReleased = true;
+            if (target != null)
+            {
+                target.Interact();
+            }
+            else
+            {
+                interactablesInRange.RemoveAt(interactablesInRange.Count - 1);
+            }
         }
-    }
-
-    public void SetInteractInput(bool interactInput)
-    {
-        this.interactInput = interactInput;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         var candidate = collision.GetComponentInParent<IInteractable>();
-        if (candidate != null)
+
+        if (candidate != null && !interactablesInRange.Contains(candidate))
         {
-            interactable = candidate;
-            isInteractable = true;
+            interactablesInRange.Add(candidate);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         var candidate = collision.GetComponentInParent<IInteractable>();
-        if (candidate != null && candidate == interactable)
+
+        if (candidate != null)
         {
-            interactable = null;
-            isInteractable = false;
+            interactablesInRange.Remove(candidate);
         }
     }
 }

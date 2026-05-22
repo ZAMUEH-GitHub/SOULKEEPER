@@ -77,11 +77,32 @@ public class GameSceneManager : Singleton<GameSceneManager>
         targetCheckpointID = checkpointID;
 
         canvasManager ??= CanvasManager.Instance;
-        if (canvasManager != null)
-            canvasManager.FadeIn(PanelType.BlackScreen);
 
-        yield return new WaitForSeconds(canvasManager?.GetFadeDuration(PanelType.BlackScreen) ?? 0.5f);
-        SceneManager.LoadScene(scene);
+        if (canvasManager != null)
+        {
+            canvasManager.FadeIn(PanelType.BlackScreen);
+            yield return new WaitForSecondsRealtime(canvasManager.GetFadeDuration(PanelType.BlackScreen) + 0.1f);
+
+            canvasManager.FadeIn(PanelType.LoadingScreen);
+            yield return new WaitForSecondsRealtime(canvasManager.GetFadeDuration(PanelType.LoadingScreen) + 0.1f);
+        }
+
+        if (scene != null && !string.IsNullOrEmpty(scene.SceneName))
+        {
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
+            asyncLoad.allowSceneActivation = false;
+
+            while (asyncLoad.progress < 0.9f)
+            {
+                yield return null;
+            }
+
+            asyncLoad.allowSceneActivation = true;
+        }
+        else
+        {
+            _ = PostSceneLoadRoutineAsync();
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -126,8 +147,13 @@ public class GameSceneManager : Singleton<GameSceneManager>
         int safetyRecheck = 0;
         while (string.IsNullOrEmpty(CheckpointManager.Instance.ActiveCheckpointID) && safetyRecheck < 5)
         {
-            if (GameManager.Instance?.CurrentState != GameState.MainMenu)
+            if (GameManager.Instance != null &&
+                GameManager.Instance.CurrentState != GameState.MainMenu &&
+                GameManager.Instance.CurrentState != GameState.Cinematic)
+            {
                 Debug.LogWarning($"[GameSceneManager] Waiting for checkpoint sync... attempt {safetyRecheck + 1}");
+            }
+
             safetyRecheck++;
             await Task.Delay(200);
 
@@ -189,8 +215,13 @@ public class GameSceneManager : Singleton<GameSceneManager>
         float timeout = 3f, timer = 0f;
         while (PlayerRoot.Instance == null && timer < timeout)
         {
-            if (GameManager.Instance != null && GameManager.Instance.CurrentState == GameState.MainMenu)
+            if (GameManager.Instance != null &&
+               (GameManager.Instance.CurrentState == GameState.MainMenu ||
+                GameManager.Instance.CurrentState == GameState.Cinematic))
+            {
                 return;
+            }
+
             timer += Time.unscaledDeltaTime;
             await Task.Yield();
         }

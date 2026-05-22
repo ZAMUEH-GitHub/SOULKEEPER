@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 public enum GameState
 {
     MainMenu,
-    Gameplay
+    Gameplay,
+    Cinematic
 }
 
 public class GameManager : Singleton<GameManager>
@@ -52,6 +53,8 @@ public class GameManager : Singleton<GameManager>
     {
         if (scene.name == mainMenuScene.SceneName)
             SetState(GameState.MainMenu);
+        else if (scene.name.Contains("Cinematic"))
+            SetState(GameState.Cinematic);
         else
             SetState(GameState.Gameplay);
     }
@@ -78,6 +81,9 @@ public class GameManager : Singleton<GameManager>
             case GameState.Gameplay:
                 if (!sessionManager.HasActiveSession)
                     sessionManager.StartSession(basePlayerStats);
+                break;
+
+            case GameState.Cinematic:
                 break;
         }
     }

@@ -7,8 +7,11 @@ public class SessionManager : Singleton<SessionManager>
     public PlayerStatsSO RuntimeStats { get; private set; }
     [field: SerializeField]
     public string CurrentCheckpointID { get; set; }
+    public int CurrentStoryState { get; set; }
+    public System.Collections.Generic.HashSet<string> UnlockedFlags { get; set; } = new();
     public static bool IsLoadingFromSave { get; set; }
 
+    #region Session Functions
     public void StartSession(PlayerStatsSO baseStats)
     {
         EndSession();
@@ -20,6 +23,9 @@ public class SessionManager : Singleton<SessionManager>
         }
 
         RuntimeStats = baseStats.Clone();
+
+        CurrentStoryState = 0;
+        UnlockedFlags = new System.Collections.Generic.HashSet<string>();
     }
 
     public void EndSession()
@@ -27,10 +33,35 @@ public class SessionManager : Singleton<SessionManager>
         if (RuntimeStats != null)
         {
             RuntimeStats = null;
+
+            CurrentStoryState = 0;
+            UnlockedFlags?.Clear();
+
             Resources.UnloadUnusedAssets();
             System.GC.Collect();
         }
     }
+    #endregion
+
+    #region Game Events Functions
+    public void UnlockProgressFlag(string flagID)
+    {
+        if (UnlockedFlags == null) return;
+
+        if (UnlockedFlags.Add(flagID))
+        {
+            GameEvents.TriggerFlagUnlocked(flagID);
+        }
+    }
+
+    public void SetStoryState(int newState)
+    {
+        if (CurrentStoryState == newState) return;
+
+        CurrentStoryState = newState;
+        GameEvents.TriggerStoryStateChanged(newState);
+    }
+    #endregion
 
     public bool HasActiveSession => RuntimeStats != null;
 }

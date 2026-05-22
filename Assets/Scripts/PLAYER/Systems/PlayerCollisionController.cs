@@ -4,15 +4,25 @@ public class PlayerCollisionController : MonoBehaviour
 {
     private PlayerStatsSO playerStats;
 
-    #region Script and Variable References
+    [Header("Environment Checks")]
+    public Transform groundCheckPoint;
+    public float groundCheckRadius = 0.2f;
+    public LayerMask groundLayer;
+    public bool isGrounded;
+
+    [Space(5)]
+    public Transform wallCheckPoint;
+    public float wallCheckRadius = 0.2f;
+    public LayerMask wallLayer;
+    public bool isWalled;
+
+    [Header("State Flags")]
     public bool isTrapped;
 
     private Rigidbody2D playerRigidBody;
-    private CapsuleCollider2D playerCollider;
     private Animator playerAnimator;
     private PlayerDamageController damageController;
     private PlayerAttachmentController platformAttachment;
-    #endregion
 
     private void Awake()
     {
@@ -21,28 +31,27 @@ public class PlayerCollisionController : MonoBehaviour
             playerStats = controller.playerRuntimeStats;
 
         playerRigidBody = GetComponent<Rigidbody2D>();
-        playerCollider = GetComponent<CapsuleCollider2D>();
-        playerAnimator = GetComponent<Animator>();
+        playerAnimator = GetComponentInChildren<Animator>();
         damageController = GetComponent<PlayerDamageController>();
         platformAttachment = GetComponent<PlayerAttachmentController>();
+    }
+
+    private void FixedUpdate()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
+        isWalled = Physics2D.OverlapCircle(wallCheckPoint.position, wallCheckRadius, wallLayer);
     }
 
     #region Collision Management
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.CompareTag("Wall") || other.CompareTag("Obstacle"))
-            playerCollider.isTrigger = false;
-
         if (other.CompareTag("MovingObstacle") || other.CompareTag("Parenting Collider"))
         {
             var platformRb = other.attachedRigidbody;
             if (platformAttachment != null)
             {
-                if (platformAttachment != null)
-                    platformAttachment.AttachToPlatform(other);
+                platformAttachment.AttachToPlatform(other);
             }
-
-            playerCollider.isTrigger = false;
         }
 
         if (other.CompareTag("Minos Grab Collider"))
@@ -58,12 +67,10 @@ public class PlayerCollisionController : MonoBehaviour
         if (other.CompareTag("MovingObstacle") || other.CompareTag("Parenting Collider"))
         {
             platformAttachment?.DetachFromPlatform();
-            playerCollider.isTrigger = false;
         }
 
         if (other.CompareTag("Minos Grab Collider"))
         {
-            playerCollider.isTrigger = false;
             playerRigidBody.gravityScale = 5f;
             isTrapped = false;
         }

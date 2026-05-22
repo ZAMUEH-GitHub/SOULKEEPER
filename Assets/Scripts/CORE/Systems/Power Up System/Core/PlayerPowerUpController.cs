@@ -11,12 +11,12 @@ public class PlayerPowerUpController : MonoBehaviour, IPlayerSubController
 
     private void OnEnable()
     {
-        AltarController.OnPowerUpUnlocked += ApplyPowerUp;
+        GameEvents.OnPowerUpUnlocked += ApplyPowerUp;
     }
 
     private void OnDisable()
     {
-        AltarController.OnPowerUpUnlocked -= ApplyPowerUp;
+        GameEvents.OnPowerUpUnlocked -= ApplyPowerUp;
     }
 
     public void ApplyPowerUp(PowerUpDefinition def)

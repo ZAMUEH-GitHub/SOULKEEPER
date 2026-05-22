@@ -15,7 +15,7 @@ MonoBehaviour:
   health: 5
   maxHealth: 5
   score: 0
-  speed: 10
+  speed: 6
   maxJumpCount: 1
   jumpForce: 20
   jumpRate: 0.25
@@ -36,9 +36,9 @@ MonoBehaviour:
   damageForce: 5
   damageLenght: 0.25
   jumpUnlocked: 1
-  attackUnlocked: 0
-  wallSlideUnlocked: 0
-  wallJumpUnlocked: 0
-  dashUnlocked: 0
+  attackUnlocked: 1
+  wallSlideUnlocked: 1
+  wallJumpUnlocked: 1
+  dashUnlocked: 1
   coyoteTime: 0.1
   bufferTime: 0.1

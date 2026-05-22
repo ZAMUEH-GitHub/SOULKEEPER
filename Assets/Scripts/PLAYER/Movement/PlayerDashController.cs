@@ -1,69 +1,62 @@
 using UnityEngine;
-using System.Collections;
+using System;
 
 public class PlayerDashController : MonoBehaviour, IPlayerSubController
 {
     private PlayerStatsSO playerStats;
     public void Initialize(PlayerStatsSO stats) => playerStats = stats;
 
+    public event Action<bool> OnDashStateChanged;
+
     public float dashForce => playerStats.dashForce;
-    private bool dashInput;
     public bool isDashing;
     public Vector2 dashVector;
     public float dashLenght => playerStats.dashLenght;
     public float dashRate => playerStats.dashRate;
-    private float nextDash;
-    public float bufferTime => playerStats.bufferTime;
-    private float bufferCount;
+    [HideInInspector] public float nextDash;
 
     private Rigidbody2D playerRB;
-    private CapsuleCollider2D playerCL;
-    private PlayerWallController wallController;
+    private int originalLayer;
 
     private void Awake()
     {
         playerRB = GetComponent<Rigidbody2D>();
-        playerCL = GetComponent<CapsuleCollider2D>();
-        wallController = GetComponent<PlayerWallController>();
+        originalLayer = gameObject.layer;
     }
 
     private void Update()
     {
-        bufferCount = Mathf.Max(0, bufferCount - Time.deltaTime);
         nextDash = Mathf.Max(0, nextDash - Time.deltaTime);
-
-        if (playerStats != null && playerStats.dashUnlocked && bufferCount > 0 && nextDash <= 0)
-        {
-            DoDash();
-            nextDash = dashRate;
-            bufferCount = 0;
-        }
-
         dashVector = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
     }
 
-    public void SetDashInput(bool dashInput)
+    public bool CanDash()
     {
-        this.dashInput = dashInput;
-        if (!IsDashing && !wallController.IsWallSliding && dashInput)
-            bufferCount = bufferTime;
+        return playerStats != null && playerStats.dashUnlocked && nextDash <= 0;
     }
 
-    private void DoDash()
+    public void ExecuteDash()
     {
         playerRB.linearVelocity = new Vector2(dashVector.x * dashForce, 0);
-        playerCL.isTrigger = true;
+
+        gameObject.layer = LayerMask.NameToLayer("Dashing");
+
         isDashing = true;
         playerRB.gravityScale = 0;
-        StartCoroutine(CancelPlayerDash());
+        nextDash = dashRate;
+
+        OnDashStateChanged?.Invoke(true);
     }
 
-    private IEnumerator CancelPlayerDash()
+    public void EndDash()
     {
-        yield return new WaitForSeconds(dashLenght);
         isDashing = false;
-        playerCL.isTrigger = false;
-        playerRB.gravityScale = 5;
+
+        gameObject.layer = originalLayer;
+
+        playerRB.gravityScale = 1;
+
+        OnDashStateChanged?.Invoke(false);
     }
 
     public bool IsDashing => isDashing;

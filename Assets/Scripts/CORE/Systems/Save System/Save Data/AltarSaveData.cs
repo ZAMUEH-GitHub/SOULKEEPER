@@ -8,13 +8,15 @@ public class AltarSaveData
     public string altarID;
     public bool completed;
     public int currentStage;
+    public bool isActivated;
 
     public AltarSaveData() { }
 
-    public AltarSaveData(string id, bool completed, int stage)
+    public AltarSaveData(string id, bool completed, int stage, bool isActivated)
     {
         altarID = id;
         this.completed = completed;
         currentStage = stage;
+        this.isActivated = isActivated;
     }
 }

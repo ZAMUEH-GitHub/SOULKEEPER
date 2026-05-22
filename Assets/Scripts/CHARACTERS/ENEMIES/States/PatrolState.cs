@@ -1,24 +1,25 @@
 using UnityEngine;
 
-public class PatrolState : IMovementState
+public class PatrolState : EnemyBaseState
 {
-    private readonly EnemyBaseController enemy;
+    public PatrolState(EnemyBaseController enemy) : base(enemy) { }
 
-    public PatrolState(EnemyBaseController enemy) { this.enemy = enemy; }
-
-    public void Enter()
+    public override void Enter()
     {
-        enemy.animator.SetBool("isMoving", true);
-        enemy.animator.SetFloat("WalkSpeed", 1f);
+        if (enemy.animController != null)
+        {
+            enemy.animController.SetMoving(true);
+            enemy.animController.SetWalkSpeed(enemy.enemyStats.speed);
+        }
     }
 
-    public void Update()
+    public override void Update()
     {
-        if (enemy.damageController.isKnockedBack) return;
+        if (TryEnterDeathState()) return;
 
         if (enemy.targetPlayer)
         {
-            enemy.ChangeMovementState(new ChaseState(enemy));
+            enemy.stateMachine.ChangeState(new ChaseState(enemy));
             return;
         }
 
@@ -27,23 +28,26 @@ public class PatrolState : IMovementState
 
         if (Vector2.Distance(enemy.transform.position, enemy.currentTarget) < 0.5f)
         {
-            enemy.currentTarget = (enemy.currentTarget == (Vector2)enemy.patrolTarget.position)
-                ? enemy.patrolStart
-                : enemy.patrolTarget.position;
+            if (enemy.patrolController != null)
+                enemy.currentTarget = enemy.patrolController.GetNextPatrolPoint();
+            else
+                enemy.currentTarget = enemy.patrolStart;
 
-            enemy.ChangeMovementState(new IdleState(enemy));
+            enemy.stateMachine.ChangeState(new IdleState(enemy));
+            return;
         }
 
-        if (enemy.enemyStats.canJump && enemy.jumpController.CanJump &&
-            enemy.currentTarget.y > enemy.transform.position.y + 2f)
+        if (enemy.enemyStats.canJump && enemy.jumpController != null && enemy.jumpController.CanJump && enemy.currentTarget.y > enemy.transform.position.y + 2f)
         {
-            enemy.ChangeVerticalState(new JumpChargeState(enemy));
+            enemy.stateMachine.ChangeState(new AirborneState(enemy));
+            return;
         }
     }
 
-    public void Exit()
+    public override void Exit()
     {
         enemy.Stop();
-        enemy.animator.SetBool("isMoving", false);
+        if (enemy.animController != null)
+            enemy.animController.SetMoving(false);
     }
 }
