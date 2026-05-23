@@ -5,7 +5,7 @@ public class BulbController : MonoBehaviour
     [Header("Bulb Settings")]
     [SerializeField] private float bulbKnockbackForce = 20f;
     [SerializeField] private float bulbKnockbackDuration = 0.25f;
-    [SerializeField] private float bulbAttackMultiplier = 1.5f;
+    [SerializeField] private float bulbAttackMultiplier = 3f;
 
     [Header("Effects")]
     [SerializeField] private ParticleSystem bulbHitParticles;
