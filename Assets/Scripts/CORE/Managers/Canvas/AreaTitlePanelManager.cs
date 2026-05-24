@@ -1,42 +1,25 @@
 using System.Collections;
 using UnityEngine;
-using TMPro;
 
 public class AreaTitlePanelManager : Singleton<AreaTitlePanelManager>
 {
     protected override bool IsPersistent => false;
 
-    [Header("UI References")]
-    [SerializeField] private TMP_Text titleText;
-    [SerializeField] private TMP_Text subtitleText;
+    [Header("Animation Settings")]
+    [SerializeField] private Animator titleAnimator;
+    [Tooltip("Type the exact name of the Trigger parameter in your Animator to show the title.")]
+    [SerializeField] private string showTriggerName = "ShowAnimation1";
 
     [Header("Display Settings")]
-    [Tooltip("How long the title card remains visible before fading out.")]
+    [Tooltip("How long the panel remains active before disabling.")]
     [SerializeField] private float defaultDisplayDuration = 5f;
-    [Tooltip("Delay before subtitle fades in after title.")]
-    [SerializeField] private float subtitleFadeDelay = 1f;
 
     private Coroutine currentRoutine;
 
     public void ShowAreaTitle(string title, string subtitle, float displayDuration)
     {
-        if (titleText == null)
-        {
-            Debug.LogWarning("[AreaTitlePanelManager] Missing title TMP_Text reference!");
-            return;
-        }
-
         if (displayDuration <= 0f)
             displayDuration = defaultDisplayDuration;
-
-        titleText.text = title;
-
-        if (subtitleText != null)
-        {
-            subtitleText.text = subtitle ?? "";
-            subtitleText.alpha = 0f;
-            subtitleText.gameObject.SetActive(!string.IsNullOrWhiteSpace(subtitle));
-        }
 
         if (currentRoutine != null)
             StopCoroutine(currentRoutine);
@@ -55,31 +38,15 @@ public class AreaTitlePanelManager : Singleton<AreaTitlePanelManager>
 
         canvas.FadeIn(PanelType.AreaTitlePanel);
 
-        if (subtitleText != null && subtitleText.gameObject.activeSelf)
+        if (titleAnimator != null && !string.IsNullOrEmpty(showTriggerName))
         {
-            yield return new WaitForSecondsRealtime(subtitleFadeDelay);
-            StartCoroutine(FadeTMPAlpha(subtitleText, 1f, 0.4f));
+            titleAnimator.SetTrigger(showTriggerName);
         }
 
         yield return new WaitForSecondsRealtime(canvas.GetFadeDuration(PanelType.AreaTitlePanel) + duration);
 
         canvas.FadeOut(PanelType.AreaTitlePanel);
         currentRoutine = null;
-    }
-
-    private IEnumerator FadeTMPAlpha(TMP_Text text, float targetAlpha, float duration)
-    {
-        float startAlpha = text.alpha;
-        float elapsed = 0f;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.unscaledDeltaTime;
-            text.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
-            yield return null;
-        }
-
-        text.alpha = targetAlpha;
     }
 
     public void ForceHide()

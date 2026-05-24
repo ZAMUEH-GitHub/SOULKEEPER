@@ -16,6 +16,8 @@ public class AltarRelic : MonoBehaviour, IInteractable
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float interactionCooldown = 1f;
 
+    [SerializeField] private string unlockedPowrUp; 
+
     private bool playerInRange = false;
     private bool isCollected = false;
     private float lastInteractionTime = -999f;
@@ -64,7 +66,16 @@ public class AltarRelic : MonoBehaviour, IInteractable
     {
         if (isCollected || !CanInteract())
             return;
-        PlayerController.Instance.playerRuntimeStats.dashUnlocked = true;
+
+        if (unlockedPowrUp == "Dash" )
+        {
+            PlayerController.Instance.playerRuntimeStats.dashUnlocked = true;
+        }
+        if (unlockedPowrUp == "Walljump")
+        {
+            PlayerController.Instance.playerRuntimeStats.wallJumpUnlocked = true;
+        }
+
         CollectRelic();
     }
 
