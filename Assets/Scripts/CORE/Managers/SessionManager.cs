@@ -48,7 +48,10 @@ public class SessionManager : Singleton<SessionManager>
     {
         if (UnlockedFlags == null) return;
 
-        if (UnlockedFlags.Add(flagID))
+        bool wasAdded = UnlockedFlags.Add(flagID);
+        Debug.Log($"[SessionManager] Attempting to add {flagID}. Was it newly added? {wasAdded}");
+
+        if (wasAdded)
         {
             GameEvents.TriggerFlagUnlocked(flagID);
         }

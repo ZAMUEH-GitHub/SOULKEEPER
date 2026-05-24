@@ -84,7 +84,7 @@ public class PlayerJumpController : MonoBehaviour, IPlayerSubController
     public void ExecuteBounce(Vector2 direction, float force)
     {
         playerRB.linearVelocity = direction * force;
-
+        OnJumpPerformed?.Invoke();
         jumpCount = maxJumpCount;
 
         if (PlayerController.Instance.stateMachine.CurrentStateName != "PlayerAirborneState")

@@ -273,16 +273,7 @@ public class PlayerAttackController : MonoBehaviour
             else damageController.Knockback(-damageVector, knockbackForce / 2, knockbackDuration);
         }
 
-        if (collision.CompareTag("Bulb"))
-        {
-            OnBulbBounced?.Invoke();
-
-            if (player.position.y > collision.transform.position.y + 1)
-            {
-                damageController.Knockback(-damageVector, knockbackForce * 2, knockbackDuration);
-            }
-            else damageController.Knockback(-damageVector, knockbackForce * 1.5f, knockbackDuration);
-        }
+       
     }
 
     public void EndAttack()

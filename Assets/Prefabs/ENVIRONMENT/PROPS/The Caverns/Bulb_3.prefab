@@ -267,8 +267,8 @@ MonoBehaviour:
   bulbKnockbackForce: 20
   bulbKnockbackDuration: 0.25
   bulbAttackMultiplier: 2
-  bulbHitParticles: {fileID: 172347037252306250}
-  customParticlesTransform: {fileID: 0}
+  bulbHitParticles: {fileID: 1253664111215312162, guid: f172ae387b8a7b14887113392fa7f482, type: 3}
+  customParticlesTransform: {fileID: 4219599587477992374}
 --- !u!1 &6737533981859778672
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,11 +422,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f172ae387b8a7b14887113392fa7f482, type: 3}
---- !u!198 &172347037252306250 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 1253664111215312162, guid: f172ae387b8a7b14887113392fa7f482, type: 3}
-  m_PrefabInstance: {fileID: 1369556538702116968}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6908570144375399908 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5539866913002904972, guid: f172ae387b8a7b14887113392fa7f482, type: 3}
