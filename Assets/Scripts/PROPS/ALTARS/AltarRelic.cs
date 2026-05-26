@@ -75,6 +75,10 @@ public class AltarRelic : MonoBehaviour, IInteractable
         {
             PlayerController.Instance.playerRuntimeStats.wallJumpUnlocked = true;
         }
+        if (unlockedPowrUp == "SecondJump")
+        {
+            PlayerController.Instance.playerRuntimeStats.maxJumpCount = 2; 
+        }
 
         CollectRelic();
     }
