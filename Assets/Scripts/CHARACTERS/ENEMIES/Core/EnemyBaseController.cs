@@ -195,7 +195,7 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
         ForceClearAllMovementLocks();
         Stop();
 
-        if (rigidBody != null) rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
+        if (rigidBody != null) rigidBody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         if (attackController != null) attackController.enabled = false;
         if (damageController != null) damageController.enabled = false;
 

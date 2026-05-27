@@ -64,8 +64,10 @@ public class AnimationEventRelay : MonoBehaviour
 
     public void DeathEnd()
     {
-        if (deathController != null) 
+        if (deathController != null)
             deathController.TriggerDeathEffects();
+        else if (enemyController != null)
+            enemyController.Destroy();
     }
 
 
