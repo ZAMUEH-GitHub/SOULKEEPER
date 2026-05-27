@@ -192,7 +192,6 @@ GameObject:
   - component: {fileID: 3775068246595752181}
   - component: {fileID: 4016637270891472593}
   - component: {fileID: 3619229536734694748}
-  - component: {fileID: 6771920783269366696}
   m_Layer: 0
   m_Name: Attack_Altar
   m_TagString: Untagged
@@ -280,7 +279,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   altarSO: {fileID: 11400000, guid: 044166fc7988ef14ea4d7c5917d30bde, type: 2}
-  playerStats: {fileID: 0}
   requiredItemFlag: 
   startsActivated: 0
   currentStageIndex: 0
@@ -292,19 +290,6 @@ MonoBehaviour:
   interactTextMesh: {fileID: 8642529579679084227}
   nameTextMesh: {fileID: 220744997099460792}
   statusTextMesh: {fileID: 5702268903069955590}
---- !u!114 &6771920783269366696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2415303494712746804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84fb1f06d7f36a84f87d701bf106c97e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraTriggerZone
-  roomCamera: {fileID: 1749822020163096195}
 --- !u!1 &4137074134223870752
 GameObject:
   m_ObjectHideFlags: 0

@@ -662,7 +662,6 @@ GameObject:
   - component: {fileID: 1099481007576659691}
   - component: {fileID: 1483841573125459985}
   - component: {fileID: 1433541613563594873}
-  - component: {fileID: 7027682868557244563}
   m_Layer: 0
   m_Name: Health Altar
   m_TagString: Untagged
@@ -750,7 +749,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   altarSO: {fileID: 11400000, guid: 5ed767e6a59c41248836d017114bd5ae, type: 2}
-  playerStats: {fileID: 0}
   requiredItemFlag: 
   startsActivated: 0
   currentStageIndex: 0
@@ -762,19 +760,6 @@ MonoBehaviour:
   interactTextMesh: {fileID: 7629298778084839407}
   nameTextMesh: {fileID: 8796532969546309557}
   statusTextMesh: {fileID: 4979804001365529988}
---- !u!114 &7027682868557244563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7321597462562090912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84fb1f06d7f36a84f87d701bf106c97e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraTriggerZone
-  roomCamera: {fileID: 3797172587511900658}
 --- !u!1 &8443383471363709268
 GameObject:
   m_ObjectHideFlags: 0

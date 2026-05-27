@@ -4,6 +4,7 @@ public class AnimationEventRelay : MonoBehaviour
 {
     private PlayerAnimationController animationController;
     private PlayerAttackController attackController;
+    private PlayerDeathController deathController;
     private EnemyBaseController enemyController;
 
     [HideInInspector] public float attackProgress;
@@ -15,6 +16,7 @@ public class AnimationEventRelay : MonoBehaviour
         {
             animationController = PlayerController.Instance.animController;
             attackController = PlayerController.Instance.attackController;
+            deathController = PlayerController.Instance.deathController;
         }
 
         enemyController = GetComponentInParent<EnemyBaseController>();
@@ -56,5 +58,13 @@ public class AnimationEventRelay : MonoBehaviour
     {
         if (enemyController != null)
             enemyController.ImpactFinished();
+    }
+
+    public void DeathEnd()
+    {
+        if (deathController != null)
+        {
+            deathController.TriggerDeathEffects();
+        }
     }
 }

@@ -555,7 +555,6 @@ GameObject:
   - component: {fileID: 3763862457737772060}
   - component: {fileID: 4971448524188851338}
   - component: {fileID: 3232886126199774934}
-  - component: {fileID: 8360257626793216354}
   m_Layer: 0
   m_Name: Dash_Altar
   m_TagString: Untagged
@@ -643,7 +642,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   altarSO: {fileID: 11400000, guid: c420402d9d4e7304b9c1679b76ddbce0, type: 2}
-  playerStats: {fileID: 0}
   requiredItemFlag: DashRelic_PickedUp
   startsActivated: 0
   currentStageIndex: 0
@@ -655,19 +653,6 @@ MonoBehaviour:
   interactTextMesh: {fileID: 6461283425334023951}
   nameTextMesh: {fileID: 3721496002200888720}
   statusTextMesh: {fileID: 8454604526527901530}
---- !u!114 &8360257626793216354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7989476096324053299}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84fb1f06d7f36a84f87d701bf106c97e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraTriggerZone
-  roomCamera: {fileID: 719351127123659325}
 --- !u!1 &9015192382162808031
 GameObject:
   m_ObjectHideFlags: 0

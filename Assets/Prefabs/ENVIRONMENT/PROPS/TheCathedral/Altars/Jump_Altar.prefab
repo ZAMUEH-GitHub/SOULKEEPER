@@ -283,7 +283,6 @@ GameObject:
   - component: {fileID: 4282575551149106104}
   - component: {fileID: 160348946865790811}
   - component: {fileID: 5707903714487281746}
-  - component: {fileID: 1210464870179245751}
   m_Layer: 0
   m_Name: Jump_Altar
   m_TagString: Untagged
@@ -371,7 +370,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   altarSO: {fileID: 11400000, guid: ed0323bbf3af59c49ba4cd6569a6363b, type: 2}
-  playerStats: {fileID: 0}
   requiredItemFlag: 
   startsActivated: 0
   currentStageIndex: 0
@@ -383,19 +381,6 @@ MonoBehaviour:
   interactTextMesh: {fileID: 8119045683526265147}
   nameTextMesh: {fileID: 2856815324848080685}
   statusTextMesh: {fileID: 7304506828214440689}
---- !u!114 &1210464870179245751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2402177389807982857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84fb1f06d7f36a84f87d701bf106c97e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraTriggerZone
-  roomCamera: {fileID: 5287769227663829319}
 --- !u!1 &6465560376278564045
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,21 +25,36 @@ public class PlayerDeathController : MonoBehaviour
         colliders = GetComponents<Collider2D>();
     }
 
-    #region Death Logic
     public void Die()
     {
         if (isDead) return;
+
         isDead = true;
         playerController.isAlive = false;
 
         if (playerController != null)
         {
             playerController.FreezeAllInputs();
-
             playerController.stateMachine.ChangeState(playerController.deathState);
         }
 
-        Instantiate(deathParticles, transform.position, Quaternion.identity);
+        int corpseLayer = LayerMask.NameToLayer("Corpse");
+        if (corpseLayer != -1)
+        {
+            gameObject.layer = corpseLayer;
+            foreach (Transform child in transform)
+            {
+                child.gameObject.layer = corpseLayer;
+            }
+        }
+    }
+
+    public void TriggerDeathEffects()
+    {
+        if (deathParticles != null)
+        {
+            Instantiate(deathParticles, transform.position, Quaternion.identity);
+        }
 
         if (soulObject != null)
         {
@@ -49,10 +64,6 @@ public class PlayerDeathController : MonoBehaviour
                 soul.transform.position = new Vector2(soul.transform.position.x + Random.Range(-2f, 2f), soul.transform.position.y + Random.Range(-1.5f, 2f));
             }
         }
-
-        int corpseLayer = LayerMask.NameToLayer("Corpse");
-        if (corpseLayer != -1)
-            gameObject.layer = corpseLayer;
 
         StartCoroutine(DeathRoutine());
     }
@@ -74,12 +85,13 @@ public class PlayerDeathController : MonoBehaviour
             Debug.LogError("[PlayerDeathController] GameSceneManager.Instance not found!");
         }
     }
-    #endregion
 
     public void ResetAfterRespawn()
     {
         isDead = false;
         playerController.isAlive = true;
+
+        playerController.animController.SetBool("isDead", false);
 
         if (colliders != null)
         {
@@ -89,7 +101,13 @@ public class PlayerDeathController : MonoBehaviour
 
         int playerLayer = LayerMask.NameToLayer("Player");
         if (playerLayer != -1)
+        {
             gameObject.layer = playerLayer;
+            foreach (Transform child in transform)
+            {
+                child.gameObject.layer = playerLayer;
+            }
+        }
 
         playerController.stateMachine.ChangeState(playerController.respawnState);
     }

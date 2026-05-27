@@ -38,6 +38,8 @@ public class UIAudioHandler : MonoBehaviour
         if (musicSlider != null) musicSlider.onValueChanged.AddListener(OnMusicChanged);
         if (sfxSlider != null) sfxSlider.onValueChanged.AddListener(OnSfxChanged);
         if (muteToggle != null) muteToggle.onValueChanged.AddListener(OnMuteToggled);
+
+        InitializeUI();
     }
 
     private void OnDestroy()
@@ -53,7 +55,7 @@ public class UIAudioHandler : MonoBehaviour
         audioManager ??= AudioManager.Instance;
         settingsManager ??= SettingsManager.Instance;
 
-        if (audioManager == null || settingsManager == null) return;
+        if (audioManager == null || settingsManager == null || settingsManager.CurrentSettings == null) return;
 
         if (masterSlider != null) masterSlider.SetValueWithoutNotify(settingsManager.CurrentSettings.masterVolume);
         if (musicSlider != null) musicSlider.SetValueWithoutNotify(settingsManager.CurrentSettings.musicVolume);

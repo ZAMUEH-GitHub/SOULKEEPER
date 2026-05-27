@@ -14,7 +14,7 @@ public class PlayerDeathState : PlayerBaseState
         player.animController.SetBool("isWallSliding", false);
         player.animController.SetBool("isFalling", false);
 
-        // player.animController.SetTrigger("Die"); 
+        player.animController.SetBool("isDead", true); 
     }
 
     public override void Update()

@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public PlayerInteractController interactController;
     [HideInInspector] public PlayerDamageController damageController;
     [HideInInspector] public PlayerAnimationController animController;
+    [HideInInspector] public PlayerDeathController deathController;
 
     private List<IPlayerSubController> subControllers = new();
     [HideInInspector] public Vector2 moveVector;
@@ -102,6 +103,7 @@ public class PlayerController : MonoBehaviour
         interactController = GetComponent<PlayerInteractController>();
         damageController = GetComponent<PlayerDamageController>();
         animController = GetComponentInChildren<PlayerAnimationController>();
+        deathController = GetComponent<PlayerDeathController>();
 
         subControllers.AddRange(GetComponents<IPlayerSubController>());
 
