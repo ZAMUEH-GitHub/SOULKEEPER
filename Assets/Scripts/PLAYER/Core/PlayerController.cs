@@ -129,8 +129,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!playerInputActive) return;
-
         jumpBufferTimer = Mathf.Max(0, jumpBufferTimer - Time.deltaTime);
         dashBufferTimer = Mathf.Max(0, dashBufferTimer - Time.deltaTime);
         attackBufferTimer = Mathf.Max(0, attackBufferTimer - Time.deltaTime);
@@ -143,8 +141,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!playerInputActive) return;
-
         stateMachine?.FixedUpdate();
     }
     #endregion
@@ -152,27 +148,32 @@ public class PlayerController : MonoBehaviour
     #region Player Input Callbacks
     public void PlayerInputMove(InputAction.CallbackContext ctx)
     {
+        if (!playerInputActive) return;
         moveVector = ctx.ReadValue<Vector2>();
         moveInput = ctx.performed;
     }
 
     public void PlayerInputJump(InputAction.CallbackContext ctx)
     {
+        if (!playerInputActive) return;
         if (ctx.performed) jumpBufferTimer = playerRuntimeStats.bufferTime;
     }
 
     public void PlayerInputDash(InputAction.CallbackContext ctx)
     {
+        if (!playerInputActive) return;
         if (ctx.performed) dashBufferTimer = playerRuntimeStats.bufferTime;
     }
 
     public void PlayerInputAttack(InputAction.CallbackContext ctx)
     {
+        if (!playerInputActive) return;
         if (ctx.performed) attackBufferTimer = playerRuntimeStats.bufferTime;
     }
 
     public void PlayerInputInteract(InputAction.CallbackContext ctx)
     {
+        if (!playerInputActive) return;
         if (ctx.performed) interactBufferTimer = playerRuntimeStats.bufferTime;
     }
     #endregion
@@ -206,10 +207,15 @@ public class PlayerController : MonoBehaviour
     #region Player Input Lock Controls
     public void FreezeAllInputs()
     {
-        moveVector = Vector2.zero;
         playerInputActive = false;
 
-        jumpBufferTimer = dashBufferTimer = attackBufferTimer = interactBufferTimer = 0;
+        moveVector = Vector2.zero;
+        moveInput = false;
+
+        jumpBufferTimer = 
+        dashBufferTimer = 
+        attackBufferTimer = 
+        interactBufferTimer = 0f;
     }
 
     public void UnfreezeAllInputs()

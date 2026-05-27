@@ -25,6 +25,7 @@ public class PlayerDeathController : MonoBehaviour
         colliders = GetComponents<Collider2D>();
     }
 
+    #region Death Logic
     public void Die()
     {
         if (isDead) return;
@@ -40,10 +41,13 @@ public class PlayerDeathController : MonoBehaviour
 
         Instantiate(deathParticles, transform.position, Quaternion.identity);
 
-        for (int i = playerStats.score / 2; i > 0; i--)
+        if (soulObject != null)
         {
-            GameObject soul = Instantiate(soulObject, transform.position, Quaternion.identity);
-            soul.transform.position = new Vector2(soul.transform.position.x + Random.Range(-2f, 2f), soul.transform.position.y + Random.Range(-1.5f, 2f));
+            for (int i = playerStats.score / 2; i > 0; i--)
+            {
+                GameObject soul = Instantiate(soulObject, transform.position, Quaternion.identity);
+                soul.transform.position = new Vector2(soul.transform.position.x + Random.Range(-2f, 2f), soul.transform.position.y + Random.Range(-1.5f, 2f));
+            }
         }
 
         int corpseLayer = LayerMask.NameToLayer("Corpse");
@@ -70,6 +74,7 @@ public class PlayerDeathController : MonoBehaviour
             Debug.LogError("[PlayerDeathController] GameSceneManager.Instance not found!");
         }
     }
+    #endregion
 
     public void ResetAfterRespawn()
     {

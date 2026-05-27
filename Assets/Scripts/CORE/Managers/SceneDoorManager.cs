@@ -29,38 +29,10 @@ public class SceneDoorManager : MonoBehaviour
             Debug.LogWarning($"[SceneDoorManager] No doors found in scene '{gameObject.scene.name}'.");
     }
 
-    public async void RegisterDoorUse(string doorID)
+    public void RegisterDoorUse(string doorID)
     {
         lastUsedDoorID = doorID;
-
-        var runtimeStats = SessionManager.Instance.RuntimeStats;
-        if (runtimeStats == null)
-        {
-            Debug.LogWarning("[SceneDoorManager] RuntimePlayerStats not found — skipping autosave.");
-            return;
-        }
-
-        saveSlotManager ??= SaveSlotManager.Instance;
-        if (saveSlotManager == null)
-        {
-            Debug.LogWarning("[SceneDoorManager] SaveSlotManager.Instance not found — cannot autosave.");
-            return;
-        }
-
-        int slot = saveSlotManager.ActiveSlotIndex;
-
-        var currentCheckpoint = CheckpointManager.Instance?.ActiveCheckpointID;
-        if (string.IsNullOrEmpty(currentCheckpoint) || currentCheckpoint == "__NONE__")
-        {
-            currentCheckpoint = SaveSystem.LastLoadedCheckpointID;
-            if (string.IsNullOrEmpty(currentCheckpoint))
-            {
-                Debug.LogWarning("[SceneDoorManager] No valid checkpoint found — preserving last loaded checkpoint state.");
-            }
-        }
-
-        await SaveSystem.SaveAsync(slot, runtimeStats, doorID, currentCheckpoint);
-        Debug.Log($"[SceneDoorManager] Door '{doorID}' triggered autosave with checkpoint '{currentCheckpoint}'.");
+        Debug.Log($"[SceneDoorManager] Door '{doorID}' registered as last used.");
     }
 
     public void ChooseDoor(string targetDoorID)

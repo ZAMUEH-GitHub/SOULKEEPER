@@ -52,7 +52,11 @@ public class PlayerWallController : MonoBehaviour, IPlayerSubController
         if (playerStats.wallSlideUnlocked && isWalled && !jumpController.isGrounded && !jumpController.isJumping && !isWallJumping)
         {
             isWallSliding = true;
-            jumpController.jumpCount = jumpController.maxJumpCount;
+
+            if (playerStats.wallJumpUnlocked)
+            {
+                jumpController.jumpCount = jumpController.maxJumpCount;
+            }
         }
         else
         {

@@ -6,11 +6,13 @@ using TMPro;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Collider2D))]
+
 public class AltarController : MonoBehaviour, IInteractable
 {
     [Header("Altar Setup")]
     public AltarStatsSO altarSO;
-    public PlayerStatsSO playerStats;
+    private PlayerStatsSO playerStats;
+
     [SerializeField] private string requiredItemFlag;
     [SerializeField] private bool startsActivated = false;
     [SerializeField] private int currentStageIndex = 0;
@@ -47,6 +49,14 @@ public class AltarController : MonoBehaviour, IInteractable
         if (startsActivated) isActivated = true;
 
         HideAllTextsInstant();
+    }
+
+    private void Start()
+    {
+        if (PlayerController.Instance != null)
+        {
+            playerStats = PlayerController.Instance.playerRuntimeStats;
+        }
     }
 
     private void Update()
@@ -108,6 +118,12 @@ public class AltarController : MonoBehaviour, IInteractable
 
         var def = altarSO.GetStage(currentStageIndex);
         if (def == null) return;
+
+        // Fallback check just in case the player wasn't loaded during Start()
+        if (playerStats == null && PlayerController.Instance != null)
+        {
+            playerStats = PlayerController.Instance.playerRuntimeStats;
+        }
 
         if (playerStats != null && playerStats.score >= def.cost)
         {

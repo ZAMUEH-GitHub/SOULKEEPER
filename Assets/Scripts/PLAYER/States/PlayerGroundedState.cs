@@ -4,7 +4,6 @@ public class PlayerGroundedState : PlayerBaseState
 
     public override void Enter()
     {
-        player.jumpController.jumpCount = player.jumpController.maxJumpCount;
         player.animController.SetBool("isGrounded", true);
     }
 
