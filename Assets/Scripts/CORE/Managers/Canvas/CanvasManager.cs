@@ -150,6 +150,8 @@ public class CanvasManager : Singleton<CanvasManager>
         {
             panel.interactable = s.interactable;
             panel.blocksRaycasts = s.blockRaycasts;
+
+            ResetPanelButtons(panel.transform);
         }
 
         float t = 0f;
@@ -175,6 +177,25 @@ public class CanvasManager : Singleton<CanvasManager>
         }
 
         activeFades.Remove(panel);
+    }
+
+    private void ResetPanelButtons(Transform panelTransform)
+    {
+        Selectable[] selectables = panelTransform.GetComponentsInChildren<Selectable>(true);
+        int normalTrigger = Animator.StringToHash("Normal");
+
+        foreach (var selectable in selectables)
+        {
+            if (selectable.transition == Selectable.Transition.Animation)
+            {
+                Animator anim = selectable.GetComponent<Animator>();
+                if (anim != null && anim.gameObject.activeInHierarchy)
+                {
+                    anim.ResetTrigger("Pressed");
+                    anim.SetTrigger(normalTrigger);
+                }
+            }
+        }
     }
 
     private IEnumerator ApplyPanelSelectionNextFrame(PanelFadeSettings s)

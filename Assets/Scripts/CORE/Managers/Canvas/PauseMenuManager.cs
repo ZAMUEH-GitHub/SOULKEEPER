@@ -7,6 +7,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 {
     protected override bool IsPersistent => false;
 
+    [Header("UI References")]
+    [SerializeField] private MenuBarManager localMenuBar;
+
     [Header("Panels")]
     [SerializeField] private PanelType startPanel = PanelType.HUD;
     [SerializeField] private PanelType pausePanel = PanelType.PauseMenu;
@@ -24,6 +27,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     [SerializeField] private GameObject gamepadControlsImage;
 
     private bool isPaused;
+    private bool isTransitioning;
     private CanvasManager canvasManager;
     private GameSceneManager sceneManager;
     private TimeManager timeManager;
@@ -48,6 +52,8 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
             canvasManager.FadeOut(pauseAudioSettings);
             canvasManager.FadeOut(pauseKeybindings);
         }
+
+        if (localMenuBar != null) localMenuBar.SetVisible(false);
     }
     #endregion
 
@@ -59,35 +65,74 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
     public void TogglePause()
     {
-        if (isPaused) ResumeGame();
-        else PauseGame();
+        if (isTransitioning) return;
+
+        if (isPaused) StartCoroutine(ResumeGameRoutine());
+        else StartCoroutine(PauseGameRoutine());
     }
 
-    private void PauseGame()
+    private IEnumerator PauseGameRoutine()
     {
-        if (isPaused) return;
+        isTransitioning = true;
         isPaused = true;
-
         timeManager?.FreezeTime();
+
         canvasManager.FadeOut(startPanel);
+
+        float fadeInTime = canvasManager.GetFadeDuration(pausePanel);
+        float barOpenTime = 0f;
+
+        if (localMenuBar != null)
+        {
+            localMenuBar.SetVisible(true);
+            localMenuBar.OpenBar();
+            barOpenTime = localMenuBar.OpenDuration;
+        }
+
+        float delay = Mathf.Max(0f, barOpenTime - fadeInTime);
+        if (delay > 0f) yield return new WaitForSecondsRealtime(delay);
+
         canvasManager.FadeIn(pausePanel);
         currentPanel = pausePanel;
+
+        yield return new WaitForSecondsRealtime(fadeInTime);
+
+        isTransitioning = false;
     }
 
-    private void ResumeGame()
+    private IEnumerator ResumeGameRoutine()
     {
-        if (!isPaused) return;
-        isPaused = false;
+        isTransitioning = true;
 
-        timeManager?.ResetTime();
-        canvasManager.FadeOut(pausePanel);
+        canvasManager.FadeOut(currentPanel);
+
+        float fadeOutTime = canvasManager.GetFadeDuration(currentPanel);
+        float barCloseTime = 0f;
+
+        if (localMenuBar != null)
+        {
+            localMenuBar.CloseBar();
+            barCloseTime = localMenuBar.CloseDuration;
+        }
+
+        yield return new WaitForSecondsRealtime(Mathf.Max(fadeOutTime, barCloseTime));
+
+        if (localMenuBar != null) localMenuBar.SetVisible(false);
+
         canvasManager.FadeIn(startPanel);
         currentPanel = startPanel;
+
+        timeManager?.ResetTime();
+        isPaused = false;
+        isTransitioning = false;
     }
     #endregion
 
     #region Navigation
-    public void OnResumeGame() => ResumeGame();
+    public void OnResumeGame()
+    {
+        if (!isTransitioning) StartCoroutine(ResumeGameRoutine());
+    }
     public void GoToPauseMenu() => GoToPanel(pausePanel);
     public void GoToSettingsPanel() => GoToPanel(pauseSettings);
     public void GoToAudioSettings() => GoToPanel(pauseAudioSettings);
@@ -95,7 +140,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
 
     public void GoToPanel(PanelType newPanel)
     {
-        if (newPanel == currentPanel) return;
+        if (isTransitioning || newPanel == currentPanel) return;
         StartCoroutine(CrossFadePanels(currentPanel, newPanel));
         currentPanel = newPanel;
     }
@@ -103,9 +148,48 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     private IEnumerator CrossFadePanels(PanelType fromPanel, PanelType toPanel)
     {
         if (canvasManager == null) yield break;
+
+        isTransitioning = true;
+
         canvasManager.FadeOut(fromPanel);
+
+        float fadeOutTime = canvasManager.GetFadeDuration(fromPanel);
+        float barCloseTime = 0f;
+
+        if (localMenuBar != null)
+        {
+            localMenuBar.CloseBar();
+            barCloseTime = localMenuBar.CloseDuration;
+        }
+
+        yield return new WaitForSecondsRealtime(Mathf.Max(fadeOutTime, barCloseTime));
+
+
+        float fadeInTime = canvasManager.GetFadeDuration(toPanel);
+        float barOpenTime = 0f;
+
+        if (localMenuBar != null)
+        {
+            barOpenTime = localMenuBar.OpenDuration;
+        }
+
+        float delayBeforeFadeIn = Mathf.Max(0f, barOpenTime - fadeInTime);
+
+        if (barOpenTime > 0f)
+        {
+            localMenuBar.OpenBar();
+        }
+
+        if (delayBeforeFadeIn > 0f)
+        {
+            yield return new WaitForSecondsRealtime(delayBeforeFadeIn);
+        }
+
         canvasManager.FadeIn(toPanel);
-        yield return new WaitForSeconds(canvasManager.GetFadeDuration(toPanel));
+
+        yield return new WaitForSecondsRealtime(fadeInTime);
+
+        isTransitioning = false;
     }
     #endregion
 
@@ -117,14 +201,32 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
         canvasManager.ShowConfirmation(
             "EXIT TO MAIN MENU?",
             "(All unsaved progress will be lost)",
-            ExitToMainMenu
+            ExecuteExitToMainMenu
         );
     }
 
-    private void ExitToMainMenu()
+    private void ExecuteExitToMainMenu()
     {
+        StartCoroutine(ExitToMainMenuRoutine());
+    }
+
+    private IEnumerator ExitToMainMenuRoutine()
+    {
+        if (canvasManager != null) canvasManager.FadeOut(currentPanel);
+        float fadeOutTime = canvasManager != null ? canvasManager.GetFadeDuration(currentPanel) : 0f;
+        float barCloseTime = 0f;
+
+        if (localMenuBar != null)
+        {
+            localMenuBar.CloseBar();
+            barCloseTime = localMenuBar.CloseDuration;
+        }
+
+        yield return new WaitForSecondsRealtime(Mathf.Max(fadeOutTime, barCloseTime));
+
+        if (localMenuBar != null) localMenuBar.SetVisible(false);
+
         timeManager?.ResetTime();
-        if (canvasManager != null) canvasManager.FadeOut(pausePanel);
         sceneManager?.LoadSceneDirect(mainMenuScene, Vector2.zero);
     }
     #endregion
@@ -145,6 +247,7 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     {
         currentPanel = startPanel;
         canvasManager?.FadeIn(currentPanel);
+        if (localMenuBar != null) localMenuBar.SetVisible(false);
         isPaused = false;
         timeManager?.ResetTime();
     }

@@ -25,6 +25,7 @@ public class ConfirmationPanelManager : Singleton<ConfirmationPanelManager>
     protected override bool IsPersistent => false;
 
     [Header("UI References")]
+    [SerializeField] private MenuBarManager localMenuBar;
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text subtitleText;
     [SerializeField] private GameObject confirmButton;
@@ -35,6 +36,11 @@ public class ConfirmationPanelManager : Singleton<ConfirmationPanelManager>
 
     private PanelType? previousPanelType = null;
     private GameObject previousSelectedObject = null;
+
+    private void Start()
+    {
+        if (localMenuBar != null) localMenuBar.SetVisible(false);
+    }
 
     public void ShowConfirmation(string title, string subtitle, Action confirmAction, Action cancelAction = null)
     {
@@ -77,14 +83,31 @@ public class ConfirmationPanelManager : Singleton<ConfirmationPanelManager>
             previousPanelType = candidate != null ? candidate.panelType : temporarilyDisabledPanels[0].panelType;
         }
 
-        canvasManager.FadeIn(PanelType.ConfirmationPanel);
-
-        StartCoroutine(SelectConfirmButtonNextFrame());
+        StartCoroutine(ShowConfirmationRoutine());
     }
 
-    private IEnumerator SelectConfirmButtonNextFrame()
+    private IEnumerator ShowConfirmationRoutine()
     {
-        yield return null;
+        var canvasManager = CanvasManager.Instance;
+        float fadeInTime = canvasManager.GetFadeDuration(PanelType.ConfirmationPanel);
+        float barOpenTime = 0f;
+
+        if (localMenuBar != null)
+        {
+            localMenuBar.SetVisible(true);
+            localMenuBar.OpenBar();
+            barOpenTime = localMenuBar.OpenDuration;
+        }
+
+        float delayBeforeFadeIn = Mathf.Max(0f, barOpenTime - fadeInTime);
+        if (delayBeforeFadeIn > 0f)
+        {
+            yield return new WaitForSecondsRealtime(delayBeforeFadeIn);
+        }
+
+        canvasManager.FadeIn(PanelType.ConfirmationPanel);
+
+        yield return new WaitForSecondsRealtime(fadeInTime);
 
         if (confirmButton != null && EventSystem.current != null)
         {
@@ -101,19 +124,35 @@ public class ConfirmationPanelManager : Singleton<ConfirmationPanelManager>
     public void OnConfirmPressed()
     {
         currentRequest?.onConfirm?.Invoke();
-        CloseConfirmation();
+        StartCoroutine(CloseConfirmationRoutine());
     }
 
     public void OnCancelPressed()
     {
         currentRequest?.onCancel?.Invoke();
-        CloseConfirmation();
+        StartCoroutine(CloseConfirmationRoutine());
     }
 
-    private void CloseConfirmation()
+    private IEnumerator CloseConfirmationRoutine()
     {
-        if (isClosingConfirmation) return;
+        if (isClosingConfirmation) yield break;
         isClosingConfirmation = true;
+
+        var canvasManager = CanvasManager.Instance;
+        canvasManager.FadeOut(PanelType.ConfirmationPanel);
+
+        float fadeOutTime = canvasManager.GetFadeDuration(PanelType.ConfirmationPanel);
+        float barCloseTime = 0f;
+
+        if (localMenuBar != null)
+        {
+            localMenuBar.CloseBar();
+            barCloseTime = localMenuBar.CloseDuration;
+        }
+
+        yield return new WaitForSecondsRealtime(Mathf.Max(fadeOutTime, barCloseTime));
+
+        if (localMenuBar != null) localMenuBar.SetVisible(false);
 
         foreach (var p in temporarilyDisabledPanels)
         {
@@ -123,8 +162,7 @@ public class ConfirmationPanelManager : Singleton<ConfirmationPanelManager>
         }
         temporarilyDisabledPanels.Clear();
 
-        CanvasManager.Instance.FadeOut(PanelType.ConfirmationPanel);
-        StartCoroutine(RestoreFocusAfterFade());
+        yield return StartCoroutine(RestoreFocusAfterFade());
 
         currentRequest = null;
         isClosingConfirmation = false;
@@ -132,7 +170,6 @@ public class ConfirmationPanelManager : Singleton<ConfirmationPanelManager>
 
     private IEnumerator RestoreFocusAfterFade()
     {
-        yield return new WaitForSeconds(CanvasManager.Instance.GetFadeDuration(PanelType.ConfirmationPanel));
         if (EventSystem.current == null) yield break;
 
         if (previousSelectedObject != null)

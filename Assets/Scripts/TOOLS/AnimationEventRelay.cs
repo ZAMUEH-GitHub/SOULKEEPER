@@ -11,6 +11,7 @@ public class AnimationEventRelay : MonoBehaviour
 
     [HideInInspector] public float attackProgress;
     [HideInInspector] public float speedMultiplier = 1f;
+    [HideInInspector] public float gradientScale = 1f;
 
     private void Start()
     {
@@ -33,7 +34,7 @@ public class AnimationEventRelay : MonoBehaviour
 
     private void Update()
     {
-        if (enemyController != null) 
+        if (enemyController != null)
             enemyController.moveSpeedMultiplier = speedMultiplier;
     }
 
@@ -70,7 +71,6 @@ public class AnimationEventRelay : MonoBehaviour
             enemyController.Destroy();
     }
 
-
     public void PlayFootstep()
     {
         if (audioController != null) audioController.PlayFootstepSound();
@@ -85,7 +85,7 @@ public class AnimationEventRelay : MonoBehaviour
 
     public void PlayDashSound()
     {
-        if (audioController != null) 
+        if (audioController != null)
             audioController.PlayDashSound();
     }
 
@@ -97,25 +97,25 @@ public class AnimationEventRelay : MonoBehaviour
 
     public void PlayFallSound()
     {
-        if (audioController != null) 
+        if (audioController != null)
             audioController.PlayFallSound();
     }
 
     public void PlayDamageSound()
     {
-        if (enemyAudioController != null) 
+        if (enemyAudioController != null)
             enemyAudioController.PlayDamageSound();
     }
 
     public void PlayIdleSound()
     {
-        if (enemyAudioController != null) 
+        if (enemyAudioController != null)
             enemyAudioController.PlayIdleSound();
     }
 
     public void PlayPrepareAttackSound()
     {
-        if (enemyAudioController != null) 
+        if (enemyAudioController != null)
             enemyAudioController.PlayPrepareAttackSound();
     }
 

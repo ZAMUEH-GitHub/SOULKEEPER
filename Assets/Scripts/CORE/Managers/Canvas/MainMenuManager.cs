@@ -13,6 +13,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     [Header("Transition Settings")]
     [SerializeField] private float transitionDelay = 0.15f;
+    [SerializeField] private MenuBarManager localMenuBar;
 
     [Header("New Game Defaults")]
     [SerializeField] private SceneField newGameScene;
@@ -43,6 +44,11 @@ public class MainMenuManager : Singleton<MainMenuManager>
         currentPanel = startPanel;
 
         if (canvasManager == null) return;
+
+        if (localMenuBar != null)
+        {
+            localMenuBar.SetVisible(startPanel != PanelType.TitleScreen);
+        }
 
         if (startPanel == PanelType.TitleScreen)
         {
@@ -98,11 +104,15 @@ public class MainMenuManager : Singleton<MainMenuManager>
             canvasManager.FadeIn(PanelType.TitleScreen);
             currentPanel = PanelType.TitleScreen;
             hasInitializedOnce = true;
+
+            if (localMenuBar != null) localMenuBar.SetVisible(false);
         }
         else
         {
             canvasManager.FadeIn(PanelType.MainMenu);
             currentPanel = PanelType.MainMenu;
+
+            if (localMenuBar != null) localMenuBar.SetVisible(true);
         }
     }
     #endregion
@@ -133,9 +143,50 @@ public class MainMenuManager : Singleton<MainMenuManager>
         yield return new WaitForSecondsRealtime(transitionDelay);
 
         canvasManager.FadeOut(fromPanel);
+
+        float fadeOutTime = canvasManager.GetFadeDuration(fromPanel);
+        float barCloseTime = 0f;
+
+        if (localMenuBar != null && fromPanel != PanelType.TitleScreen && fromPanel != PanelType.MainMenu)
+        {
+            localMenuBar.CloseBar();
+            barCloseTime = localMenuBar.CloseDuration;
+        }
+
+        yield return new WaitForSecondsRealtime(Mathf.Max(fadeOutTime, barCloseTime));
+
+
+        float fadeInTime = canvasManager.GetFadeDuration(toPanel);
+        float barOpenTime = 0f;
+
+        if (localMenuBar != null)
+        {
+            if (fromPanel == PanelType.TitleScreen)
+            {
+                localMenuBar.SetVisible(true);
+            }
+
+            if (toPanel != PanelType.MainMenu && toPanel != PanelType.TitleScreen)
+            {
+                barOpenTime = localMenuBar.OpenDuration;
+            }
+        }
+
+        float delayBeforeFadeIn = Mathf.Max(0f, barOpenTime - fadeInTime);
+
+        if (barOpenTime > 0f)
+        {
+            localMenuBar.OpenBar();
+        }
+
+        if (delayBeforeFadeIn > 0f)
+        {
+            yield return new WaitForSecondsRealtime(delayBeforeFadeIn);
+        }
+
         canvasManager.FadeIn(toPanel);
 
-        yield return new WaitForSecondsRealtime(canvasManager.GetFadeDuration(toPanel));
+        yield return new WaitForSecondsRealtime(fadeInTime);
 
         isTransitioning = false;
     }
