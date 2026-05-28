@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyAudioController : MonoBehaviour
 {
     [Header("Audio Clips")]
+    [SerializeField] private AudioClip[] smashAttackSounds;
     [SerializeField] private AudioClip[] attackSounds;
     [SerializeField] private AudioClip[] footstepSounds;
     [SerializeField] private AudioClip[] damageSounds;
@@ -20,6 +21,7 @@ public class EnemyAudioController : MonoBehaviour
         audioSource.playOnAwake = false;
     }
 
+    public void PlaySmashAttackSound() => PlayRandomClip(smashAttackSounds);
     public void PlayAttackSound() => PlayRandomClip(attackSounds);
     public void PlayFootstepSound() => PlayRandomClip(footstepSounds);
     public void PlayDamageSound() => PlayRandomClip(damageSounds);
