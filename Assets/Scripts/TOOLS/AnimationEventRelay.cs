@@ -8,6 +8,7 @@ public class AnimationEventRelay : MonoBehaviour
     private EnemyBaseController enemyController;
     private PlayerAudioController audioController;
     private EnemyAudioController enemyAudioController;
+    private SpiderEnemyController spiderEnemyController;
 
     [HideInInspector] public float attackProgress;
     [HideInInspector] public float speedMultiplier = 1f;
@@ -25,11 +26,8 @@ public class AnimationEventRelay : MonoBehaviour
         }
 
         enemyController = GetComponentInParent<EnemyBaseController>();
-
-        if (enemyController != null)
-        {
-            enemyAudioController = enemyController.GetComponent<EnemyAudioController>();
-        }
+        spiderEnemyController = GetComponentInParent<SpiderEnemyController>();
+        enemyAudioController = GetComponentInParent<EnemyAudioController>();
     }
 
     private void Update()
@@ -46,9 +44,12 @@ public class AnimationEventRelay : MonoBehaviour
 
     public void AttackEnd()
     {
-        if (attackController != null) attackController.EndAttack();
-        else if (enemyController != null) enemyController.EndAttack();
-
+        if (attackController != null) 
+            attackController.EndAttack();
+        else if (enemyController != null) 
+            enemyController.EndAttack();
+        else if (spiderEnemyController != null) 
+            spiderEnemyController.EndAttack();
     }
 
     public void StartChargeLunge()
@@ -65,10 +66,9 @@ public class AnimationEventRelay : MonoBehaviour
 
     public void DeathEnd()
     {
-        if (deathController != null)
-            deathController.TriggerDeathEffects();
-        else if (enemyController != null)
-            enemyController.Destroy();
+        if (deathController != null) deathController.TriggerDeathEffects();
+        else if (enemyController != null) enemyController.Destroy();
+        else if (spiderEnemyController != null) spiderEnemyController.EndDeath();
     }
 
     public void PlayFootstep()
