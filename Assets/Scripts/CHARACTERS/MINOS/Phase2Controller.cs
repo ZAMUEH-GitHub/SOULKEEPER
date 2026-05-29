@@ -111,6 +111,11 @@ public class Phase2Controller : MonoBehaviour
         var collisionController = playerController.GetComponent<PlayerCollisionController>();
         if (collisionController == null || !collisionController.isTrapped) return;
 
+        playerController.transform.SetParent(null);
+        playerController.transform.localScale = Vector3.one;
+
+        collisionController.isTrapped = false;
+
         Vector2 knockbackVector = throwRight ? throwRightVector : throwLeftVector;
 
         playerController.damageController.Knockback(knockbackVector, knockbackForce * 2, knockbackDuration);

@@ -54,6 +54,10 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     #region Knockback System
     public void Knockback(Vector2 knockbackVector, float knockbackForce, float knockbackDuration)
     {
+        playerRB.bodyType = RigidbodyType2D.Dynamic;
+
+        playerRB.gravityScale = 1;
+
         playerRB.AddForce(knockbackVector * knockbackForce, ForceMode2D.Impulse);
         playerRB.linearVelocity = (new Vector2(knockbackVector.x, knockbackVector.y + 1) * knockbackForce);
         isKnockedBack = true;
@@ -61,8 +65,6 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
         currentKnockbackDuration = knockbackDuration;
 
         playerController.stateMachine.ChangeState(playerController.knockbackState);
-
-        Debug.Log("Player is being Knocked Back");
     }
 
     public void EndKnockback()

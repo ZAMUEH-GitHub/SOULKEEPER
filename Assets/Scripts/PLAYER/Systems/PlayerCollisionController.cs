@@ -81,12 +81,6 @@ public class PlayerCollisionController : MonoBehaviour
         {
             platformAttachment?.DetachFromPlatform();
         }
-
-        if (other.CompareTag("Minos Grab Collider"))
-        {
-            playerRigidBody.gravityScale = 5f;
-            isTrapped = false;
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
