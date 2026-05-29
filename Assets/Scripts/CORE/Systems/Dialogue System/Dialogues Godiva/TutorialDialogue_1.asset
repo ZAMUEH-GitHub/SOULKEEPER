@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5e2d1b3fc6aa734ea882d0a4ec1d085, type: 3}
-  m_Name: TutorialDialogue_0
+  m_Name: TutorialDialogue_1
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSequenceSO
   nodes:
   - speakerName: Godiva
-    dialogueText: '[Intro de Godiva]'
+    dialogueText: "[Intro a mec\xE1nica de Salto]"
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: 1
     unlockFlag: 
   - speakerName: Godiva
-    dialogueText: "S\xEDgueme.. te ense\xF1ar\xE9 donde est\xE1 la salida"
+    dialogueText: Salta!!
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: -1
-    unlockFlag: IntroDialogue_Completed
+    unlockFlag: JumpDialogue_Completed

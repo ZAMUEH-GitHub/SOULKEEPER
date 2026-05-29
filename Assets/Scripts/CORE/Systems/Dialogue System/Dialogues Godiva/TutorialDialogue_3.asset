@@ -10,18 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5e2d1b3fc6aa734ea882d0a4ec1d085, type: 3}
-  m_Name: TutorialDialogue_0
+  m_Name: TutorialDialogue_3
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSequenceSO
   nodes:
   - speakerName: Godiva
-    dialogueText: '[Intro de Godiva]'
+    dialogueText: "La salida est\xE1 por aqu\xED arriba"
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: 1
     unlockFlag: 
   - speakerName: Godiva
-    dialogueText: "S\xEDgueme.. te ense\xF1ar\xE9 donde est\xE1 la salida"
+    dialogueText: Creo que no puedes saltar tan alto...
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 2
+    unlockFlag: 
+  - speakerName: Godiva
+    dialogueText: <i>Hmm...
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 3
+    unlockFlag: 
+  - speakerName: Godiva
+    dialogueText: "\xBFPuede que est\xE9 por aqu\xED?"
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: -1
-    unlockFlag: IntroDialogue_Completed
+    unlockFlag: CeilingHoleDialogue_Completed

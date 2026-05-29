@@ -59,6 +59,38 @@ MonoBehaviour:
   - triggerFlag: IntroDialogue_Completed
     animatorTrigger: IntroDialogue_Movement1
     arrivalFlag: Movement_1_Completed
+    dialogue: {fileID: 11400000, guid: 9c1c110b2856371458ef0168f52461ac, type: 2}
+  - triggerFlag: JumpDialogue_Completed
+    animatorTrigger: Idle1_Movement2
+    arrivalFlag: Movement_2_Completed
+    dialogue: {fileID: 11400000, guid: afe25d9d9afa69f4abebb666742ee72c, type: 2}
+  - triggerFlag: AttackDialogue_Completed
+    animatorTrigger: Idle2_Movement3
+    arrivalFlag: Movement_3_Completed
+    dialogue: {fileID: 11400000, guid: 6b83e643076410040b84b9b3169289f8, type: 2}
+  - triggerFlag: CeilingHole_Completed
+    animatorTrigger: Idle3_Movement4
+    arrivalFlag: Movement_4_Completed
+    dialogue: {fileID: 11400000, guid: aafe841062ede144d998acf3e5b668f7, type: 2}
+  - triggerFlag: TombEntryDialogue_Completed
+    animatorTrigger: Idle4_Movement5
+    arrivalFlag: DoubleJumpRelic_Unlocked
+    dialogue: {fileID: 11400000, guid: 16183700e907d4b428f9f7666a176360, type: 2}
+  - triggerFlag: RelicDialogue_Completed
+    animatorTrigger: Idle5_Movement6
+    arrivalFlag: Movement_6_Completed
+    dialogue: {fileID: 11400000, guid: 91fd0b647000ce144953dbadfd073dcb, type: 2}
+  - triggerFlag: CheckpointDialogue_Completed
+    animatorTrigger: Idle6_Movement7
+    arrivalFlag: Movement_7_Completed
+    dialogue: {fileID: 11400000, guid: 1002f5bcd8005b34ea8556ab525c7077, type: 2}
+  - triggerFlag: SpiderDialogue_Completed
+    animatorTrigger: Idle7_Movement8
+    arrivalFlag: Movement_8_Completed
+    dialogue: {fileID: 11400000, guid: 17f170413e710644491caa1e081de026, type: 2}
+  - triggerFlag: TutorialEndDialogue_Completed
+    animatorTrigger: Idle8_Movement9
+    arrivalFlag: 
     dialogue: {fileID: 0}
 --- !u!114 &5074589164365002974
 MonoBehaviour:
