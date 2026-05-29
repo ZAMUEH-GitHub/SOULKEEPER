@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4217504892341982288}
   - component: {fileID: 1491903886251941149}
   - component: {fileID: 2135037601828408339}
+  - component: {fileID: 6666380408437128915}
+  - component: {fileID: 6181757060182285878}
   m_Layer: 0
   m_Name: Bulbs_3
   m_TagString: Untagged
@@ -30,7 +32,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7788693648825694271}
   m_Father: {fileID: 7588618179075599354}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1491903886251941149
@@ -78,12 +81,12 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1644156781
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: c362bf81b14bb024b81e44cee3cda982, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.87058824, b: 0.03137255, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -114,6 +117,185 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6666380408437128915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956305136218362013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92183b3f49015684cb69786a0fb6bc52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BulbController
+  bulbKnockbackForce: 25
+  bulbKnockbackDuration: 0.25
+  bulbAttackMultiplier: 1.4
+  bulbHitParticles: {fileID: 0}
+  customParticlesTransform: {fileID: 0}
+--- !u!70 &6181757060182285878
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956305136218362013}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.17251301, y: -0.19}
+  m_Size: {x: 2.74, y: 1.64}
+  m_Direction: 1
+--- !u!1 &2328669250571699923
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7788693648825694271}
+  - component: {fileID: 5918852428946304357}
+  - component: {fileID: 8498943046989095172}
+  m_Layer: 0
+  m_Name: Sprite Light 2D
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7788693648825694271
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2328669250571699923}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4217504892341982288}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5918852428946304357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2328669250571699923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.Light2D
+  m_ComponentVersion: 2
+  m_LightType: 2
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.5
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 2.5
+  m_LightVolumeIntensity: 1
+  m_LightVolumeEnabled: 0
+  m_ApplyToSortingLayers: 1db6e26b053037f11d853b0edb46111325b2a4e9b3440fdcb11da265b5d49be18194ac81b7eac3cd79e5f1fd7392d0816b598c378b7ad6a0a7b66b9abf5428af871745079328009e00000000bd18d5bc9d11f9f47b9d6c905fb35406ed24983289eaead22bb0d73529a5e0328715377be7f0e96841184ea2d96f325ce9bdb855019de4ec
+  m_LightCookieSprite: {fileID: 21300000, guid: c362bf81b14bb024b81e44cee3cda982, type: 3}
+  m_DeprecatedPointLightCookieSprite: {fileID: 0}
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_OverlapOperation: 0
+  m_NormalMapDistance: 3
+  m_NormalMapQuality: 2
+  m_UseNormalMap: 0
+  m_ShadowsEnabled: 1
+  m_ShadowIntensity: 0.75
+  m_ShadowSoftness: 0.3
+  m_ShadowSoftnessFalloffIntensity: 0.5
+  m_ShadowVolumeIntensityEnabled: 0
+  m_ShadowVolumeIntensity: 0.75
+  m_LocalBounds:
+    m_Center: {x: -0.09000003, y: -0.11500001, z: 0}
+    m_Extent: {x: 1.87, y: 0.995, z: 0}
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 1
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &8498943046989095172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2328669250571699923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb0d02efb2cbd3a4a8552f73ffad8f21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SyncLightToSprite
+  bulbSpriteRenderer: {fileID: 0}
+  bulbLight2D: {fileID: 0}
+  bulbSprites:
+  - {fileID: 21300000, guid: c362bf81b14bb024b81e44cee3cda982, type: 3}
+  - {fileID: 21300000, guid: 16b5e6aa5c4b9954eb59abbcd6e383d3, type: 3}
+  - {fileID: 21300000, guid: b4f91b4cc4089624aaf460d28fd729a0, type: 3}
+  - {fileID: 21300000, guid: bdf1c54e6ae520d449bf1be770cb5eae, type: 3}
+  - {fileID: 21300000, guid: 6e6c04427ec3f7f40bf8c1befcb7290a, type: 3}
+  - {fileID: 21300000, guid: dcf73236111892e43b65995467117dcb, type: 3}
+  - {fileID: 21300000, guid: d416b8618c5cc524e959e118c019bec6, type: 3}
+  - {fileID: 21300000, guid: 2c8648bc4f99ca14da5b93a4fff8330b, type: 3}
+  - {fileID: 21300000, guid: e9e204897adad024c8b66c598a775af8, type: 3}
+  - {fileID: 21300000, guid: 9e5c5ad6a62ad2a4e8d436e5b5311f15, type: 3}
+  - {fileID: 21300000, guid: 63f02022b38f14f4b87a076c5daaeaf9, type: 3}
+  - {fileID: 21300000, guid: f5edb6b9c6cb7ce47a5ba3fb758a85e2, type: 3}
+  lightSprites:
+  - {fileID: 21300000, guid: c362bf81b14bb024b81e44cee3cda982, type: 3}
+  - {fileID: 21300000, guid: 16b5e6aa5c4b9954eb59abbcd6e383d3, type: 3}
+  - {fileID: 21300000, guid: b4f91b4cc4089624aaf460d28fd729a0, type: 3}
+  - {fileID: 21300000, guid: bdf1c54e6ae520d449bf1be770cb5eae, type: 3}
+  - {fileID: 21300000, guid: 6e6c04427ec3f7f40bf8c1befcb7290a, type: 3}
+  - {fileID: 21300000, guid: dcf73236111892e43b65995467117dcb, type: 3}
+  - {fileID: 21300000, guid: d416b8618c5cc524e959e118c019bec6, type: 3}
+  - {fileID: 21300000, guid: 2c8648bc4f99ca14da5b93a4fff8330b, type: 3}
+  - {fileID: 21300000, guid: e9e204897adad024c8b66c598a775af8, type: 3}
+  - {fileID: 21300000, guid: 9e5c5ad6a62ad2a4e8d436e5b5311f15, type: 3}
+  - {fileID: 21300000, guid: 63f02022b38f14f4b87a076c5daaeaf9, type: 3}
+  - {fileID: 21300000, guid: f5edb6b9c6cb7ce47a5ba3fb758a85e2, type: 3}
 --- !u!1 &4134993169623362277
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,12 +374,12 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingLayerID: -1356311361
+  m_SortingLayer: -3
+  m_SortingOrder: -2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: eaf98c6e08472c74e86b776151abe619, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.105882354, g: 0.047058824, b: 0.29803923, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -237,7 +419,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7588618179075599354}
-  - component: {fileID: 417524001019903684}
   m_Layer: 0
   m_Name: Bulb_3
   m_TagString: Untagged
@@ -262,20 +443,3 @@ Transform:
   - {fileID: 2616542665815729727}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &417524001019903684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4280034691528972047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92183b3f49015684cb69786a0fb6bc52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulbKnockbackForce: 10
-  bulbKnockbackDuration: 0.5
-  bulbAttackMultiplier: 1.5
-  bulbHitParticles: {fileID: 5715493158453320582, guid: 4cdac8afdec55284d9f77ed7f5c25419, type: 3}
-  customParticlesTransform: {fileID: 0}
