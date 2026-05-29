@@ -9,12 +9,11 @@ public class SaveSlotUIManager : MonoBehaviour
     [SerializeField] private int slotIndex;
 
     [Header("UI References")]
-    [SerializeField] private TMP_Text slotLabel;
-    [SerializeField] private TMP_Text glowText;
     [SerializeField] private TMP_Text sceneLabel;
     [SerializeField] private TMP_Text timestampLabel;
     [SerializeField] private TMP_Text playtimeLabel;
-    [SerializeField] private Button actionButton;
+    [SerializeField] private Button continueButton;
+    [SerializeField] private Button newGameButton;
     [SerializeField] private Button deleteButton;
 
     private MainMenuManager menuManager;
@@ -33,16 +32,14 @@ public class SaveSlotUIManager : MonoBehaviour
         var meta = SaveSystem.GetSlotMetadata(slotIndex);
         hasSave = meta.exists;
 
-        slotLabel.text = $"Slot {slotIndex}";
-
         if (hasSave)
         {
             sceneLabel.text = string.IsNullOrEmpty(meta.scene) ? "Unknown Scene" : meta.scene;
             timestampLabel.text = meta.timestamp;
             playtimeLabel.text = FormatPlaytime(meta.playtime);
-            actionButton.GetComponentInChildren<TMP_Text>().text = "Continue";
-            glowText.text = "Continue";
 
+            if (continueButton != null) continueButton.gameObject.SetActive(true);
+            if (newGameButton != null) newGameButton.gameObject.SetActive(false);
 
             if (deleteButton != null)
                 deleteButton.gameObject.SetActive(true);
@@ -52,8 +49,9 @@ public class SaveSlotUIManager : MonoBehaviour
             sceneLabel.text = "- Empty Slot -";
             timestampLabel.text = "";
             playtimeLabel.text = "";
-            actionButton.GetComponentInChildren<TMP_Text>().text = "New Game";
-            glowText.text = "New Game";
+
+            if (continueButton != null) continueButton.gameObject.SetActive(false);
+            if (newGameButton != null) newGameButton.gameObject.SetActive(true);
 
             if (deleteButton != null)
                 deleteButton.gameObject.SetActive(false);
@@ -67,7 +65,7 @@ public class SaveSlotUIManager : MonoBehaviour
         return $"{hours:D2}h {minutes:D2}m";
     }
 
-    public void OnSlotButtonPressed()
+    public void OnContinuePressed()
     {
         if (menuManager == null)
         {
@@ -75,10 +73,18 @@ public class SaveSlotUIManager : MonoBehaviour
             return;
         }
 
-        if (hasSave)
-            menuManager.OnLoadGameButton(slotIndex);
-        else
-            menuManager.NewGame(slotIndex);
+        menuManager.OnLoadGameButton(slotIndex);
+    }
+
+    public void OnNewGamePressed()
+    {
+        if (menuManager == null)
+        {
+            Debug.LogError("[SaveSlotUI] MainMenuManager not found!");
+            return;
+        }
+
+        menuManager.NewGame(slotIndex);
     }
 
     public void OnDeleteSave()
