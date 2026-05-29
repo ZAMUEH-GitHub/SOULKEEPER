@@ -1,14 +1,21 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Phase1Controller : MonoBehaviour
 {
     [Header("Phase 1 Settings")]
     public float spawnRate;
     public float nextRoundTime;
-
-    public GameObject[] enemyPrefabs;
     public GameObject[] enemySpawners;
+
+    [Header("Drag and Drop Enemy Waves")]
+    public List<GameObject> round1Enemies;
+    public List<GameObject> round2Enemies;
+    public List<GameObject> round3Enemies;
+    public List<GameObject> round4Enemies;
+    public List<GameObject> round5Enemies;
+
     public enum SpawnRound { Round1, Round2, Round3, Round4, Round5 };
     public SpawnRound spawnRound = SpawnRound.Round1;
 
@@ -16,11 +23,11 @@ public class Phase1Controller : MonoBehaviour
     private bool hasSpawnedRound = false;
     private bool isSpawning = false;
     private bool isAdvancingRound = false;
-    private GameObject[] currentEnemies;
     public int nextRoundInt = 1;
 
     private Animator bossAnimator;
     private MinosController minosController;
+    private List<EnemyBaseController> activeEnemies = new List<EnemyBaseController>();
 
     void Start()
     {
@@ -35,15 +42,6 @@ public class Phase1Controller : MonoBehaviour
             StartCoroutine(SpawnCurrentRound());
             hasSpawnedRound = true;
         }
-
-        if (!isSpawning && !isAdvancingRound)
-        {
-            currentEnemies = GameObject.FindGameObjectsWithTag("Enemy");
-            if (currentEnemies.Length == 0)
-            {
-                StartCoroutine(AdvanceRound());
-            }
-        }
     }
 
     private IEnumerator SpawnCurrentRound()
@@ -51,47 +49,50 @@ public class Phase1Controller : MonoBehaviour
         isSpawning = true;
         currentSpawnerIndex = Random.Range(0, enemySpawners.Length);
 
+        List<GameObject> enemiesToSpawn = new List<GameObject>();
         switch (spawnRound)
         {
-            case SpawnRound.Round1:
-                yield return StartCoroutine(SpawnEnemies(0, 3));
-                Debug.Log("Round 1!!");
-                break;
-            case SpawnRound.Round2:
-                yield return StartCoroutine(SpawnEnemies(0, 3));
-                yield return StartCoroutine(SpawnEnemies(1, 1));
-                Debug.Log("Round 2!!");
-                break;
-            case SpawnRound.Round3:
-                yield return StartCoroutine(SpawnEnemies(0, 5));
-                yield return StartCoroutine(SpawnEnemies(1, 2));
-                Debug.Log("Round 3!!");
-                break;
-            case SpawnRound.Round4:
-                yield return StartCoroutine(SpawnEnemies(0, 5));
-                yield return StartCoroutine(SpawnEnemies(1, 3));
-                yield return StartCoroutine(SpawnEnemies(2, 1));
-                Debug.Log("Round 4!!");
-                break;
-            case SpawnRound.Round5:
-                yield return StartCoroutine(SpawnEnemies(0, 5));
-                yield return StartCoroutine(SpawnEnemies(1, 3));
-                yield return StartCoroutine(SpawnEnemies(2, 3));
-                Debug.Log("Round 5!!");
-                break;
+            case SpawnRound.Round1: enemiesToSpawn = round1Enemies; break;
+            case SpawnRound.Round2: enemiesToSpawn = round2Enemies; break;
+            case SpawnRound.Round3: enemiesToSpawn = round3Enemies; break;
+            case SpawnRound.Round4: enemiesToSpawn = round4Enemies; break;
+            case SpawnRound.Round5: enemiesToSpawn = round5Enemies; break;
         }
 
+        foreach (GameObject enemyPrefab in enemiesToSpawn)
+        {
+            if (enemyPrefab == null) continue;
+
+            Vector2 spawnPosition = enemySpawners[currentSpawnerIndex].transform.position;
+            GameObject newEnemyObj = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+
+            EnemyBaseController enemyController = newEnemyObj.GetComponent<EnemyBaseController>();
+            if (enemyController != null)
+            {
+                activeEnemies.Add(enemyController);
+                enemyController.OnEnemyDied += HandleEnemyDeath;
+            }
+
+            currentSpawnerIndex = (currentSpawnerIndex + 1) % enemySpawners.Length;
+            yield return new WaitForSeconds(spawnRate);
+        }
+
+        Debug.Log(spawnRound.ToString() + " Spawned!!");
         isSpawning = false;
     }
 
-    private IEnumerator SpawnEnemies(int enemyType, int enemyAmount)
+    private void HandleEnemyDeath(EnemyBaseController enemy)
     {
-        for (int i = 0; i < enemyAmount; i++)
+        enemy.OnEnemyDied -= HandleEnemyDeath;
+
+        if (activeEnemies.Contains(enemy))
         {
-            Vector2 spawnPosition = enemySpawners[currentSpawnerIndex].transform.position;
-            Instantiate(enemyPrefabs[enemyType], spawnPosition, Quaternion.identity);
-            currentSpawnerIndex = (currentSpawnerIndex + 1) % enemySpawners.Length;
-            yield return new WaitForSeconds(spawnRate);
+            activeEnemies.Remove(enemy);
+        }
+
+        if (activeEnemies.Count == 0 && !isSpawning && !isAdvancingRound)
+        {
+            StartCoroutine(AdvanceRound());
         }
     }
 
@@ -115,4 +116,3 @@ public class Phase1Controller : MonoBehaviour
         }
     }
 }
-

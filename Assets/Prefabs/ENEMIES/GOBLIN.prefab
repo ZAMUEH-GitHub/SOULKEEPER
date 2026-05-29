@@ -1936,6 +1936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d8889461191bab4f85b24c9b7352634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAudioController
+  smashAttackSounds: []
   attackSounds: []
   footstepSounds: []
   damageSounds: []
@@ -2966,6 +2967,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnimationEventRelay
   attackProgress: 0
   speedMultiplier: 0
+  gradientScale: 1
 --- !u!1 &6596590835447598867
 GameObject:
   m_ObjectHideFlags: 0

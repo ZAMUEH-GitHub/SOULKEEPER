@@ -11,17 +11,14 @@ public class Phase2Controller : MonoBehaviour
     public bool isAttacking;
     public float knockbackForce;
     public float knockbackDuration;
-    public float attackRate;    
+    public float attackRate;
     public float attackTimer;
     [Space(5f)]
-    private PlayerCollisionController playerCollisionController;
-    private PlayerDamageController playerDamageController;
+    private PlayerController playerController;
     private Transform playerTransform;
-    public int idleState;
     private bool throwRight;
 
-
-    public enum BossAttack { Smash, Grab };
+    public enum BossAttack { Smash, Grab, Swipe };
     public BossAttack currentAttack = BossAttack.Smash;
 
     private MinosController minosController;
@@ -33,7 +30,11 @@ public class Phase2Controller : MonoBehaviour
         bossAnimator = GetComponent<Animator>();
         attackTimer = 0f;
 
-        playerCollisionController = GetComponent<PlayerCollisionController>();
+        playerController = PlayerController.Instance;
+        if (playerController != null)
+        {
+            playerTransform = playerController.transform;
+        }
     }
 
     public void RunPhase2()
@@ -48,26 +49,7 @@ public class Phase2Controller : MonoBehaviour
             }
         }
 
-        IdleState();
         UpdateAttackVariation();
-    }
-
-    private void IdleState()
-    {
-        if (minosController.bossHealth > 75)
-        {
-            idleState = 0;
-        }
-        else if (minosController.bossHealth > 65)
-        {
-            idleState = 1;
-        }
-        else
-        {
-            idleState = 2;
-        }
-
-        bossAnimator.SetInteger("Idle State", idleState);
     }
 
     private void StartAttack()
@@ -83,14 +65,14 @@ public class Phase2Controller : MonoBehaviour
                 bossAnimator.SetTrigger("Smash");
                 Debug.Log("SMASH");
                 break;
-            /*case BossAttack.Swipe:
-                bossAnimator.SetTrigger("Swipe");
-                Debug.Log("SWIPE");
-                break;*/
             case BossAttack.Grab:
                 throwRight = Random.value > 0.5f;
                 bossAnimator.SetTrigger("Grab");
                 bossAnimator.SetBool("Throw Right", throwRight);
+                break;
+            case BossAttack.Swipe:
+                bossAnimator.SetTrigger("Swipe");
+                Debug.Log("SWIPE");
                 break;
         }
     }
@@ -103,26 +85,37 @@ public class Phase2Controller : MonoBehaviour
 
     private void UpdateAttackVariation()
     {
-        /*if (currentAttack == BossAttack.Swipe)
-        {
-            float playerY = player.transform.position.y;
-            bossAnimator.SetFloat("Player Vertical", playerY);
-        }*/
-        /* else
-         {*/
-        float playerX = playerTransform.position.x;
-        bossAnimator.SetFloat("Player Horizontal", playerX);
-        //}
+        if (playerTransform == null || playerController == null) return;
 
-        bossAnimator.SetBool("Player Grabbed", playerCollisionController.isTrapped);
+        float distanceX = playerTransform.position.x - transform.position.x;
+        int positionState = 0;
+
+        if (Mathf.Abs(distanceX) > 2f)
+        {
+            positionState = distanceX < 0 ? -1 : 1;
+        }
+
+        bossAnimator.SetInteger("Player Position", positionState);
+
+        bool isPlayerGrabbed = playerController.GetComponent<PlayerCollisionController>().isTrapped;
+        bossAnimator.SetBool("Player Grabbed", isPlayerGrabbed);
     }
 
-public void ApplyPlayerKnockback()
-{
-    float xDirection = throwRight ? 1f : -1f;
-    Vector2 knockbackVector = new Vector2(xDirection * 2f, 1f).normalized;
-    playerDamageController.Knockback(knockbackVector, knockbackForce*2, knockbackDuration);
-}
+    public void ApplyPlayerKnockback()
+    {
+        if (playerController == null) return;
+
+        float xDirection = throwRight ? 1f : -1f;
+        Vector2 knockbackVector = new Vector2(xDirection * 2f, 1f).normalized;
+
+        playerController.damageController.Knockback(knockbackVector, knockbackForce * 2, knockbackDuration);
+
+        var attachment = playerController.GetComponent<PlayerAttachmentController>();
+        if (attachment != null)
+        {
+            attachment.DetachFromPlatform();
+        }
+    }
 
     public void EndAttack()
     {

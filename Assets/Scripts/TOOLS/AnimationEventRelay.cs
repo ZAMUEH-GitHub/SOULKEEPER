@@ -9,6 +9,7 @@ public class AnimationEventRelay : MonoBehaviour
     private PlayerAudioController audioController;
     private EnemyAudioController enemyAudioController;
     private SpiderEnemyController spiderEnemyController;
+    private Phase2Controller phase2Controller;
 
     [HideInInspector] public float attackProgress;
     [HideInInspector] public float speedMultiplier = 1f;
@@ -28,6 +29,7 @@ public class AnimationEventRelay : MonoBehaviour
         enemyController = GetComponentInParent<EnemyBaseController>();
         spiderEnemyController = GetComponentInParent<SpiderEnemyController>();
         enemyAudioController = GetComponentInParent<EnemyAudioController>();
+        phase2Controller = GetComponentInParent<Phase2Controller>();
     }
 
     private void Update()
@@ -50,6 +52,13 @@ public class AnimationEventRelay : MonoBehaviour
             enemyController.EndAttack();
         else if (spiderEnemyController != null) 
             spiderEnemyController.EndAttack();
+        else if (phase2Controller != null)
+            phase2Controller.EndAttack();
+    }
+
+    public void ApplyKnockback()
+    {
+        phase2Controller.ApplyPlayerKnockback();
     }
 
     public void StartChargeLunge()
