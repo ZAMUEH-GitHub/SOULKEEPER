@@ -51,7 +51,7 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
     {
         #region Script and Variable Suscriptions
         rigidBody = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         jumpController = GetComponent<EnemyJumpController>();
         attackController = GetComponentInChildren<EnemyAttackController>();
         damageController = GetComponent<EnemyDamageController>();
@@ -71,12 +71,12 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
 
     void Update()
     {
-        if (!isAlive || isDead) return;
-
         if (nextAttackTimer > 0) nextAttackTimer -= Time.deltaTime;
 
         stateMachine?.Update();
         currentState = stateMachine?.CurrentStateName;
+
+        if (!isAlive || isDead) return;
 
         UpdateDetection();
     }
@@ -196,9 +196,14 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
         Stop();
 
         if (rigidBody != null) rigidBody.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
-        if (attackController != null) attackController.enabled = false;
-        if (damageController != null) damageController.enabled = false;
 
+        if (attackController != null) attackController.enabled = false;
+
+        if (animator != null)
+        {
+            animator.SetBool("IsDead", true);
+            animator.SetTrigger("Death");
+        }
         stateMachine.ChangeState(new DeathState(this));
     }
 

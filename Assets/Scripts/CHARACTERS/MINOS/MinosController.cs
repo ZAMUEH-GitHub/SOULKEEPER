@@ -23,10 +23,10 @@ public class MinosController : MonoBehaviour
     {
         isAlive = true;
 
-        bossAnimator = GetComponentInChildren<Animator>();
         phase1Controller = GetComponent<Phase1Controller>();
         phase2Controller = GetComponent<Phase2Controller>();
 
+        bossAnimator = GetComponentInChildren<Animator>();
         enemyBodyParts = GameObject.FindGameObjectsWithTag("King Minos Body Part");
         bossSprites = new SpriteRenderer[enemyBodyParts.Length];
 
@@ -67,6 +67,9 @@ public class MinosController : MonoBehaviour
         {
             currentBossPhase = BossPhase.Phase2;
             SessionManager.Instance.UnlockProgressFlag("Minos_Phase2_Started");
+
+            if (bossAnimator != null) bossAnimator.SetTrigger("Phase 2 Intro");
+
             Debug.Log("BOSS PHASE 2!!");
         }
     }

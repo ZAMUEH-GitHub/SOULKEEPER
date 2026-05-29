@@ -39,11 +39,15 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
 
     public void Knockback(Vector2 knockbackVector, float knockbackForce, float knockbackDuration)
     {
+        if (enemyHealth <= 0) return;
+
         enemyBaseController.stateMachine.ChangeState(new KnockbackState(enemyBaseController, knockbackVector, knockbackForce, knockbackDuration));
     }
 
     public void TakeDamage(int damage, Vector2 damageVector)
     {
+        if (enemyHealth <= 0) return;
+
         Quaternion particleRotation = Quaternion.FromToRotation(Vector2.up, damageVector);
 
         if (!isTakingDamage && nextDamage <= 0)
@@ -63,6 +67,11 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
         enemyHealth -= damage;
         nextDamage = damageRate;
 
+        if (enemyHealth <= 0)
+        {
+            enemyBaseController.Die();
+        }
+
         foreach (SpriteRenderer sr in enemySprites)
         {
             sr.color = Color.red;
@@ -76,10 +85,5 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
         }
 
         isTakingDamage = false;
-
-        if (enemyHealth <= 0)
-        {
-            enemyBaseController.Die();
-        }
     }
 }

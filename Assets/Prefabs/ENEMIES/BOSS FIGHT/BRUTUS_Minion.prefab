@@ -2906,7 +2906,7 @@ GameObject:
   - component: {fileID: 9182785632547245681}
   - component: {fileID: 5716301638338790413}
   m_Layer: 3
-  m_Name: BRUTUS
+  m_Name: BRUTUS_Minion
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2944,7 +2944,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 
   activeLocks: []
-  enemyStats: {fileID: 11400000, guid: 6e9e5243717474b49b46cda1d57c7877, type: 2}
+  enemyStats: {fileID: 11400000, guid: 591ea14729fa08e4fb81830d578a080d, type: 2}
   patrolTarget: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
@@ -2999,7 +2999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6c5daacfba8644f9b4c8b8e7dc7f51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyStats: {fileID: 11400000, guid: 6e9e5243717474b49b46cda1d57c7877, type: 2}
+  enemyStats: {fileID: 11400000, guid: 591ea14729fa08e4fb81830d578a080d, type: 2}
   groundCheckPoint: {fileID: 5998942516110036541}
   groundCheckRadius: 0.75
   groundLayer:
@@ -3019,7 +3019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda9e748cbc92004080945473863993e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyStats: {fileID: 11400000, guid: 6e9e5243717474b49b46cda1d57c7877, type: 2}
+  enemyStats: {fileID: 11400000, guid: 591ea14729fa08e4fb81830d578a080d, type: 2}
   enemyHealth: 0
   enemyScore: 0
   isTakingDamage: 0

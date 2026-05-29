@@ -3216,7 +3216,7 @@ GameObject:
   - component: {fileID: 1156219130721360410}
   - component: {fileID: 1381692153714448446}
   m_Layer: 3
-  m_Name: WENDIGO
+  m_Name: WENDIGO_Minion
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3254,7 +3254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 
   activeLocks: []
-  enemyStats: {fileID: 11400000, guid: d447798ae79ea1f4b89421e92d53873c, type: 2}
+  enemyStats: {fileID: 11400000, guid: 8bf44378eca2eea4d8f54d37447e6073, type: 2}
   patrolTarget: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
@@ -3309,7 +3309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6c5daacfba8644f9b4c8b8e7dc7f51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyStats: {fileID: 11400000, guid: d447798ae79ea1f4b89421e92d53873c, type: 2}
+  enemyStats: {fileID: 11400000, guid: 8bf44378eca2eea4d8f54d37447e6073, type: 2}
   groundCheckPoint: {fileID: 9218825805482581001}
   groundCheckRadius: 0.65
   groundLayer:
@@ -3329,7 +3329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda9e748cbc92004080945473863993e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyStats: {fileID: 11400000, guid: d447798ae79ea1f4b89421e92d53873c, type: 2}
+  enemyStats: {fileID: 11400000, guid: 8bf44378eca2eea4d8f54d37447e6073, type: 2}
   enemyHealth: 0
   enemyScore: 0
   isTakingDamage: 0

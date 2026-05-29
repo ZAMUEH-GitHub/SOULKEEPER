@@ -1786,7 +1786,7 @@ GameObject:
   - component: {fileID: 8133874384658436309}
   - component: {fileID: 7932084327706277602}
   m_Layer: 3
-  m_Name: GOBLIN
+  m_Name: GOBLIN_Minion
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1824,7 +1824,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 
   activeLocks: []
-  enemyStats: {fileID: 11400000, guid: 0fe20d4968c5fcd498561e27b236c561, type: 2}
+  enemyStats: {fileID: 11400000, guid: 9a4627d10c903244a8384ddec15f878d, type: 2}
   patrolTarget: {fileID: 0}
   obstacleLayer:
     serializedVersion: 2
@@ -1879,7 +1879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6c5daacfba8644f9b4c8b8e7dc7f51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyStats: {fileID: 11400000, guid: 0fe20d4968c5fcd498561e27b236c561, type: 2}
+  enemyStats: {fileID: 11400000, guid: 9a4627d10c903244a8384ddec15f878d, type: 2}
   groundCheckPoint: {fileID: 6044023464957481626}
   groundCheckRadius: 0.35
   groundLayer:
@@ -1899,7 +1899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda9e748cbc92004080945473863993e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyStats: {fileID: 11400000, guid: 0fe20d4968c5fcd498561e27b236c561, type: 2}
+  enemyStats: {fileID: 11400000, guid: 9a4627d10c903244a8384ddec15f878d, type: 2}
   enemyHealth: 0
   enemyScore: 0
   isTakingDamage: 0

@@ -27,13 +27,26 @@ public class Phase2Controller : MonoBehaviour
     void Start()
     {
         minosController = GetComponent<MinosController>();
-        bossAnimator = GetComponent<Animator>();
+        bossAnimator = GetComponentInChildren<Animator>();
         attackTimer = 0f;
 
         playerController = PlayerController.Instance;
         if (playerController != null)
         {
             playerTransform = playerController.transform;
+        }
+    }
+
+    void Update()
+    {
+        if (playerTransform == null || bossAnimator == null) return;
+
+        bossAnimator.SetFloat("Player Position", playerTransform.position.x);
+
+        if (playerController != null)
+        {
+            bool isPlayerGrabbed = playerController.GetComponent<PlayerCollisionController>().isTrapped;
+            bossAnimator.SetBool("Player Grabbed", isPlayerGrabbed);
         }
     }
 
@@ -48,8 +61,6 @@ public class Phase2Controller : MonoBehaviour
                 StartAttack();
             }
         }
-
-        UpdateAttackVariation();
     }
 
     private void StartAttack()
@@ -83,27 +94,12 @@ public class Phase2Controller : MonoBehaviour
         currentAttack = (BossAttack)attackIndex;
     }
 
-    private void UpdateAttackVariation()
-    {
-        if (playerTransform == null || playerController == null) return;
-
-        float distanceX = playerTransform.position.x - transform.position.x;
-        int positionState = 0;
-
-        if (Mathf.Abs(distanceX) > 2f)
-        {
-            positionState = distanceX < 0 ? -1 : 1;
-        }
-
-        bossAnimator.SetInteger("Player Position", positionState);
-
-        bool isPlayerGrabbed = playerController.GetComponent<PlayerCollisionController>().isTrapped;
-        bossAnimator.SetBool("Player Grabbed", isPlayerGrabbed);
-    }
-
     public void ApplyPlayerKnockback()
     {
         if (playerController == null) return;
+
+        var collisionController = playerController.GetComponent<PlayerCollisionController>();
+        if (collisionController == null || !collisionController.isTrapped) return;
 
         float xDirection = throwRight ? 1f : -1f;
         Vector2 knockbackVector = new Vector2(xDirection * 2f, 1f).normalized;

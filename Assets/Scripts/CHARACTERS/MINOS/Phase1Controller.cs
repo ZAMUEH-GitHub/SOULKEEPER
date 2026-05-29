@@ -31,7 +31,7 @@ public class Phase1Controller : MonoBehaviour
 
     void Start()
     {
-        bossAnimator = GetComponent<Animator>();
+        bossAnimator = GetComponentInChildren<Animator>();
         minosController = GetComponent<MinosController>();
     }
 
