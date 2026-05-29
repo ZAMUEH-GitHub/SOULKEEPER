@@ -656,11 +656,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf69172c7575cb4e9a05d9e774176a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAudioController
-  attackSounds: []
-  dashSounds: []
+  attackSounds:
+  - {fileID: 8300000, guid: c16a288d36719f94598177dc81866814, type: 3}
+  - {fileID: 8300000, guid: fa106dfeed1349349a2eb0146fe21d1a, type: 3}
+  - {fileID: 8300000, guid: e2d2012938223af4ca21121ed63069fc, type: 3}
+  - {fileID: 8300000, guid: 0bd23a8710a65cc4b89890be7070e391, type: 3}
+  dashSounds:
+  - {fileID: 8300000, guid: 34d80948be2505a4cab47dc3ea070fe5, type: 3}
+  - {fileID: 8300000, guid: d677459a4f5e27448ba161975d6a1d91, type: 3}
+  - {fileID: 8300000, guid: 6896d667e930b2649bb10c062a0af2de, type: 3}
   fallSounds: []
-  jumpSounds: []
-  footstepSounds: []
+  jumpSounds:
+  - {fileID: 8300000, guid: d15280f9c26116a438710be7239fa104, type: 3}
+  - {fileID: 8300000, guid: 0b95ad316d64d7e44ba8788f561ff562, type: 3}
+  - {fileID: 8300000, guid: 52c5cb84a6d275a49b48ea13ad085efa, type: 3}
+  footstepSounds:
+  - {fileID: 8300000, guid: 186915f15536daf43bca1d0cc2d41905, type: 3}
+  - {fileID: 8300000, guid: 55198bd03f6b87e46bda0a581116aa39, type: 3}
+  - {fileID: 8300000, guid: 929ed39b9c36c5849b9aa79dd0e3b4ae, type: 3}
 --- !u!114 &3102015849783976439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -934,7 +947,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0

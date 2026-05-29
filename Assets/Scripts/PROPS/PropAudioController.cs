@@ -6,7 +6,11 @@ public class PropAudioController : MonoBehaviour
     [Header("Audio Clips")]
     [SerializeField] private AudioClip[] flameSounds;
     [SerializeField] private AudioClip[] bulbSounds;
-    [SerializeField] private AudioClip[] relicSounds;
+    [SerializeField] private AudioClip[] relicOpenSounds;
+    [SerializeField] private AudioClip[] relicCloseSounds;
+    [SerializeField] private AudioClip[] flameSmallSounds;
+    [SerializeField] private AudioClip[] flameBigSounds;
+    [SerializeField] private AudioClip[] scoreSounds;
 
     private AudioSource audioSource;
 
@@ -17,8 +21,13 @@ public class PropAudioController : MonoBehaviour
     }
 
     public void PlayFlameSound() => PlayRandomClip(flameSounds);
+    public void PlayScoreSound() => PlayRandomClip(scoreSounds);
     public void PlayBulbSound() => PlayRandomClip(bulbSounds);
-    public void PlayRelicSound() => PlayRandomClip(relicSounds);
+    public void PlayRelicOpenSound() => PlayRandomClip(relicOpenSounds);
+
+    public void PlayRelicCloseSound() => PlayRandomClip(relicCloseSounds);
+    public void PlayFlameSmallSound() => PlayRandomClip(flameSmallSounds);
+    public void PlayFlameBigSound() => PlayRandomClip(flameBigSounds);
 
     private void PlayRandomClip(AudioClip[] clips)
     {
