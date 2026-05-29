@@ -59,7 +59,6 @@ public class AreaTitlePanelManager : Singleton<AreaTitlePanelManager>
 
         yield return new WaitForSecondsRealtime(canvas.GetFadeDuration(PanelType.AreaTitlePanel) + duration);
 
-        canvas.FadeOut(PanelType.AreaTitlePanel);
         currentRoutine = null;
     }
 
