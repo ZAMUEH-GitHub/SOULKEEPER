@@ -28,9 +28,10 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        
         if (!collision.CompareTag("Player") || !gameObject.activeInHierarchy)
             return;
-
+        Debug.Log("choco con player");
         playerInRange = true;
         ShowInteractText();
     }
@@ -57,9 +58,10 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
     {
         if (!CanInteract())
             return;
-
         if (dialogueSequence != null && DialoguePanelManager.Instance != null)
         {
+            Debug.Log("player interacted");
+
             lastInteractionTime = Time.time;
             HideInteractText(); // Hide the prompt while the dialogue is playing
             DialoguePanelManager.Instance.StartDialogue(dialogueSequence);

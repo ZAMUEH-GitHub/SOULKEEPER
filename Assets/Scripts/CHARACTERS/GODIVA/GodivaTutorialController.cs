@@ -12,12 +12,12 @@ public struct TutorialPhase
     [Tooltip("The trigger to send to Godiva's Animator to start moving.")]
     public string animatorTrigger;
 
-    [Tooltip("The dialogue to load for when the player talks to her at the next location.")]
-    public DialogueSequenceSO nextDialogue;
-
     [Header("Arrival Phase")]
     [Tooltip("The flag fired by the Animation Event when Godiva arrives at her destination.")]
     public string arrivalFlag;
+
+    [Tooltip("The dialogue to load when Godiva arrives at this destination.")]
+    public DialogueSequenceSO dialogue;
 }
 
 public class GodivaTutorialController : MonoBehaviour
@@ -45,15 +45,12 @@ public class GodivaTutorialController : MonoBehaviour
         foreach (var phase in tutorialPhases)
         {
             // Step 1: The Departure
-            if (flagID == phase.triggerFlag)
+            // Make sure the triggerFlag isn't empty before checking for a match
+            if (!string.IsNullOrEmpty(phase.triggerFlag) && flagID == phase.triggerFlag)
             {
                 // Disable interaction while she moves
                 if (interactionCollider != null)
                     interactionCollider.enabled = false;
-
-                // Load the next dialogue sequence
-                if (dialogueTrigger != null)
-                    dialogueTrigger.dialogueSequence = phase.nextDialogue;
 
                 // Trigger the movement animation
                 if (godivaAnimator != null && !string.IsNullOrEmpty(phase.animatorTrigger))
@@ -65,8 +62,12 @@ public class GodivaTutorialController : MonoBehaviour
             }
 
             // Step 2: The Arrival
-            if (flagID == phase.arrivalFlag)
+            if (!string.IsNullOrEmpty(phase.arrivalFlag) && flagID == phase.arrivalFlag)
             {
+                // Load the dialogue sequence for THIS new location
+                if (dialogueTrigger != null)
+                    dialogueTrigger.dialogueSequence = phase.dialogue;
+
                 // Re-enable interaction now that she is waiting in Idle
                 if (interactionCollider != null)
                     interactionCollider.enabled = true;
