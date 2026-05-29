@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerDeathController : MonoBehaviour
@@ -65,16 +66,30 @@ public class PlayerDeathController : MonoBehaviour
             }
         }
 
-        StartCoroutine(DeathRoutine());
+        // Replaced StartCoroutine with the async method call
+        ExecuteDeathSequence();
     }
 
-    private IEnumerator DeathRoutine()
+    private async void ExecuteDeathSequence()
     {
-        yield return new WaitForSeconds(0.5f);
+        // Replaces yield return new WaitForSeconds(0.5f);
+        await Task.Delay(500);
 
         int slotIndex = 1;
         if (SaveSlotManager.Instance != null)
             slotIndex = SaveSlotManager.Instance.ActiveSlotIndex;
+
+        // Force a complete wipe and reload of the session's flags and stats from the save file
+        if (SessionManager.Instance != null && SaveSystem.SaveExists(slotIndex))
+        {
+            await SaveSystem.LoadAsync(slotIndex, SessionManager.Instance.RuntimeStats);
+        }
+
+        // Reposition the player utilizing the newly loaded position data
+        if (SaveSystem.HasValidPlayerPosition)
+        {
+            transform.position = SaveSystem.LastLoadedPlayerPosition;
+        }
 
         if (GameSceneManager.Instance != null)
         {
