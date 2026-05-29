@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerRoot : Singleton<PlayerRoot>
 {
@@ -22,14 +23,41 @@ public class PlayerRoot : Singleton<PlayerRoot>
         _PlayerController = GetComponentInChildren<PlayerController>();
     }
 
+    private void Start()
+    {
+        // Check the scene immediately upon spawning
+        CheckGodivaState(SceneManager.GetActiveScene().name);
+    }
+
     private void OnEnable()
     {
         GameManager.OnGameStateChanged += HandleGameStateChanged;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
         GameManager.OnGameStateChanged -= HandleGameStateChanged;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    #endregion
+
+    #region Scene Logic
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        CheckGodivaState(scene.name);
+    }
+
+    private void CheckGodivaState(string sceneName)
+    {
+        if (sceneName == "1_Tutorial")
+        {
+            DisableGodivaObject();
+        }
+        else
+        {
+            EnableGodivaObject();
+        }
     }
     #endregion
 

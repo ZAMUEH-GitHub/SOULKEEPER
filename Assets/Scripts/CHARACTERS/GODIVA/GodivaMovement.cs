@@ -33,6 +33,12 @@ public class GodivaMovement : MonoBehaviour
 
     private string currentActiveLayer = "";
 
+    private void Start()
+    {
+        godivaSprite = GetComponentInChildren<SpriteRenderer>();
+        godivaLight = GetComponentInChildren<Light2D>();
+    }
+
     void LateUpdate()
     {
         if (animatedTarget == null) return;

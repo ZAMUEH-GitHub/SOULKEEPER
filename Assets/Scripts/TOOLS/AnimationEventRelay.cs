@@ -133,4 +133,11 @@ public class AnimationEventRelay : MonoBehaviour
         if (enemyAudioController != null)
             enemyAudioController.PlayPrepareJumpSound();
     }
+    public void SendFlag(string flagID) 
+    {
+        if (SessionManager.Instance != null && flagID != null)
+        {
+            SessionManager.Instance.UnlockProgressFlag(flagID);
+        }
+    }
 }
