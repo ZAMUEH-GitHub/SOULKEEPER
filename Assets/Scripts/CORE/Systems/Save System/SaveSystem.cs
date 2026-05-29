@@ -15,7 +15,8 @@ public static class SaveSystem
     public static bool HasValidPlayerPosition { get; private set; } = false;
 
     #region Save System
-    public static async Task SaveAsync(int slotIndex, PlayerStatsSO runtimeStats, string currentDoorID = null, string currentCheckpointID = null)
+    // Added 'updatePosition = true' parameter to allow stat-only saves
+    public static async Task SaveAsync(int slotIndex, PlayerStatsSO runtimeStats, string currentDoorID = null, string currentCheckpointID = null, bool updatePosition = true)
     {
         if (slotIndex < 1 || slotIndex > MaxSlots)
         {
@@ -39,6 +40,11 @@ public static class SaveSystem
             string path = GetSlotPath(slotIndex);
             float previousPlaytime = 0f;
 
+            // Variables to hold previous location data if we are doing a stat-only save
+            Vector2 previousLocation = Vector2.zero;
+            string previousSceneID = SceneManager.GetActiveScene().name;
+            string previousCheckpointID = currentCheckpointID;
+
             if (File.Exists(path))
             {
                 try
@@ -46,7 +52,12 @@ public static class SaveSystem
                     string oldJson = await File.ReadAllTextAsync(path);
                     GameSaveData oldData = JsonUtility.FromJson<GameSaveData>(oldJson);
                     if (oldData != null)
+                    {
                         previousPlaytime = oldData.totalPlaytime;
+                        previousLocation = oldData.lastPlayerPosition;
+                        previousSceneID = string.IsNullOrEmpty(oldData.currentSceneID) ? previousSceneID : oldData.currentSceneID;
+                        previousCheckpointID = string.IsNullOrEmpty(oldData.currentCheckpointID) ? previousCheckpointID : oldData.currentCheckpointID;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -59,9 +70,7 @@ public static class SaveSystem
             GameSaveData saveData = new GameSaveData
             {
                 playerData = new PlayerSaveData(),
-                currentSceneID = SceneManager.GetActiveScene().name,
                 lastDoorID = currentDoorID,
-                currentCheckpointID = currentCheckpointID,
                 totalPlaytime = updatedPlaytime,
                 timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 version = CurrentVersion,
@@ -69,12 +78,26 @@ public static class SaveSystem
                 unlockedFlags = new System.Collections.Generic.List<string>(SessionManager.Instance.UnlockedFlags)
             };
 
-            var player = UnityEngine.Object.FindFirstObjectByType<PlayerController>();
-            if (player != null)
+            // Logic to separate position data from stat data
+            if (updatePosition)
             {
-                saveData.lastPlayerPosition = player.transform.position;
-                HasValidPlayerPosition = true;
-                Debug.Log($"[SaveSystem] Saved player position {saveData.lastPlayerPosition} for fallback.");
+                var player = UnityEngine.Object.FindFirstObjectByType<PlayerController>();
+                if (player != null)
+                {
+                    saveData.lastPlayerPosition = player.transform.position;
+                    HasValidPlayerPosition = true;
+                    Debug.Log($"[SaveSystem] Saved player position {saveData.lastPlayerPosition} for fallback.");
+                }
+                saveData.currentSceneID = SceneManager.GetActiveScene().name;
+                saveData.currentCheckpointID = currentCheckpointID;
+            }
+            else
+            {
+                // Inject the old positional data back into the save
+                saveData.lastPlayerPosition = previousLocation;
+                saveData.currentSceneID = previousSceneID;
+                saveData.currentCheckpointID = previousCheckpointID;
+                HasValidPlayerPosition = previousLocation != Vector2.zero;
             }
 
             saveData.playerData.FromRuntime(runtimeStats, slotIndex);
@@ -169,7 +192,7 @@ public static class SaveSystem
                 Debug.LogError($"[SaveSystem] Failed to parse save data for slot {slotIndex}");
                 return;
             }
-                
+
             SessionManager.Instance.CurrentStoryState = saveData.currentStoryState;
             SessionManager.Instance.UnlockedFlags = new System.Collections.Generic.HashSet<string>(saveData.unlockedFlags);
             LastLoadedPlayerPosition = saveData.lastPlayerPosition;

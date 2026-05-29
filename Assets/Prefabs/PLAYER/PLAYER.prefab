@@ -1029,6 +1029,7 @@ GameObject:
   - component: {fileID: 6724477616026801486}
   - component: {fileID: 7213761901230074175}
   - component: {fileID: 1006199541074824187}
+  - component: {fileID: 2151245760672938289}
   m_Layer: 0
   m_Name: Remiel_Death
   m_TagString: Untagged
@@ -1132,6 +1133,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2151245760672938289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6184652898679202436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ee2381ba1ba1942b5442114d67afdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventRelay
+  attackProgress: 0
+  speedMultiplier: 1
+  gradientScale: 1
 --- !u!1 &7304108651744210172
 GameObject:
   m_ObjectHideFlags: 0
