@@ -10,24 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5e2d1b3fc6aa734ea882d0a4ec1d085, type: 3}
-  m_Name: TutorialDialogue_7
+  m_Name: TutorialDialogue_2
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSequenceSO
   nodes:
   - speakerName: Godiva
-    dialogueText: Ten cuidado!!
+    dialogueText: The Limbo is full of dangerous creatures
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: 1
     unlockFlag: 
   - speakerName: Godiva
-    dialogueText: Hay enemigos acechando en las sombras
-    requiredFlag: 
-    fallbackNodeIndex: -1
-    nextNodeIndex: 2
-    unlockFlag: 
-  - speakerName: Godiva
-    dialogueText: Cruza con cuidado...
+    dialogueText: Defend your self!
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: -1
-    unlockFlag: SpiderDialogue_Completed
+    unlockFlag: AttackDialogue_Completed

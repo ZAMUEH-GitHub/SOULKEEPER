@@ -10,18 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5e2d1b3fc6aa734ea882d0a4ec1d085, type: 3}
-  m_Name: TutorialDialogue_0
+  m_Name: TutorialDialogue_5
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSequenceSO
   nodes:
   - speakerName: Godiva
-    dialogueText: '[Intro de Godiva]'
+    dialogueText: 'This relics have been in the Limbo millenia '
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: 1
     unlockFlag: 
   - speakerName: Godiva
-    dialogueText: "S\xEDgueme.. te ense\xF1ar\xE9 donde est\xE1 la salida"
+    dialogueText: 'They contain the remanent of powerfull souls and grant super human
+      abilitys '
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 2
+    unlockFlag: 
+  - speakerName: Godiva
+    dialogueText: 'Surerly we will find more along our way '
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 3
+    unlockFlag: 
+  - speakerName: Godiva
+    dialogueText: With this new found power you should be able to go up there
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: -1
-    unlockFlag: IntroDialogue_Completed
+    unlockFlag: RelicDialogue_Completed

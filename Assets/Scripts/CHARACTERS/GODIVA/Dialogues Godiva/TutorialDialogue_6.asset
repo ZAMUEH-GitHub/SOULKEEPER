@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5e2d1b3fc6aa734ea882d0a4ec1d085, type: 3}
-  m_Name: TutorialDialogue_4
+  m_Name: TutorialDialogue_6
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSequenceSO
   nodes:
   - speakerName: Godiva
-    dialogueText: "Creo que por aqu\xED arriba hay algo interesante"
+    dialogueText: 'This resting points will aid you in your travel '
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: 1
     unlockFlag: 
   - speakerName: Godiva
-    dialogueText: "S\xEDgueme!!"
+    dialogueText: 'Its good to have a good place to go back when things turn bad... '
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: -1
-    unlockFlag: TombEntryDialogue_Completed
+    unlockFlag: CheckpointDialogue_Completed

@@ -10,25 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5e2d1b3fc6aa734ea882d0a4ec1d085, type: 3}
-  m_Name: TutorialDialogue_8
+  m_Name: TutorialDialogue_4
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSequenceSO
   nodes:
   - speakerName: Godiva
-    dialogueText: Ya casi hemos llegado!!
+    dialogueText: I think theres something hidden above here
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: 1
     unlockFlag: 
   - speakerName: Godiva
-    dialogueText: Subiendo estas escaleras hay un lugar donde poder resguardarnos
-      y estar a salvo
-    requiredFlag: 
-    fallbackNodeIndex: -1
-    nextNodeIndex: 2
-    unlockFlag: 
-  - speakerName: Godiva
-    dialogueText: "Por aqu\xED!!"
+    dialogueText: Follow Me!
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: -1
-    unlockFlag: TutorialEndDialogue_Completed
+    unlockFlag: TombEntryDialogue_Completed

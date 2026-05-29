@@ -10,30 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5e2d1b3fc6aa734ea882d0a4ec1d085, type: 3}
-  m_Name: TutorialDialogue_5
+  m_Name: TutorialDialogue_7
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSequenceSO
   nodes:
   - speakerName: Godiva
-    dialogueText: Estas reliquias llevan milenios en el Limbo
+    dialogueText: Beware
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: 1
     unlockFlag: 
   - speakerName: Godiva
-    dialogueText: Contienen un poder enorme, y son capaces de darte habilidades sobrehumanas
+    dialogueText: There are enemies stalking in the shadows
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: 2
     unlockFlag: 
   - speakerName: Godiva
-    dialogueText: "Seguramente encontremos m\xE1s por nuestro camino"
-    requiredFlag: 
-    fallbackNodeIndex: -1
-    nextNodeIndex: 3
-    unlockFlag: 
-  - speakerName: Godiva
-    dialogueText: Vamos a intentar subir otra vez
+    dialogueText: 'Cross with caution in mind '
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: -1
-    unlockFlag: RelicDialogue_Completed
+    unlockFlag: SpiderDialogue_Completed
