@@ -13,6 +13,11 @@ public class Phase2Controller : MonoBehaviour
     public float knockbackDuration;
     public float attackRate;
     public float attackTimer;
+
+    [Header("Throw Vectors")]
+    public Vector2 throwRightVector = new Vector2(1f, 0.5f).normalized;
+    public Vector2 throwLeftVector = new Vector2(-1f, 0.5f).normalized;
+
     [Space(5f)]
     private PlayerController playerController;
     private Transform playerTransform;
@@ -41,7 +46,9 @@ public class Phase2Controller : MonoBehaviour
     {
         if (playerTransform == null || bossAnimator == null) return;
 
-        bossAnimator.SetFloat("Player Position", playerTransform.position.x);
+        float relativeX = playerTransform.position.x - transform.position.x;
+
+        bossAnimator.SetFloat("Player Position", relativeX);
 
         if (playerController != null)
         {
@@ -78,8 +85,11 @@ public class Phase2Controller : MonoBehaviour
                 break;
             case BossAttack.Grab:
                 throwRight = Random.value > 0.5f;
-                bossAnimator.SetTrigger("Grab");
+
                 bossAnimator.SetBool("Throw Right", throwRight);
+                bossAnimator.SetBool("Throw Left", !throwRight);
+
+                bossAnimator.SetTrigger("Grab");
                 break;
             case BossAttack.Swipe:
                 bossAnimator.SetTrigger("Swipe");
@@ -101,21 +111,20 @@ public class Phase2Controller : MonoBehaviour
         var collisionController = playerController.GetComponent<PlayerCollisionController>();
         if (collisionController == null || !collisionController.isTrapped) return;
 
-        float xDirection = throwRight ? 1f : -1f;
-        Vector2 knockbackVector = new Vector2(xDirection * 2f, 1f).normalized;
+        Vector2 knockbackVector = throwRight ? throwRightVector : throwLeftVector;
 
         playerController.damageController.Knockback(knockbackVector, knockbackForce * 2, knockbackDuration);
-
-        var attachment = playerController.GetComponent<PlayerAttachmentController>();
-        if (attachment != null)
-        {
-            attachment.DetachFromPlatform();
-        }
     }
 
     public void EndAttack()
     {
         isAttacking = false;
         isChargingAttack = false;
+
+        if (bossAnimator != null)
+        {
+            bossAnimator.SetBool("Throw Right", false);
+            bossAnimator.SetBool("Throw Left", false);
+        }
     }
 }

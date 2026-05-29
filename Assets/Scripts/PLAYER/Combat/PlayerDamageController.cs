@@ -61,6 +61,8 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
         currentKnockbackDuration = knockbackDuration;
 
         playerController.stateMachine.ChangeState(playerController.knockbackState);
+
+        Debug.Log("Player is being Knocked Back");
     }
 
     public void EndKnockback()
