@@ -1,118 +1,129 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Phase1Controller : MonoBehaviour
 {
-    [Header("Phase 1 Settings")]
-    public float spawnRate;
-    public float nextRoundTime;
-    public GameObject[] enemySpawners;
+    public enum BossRound
+    {
+        Round1 = 0,
+        Round2 = 1,
+        Round3 = 2,
+        Round4 = 3,
+        Round5 = 4,
+        Complete = 5
+    }
 
-    [Header("Drag and Drop Enemy Waves")]
-    public List<GameObject> round1Enemies;
-    public List<GameObject> round2Enemies;
-    public List<GameObject> round3Enemies;
-    public List<GameObject> round4Enemies;
-    public List<GameObject> round5Enemies;
+    [System.Serializable]
+    public struct WaveConfiguration
+    {
+        [Tooltip("The exact sequence of enemies to spawn during this wave.")]
+        public GameObject[] enemiesToSpawn;
 
-    public enum SpawnRound { Round1, Round2, Round3, Round4, Round5 };
-    public SpawnRound spawnRound = SpawnRound.Round1;
+        [Tooltip("Time in seconds between each enemy spawn.")]
+        public float spawnRate;
 
-    private int currentSpawnerIndex = 0;
-    private bool hasSpawnedRound = false;
+        [Tooltip("Locations where enemies can randomly spawn.")]
+        public Transform[] spawnPoints;
+    }
+
+    [Header("State References")]
+    public BossStateManager stateManager;
+    public Animator bossAnimator;
+
+    [Header("Wave Settings")]
+    public BossRound currentRound = BossRound.Round1;
+    public List<WaveConfiguration> waves = new List<WaveConfiguration>();
+
+    [Tooltip("How long the boss waits after a wave clears before starting the next one.")]
+    public float delayBetweenRounds = 2.0f;
+
+    private int activeEnemies = 0;
+    private int enemiesSpawnedThisRound = 0;
     private bool isSpawning = false;
-    private bool isAdvancingRound = false;
-    public int nextRoundInt = 1;
 
-    private Animator bossAnimator;
-    private MinosController minosController;
-    private List<EnemyBaseController> activeEnemies = new List<EnemyBaseController>();
-
-    void Start()
+    public void StartWaves()
     {
-        bossAnimator = GetComponentInChildren<Animator>();
-        minosController = GetComponent<MinosController>();
+        currentRound = BossRound.Round1;
+        AdvanceRound();
     }
 
-    public void RunPhase1()
+    public void AdvanceRound()
     {
-        if (!hasSpawnedRound && !isSpawning)
+        if (currentRound == BossRound.Complete)
         {
-            StartCoroutine(SpawnCurrentRound());
-            hasSpawnedRound = true;
+            stateManager.TransitionToPhase2();
+            return;
         }
+
+        if (bossAnimator != null)
+        {
+            bossAnimator.SetTrigger("Start" + currentRound.ToString());
+        }
+
+        StartCoroutine(SpawnRoutine());
     }
 
-    private IEnumerator SpawnCurrentRound()
+    private IEnumerator SpawnRoutine()
     {
+        int roundIndex = (int)currentRound;
+
+        if (roundIndex >= waves.Count)
+        {
+            Debug.LogWarning("[BossWaveSpawner] Missing wave configuration for " + currentRound);
+            yield break;
+        }
+
+        WaveConfiguration currentWave = waves[roundIndex];
+        enemiesSpawnedThisRound = 0;
         isSpawning = true;
-        currentSpawnerIndex = Random.Range(0, enemySpawners.Length);
 
-        List<GameObject> enemiesToSpawn = new List<GameObject>();
-        switch (spawnRound)
+        foreach (GameObject enemyPrefab in currentWave.enemiesToSpawn)
         {
-            case SpawnRound.Round1: enemiesToSpawn = round1Enemies; break;
-            case SpawnRound.Round2: enemiesToSpawn = round2Enemies; break;
-            case SpawnRound.Round3: enemiesToSpawn = round3Enemies; break;
-            case SpawnRound.Round4: enemiesToSpawn = round4Enemies; break;
-            case SpawnRound.Round5: enemiesToSpawn = round5Enemies; break;
+            SpawnEnemy(enemyPrefab, currentWave.spawnPoints);
+            enemiesSpawnedThisRound++;
+            yield return new WaitForSeconds(currentWave.spawnRate);
         }
 
-        foreach (GameObject enemyPrefab in enemiesToSpawn)
-        {
-            if (enemyPrefab == null) continue;
-
-            Vector2 spawnPosition = enemySpawners[currentSpawnerIndex].transform.position;
-            GameObject newEnemyObj = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-
-            EnemyBaseController enemyController = newEnemyObj.GetComponent<EnemyBaseController>();
-            if (enemyController != null)
-            {
-                activeEnemies.Add(enemyController);
-                enemyController.OnEnemyDied += HandleEnemyDeath;
-            }
-
-            currentSpawnerIndex = (currentSpawnerIndex + 1) % enemySpawners.Length;
-            yield return new WaitForSeconds(spawnRate);
-        }
-
-        Debug.Log(spawnRound.ToString() + " Spawned!!");
         isSpawning = false;
+    }
+
+    private void SpawnEnemy(GameObject prefab, Transform[] spawnPoints)
+    {
+        if (prefab == null || spawnPoints.Length == 0) return;
+
+        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+
+        GameObject enemyObject = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
+        EnemyBaseController enemyController = enemyObject.GetComponent<EnemyBaseController>();
+
+        if (enemyController != null)
+        {
+            activeEnemies++;
+            enemyController.OnEnemyDied += HandleEnemyDeath;
+        }
     }
 
     private void HandleEnemyDeath(EnemyBaseController enemy)
     {
         enemy.OnEnemyDied -= HandleEnemyDeath;
+        activeEnemies--;
 
-        if (activeEnemies.Contains(enemy))
-        {
-            activeEnemies.Remove(enemy);
-        }
+        CheckRoundCompletion();
+    }
 
-        if (activeEnemies.Count == 0 && !isSpawning && !isAdvancingRound)
+    private void CheckRoundCompletion()
+    {
+        if (!isSpawning && activeEnemies <= 0)
         {
-            StartCoroutine(AdvanceRound());
+            currentRound++;
+            StartCoroutine(PrepareNextRound());
         }
     }
 
-    private IEnumerator AdvanceRound()
+    private IEnumerator PrepareNextRound()
     {
-        isAdvancingRound = true;
-
-        yield return new WaitForSeconds(nextRoundTime);
-
-        hasSpawnedRound = false;
-        isAdvancingRound = false;
-
-        if (spawnRound < SpawnRound.Round5)
-        {
-            spawnRound++;
-            bossAnimator.SetInteger("Spawn Round", (int)spawnRound + 1);
-        }
-        else
-        {
-            minosController.AdvancePhase();
-        }
+        yield return new WaitForSeconds(delayBetweenRounds);
+        AdvanceRound();
     }
 }

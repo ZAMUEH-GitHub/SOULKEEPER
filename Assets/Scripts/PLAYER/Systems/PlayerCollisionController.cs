@@ -43,16 +43,6 @@ public class PlayerCollisionController : MonoBehaviour
     }
 
     #region Collision Management
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Minos Attack Collider"))
-        {
-            Vector2 collisionVector = (transform.position - other.transform.position).normalized;
-            damageController.TakeDamage(1, collisionVector);
-            damageController.Knockback(collisionVector, playerStats.damageForce, playerStats.damageLenght);
-        }
-    }
-
     private void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("MovingObstacle") || other.CompareTag("Parenting Collider"))
@@ -61,16 +51,6 @@ public class PlayerCollisionController : MonoBehaviour
             if (platformAttachment != null)
             {
                 platformAttachment.AttachToPlatform(other);
-            }
-        }
-
-        if (other.CompareTag("Minos Grab Collider"))
-        {
-            if (!damageController.isKnockedBack)
-            {
-                transform.position = other.transform.position;
-                playerRigidBody.gravityScale = 0f;
-                isTrapped = true;
             }
         }
     }
@@ -87,7 +67,7 @@ public class PlayerCollisionController : MonoBehaviour
     {
         Vector2 collisionVector = (transform.position - collision.transform.position).normalized;
 
-        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Minos Attack Collider"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             damageController.TakeDamage(1, collisionVector);
             damageController.Knockback(collisionVector, playerStats.damageForce, playerStats.damageLenght);

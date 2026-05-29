@@ -2,134 +2,87 @@ using UnityEngine;
 
 public class Phase2Controller : MonoBehaviour
 {
-    [Header("Phase 2 Settings")]
-    public int smashDamage;
-    public int swipeDamage;
-    public int grabDamage;
-    [Space(5f)]
-    public bool isChargingAttack;
-    public bool isAttacking;
-    public float knockbackForce;
-    public float knockbackDuration;
-    public float attackRate;
-    public float attackTimer;
-
-    [Header("Throw Vectors")]
-    public Vector2 throwRightVector = new Vector2(1f, 0.5f).normalized;
-    public Vector2 throwLeftVector = new Vector2(-1f, 0.5f).normalized;
-
-    [Space(5f)]
-    private PlayerController playerController;
+    [Header("Component References")]
+    public Animator bossAnimator;
+    public Transform bossCenterPoint;
     private Transform playerTransform;
-    private bool throwRight;
 
-    public enum BossAttack { Smash, Grab, Swipe };
-    public BossAttack currentAttack = BossAttack.Smash;
+    [Header("Combat Settings")]
+    public float timeBetweenAttacks = 2.0f;
+    private float attackCooldownTimer;
+    private bool isAttacking;
+    private bool phase2Active;
 
-    private MinosController minosController;
-    private Animator bossAnimator;
+    [Header("Throw Knockback Settings")]
+    public float throwKnockbackForce = 15f;
+    public float throwKnockbackDuration = 0.5f;
 
-    void Start()
+    private void Start()
     {
-        minosController = GetComponent<MinosController>();
-        bossAnimator = GetComponentInChildren<Animator>();
-        attackTimer = 0f;
-
-        playerController = PlayerController.Instance;
-        if (playerController != null)
+        if (PlayerController.Instance != null)
         {
-            playerTransform = playerController.transform;
+            playerTransform = PlayerController.Instance.transform;
         }
     }
 
-    void Update()
+    public void EnableCombat()
     {
-        if (playerTransform == null || bossAnimator == null) return;
+        phase2Active = true;
+        attackCooldownTimer = timeBetweenAttacks;
+    }
 
-        float relativeX = playerTransform.position.x - transform.position.x;
+    private void Update()
+    {
+        if (!phase2Active || isAttacking || playerTransform == null) return;
 
-        bossAnimator.SetFloat("Player Position", relativeX);
+        attackCooldownTimer -= Time.deltaTime;
 
-        if (playerController != null)
+        if (attackCooldownTimer <= 0)
         {
-            bool isPlayerGrabbed = playerController.GetComponent<PlayerCollisionController>().isTrapped;
-            bossAnimator.SetBool("Player Grabbed", isPlayerGrabbed);
+            ChooseAndExecuteAttack();
         }
     }
 
-    public void RunPhase2()
-    {
-        if (!isAttacking)
-        {
-            attackTimer += Time.deltaTime;
-            if (attackTimer >= attackRate)
-            {
-                attackTimer = 0f;
-                StartAttack();
-            }
-        }
-    }
-
-    private void StartAttack()
+    private void ChooseAndExecuteAttack()
     {
         isAttacking = true;
-        isChargingAttack = true;
 
-        ChooseRandomAttack();
+        float relativeX = playerTransform.position.x - bossCenterPoint.position.x;
+        bossAnimator.SetFloat("PlayerRelativeX", relativeX);
 
-        switch (currentAttack)
+        int attackChoice = Random.Range(0, 3);
+
+        switch (attackChoice)
         {
-            case BossAttack.Smash:
-                bossAnimator.SetTrigger("Smash");
-                Debug.Log("SMASH");
-                break;
-            case BossAttack.Grab:
-                throwRight = Random.value > 0.5f;
-
-                bossAnimator.SetBool("Throw Right", throwRight);
-                bossAnimator.SetBool("Throw Left", !throwRight);
-
-                bossAnimator.SetTrigger("Grab");
-                break;
-            case BossAttack.Swipe:
+            case 0:
                 bossAnimator.SetTrigger("Swipe");
-                Debug.Log("SWIPE");
+                break;
+            case 1:
+                bossAnimator.SetTrigger("Smash_Charge");
+                break;
+            case 2:
+                bossAnimator.SetTrigger("Grab_Charge");
                 break;
         }
-    }
-
-    private void ChooseRandomAttack()
-    {
-        int attackIndex = Random.Range(0, System.Enum.GetValues(typeof(BossAttack)).Length);
-        currentAttack = (BossAttack)attackIndex;
     }
 
     public void ApplyPlayerKnockback()
     {
-        if (playerController == null) return;
+        if (playerTransform == null) return;
 
-        var collisionController = playerController.GetComponent<PlayerCollisionController>();
-        if (collisionController == null || !collisionController.isTrapped) return;
+        IKnockbackable knockbackable = playerTransform.GetComponent<IKnockbackable>();
+        if (knockbackable != null)
+        {
+            float directionX = Mathf.Sign(playerTransform.position.x - bossCenterPoint.position.x);
+            Vector2 knockbackDir = new Vector2(directionX, 0.5f).normalized;
 
-        playerController.transform.SetParent(null);
-        playerController.transform.localScale = Vector3.one;
-
-        collisionController.isTrapped = false;
-
-        Vector2 knockbackVector = throwRight ? throwRightVector : throwLeftVector;
-
-        playerController.damageController.Knockback(knockbackVector, knockbackForce * 2, knockbackDuration);
+            knockbackable.Knockback(knockbackDir, throwKnockbackForce, throwKnockbackDuration);
+        }
     }
 
     public void EndAttack()
     {
         isAttacking = false;
-        isChargingAttack = false;
-
-        if (bossAnimator != null)
-        {
-            bossAnimator.SetBool("Throw Right", false);
-            bossAnimator.SetBool("Throw Left", false);
-        }
+        attackCooldownTimer = timeBetweenAttacks;
     }
 }
