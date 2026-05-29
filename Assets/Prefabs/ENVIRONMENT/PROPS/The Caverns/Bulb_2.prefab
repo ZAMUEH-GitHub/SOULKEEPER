@@ -272,6 +272,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &7153910246921264581
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8998060506279999875}
+  m_Layer: 0
+  m_Name: Custom Particle Transform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8998060506279999875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7153910246921264581}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.03, y: -0.19, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 7141941251658416949}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7498359348035764290
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,6 +336,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8998060506279999875}
   - {fileID: 6220038218890122076}
   m_Father: {fileID: 2778414494224145353}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -404,8 +436,8 @@ MonoBehaviour:
   bulbKnockbackForce: 25
   bulbKnockbackDuration: 0.25
   bulbAttackMultiplier: 1.4
-  bulbHitParticles: {fileID: 0}
-  customParticlesTransform: {fileID: 0}
+  bulbHitParticles: {fileID: 1253664111215312162, guid: f172ae387b8a7b14887113392fa7f482, type: 3}
+  customParticlesTransform: {fileID: 8998060506279999875}
 --- !u!58 &6461770084256280175
 CircleCollider2D:
   m_ObjectHideFlags: 0

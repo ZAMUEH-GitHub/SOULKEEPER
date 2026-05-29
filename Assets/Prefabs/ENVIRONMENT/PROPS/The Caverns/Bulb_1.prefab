@@ -33,6 +33,37 @@ Transform:
   - {fileID: 4761560910790644353}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3896978853953419765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4998144394812437269}
+  m_Layer: 0
+  m_Name: Custom Particle Transform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4998144394812437269
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3896978853953419765}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2629728753118637849}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4414620302245563527
 GameObject:
   m_ObjectHideFlags: 0
@@ -67,6 +98,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4196838058608379707}
+  - {fileID: 4998144394812437269}
   m_Father: {fileID: 496535804961773837}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1953202744533618853
@@ -84,8 +116,8 @@ MonoBehaviour:
   bulbKnockbackForce: 25
   bulbKnockbackDuration: 0.25
   bulbAttackMultiplier: 1.4
-  bulbHitParticles: {fileID: 0}
-  customParticlesTransform: {fileID: 0}
+  bulbHitParticles: {fileID: 1253664111215312162, guid: f172ae387b8a7b14887113392fa7f482, type: 3}
+  customParticlesTransform: {fileID: 4998144394812437269}
 --- !u!212 &1957926911198967024
 SpriteRenderer:
   serializedVersion: 2
