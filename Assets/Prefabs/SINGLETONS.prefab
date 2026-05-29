@@ -25005,7 +25005,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1894884632730466768}
   - component: {fileID: 3249444324398550620}
-  - component: {fileID: 1308652134992237924}
   - component: {fileID: 6124174533894792060}
   - component: {fileID: 2937622817508294070}
   m_Layer: 0
@@ -25042,19 +25041,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5681990486698465426}
   m_CullTransparentMesh: 1
---- !u!114 &1308652134992237924
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5681990486698465426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2cacfd35821c974bbf6e8201d4e4866, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TemporalAreaTittleShow
-  tittleAnimator: {fileID: 2937622817508294070}
 --- !u!114 &6124174533894792060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30753,8 +30739,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Toast Message
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: edb098b62a69fdf47b9856cbdf28c438, type: 2}
+  m_sharedMaterial: {fileID: 5537059235265448142, guid: edb098b62a69fdf47b9856cbdf28c438, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

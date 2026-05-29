@@ -1,22 +1,35 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class AreaTitlePanelManager : Singleton<AreaTitlePanelManager>
 {
     protected override bool IsPersistent => false;
 
     [Header("Animation Settings")]
     [SerializeField] private Animator titleAnimator;
-    [Tooltip("Type the exact name of the Trigger parameter in your Animator to show the title.")]
-    [SerializeField] private string showTriggerName = "ShowAnimation1";
+
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip catacombsSound;
+    [SerializeField] private AudioClip cathedralSound;
+    [SerializeField] private AudioClip cavernsSound;
+    [SerializeField] private AudioClip firePalaceSound;
+    [SerializeField] private AudioClip purePalaceSound;
 
     [Header("Display Settings")]
     [Tooltip("How long the panel remains active before disabling.")]
     [SerializeField] private float defaultDisplayDuration = 5f;
 
     private Coroutine currentRoutine;
+    private AudioSource audioSource;
 
-    public void ShowAreaTitle(string title, string subtitle, float displayDuration)
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+    }
+
+    public void ShowAreaTitle(string animationTriggerName, float displayDuration)
     {
         if (displayDuration <= 0f)
             displayDuration = defaultDisplayDuration;
@@ -24,10 +37,10 @@ public class AreaTitlePanelManager : Singleton<AreaTitlePanelManager>
         if (currentRoutine != null)
             StopCoroutine(currentRoutine);
 
-        currentRoutine = StartCoroutine(ShowAreaTitleRoutine(displayDuration));
+        currentRoutine = StartCoroutine(ShowAreaTitleRoutine(animationTriggerName, displayDuration));
     }
 
-    private IEnumerator ShowAreaTitleRoutine(float duration)
+    private IEnumerator ShowAreaTitleRoutine(string animationTriggerName, float duration)
     {
         var canvas = CanvasManager.Instance;
         if (canvas == null)
@@ -38,15 +51,48 @@ public class AreaTitlePanelManager : Singleton<AreaTitlePanelManager>
 
         canvas.FadeIn(PanelType.AreaTitlePanel);
 
-        if (titleAnimator != null && !string.IsNullOrEmpty(showTriggerName))
+        if (titleAnimator != null && !string.IsNullOrEmpty(animationTriggerName))
         {
-            titleAnimator.SetTrigger(showTriggerName);
+            titleAnimator.SetTrigger(animationTriggerName);
+            PlayAreaSound(animationTriggerName);
         }
 
         yield return new WaitForSecondsRealtime(canvas.GetFadeDuration(PanelType.AreaTitlePanel) + duration);
 
         canvas.FadeOut(PanelType.AreaTitlePanel);
         currentRoutine = null;
+    }
+
+    private void PlayAreaSound(string triggerName)
+    {
+        AudioClip clipToPlay = null;
+
+        switch (triggerName)
+        {
+            case "Catacombs":
+                clipToPlay = catacombsSound;
+                break;
+            case "Cathedral":
+                clipToPlay = cathedralSound;
+                break;
+            case "Caverns":
+                clipToPlay = cavernsSound;
+                break;
+            case "FirePalace":
+            case "Fire Palace":
+                clipToPlay = firePalaceSound;
+                break;
+            case "PurePalace":
+            case "Pure Palace":
+                clipToPlay = purePalaceSound;
+                break;
+        }
+
+        if (clipToPlay != null && AudioManager.Instance != null && !AudioManager.Instance.IsMuted)
+        {
+            float currentSfxVolume = AudioManager.Instance.MasterVolume * AudioManager.Instance.SfxVolume;
+            audioSource.PlayOneShot(clipToPlay, currentSfxVolume);
+        }
     }
 
     public void ForceHide()

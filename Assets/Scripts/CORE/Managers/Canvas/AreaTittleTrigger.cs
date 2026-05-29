@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AreaTittleTrigger : MonoBehaviour
 {
     public string AnimationToShow;
+    [Tooltip("Leave at 0 to use the Manager's default duration.")]
+    public float DisplayDuration = 0f;
 
     [Header("Trigger Behaviors")]
     [SerializeField] private bool isOneTimePlay = true;
@@ -20,13 +21,13 @@ public class AreaTittleTrigger : MonoBehaviour
         {
             if (isOneTimePlay && hasTriggered) return;
 
-            if (TemporalAreaTittleShow.Instance != null)
+            if (AreaTitlePanelManager.Instance != null)
             {
-                TemporalAreaTittleShow.Instance.showTitle(AnimationToShow);
+                AreaTitlePanelManager.Instance.ShowAreaTitle(AnimationToShow, DisplayDuration);
             }
             else
             {
-                Debug.LogWarning("TemporalAreaTittleShow Singleton is missing in the scene!");
+                Debug.LogWarning("AreaTitlePanelManager Singleton is missing in the scene!");
             }
 
             if (freezesPlayer)

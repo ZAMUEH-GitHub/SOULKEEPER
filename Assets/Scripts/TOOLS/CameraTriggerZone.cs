@@ -33,6 +33,8 @@ public class CameraTriggerZone : MonoBehaviour
     {
         if (isOneTime && hasTriggered) return;
 
+        if (collision.isTrigger) return;
+
         PlayerController player = collision.GetComponentInParent<PlayerController>();
         if (player != null)
         {
@@ -52,6 +54,8 @@ public class CameraTriggerZone : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (collision.isTrigger) return;
+
         PlayerController player = collision.GetComponentInParent<PlayerController>();
         if (player != null)
         {
