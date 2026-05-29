@@ -23,6 +23,8 @@ public class AltarRelic : MonoBehaviour, IInteractable
     private float lastInteractionTime = -999f;
     private Coroutine fadeRoutine;
 
+    private Animator relicAnim;
+
     #region Unity Lifecycle
 
     private void Awake()
@@ -32,6 +34,7 @@ public class AltarRelic : MonoBehaviour, IInteractable
 
     private void Start()
     {
+        relicAnim = GetComponent<Animator>();
         if (SessionManager.Instance != null &&
             SessionManager.Instance.UnlockedFlags.Contains(relicFlag))
         {
@@ -90,6 +93,7 @@ public class AltarRelic : MonoBehaviour, IInteractable
 
     private void CollectRelic()
     {
+        relicAnim.SetTrigger("relicUnlocked");
         isCollected = true;
         lastInteractionTime = Time.time;
 
@@ -111,6 +115,10 @@ public class AltarRelic : MonoBehaviour, IInteractable
         // FX placeholder
         // Instantiate(pickupEffectPrefab, transform.position, Quaternion.identity);
 
+      
+    }
+    public void OnDestroy()
+    {
         gameObject.SetActive(false);
     }
 
@@ -120,7 +128,9 @@ public class AltarRelic : MonoBehaviour, IInteractable
 
     private void ShowInteractText()
     {
+        relicAnim.SetTrigger("playerInZone");
         if (!interactTextMesh) return;
+
 
         interactTextMesh.text = GetInteractionText();
         StartFade(1f, false);
