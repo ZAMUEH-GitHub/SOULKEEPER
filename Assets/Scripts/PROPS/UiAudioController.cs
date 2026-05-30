@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class UiAudioController : MonoBehaviour
+public class UIAudioController : MonoBehaviour
 {
     [Header("Audio Clips")]
     [SerializeField] private AudioClip[] barOpen;
