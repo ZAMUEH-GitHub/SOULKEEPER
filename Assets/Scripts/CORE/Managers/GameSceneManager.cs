@@ -7,7 +7,8 @@ public enum SceneLoadMode
 {
     DoorTransition,
     CheckpointSpawn,
-    DirectLoad
+    DirectLoad,
+    LoreTransition
 }
 
 public class GameSceneManager : Singleton<GameSceneManager>
@@ -66,6 +67,13 @@ public class GameSceneManager : Singleton<GameSceneManager>
         directSpawnPosition = spawnPosition;
         StartCoroutine(LoadSceneRoutine(scene, SceneLoadMode.DirectLoad, null, null));
     }
+
+    public void LoadSceneWithLore(SceneField scene, Vector2 spawnPosition, LoreSequenceSO lore)
+    {
+        if (isLoadingScene) return;
+        directSpawnPosition = spawnPosition;
+        StartCoroutine(LoadSceneWithLoreRoutine(scene, lore));
+    }
     #endregion
 
     #region Scene Loading Logic
@@ -96,6 +104,47 @@ public class GameSceneManager : Singleton<GameSceneManager>
             {
                 yield return null;
             }
+
+            asyncLoad.allowSceneActivation = true;
+        }
+        else
+        {
+            _ = PostSceneLoadRoutineAsync();
+        }
+    }
+
+    private IEnumerator LoadSceneWithLoreRoutine(SceneField scene, LoreSequenceSO lore)
+    {
+        isLoadingScene = true;
+        currentLoadMode = SceneLoadMode.LoreTransition;
+        targetDoorID = null;
+        targetCheckpointID = null;
+
+        canvasManager ??= CanvasManager.Instance;
+
+        if (canvasManager != null)
+        {
+            canvasManager.FadeIn(PanelType.BlackScreen);
+            yield return new WaitForSecondsRealtime(canvasManager.GetFadeDuration(PanelType.BlackScreen) + 0.1f);
+        }
+
+        bool isLoreFinished = false;
+
+        if (LorePanelManager.Instance != null && lore != null)
+        {
+            LorePanelManager.Instance.StartLoreSequence(lore, () => isLoreFinished = true);
+        }
+        else
+        {
+            isLoreFinished = true;
+        }
+
+        if (scene != null && !string.IsNullOrEmpty(scene.SceneName))
+        {
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
+            asyncLoad.allowSceneActivation = false;
+
+            yield return new WaitUntil(() => asyncLoad.progress >= 0.9f && isLoreFinished);
 
             asyncLoad.allowSceneActivation = true;
         }
@@ -286,6 +335,7 @@ public class GameSceneManager : Singleton<GameSceneManager>
                 break;
 
             case SceneLoadMode.DirectLoad:
+            case SceneLoadMode.LoreTransition:
                 player.transform.position = directSpawnPosition;
                 Debug.Log($"[GameSceneManager] DirectLoad: Player spawned at {directSpawnPosition}");
                 break;

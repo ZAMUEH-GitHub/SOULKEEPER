@@ -18,6 +18,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [Header("New Game Defaults")]
     [SerializeField] private SceneField newGameScene;
     [SerializeField] private Vector2 defaultSpawnPosition;
+    [SerializeField] private LoreSequenceSO introLoreSequence;
 
     [Header("Keybindings Toggle")]
     [SerializeField] private GameObject keyboardControlsImage;
@@ -207,7 +208,7 @@ public class MainMenuManager : Singleton<MainMenuManager>
         }
 
         if (gameSceneManager != null)
-            gameSceneManager.LoadSceneDirect(newGameScene, defaultSpawnPosition);
+            gameSceneManager.LoadSceneWithLore(newGameScene, defaultSpawnPosition, introLoreSequence);
     }
 
     public void OnLoadGameButton(int slotIndex)
