@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7585239068564638954}
   - component: {fileID: 3093841422518312676}
   - component: {fileID: 931727350474274557}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: SceneDoor
-  m_TagString: Untagged
+  m_TagString: Scene Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +97,9 @@ MonoBehaviour:
     _sceneAsset: {fileID: 0}
     _sceneName: TheCaverns
   targetDoorID: 
+  requiresInteraction: 1
   interactTextMesh: {fileID: 5370250698753694591}
+  interactText: Enter Door
   interactActionRef: {fileID: 1781555164194001046, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   fadeDuration: 0.5
   interactionCooldown: 1
@@ -113,7 +115,7 @@ GameObject:
   - component: {fileID: 7580512392576192286}
   - component: {fileID: 7967398153044977637}
   - component: {fileID: 5370250698753694591}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: Interact_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,6 +161,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -180,9 +184,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &5370250698753694591
 MonoBehaviour:
@@ -242,6 +248,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
