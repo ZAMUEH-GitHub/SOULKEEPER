@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e2d1b3fc6aa734ea882d0a4ec1d085, type: 3}
+  m_Name: MinosPure_EndGame
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueSequenceSO
+  nodes:
+  - speakerName: King Minos
+    dialogueText: Thank you little one
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 1
+    unlockFlag: 
+  - speakerName: King Minos
+    dialogueText: It has been almost a thousand years under the corruption's control
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 2
+    unlockFlag: 
+  - speakerName: King Minos
+    dialogueText: I could never even start to forgive myself for all the pain and
+      suffering I have caused
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 3
+    unlockFlag: 
+  - speakerName: King Minos
+    dialogueText: Godiva...
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 4
+    unlockFlag: 
+  - speakerName: King Minos
+    dialogueText: Im sorry for the thousands of years of torment you had to endure
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 5
+    unlockFlag: 
+  - speakerName: King Minos
+    dialogueText: I am now free, and I will make sure all the souls in the Limbo
+      that have been unfairly brought here are free too
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 6
+    unlockFlag: 
+  - speakerName: King Minos
+    dialogueText: I am now free, and I will make sure all the souls in the Limbo
+      that have been unfairly brought here are free too
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 7
+    unlockFlag: 
+  - speakerName: King Minos
+    dialogueText: I am now free, and I will make sure all the souls in the Limbo
+      that have been brought here unfairly are free too
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 8
+    unlockFlag: 
+  - speakerName: King Minos
+    dialogueText: Goodbye, Godiva...
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 9
+    unlockFlag: 
+  - speakerName: King Minos
+    dialogueText: You will always be a part of me
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 10
+    unlockFlag: 
+  - speakerName: King Minos
+    dialogueText: 
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: -1
+    unlockFlag: MinosPureDialogue_Complete

@@ -63,7 +63,7 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
             Debug.Log("player interacted");
 
             lastInteractionTime = Time.time;
-            HideInteractText(); // Hide the prompt while the dialogue is playing
+            HideInteractText();
             DialoguePanelManager.Instance.StartDialogue(dialogueSequence);
         }
         else

@@ -113,6 +113,15 @@ public class GameManager : Singleton<GameManager>
     {
         sessionManager.EndSession();
         SetState(GameState.MainMenu);
+
+        if (GameSceneManager.Instance != null && mainMenuScene != null)
+        {
+            GameSceneManager.Instance.LoadSceneDirect(mainMenuScene, Vector2.zero);
+        }
+        else
+        {
+            Debug.LogWarning("[GameManager] Missing GameSceneManager or mainMenuScene reference!");
+        }
     }
 
     public void EnterGameplay() => SetState(GameState.Gameplay);

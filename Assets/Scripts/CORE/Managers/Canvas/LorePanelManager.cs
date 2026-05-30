@@ -89,6 +89,8 @@ public class LorePanelManager : Singleton<LorePanelManager>
     {
         currentSequence = null;
 
+        CanvasManager.Instance.FadeOut(PanelType.LorePanel);
+
         onSequenceComplete?.Invoke();
     }
 
