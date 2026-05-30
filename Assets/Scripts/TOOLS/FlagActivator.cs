@@ -13,7 +13,6 @@ public class FlagActivator : MonoBehaviour
     {
         if (objectToActivate == null) return;
 
-        // Check if the flag was already unlocked before this object loaded
         if (SessionManager.Instance != null && SessionManager.Instance.UnlockedFlags.Contains(targetFlagID))
         {
             objectToActivate.SetActive(true);
@@ -32,7 +31,6 @@ public class FlagActivator : MonoBehaviour
 
     private void HandleFlagUnlocked(string flagID)
     {
-        // If the unlocked flag matches our target, enable the assigned GameObject
         if (flagID == targetFlagID && objectToActivate != null)
         {
             objectToActivate.SetActive(true);

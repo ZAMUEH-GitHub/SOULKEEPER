@@ -20,6 +20,12 @@ public class BossDamageController : MonoBehaviour
     [Header("State References")]
     public BossStateManager stateManager;
 
+    [Header("Death Scene Transition")]
+    public SceneField targetSceneOnDeath;
+    public Vector2 targetSpawnPosition;
+    [Tooltip("The ID used to record this save event (e.g., MinosBoss_Defeat)")]
+    public string bossSaveID = "MinosBoss_Defeat";
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -89,5 +95,26 @@ public class BossDamageController : MonoBehaviour
         }
 
         Debug.Log("[BossDamageController] The Boss has been defeated!");
+    }
+
+    public async void EndDeath()
+    {
+        Debug.Log("[BossDamageController] Death Animation Complete. Performing soft save...");
+
+        var runtimeStats = SessionManager.Instance?.RuntimeStats;
+        int slot = SaveSlotManager.Instance != null ? SaveSlotManager.Instance.ActiveSlotIndex : 1;
+
+        if (runtimeStats != null)
+        {
+            await SaveSystem.SaveAsync(slot, runtimeStats, bossSaveID, null, false);
+            Debug.Log($"[BossDamageController] Soft Save completed for '{bossSaveID}'");
+        }
+
+        Debug.Log("[BossDamageController] Loading next scene directly.");
+
+        if (GameSceneManager.Instance != null && targetSceneOnDeath != null)
+        {
+            GameSceneManager.Instance.LoadSceneDirect(targetSceneOnDeath, targetSpawnPosition);
+        }
     }
 }
