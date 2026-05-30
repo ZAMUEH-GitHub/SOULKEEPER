@@ -4,8 +4,8 @@ using UnityEngine;
 public class UiAudioController : MonoBehaviour
 {
     [Header("Audio Clips")]
-    [SerializeField] private AudioClip[] varOpen;
-    [SerializeField] private AudioClip[] varClose;
+    [SerializeField] private AudioClip[] barOpen;
+    [SerializeField] private AudioClip[] barClose;
     [SerializeField] private AudioClip[] buttonClick;
     [SerializeField] private AudioClip[] buttonSelect;
     [SerializeField] private AudioClip[] checkBoxClic;
@@ -19,8 +19,8 @@ public class UiAudioController : MonoBehaviour
         audioSource.playOnAwake = false;
     }
 
-    public void PlayVarOpenSound() => PlayRandomClip(varOpen);
-    public void PlayVarCloseSound() => PlayRandomClip(varClose);
+    public void PlayBarOpenSound() => PlayRandomClip(barOpen);
+    public void PlayBarCloseSound() => PlayRandomClip(barClose);
     public void PlayButtonClickSound() => PlayRandomClip(buttonClick);
     public void PlayButtonSelectSound() => PlayRandomClip(buttonSelect);
 
