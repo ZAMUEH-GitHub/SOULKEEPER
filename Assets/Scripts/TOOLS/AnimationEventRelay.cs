@@ -10,6 +10,7 @@ public class AnimationEventRelay : MonoBehaviour
     private EnemyAudioController enemyAudioController;
     private SpiderEnemyController spiderEnemyController;
     private Phase2Controller phase2Controller;
+    private BossDamageController bossDamageController;
 
     [HideInInspector] public float attackProgress;
     [HideInInspector] public float speedMultiplier = 1f;
@@ -30,6 +31,7 @@ public class AnimationEventRelay : MonoBehaviour
         spiderEnemyController = GetComponentInParent<SpiderEnemyController>();
         enemyAudioController = GetComponentInParent<EnemyAudioController>();
         phase2Controller = GetComponentInParent<Phase2Controller>();
+        bossDamageController = GetComponentInParent<BossDamageController>();
     }
 
     private void Update()
@@ -78,6 +80,7 @@ public class AnimationEventRelay : MonoBehaviour
         if (deathController != null) deathController.TriggerDeathEffects();
         else if (enemyController != null) enemyController.Destroy();
         else if (spiderEnemyController != null) spiderEnemyController.EndDeath();
+        else if (bossDamageController != null) bossDamageController.EndDeath();
     }
 
     public void PlayFootstep()
