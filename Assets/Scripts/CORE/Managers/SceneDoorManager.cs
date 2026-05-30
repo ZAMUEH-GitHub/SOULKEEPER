@@ -8,6 +8,8 @@ public class SceneDoorManager : MonoBehaviour
     [SerializeField] private GameObject[] sceneDoors;
     private static string lastUsedDoorID;
 
+    public static string ArrivalDoorID { get; private set; }
+
     private GameObject player;
     private SaveSlotManager saveSlotManager;
 
@@ -33,6 +35,15 @@ public class SceneDoorManager : MonoBehaviour
     {
         lastUsedDoorID = doorID;
         Debug.Log($"[SceneDoorManager] Door '{doorID}' registered as last used.");
+    }
+
+    public static void ClearArrivalDoor()
+    {
+        if (!string.IsNullOrEmpty(ArrivalDoorID))
+        {
+            Debug.Log($"[SceneDoorManager] Handshake cleared. '{ArrivalDoorID}' is now fully active.");
+            ArrivalDoorID = null;
+        }
     }
 
     public void ChooseDoor(string targetDoorID)
@@ -90,6 +101,12 @@ public class SceneDoorManager : MonoBehaviour
 
         if (player != null)
         {
+            var sd = targetDoor.GetComponent<SceneDoor>();
+            if (sd != null)
+            {
+                ArrivalDoorID = sd.doorID;
+            }
+
             player.transform.position = targetDoor.transform.position;
         }
         else

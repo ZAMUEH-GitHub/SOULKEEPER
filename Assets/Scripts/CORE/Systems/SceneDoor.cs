@@ -41,6 +41,12 @@ public class SceneDoor : MonoBehaviour, IInteractable
     {
         if (!collision.CompareTag("Player") || !gameObject.activeInHierarchy) return;
 
+        if (doorID == SceneDoorManager.ArrivalDoorID)
+        {
+            Debug.Log($"[SceneDoor] Handshake active. Ignoring instant trigger for '{doorID}'.");
+            return;
+        }
+
         playerInRange = true;
 
         if (requiresInteraction)
@@ -68,18 +74,20 @@ public class SceneDoor : MonoBehaviour, IInteractable
 
     #region Interaction System
 
-    // CHANGED: Made async to allow the Save Task to complete before transitioning
     public async void Interact()
     {
+        if (doorID == SceneDoorManager.ArrivalDoorID)
+        {
+            SceneDoorManager.ClearArrivalDoor();
+        }
+
         if (!CanInteract()) return;
 
-        // NEW: Perform a "Soft Save" before transitioning
         var runtimeStats = SessionManager.Instance?.RuntimeStats;
         int slot = SaveSlotManager.Instance != null ? SaveSlotManager.Instance.ActiveSlotIndex : 1;
 
         if (runtimeStats != null)
         {
-            // We pass 'updatePosition: false' so it doesn't break your checkpoint respawns
             await SaveSystem.SaveAsync(slot, runtimeStats, doorID, null, false);
             Debug.Log($"[SceneDoor] Soft Save completed at door '{doorID}'");
         }
