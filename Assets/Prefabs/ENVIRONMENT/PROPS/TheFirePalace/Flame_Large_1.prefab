@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3499661520863942842}
   - component: {fileID: 7840816519072579752}
   - component: {fileID: 7752178515831552421}
+  - component: {fileID: 1666676392274858612}
   m_Layer: 0
   m_Name: Flame_Large_1
   m_TagString: Untagged
@@ -130,7 +131,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.05
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -237,6 +238,19 @@ MonoBehaviour:
   flameBigSounds:
   - {fileID: 8300000, guid: f50db6fd354bc354ea7ff8fef4deb682, type: 3}
   scoreSounds: []
+--- !u!114 &1666676392274858612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330125712289658483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1121fe7ff7dd3b64b92017f6e9c568c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraShakeController
+  impulseSource: {fileID: 0}
 --- !u!1 &4637847031671098654
 GameObject:
   m_ObjectHideFlags: 0
