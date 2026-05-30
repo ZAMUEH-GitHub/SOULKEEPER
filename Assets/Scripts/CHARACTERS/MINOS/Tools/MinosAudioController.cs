@@ -19,6 +19,11 @@ public class MinosAudioController : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false;
+
+        audioSource.spatialBlend = 1f;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.minDistance = 0f;
+        audioSource.maxDistance = 50f;
     }
 
     public void PlayBigFootstepSound() => PlayRandomClip(bigFootstep);

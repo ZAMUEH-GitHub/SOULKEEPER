@@ -7,6 +7,8 @@ public class AudioManager : Singleton<AudioManager>
 {
     protected override bool IsPersistent => false;
 
+    public static event System.Action OnVolumesChanged;
+
     [Header("Audio Sources")]
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
@@ -63,6 +65,14 @@ public class AudioManager : Singleton<AudioManager>
 
     private void Start()
     {
+        if (SettingsManager.Instance != null && SettingsManager.Instance.CurrentSettings != null)
+        {
+            masterVolume = SettingsManager.Instance.CurrentSettings.masterVolume;
+            musicVolume = SettingsManager.Instance.CurrentSettings.musicVolume;
+            sfxVolume = SettingsManager.Instance.CurrentSettings.sfxVolume;
+            isMuted = SettingsManager.Instance.CurrentSettings.isMuted;
+        }
+
         if (GameManager.Instance != null)
             HandleGameStateChange(GameManager.Instance.CurrentState);
 
@@ -110,6 +120,8 @@ public class AudioManager : Singleton<AudioManager>
             sfxSource.volume = global * sfxVolume;
             sfxSource.mute = isMuted;
         }
+
+        OnVolumesChanged?.Invoke();
     }
     #endregion
 

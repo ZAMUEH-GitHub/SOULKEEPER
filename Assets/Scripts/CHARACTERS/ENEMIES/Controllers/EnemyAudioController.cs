@@ -19,6 +19,11 @@ public class EnemyAudioController : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false;
+
+        audioSource.spatialBlend = 1f;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.minDistance = 0f;
+        audioSource.maxDistance = 25f;
     }
 
     public void PlaySmashAttackSound() => PlayRandomClip(smashAttackSounds);
