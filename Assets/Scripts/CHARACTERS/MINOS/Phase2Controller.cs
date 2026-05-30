@@ -10,8 +10,9 @@ public class Phase2Controller : MonoBehaviour
     [Header("Combat Settings")]
     public float timeBetweenAttacks = 2.0f;
     private float attackCooldownTimer;
-    private bool isAttacking;
-    private bool phase2Active;
+
+    public bool isAttacking;
+    public bool phase2Active;
 
     [Header("Throw Knockback Settings")]
     public float throwKnockbackForce = 15f;
@@ -23,17 +24,29 @@ public class Phase2Controller : MonoBehaviour
         {
             playerTransform = PlayerController.Instance.transform;
         }
+        else
+        {
+            Debug.LogError("[Phase2Controller] PlayerController is NULL on Start!");
+        }
     }
 
     public void EnableCombat()
     {
+        Debug.Log("[Phase2Controller] EnableCombat Called! Phase 2 is now active.");
         phase2Active = true;
         attackCooldownTimer = timeBetweenAttacks;
+        isAttacking = false;
     }
 
     private void Update()
     {
-        if (!phase2Active || isAttacking || playerTransform == null) return;
+        if (!phase2Active || playerTransform == null) return;
+
+        float relativeX = playerTransform.position.x - bossCenterPoint.position.x;
+        if (relativeX == 0f) relativeX = 0.01f;
+        bossAnimator.SetFloat("PlayerRelativeX", relativeX);
+
+        if (isAttacking) return;
 
         attackCooldownTimer -= Time.deltaTime;
 
@@ -46,11 +59,9 @@ public class Phase2Controller : MonoBehaviour
     private void ChooseAndExecuteAttack()
     {
         isAttacking = true;
-
-        float relativeX = playerTransform.position.x - bossCenterPoint.position.x;
-        bossAnimator.SetFloat("PlayerRelativeX", relativeX);
-
         int attackChoice = Random.Range(0, 3);
+
+        Debug.Log($"[Phase2Controller] Sending Attack Trigger! Choice: {attackChoice}, Player X: {bossAnimator.GetFloat("PlayerRelativeX")}");
 
         switch (attackChoice)
         {
@@ -58,10 +69,10 @@ public class Phase2Controller : MonoBehaviour
                 bossAnimator.SetTrigger("Swipe");
                 break;
             case 1:
-                bossAnimator.SetTrigger("Smash_Charge");
+                bossAnimator.SetTrigger("Smash");
                 break;
             case 2:
-                bossAnimator.SetTrigger("Grab_Charge");
+                bossAnimator.SetTrigger("Grab");
                 break;
         }
     }
@@ -69,6 +80,17 @@ public class Phase2Controller : MonoBehaviour
     public void ApplyPlayerKnockback()
     {
         if (playerTransform == null) return;
+
+        if (PlayerController.Instance != null)
+        {
+            PlayerController.Instance.UnfreezeAllInputs();
+        }
+
+        PlayerAttachmentController attachment = playerTransform.GetComponent<PlayerAttachmentController>();
+        if (attachment != null)
+        {
+            attachment.DetachFromPlatform();
+        }
 
         IKnockbackable knockbackable = playerTransform.GetComponent<IKnockbackable>();
         if (knockbackable != null)
@@ -80,9 +102,23 @@ public class Phase2Controller : MonoBehaviour
         }
     }
 
+    public void PlayerGrabbed()
+    {
+        if (bossAnimator != null)
+        {
+            bossAnimator.SetBool("HasGrabbedPlayer", true);
+        }
+    }
+
     public void EndAttack()
     {
+        Debug.Log("[Phase2Controller] EndAttack Event Received! Resetting for next attack.");
         isAttacking = false;
         attackCooldownTimer = timeBetweenAttacks;
+
+        if (bossAnimator != null)
+        {
+            bossAnimator.SetBool("HasGrabbedPlayer", false);
+        }
     }
 }
