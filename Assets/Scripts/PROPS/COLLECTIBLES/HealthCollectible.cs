@@ -4,7 +4,14 @@ public class HealthCollectible : MonoBehaviour
 {
     [Header("Health Collectible Stats")]
     [SerializeField] private int healAmount;
-    
+
+    private Animator lifeAnim;
+
+    private void Start()
+    {
+        lifeAnim = GetComponent<Animator>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -15,7 +22,12 @@ public class HealthCollectible : MonoBehaviour
             else
                 player.playerRuntimeStats.health += healAmount;
 
-            Destroy(gameObject);
+            lifeAnim.SetTrigger("collected");
+       
         }
+    }
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
     }
 }
