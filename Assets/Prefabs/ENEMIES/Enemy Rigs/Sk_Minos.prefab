@@ -1116,6 +1116,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: d3d0fa07ee916ce42a1bfb1b596b356c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8032814691706517225}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: d3d0fa07ee916ce42a1bfb1b596b356c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3385213117634028904}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: d3d0fa07ee916ce42a1bfb1b596b356c, type: 3}
 --- !u!4 &348497445690051822 stripped
 Transform:
@@ -1212,6 +1215,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3385213117634028904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812596793066890133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1121fe7ff7dd3b64b92017f6e9c568c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraShakeController
+  impulseSource: {fileID: 0}
 --- !u!4 &8352221481504230580 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1757856941984927388, guid: d3d0fa07ee916ce42a1bfb1b596b356c, type: 3}
