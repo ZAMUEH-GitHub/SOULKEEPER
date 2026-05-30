@@ -2333,9 +2333,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d8889461191bab4f85b24c9b7352634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAudioController
-  attackSounds: []
+  smashAttackSounds: []
+  attackSounds:
+  - {fileID: 8300000, guid: 5b7e1b96b840e3944aff78ad9f50a35f, type: 3}
+  - {fileID: 8300000, guid: 2cb3332c0a6fc724c815eaec2d1c3d0f, type: 3}
+  - {fileID: 8300000, guid: 081d5a4b91354cb4192df536d34d339a, type: 3}
   footstepSounds: []
-  damageSounds: []
+  damageSounds:
+  - {fileID: 8300000, guid: f6de710347c5ce24683b704d11865a5b, type: 3}
+  - {fileID: 8300000, guid: 3769848ee8806b7448740a83b5d3424a, type: 3}
   idleSounds: []
   prepareAttackSounds: []
   prepareJumpSounds: []
@@ -2532,7 +2538,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 1.4999999
+  m_Distance: 10.169685
   m_MaxDistanceOnly: 0
 --- !u!82 &610507805719155888
 AudioSource:

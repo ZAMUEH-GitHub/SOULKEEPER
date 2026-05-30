@@ -3367,13 +3367,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAudioController
   smashAttackSounds: []
-  attackSounds: []
-  footstepSounds: []
-  damageSounds: []
+  attackSounds:
+  - {fileID: 8300000, guid: 89aa935a52d49a74e9df4d4b6543287a, type: 3}
+  - {fileID: 8300000, guid: 8987faaaae2eda84c84fcaa1879fe32c, type: 3}
+  - {fileID: 8300000, guid: c4be6aa0aafe3ef41b119843db766134, type: 3}
+  - {fileID: 8300000, guid: 2b1c55386d97afa41b7352aee42ea68c, type: 3}
+  - {fileID: 8300000, guid: 5ffbfb69855579546bf798d2151e31ca, type: 3}
+  footstepSounds:
+  - {fileID: 8300000, guid: 00b160b20b123cc4eb4a9794664228ce, type: 3}
+  - {fileID: 8300000, guid: 1043b628d91ef2d4887e9182ecb248fd, type: 3}
+  - {fileID: 8300000, guid: 86291dd7c35c194459e1c18df59dc2a4, type: 3}
+  - {fileID: 8300000, guid: 27978fcc04fdef24fa0bc85beba7b5c4, type: 3}
+  damageSounds:
+  - {fileID: 8300000, guid: 25c0c6d7871b44b4094751d0170f0e3a, type: 3}
+  - {fileID: 8300000, guid: 5c53d336d6580a24db7ecebc1d51b7ab, type: 3}
   idleSounds: []
-  prepareAttackSounds: []
-  prepareJumpSounds: []
-  jumpSounds: []
+  prepareAttackSounds:
+  - {fileID: 8300000, guid: d8bd818607af47445be66a7a41106bd7, type: 3}
+  - {fileID: 8300000, guid: 97bea06d5e66e75429cb8e8c2b353b0e, type: 3}
+  - {fileID: 8300000, guid: 791f94f383b964444985c9777099b59f, type: 3}
+  - {fileID: 8300000, guid: a9fcf75734d816e4eb3265a2be5ca6f0, type: 3}
+  prepareJumpSounds:
+  - {fileID: 8300000, guid: 35038ba9b4ff5804a9cc5065ec0bf829, type: 3}
+  jumpSounds:
+  - {fileID: 8300000, guid: 78bc1ec80446c904eaaaa64a6fe6d72f, type: 3}
 --- !u!50 &4109982421318919372
 Rigidbody2D:
   serializedVersion: 5

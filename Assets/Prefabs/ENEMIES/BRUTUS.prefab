@@ -3056,12 +3056,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d8889461191bab4f85b24c9b7352634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAudioController
-  smashAttackSounds: []
-  attackSounds: []
-  footstepSounds: []
-  damageSounds: []
-  idleSounds: []
-  prepareAttackSounds: []
+  smashAttackSounds:
+  - {fileID: 8300000, guid: 4f88453684e73254abfbd5c26905f41f, type: 3}
+  - {fileID: 8300000, guid: 4e61cafe505feb34fbcc32f49e0e621d, type: 3}
+  attackSounds:
+  - {fileID: 8300000, guid: 2ac169029673e3348af9e17ef03d44f3, type: 3}
+  - {fileID: 8300000, guid: b8e125923b1041e4889cc42afb2acd34, type: 3}
+  - {fileID: 8300000, guid: c22bd43225e0d8449a67e16dc086ade7, type: 3}
+  footstepSounds:
+  - {fileID: 8300000, guid: fb98e5fde34e27a4cafa99e382e67cb6, type: 3}
+  - {fileID: 8300000, guid: a8e6c83165cd8294494555ab8b7cd1e1, type: 3}
+  - {fileID: 8300000, guid: 7765efdcb6ee2d44f8b0cc0f156d33b5, type: 3}
+  - {fileID: 8300000, guid: 1389a5e1c7720364f9413a0e5912f408, type: 3}
+  damageSounds:
+  - {fileID: 8300000, guid: 700cb6f8beebc924aaeca4a869897c41, type: 3}
+  - {fileID: 8300000, guid: fa62ac68b8c74e84099f609e59e2ab3d, type: 3}
+  idleSounds:
+  - {fileID: 8300000, guid: 61d6f4870e7b3e14985d6dddd678de44, type: 3}
+  - {fileID: 8300000, guid: ac0adc5f2eaa262458ad2e56b0c0f41d, type: 3}
+  prepareAttackSounds:
+  - {fileID: 8300000, guid: 69c782ba9e951a74f986fba434dc49fe, type: 3}
+  - {fileID: 8300000, guid: 8fe7b660ba4e58148b63b9a6bbfb0e25, type: 3}
   prepareJumpSounds: []
   jumpSounds: []
 --- !u!50 &2553967306837096810

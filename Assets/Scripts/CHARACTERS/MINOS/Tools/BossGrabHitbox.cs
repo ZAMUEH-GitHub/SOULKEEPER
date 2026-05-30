@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class BossGrabHitbox : MonoBehaviour, IDamageable
 {
+    /*
     [Header("Boss Core Reference")]
     [Tooltip("Drag the main Boss GameObject here so damage is dealt to the central HP pool.")]
     public BossDamageController bossDamageController;
@@ -55,4 +56,8 @@ public class BossGrabHitbox : MonoBehaviour, IDamageable
             bossDamageController.TakeDamage(damage, damageVector);
         }
     }
+    */
+
+    // Empty implementation to satisfy the IDamageable interface while the script is attached
+    public void TakeDamage(int damage, Vector2 damageVector) { }
 }

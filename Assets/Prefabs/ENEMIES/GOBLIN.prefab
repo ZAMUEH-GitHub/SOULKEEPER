@@ -1937,9 +1937,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAudioController
   smashAttackSounds: []
-  attackSounds: []
-  footstepSounds: []
-  damageSounds: []
+  attackSounds:
+  - {fileID: 8300000, guid: bf4ca42736b43854cb0ac9c7c189ae48, type: 3}
+  - {fileID: 8300000, guid: ecf722243508f2245a9d2cb17f3b3723, type: 3}
+  - {fileID: 8300000, guid: ab00c3fc046332c42a59e894e47008e0, type: 3}
+  footstepSounds:
+  - {fileID: 8300000, guid: 1025ac25a557f214887e4b360cabb0b6, type: 3}
+  - {fileID: 8300000, guid: b02896a04b108a945918bad0b5aeefa2, type: 3}
+  - {fileID: 8300000, guid: 3d35a886da54f42499bf3148f2e56b14, type: 3}
+  - {fileID: 8300000, guid: f0c0f4dbe81c1f54daf72c1d8d55dd3f, type: 3}
+  damageSounds:
+  - {fileID: 8300000, guid: 709b4ec4feba5bd4182d570208cac923, type: 3}
+  - {fileID: 8300000, guid: 9b47067b8f0114f41a7c85ddf93a24f5, type: 3}
+  - {fileID: 8300000, guid: f9b577d0d1d6d254a9180fce048847b2, type: 3}
   idleSounds: []
   prepareAttackSounds: []
   prepareJumpSounds: []

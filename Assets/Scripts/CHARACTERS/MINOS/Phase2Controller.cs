@@ -14,9 +14,9 @@ public class Phase2Controller : MonoBehaviour
     public bool isAttacking;
     public bool phase2Active;
 
-    [Header("Throw Knockback Settings")]
-    public float throwKnockbackForce = 15f;
-    public float throwKnockbackDuration = 0.5f;
+    //[Header("Throw Knockback Settings")]
+    // public float throwKnockbackForce = 15f;
+    // public float throwKnockbackDuration = 0.5f;
 
     private void Start()
     {
@@ -59,7 +59,8 @@ public class Phase2Controller : MonoBehaviour
     private void ChooseAndExecuteAttack()
     {
         isAttacking = true;
-        int attackChoice = Random.Range(0, 3);
+        // Changed Random.Range max from 3 to 2 to exclude the Grab attack
+        int attackChoice = Random.Range(0, 2);
 
         Debug.Log($"[Phase2Controller] Sending Attack Trigger! Choice: {attackChoice}, Player X: {bossAnimator.GetFloat("PlayerRelativeX")}");
 
@@ -71,14 +72,15 @@ public class Phase2Controller : MonoBehaviour
             case 1:
                 bossAnimator.SetTrigger("Smash");
                 break;
-            case 2:
-                bossAnimator.SetTrigger("Grab");
-                break;
+                // case 2:
+                //     bossAnimator.SetTrigger("Grab");
+                //     break;
         }
     }
 
     public void ApplyPlayerKnockback()
     {
+        /*
         if (playerTransform == null) return;
 
         if (PlayerController.Instance != null)
@@ -100,14 +102,17 @@ public class Phase2Controller : MonoBehaviour
 
             knockbackable.Knockback(knockbackDir, throwKnockbackForce, throwKnockbackDuration);
         }
+        */
     }
 
     public void PlayerGrabbed()
     {
+        /*
         if (bossAnimator != null)
         {
             bossAnimator.SetBool("HasGrabbedPlayer", true);
         }
+        */
     }
 
     public void EndAttack()
@@ -116,9 +121,11 @@ public class Phase2Controller : MonoBehaviour
         isAttacking = false;
         attackCooldownTimer = timeBetweenAttacks;
 
+        /*
         if (bossAnimator != null)
         {
             bossAnimator.SetBool("HasGrabbedPlayer", false);
         }
+        */
     }
 }
