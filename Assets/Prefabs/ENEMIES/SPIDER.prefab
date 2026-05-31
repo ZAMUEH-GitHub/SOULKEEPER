@@ -379,7 +379,6 @@ MonoBehaviour:
     m_Bits: 64
   maxHealth: 3
   damageParticles: {fileID: 6848039770606231452, guid: 91414f9d545ade143a7c2ac95c8a81e6, type: 3}
-  deathParticles: {fileID: 1076189247513063588, guid: 72a07841332b0a04c8ff49deb92a8b4f, type: 3}
   enemySprites:
   - {fileID: 6011617021085022189}
   - {fileID: 1720752323344794377}
@@ -420,6 +419,8 @@ MonoBehaviour:
   - {fileID: 7664260811183407933}
   - {fileID: 8848332063759400209}
   - {fileID: 7059161238112638413}
+  deathParticles: {fileID: 1076189247513063588, guid: 72a07841332b0a04c8ff49deb92a8b4f, type: 3}
+  deathSound: {fileID: 8300000, guid: 26ff542edb350ae418872f04f62108b9, type: 3}
 --- !u!114 &9056654855453612202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,6 +446,7 @@ MonoBehaviour:
   prepareAttackSounds: []
   prepareJumpSounds: []
   jumpSounds: []
+  audioSource: {fileID: 0}
 --- !u!70 &200513030229648502
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -652,7 +654,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
