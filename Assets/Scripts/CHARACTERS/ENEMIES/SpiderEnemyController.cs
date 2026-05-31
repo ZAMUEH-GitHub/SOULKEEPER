@@ -6,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class SpiderEnemyController : MonoBehaviour, IDamageable, IKnockbackable
 {
+    [SerializeField] private HazardState currentState = HazardState.Idle;
+   
     [Header("Web Settings")]
     [SerializeField] private Transform ceilingAnchor;
     [SerializeField] private float dropDistance = 5f;
@@ -21,12 +23,11 @@ public class SpiderEnemyController : MonoBehaviour, IDamageable, IKnockbackable
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private ParticleSystem damageParticles;
     [SerializeField] private ParticleSystem deathParticles;
+    [SerializeField] private SpriteRenderer[] enemySprites;
+
     private int currentHealth;
     private Animator anim;
     private const string CORPSE_LAYER = "Corpse";
-
-    [Header("Debug")]
-    [SerializeField] private HazardState currentState = HazardState.Idle;
 
     private DistanceJoint2D distanceJoint;
     private LineRenderer lineRenderer;
@@ -38,7 +39,6 @@ public class SpiderEnemyController : MonoBehaviour, IDamageable, IKnockbackable
     private float currentSlack = 0f;
     private bool isTriggered = false;
 
-    private SpriteRenderer[] enemySprites;
     private Coroutine takeDamageCoroutine;
     private bool isTakingDamage;
 
