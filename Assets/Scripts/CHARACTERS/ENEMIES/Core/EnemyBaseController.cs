@@ -58,6 +58,7 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
         damageController = GetComponent<EnemyDamageController>();
         animController = GetComponent<EnemyAnimationController>();
         patrolController = GetComponent<EnemyPatrolController>();
+        audioController = GetComponent<EnemyAudioController>();
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
         enemySpeed = enemyStats.speed;
@@ -213,7 +214,7 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
         if (damageController == null) return;
 
         if (damageController.deathSound != null)
-            audioController.audioSource.PlayOneShot(damageController.deathSound);
+            AudioSource.PlayClipAtPoint(damageController.deathSound, transform.position);
 
         if (damageController.deathParticles != null)
             Instantiate(damageController.deathParticles, new Vector2(transform.position.x, transform.position.y - 1), Quaternion.identity);

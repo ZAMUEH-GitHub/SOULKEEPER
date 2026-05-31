@@ -57,7 +57,7 @@ public class PlayerDeathController : MonoBehaviour
             Instantiate(deathParticles, transform.position, Quaternion.identity);
 
         if (deathSound != null)
-            playerController.audioController.audioSource.PlayOneShot(deathSound);
+            AudioSource.PlayClipAtPoint(deathSound, transform.position);
 
         if (soulObject != null)
         {
