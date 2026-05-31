@@ -20,10 +20,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
     [SerializeField] private Vector2 defaultSpawnPosition;
     [SerializeField] private LoreSequenceSO introLoreSequence;
 
-    [Header("Keybindings Toggle")]
-    [SerializeField] private GameObject keyboardControlsImage;
-    [SerializeField] private GameObject gamepadControlsImage;
-
     private static bool hasInitializedOnce = false;
     private bool isTransitioning = false;
 
@@ -236,18 +232,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
 #else
         Application.Quit();
 #endif
-    }
-    #endregion
-
-    #region Keybindings UI
-    public void ToggleControlImages()
-    {
-        if (keyboardControlsImage != null && gamepadControlsImage != null)
-        {
-            bool isKeyboardActive = keyboardControlsImage.activeSelf;
-            keyboardControlsImage.SetActive(!isKeyboardActive);
-            gamepadControlsImage.SetActive(isKeyboardActive);
-        }
     }
     #endregion
 }

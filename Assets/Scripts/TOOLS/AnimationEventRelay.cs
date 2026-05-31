@@ -14,7 +14,6 @@ public class AnimationEventRelay : MonoBehaviour
 
     [HideInInspector] public float attackProgress;
     [HideInInspector] public float speedMultiplier = 1f;
-    [HideInInspector] public float gradientScale = 1f;
 
     private void Start()
     {

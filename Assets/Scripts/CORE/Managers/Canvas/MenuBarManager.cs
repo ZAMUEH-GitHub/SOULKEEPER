@@ -13,10 +13,6 @@ public class MenuBarManager : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private AnimationEventRelay eventRelay;
 
-    [Header("Gradient References")]
-    [SerializeField] private RectTransform gradientTop;
-    [SerializeField] private RectTransform gradientLow;
-
     private readonly int OpenTrigger = Animator.StringToHash("Open");
     private readonly int CloseTrigger = Animator.StringToHash("Close");
 
@@ -28,16 +24,6 @@ public class MenuBarManager : MonoBehaviour
         if (animator == null) animator = GetComponentInChildren<Animator>(true);
         if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
         if (eventRelay == null) eventRelay = GetComponentInChildren<AnimationEventRelay>(true);
-    }
-
-    private void Update()
-    {
-        if (eventRelay == null) return;
-
-        Vector3 newScale = new Vector3(1f, eventRelay.gradientScale, 1f);
-
-        if (gradientTop != null) gradientTop.localScale = newScale;
-        if (gradientLow != null) gradientLow.localScale = newScale;
     }
 
     public void CloseBar()
