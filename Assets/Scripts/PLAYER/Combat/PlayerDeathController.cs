@@ -8,6 +8,7 @@ public class PlayerDeathController : MonoBehaviour
 
     [Header("Death Particles and Souls")]
     public ParticleSystem deathParticles;
+    public AudioClip deathSound;
     public GameObject soulObject;
 
     private Collider2D[] colliders;
@@ -53,9 +54,10 @@ public class PlayerDeathController : MonoBehaviour
     public void TriggerDeathEffects()
     {
         if (deathParticles != null)
-        {
             Instantiate(deathParticles, transform.position, Quaternion.identity);
-        }
+
+        if (deathSound != null)
+            playerController.audioController.audioSource.PlayOneShot(deathSound);
 
         if (soulObject != null)
         {
@@ -66,26 +68,22 @@ public class PlayerDeathController : MonoBehaviour
             }
         }
 
-        // Replaced StartCoroutine with the async method call
         ExecuteDeathSequence();
     }
 
     private async void ExecuteDeathSequence()
     {
-        // Replaces yield return new WaitForSeconds(0.5f);
         await Task.Delay(500);
 
         int slotIndex = 1;
         if (SaveSlotManager.Instance != null)
             slotIndex = SaveSlotManager.Instance.ActiveSlotIndex;
 
-        // Force a complete wipe and reload of the session's flags and stats from the save file
         if (SessionManager.Instance != null && SaveSystem.SaveExists(slotIndex))
         {
             await SaveSystem.LoadAsync(slotIndex, SessionManager.Instance.RuntimeStats);
         }
 
-        // Reposition the player utilizing the newly loaded position data
         if (SaveSystem.HasValidPlayerPosition)
         {
             transform.position = SaveSystem.LastLoadedPlayerPosition;

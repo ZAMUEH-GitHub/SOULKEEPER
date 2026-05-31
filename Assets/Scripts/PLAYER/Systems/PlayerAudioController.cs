@@ -10,7 +10,7 @@ public class PlayerAudioController : MonoBehaviour
     [SerializeField] private AudioClip[] jumpSounds;
     [SerializeField] private AudioClip[] footstepSounds;
 
-    private AudioSource audioSource;
+    [HideInInspector] public AudioSource audioSource;
 
     private void Awake()
     {

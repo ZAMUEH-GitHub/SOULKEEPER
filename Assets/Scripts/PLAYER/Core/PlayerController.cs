@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public PlayerDamageController damageController;
     [HideInInspector] public PlayerAnimationController animController;
     [HideInInspector] public PlayerDeathController deathController;
+    [HideInInspector] public PlayerAudioController audioController;
 
     private List<IPlayerSubController> subControllers = new();
     [HideInInspector] public Vector2 moveVector;
@@ -104,6 +105,7 @@ public class PlayerController : MonoBehaviour
         damageController = GetComponent<PlayerDamageController>();
         animController = GetComponentInChildren<PlayerAnimationController>();
         deathController = GetComponent<PlayerDeathController>();
+        audioController = GetComponent<PlayerAudioController>();
 
         subControllers.AddRange(GetComponents<IPlayerSubController>());
 

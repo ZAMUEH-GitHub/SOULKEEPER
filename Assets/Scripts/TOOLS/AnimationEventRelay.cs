@@ -95,6 +95,12 @@ public class AnimationEventRelay : MonoBehaviour
         else if (enemyAudioController != null) enemyAudioController.PlayAttackSound();
     }
 
+    public void PlayeSmashAttackSound()
+    {
+        if (enemyAudioController != null)
+            enemyAudioController.PlaySmashAttackSound();
+    }
+
     public void PlayDashSound()
     {
         if (audioController != null)
