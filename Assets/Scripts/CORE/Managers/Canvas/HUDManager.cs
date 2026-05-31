@@ -6,26 +6,18 @@ using TMPro;
 public class HUDManager : MonoBehaviour
 {
     [Header("Health UI")]
-    [SerializeField] private Image[] healthIcons;
     [SerializeField] private Animator[] healthAnimators;
 
     [Header("Score UI")]
     [SerializeField] private TMP_Text scoreText;
 
-    [Header("Power-Up Icons")]
+    [Header("Power-Up UI")]
     [SerializeField] private Animator decorLineAnimator;
-    [SerializeField] private GameObject attackIcon;
-    [SerializeField] private GameObject jumpIcon;
-    [SerializeField] private GameObject dashIcon;
-    [SerializeField] private GameObject wallJumpIcon;
 
     private PlayerStatsSO stats;
     private int lastHealth = -1;
-    private int lastMaxHealth = -1;
     private int lastScore = -1;
-
     private int lastUnlockCount = -1;
-    private bool lastJump, lastDash, lastAttack, lastWallJump;
 
     private void OnEnable()
     {
@@ -65,32 +57,22 @@ public class HUDManager : MonoBehaviour
     private void ForceUpdateUI()
     {
         lastHealth = stats.health;
-        lastMaxHealth = stats.maxHealth;
 
-        for (int i = 0; i < healthIcons.Length; i++)
+        for (int i = 0; i < healthAnimators.Length; i++)
         {
-            if (i < stats.maxHealth)
+            if (healthAnimators[i] != null)
             {
-                healthIcons[i].gameObject.SetActive(true);
+                healthAnimators[i].ResetTrigger("Damage");
+                healthAnimators[i].ResetTrigger("Heal");
 
-                if (i < healthAnimators.Length && healthAnimators[i] != null)
+                if (i < stats.health)
                 {
-                    healthAnimators[i].ResetTrigger("Damage");
-                    healthAnimators[i].ResetTrigger("Heal");
-
-                    if (i < stats.health)
-                    {
-                        healthAnimators[i].Play("Health_Idle");
-                    }
-                    else
-                    {
-                        healthAnimators[i].Play("Health_Empty");
-                    }
+                    healthAnimators[i].Play("Health_Idle");
                 }
-            }
-            else
-            {
-                healthIcons[i].gameObject.SetActive(false);
+                else
+                {
+                    healthAnimators[i].Play("Health_Empty");
+                }
             }
         }
 
@@ -101,14 +83,8 @@ public class HUDManager : MonoBehaviour
     #region Health
     private void UpdateHealthUI()
     {
-        if (stats.health == lastHealth && stats.maxHealth == lastMaxHealth)
+        if (stats.health == lastHealth)
             return;
-
-        if (stats.maxHealth != lastMaxHealth)
-        {
-            ForceUpdateUI();
-            return;
-        }
 
         if (lastHealth != -1 && healthAnimators != null)
         {
@@ -127,7 +103,6 @@ public class HUDManager : MonoBehaviour
         }
 
         lastHealth = stats.health;
-        lastMaxHealth = stats.maxHealth;
     }
     #endregion
 
@@ -146,23 +121,6 @@ public class HUDManager : MonoBehaviour
     private void UpdatePowerUpsUI(bool force = false)
     {
         if (stats == null) return;
-
-        if (attackIcon != null && (force || stats.attackUnlocked != lastAttack))
-            attackIcon.SetActive(stats.attackUnlocked);
-
-        if (jumpIcon != null && (force || stats.jumpUnlocked != lastJump))
-            jumpIcon.SetActive(stats.jumpUnlocked);
-
-        if (dashIcon != null && (force || stats.dashUnlocked != lastDash))
-            dashIcon.SetActive(stats.dashUnlocked);
-
-        if (wallJumpIcon != null && (force || stats.wallJumpUnlocked != lastWallJump))
-            wallJumpIcon.SetActive(stats.wallJumpUnlocked);
-
-        lastAttack = stats.attackUnlocked;
-        lastJump = stats.jumpUnlocked;
-        lastDash = stats.dashUnlocked;
-        lastWallJump = stats.wallJumpUnlocked;
 
         int currentUnlocks = 0;
         if (stats.attackUnlocked) currentUnlocks++;

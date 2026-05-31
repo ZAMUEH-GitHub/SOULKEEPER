@@ -481,6 +481,7 @@ MonoBehaviour:
   damageController: {fileID: 0}
   animController: {fileID: 0}
   deathController: {fileID: 0}
+  audioController: {fileID: 0}
   moveVector: {x: 0, y: 0}
   moveInput: 0
   lastSafePosition: {x: 0, y: 0, z: 0}
@@ -681,6 +682,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 186915f15536daf43bca1d0cc2d41905, type: 3}
   - {fileID: 8300000, guid: 55198bd03f6b87e46bda0a581116aa39, type: 3}
   - {fileID: 8300000, guid: 929ed39b9c36c5849b9aa79dd0e3b4ae, type: 3}
+  audioSource: {fileID: 0}
 --- !u!114 &3102015849783976439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -706,6 +708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDeathController
   deathParticles: {fileID: 4231633206474095276, guid: 8eccf4353e5e4424293a563851595620, type: 3}
+  deathSound: {fileID: 0}
   soulObject: {fileID: 0}
 --- !u!70 &4291285728335307071
 CapsuleCollider2D:
@@ -1179,7 +1182,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnimationEventRelay
   attackProgress: 0
   speedMultiplier: 1
-  gradientScale: 1
 --- !u!1 &7304108651744210172
 GameObject:
   m_ObjectHideFlags: 0
@@ -1584,6 +1586,14 @@ PrefabInstance:
       value: -1126885187
       objectReference: {fileID: 0}
     - target: {fileID: -7641260610769612045, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
+      propertyPath: m_Color.g
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: -7641260610769612045, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5058824
+      objectReference: {fileID: 0}
+    - target: {fileID: -7641260610769612045, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
       propertyPath: m_SortingLayer
       value: 1
       objectReference: {fileID: 0}
@@ -1776,6 +1786,14 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -1150327465424053512, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
+      propertyPath: m_Color.g
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: -1150327465424053512, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5058824
+      objectReference: {fileID: 0}
+    - target: {fileID: -1150327465424053512, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
       propertyPath: m_SortingLayer
       value: 1
       objectReference: {fileID: 0}
@@ -1904,6 +1922,14 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5100085116645261352, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
+      propertyPath: m_Color.g
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100085116645261352, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 5100085116645261352, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
       propertyPath: m_SortingLayer
       value: 1
       objectReference: {fileID: 0}
@@ -1998,6 +2024,14 @@ PrefabInstance:
     - target: {fileID: 7363333543665695981, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
       propertyPath: m_AutoRebind
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7436226101305218892, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
+      propertyPath: m_Color.g
+      value: 0.92941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 7436226101305218892, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5058824
       objectReference: {fileID: 0}
     - target: {fileID: 7436226101305218892, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
       propertyPath: m_SortingLayer
@@ -2221,7 +2255,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnimationEventRelay
   attackProgress: 0
   speedMultiplier: 1
-  gradientScale: 1
 --- !u!212 &8849579862609302858 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: -8089108032486474258, guid: c34931ad6951d8144b0781b556041ff1, type: 3}
