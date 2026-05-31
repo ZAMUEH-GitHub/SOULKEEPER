@@ -14,13 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSequenceSO
   nodes:
   - speakerName: Godiva
-    dialogueText: Hello little one
+    dialogueText: Hello little one...
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: 1
     unlockFlag: 
   - speakerName: Godiva
-    dialogueText: "This place isn\xB4t safe for a soul like yours "
+    dialogueText: This place isn't safe for a soul like yours
+    requiredFlag: 
+    fallbackNodeIndex: -1
+    nextNodeIndex: 2
+    unlockFlag: 
+  - speakerName: Godiva
+    dialogueText: Follow me!!
     requiredFlag: 
     fallbackNodeIndex: -1
     nextNodeIndex: -1

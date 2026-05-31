@@ -168,7 +168,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 200, y: -177.09999}
+  m_AnchoredPosition: {x: 225, y: -206.69998}
   m_SizeDelta: {x: 200, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6021060091119740628
@@ -286,9 +286,6 @@ GameObject:
   - component: {fileID: 4214875296876112364}
   - component: {fileID: 8683260125903950097}
   - component: {fileID: 1677692615014214348}
-  - component: {fileID: 8300515485621591083}
-  - component: {fileID: 3973500267865389662}
-  - component: {fileID: 1447699089932517323}
   m_Layer: 5
   m_Name: Keybindings_Button
   m_TagString: Untagged
@@ -549,141 +546,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &8300515485621591083
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339145290819763537}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &3973500267865389662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339145290819763537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &1447699089932517323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339145290819763537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &466556521158729800
 GameObject:
   m_ObjectHideFlags: 0
@@ -947,9 +810,6 @@ GameObject:
   - component: {fileID: 2922698059129856342}
   - component: {fileID: 3944951332688772260}
   - component: {fileID: 405198258314690820}
-  - component: {fileID: 6541809608433164610}
-  - component: {fileID: 656869492730165585}
-  - component: {fileID: 6542328410164007020}
   m_Layer: 5
   m_Name: Back_Button
   m_TagString: Untagged
@@ -1210,141 +1070,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &6541809608433164610
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555283245250507369}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &656869492730165585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555283245250507369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &6542328410164007020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555283245250507369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &582926773508950940
 GameObject:
   m_ObjectHideFlags: 0
@@ -7037,8 +6763,6 @@ GameObject:
   - component: {fileID: 8110393812280634857}
   - component: {fileID: 6922792461292331156}
   - component: {fileID: 7918243816039822241}
-  - component: {fileID: 3411425780148465833}
-  - component: {fileID: 8590670391607725056}
   m_Layer: 5
   m_Name: Settings_Button
   m_TagString: Untagged
@@ -7299,124 +7023,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &3411425780148465833
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 978184246417462789}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &8590670391607725056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 978184246417462789}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &996839930122519111
 GameObject:
   m_ObjectHideFlags: 0
@@ -8611,7 +8218,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -157.1}
+  m_AnchoredPosition: {x: 0, y: -172.59998}
   m_SizeDelta: {x: 150, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4771293415054573293
@@ -8729,9 +8336,6 @@ GameObject:
   - component: {fileID: 7197677113102004970}
   - component: {fileID: 8236302379073125553}
   - component: {fileID: 7202980221295464930}
-  - component: {fileID: 5261059533668099379}
-  - component: {fileID: 6297249506350533573}
-  - component: {fileID: 115823797299155356}
   m_Layer: 5
   m_Name: Back_Button
   m_TagString: Untagged
@@ -8992,141 +8596,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &5261059533668099379
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1615019525979233655}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &6297249506350533573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1615019525979233655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &115823797299155356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1615019525979233655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &1625818699575702678
 GameObject:
   m_ObjectHideFlags: 0
@@ -9715,7 +9185,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -41.2}
+  m_AnchoredPosition: {x: 0, y: -71.1}
   m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6496930316032163650
@@ -10339,9 +9809,6 @@ GameObject:
   - component: {fileID: 5007000518639070703}
   - component: {fileID: 1691203838820721083}
   - component: {fileID: 3092369150989592024}
-  - component: {fileID: 2454843127841947867}
-  - component: {fileID: 6931009869767961082}
-  - component: {fileID: 1067907532517110759}
   m_Layer: 5
   m_Name: Keybindings_Button
   m_TagString: Untagged
@@ -10602,141 +10069,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &2454843127841947867
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950746972370275722}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &6931009869767961082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950746972370275722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &1067907532517110759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950746972370275722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &1964015356281779343
 GameObject:
   m_ObjectHideFlags: 0
@@ -10908,8 +10241,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -129.50002}
-  m_SizeDelta: {x: 200, y: 20}
+  m_AnchoredPosition: {x: 0, y: -145}
+  m_SizeDelta: {x: 250, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8903257319484448716
 CanvasRenderer:
@@ -10966,8 +10299,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -11085,8 +10418,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 200, y: -149.5}
-  m_SizeDelta: {x: 200, y: 20}
+  m_AnchoredPosition: {x: 225, y: -179.09998}
+  m_SizeDelta: {x: 250, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &852173279503836752
 CanvasRenderer:
@@ -11143,8 +10476,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -11572,9 +10905,6 @@ GameObject:
   - component: {fileID: 5679499601038149243}
   - component: {fileID: 4504448440625874169}
   - component: {fileID: 5405329486047368701}
-  - component: {fileID: 2591242530945205045}
-  - component: {fileID: 7050571496489510876}
-  - component: {fileID: 3148910450521855287}
   m_Layer: 5
   m_Name: Credits_Button
   m_TagString: Untagged
@@ -11835,141 +11165,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &2591242530945205045
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2382635710338800983}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &7050571496489510876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2382635710338800983}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &3148910450521855287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2382635710338800983}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &2446640515453210229
 GameObject:
   m_ObjectHideFlags: 0
@@ -12859,9 +12055,6 @@ GameObject:
   - component: {fileID: 5360337459049265129}
   - component: {fileID: 5811090081617298398}
   - component: {fileID: 7558023473272322045}
-  - component: {fileID: 5080899485280945670}
-  - component: {fileID: 6884993607308765858}
-  - component: {fileID: 8499285044933229817}
   m_Layer: 5
   m_Name: Back_Button
   m_TagString: Untagged
@@ -13122,141 +12315,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &5080899485280945670
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2723507284437259315}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &6884993607308765858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2723507284437259315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &8499285044933229817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2723507284437259315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &2726483084609369096
 GameObject:
   m_ObjectHideFlags: 0
@@ -13546,6 +12605,7 @@ MonoBehaviour:
   buttonClick: []
   buttonSelect: []
   checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &2787057949836064542
 GameObject:
   m_ObjectHideFlags: 0
@@ -13561,9 +12621,6 @@ GameObject:
   - component: {fileID: 3691390540257980367}
   - component: {fileID: 3493022503480848504}
   - component: {fileID: 3855944482520777925}
-  - component: {fileID: 4386904323238207703}
-  - component: {fileID: 7129623092647835644}
-  - component: {fileID: 2068577427144945900}
   m_Layer: 5
   m_Name: Cancel_Button
   m_TagString: Untagged
@@ -13824,141 +12881,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &4386904323238207703
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2787057949836064542}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &7129623092647835644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2787057949836064542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &2068577427144945900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2787057949836064542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &2826421974173534316
 GameObject:
   m_ObjectHideFlags: 0
@@ -14596,7 +13519,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -218.1}
+  m_AnchoredPosition: {x: 0, y: -233.59998}
   m_SizeDelta: {x: 225, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &395251352438469009
@@ -15122,9 +14045,6 @@ GameObject:
   - component: {fileID: 9150299536098386640}
   - component: {fileID: 451861893719958159}
   - component: {fileID: 8592186559848617893}
-  - component: {fileID: 6033538900728402754}
-  - component: {fileID: 3224407601072344252}
-  - component: {fileID: 2356060098403520442}
   m_Layer: 5
   m_Name: Back_Button
   m_TagString: Untagged
@@ -15385,141 +14305,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &6033538900728402754
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3223230691396005733}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &3224407601072344252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3223230691396005733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &2356060098403520442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3223230691396005733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &3325501301236762621
 GameObject:
   m_ObjectHideFlags: 0
@@ -16556,8 +15342,6 @@ GameObject:
   - component: {fileID: 6269195461842698611}
   - component: {fileID: 5164881179569416258}
   - component: {fileID: 3281442200809436776}
-  - component: {fileID: 772878699008235367}
-  - component: {fileID: 7174412024068445800}
   m_Layer: 5
   m_Name: VideoSettings_Button
   m_TagString: Untagged
@@ -16818,124 +15602,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &772878699008235367
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3635867490674846118}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &7174412024068445800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3635867490674846118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &3663508492300184145
 GameObject:
   m_ObjectHideFlags: 0
@@ -17560,9 +16227,6 @@ GameObject:
   - component: {fileID: 1120445472589023581}
   - component: {fileID: 1134223925616442976}
   - component: {fileID: 3186311577820268091}
-  - component: {fileID: 2719613221165077023}
-  - component: {fileID: 2867087755052223148}
-  - component: {fileID: 4514777835838233508}
   m_Layer: 5
   m_Name: NewGame_Button
   m_TagString: Untagged
@@ -17823,141 +16487,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &2719613221165077023
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4056299407277829101}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &2867087755052223148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4056299407277829101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &4514777835838233508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4056299407277829101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &4082561166673248579
 GameObject:
   m_ObjectHideFlags: 0
@@ -18208,9 +16738,6 @@ GameObject:
   - component: {fileID: 6371082813832505672}
   - component: {fileID: 1864487349667937902}
   - component: {fileID: 6940891745851139848}
-  - component: {fileID: 9189832724682626633}
-  - component: {fileID: 8456543918806695844}
-  - component: {fileID: 722432255035065049}
   m_Layer: 5
   m_Name: Back_Button
   m_TagString: Untagged
@@ -18471,141 +16998,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &9189832724682626633
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4157559459148966822}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &8456543918806695844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4157559459148966822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &722432255035065049
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4157559459148966822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &4210659925525857024
 GameObject:
   m_ObjectHideFlags: 0
@@ -19176,17 +17569,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 315956cb5856dea4d83d9a02913bb19a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthIcons:
-  - {fileID: 8989191150020542351}
-  - {fileID: 2861641200281893480}
-  - {fileID: 5314514933543115042}
-  - {fileID: 1255931728661063327}
-  - {fileID: 8893109896245444567}
-  - {fileID: 4320466341620508874}
-  - {fileID: 7494878851712875368}
-  - {fileID: 4064486531671221096}
-  - {fileID: 8308126478176388130}
-  - {fileID: 3261912782266026123}
   healthAnimators:
   - {fileID: 8669981729483177763}
   - {fileID: 9092711962792652940}
@@ -19200,10 +17582,6 @@ MonoBehaviour:
   - {fileID: 677408512438984984}
   scoreText: {fileID: 5619767189075728354}
   decorLineAnimator: {fileID: 4731525440843627990}
-  attackIcon: {fileID: 0}
-  jumpIcon: {fileID: 0}
-  dashIcon: {fileID: 0}
-  wallJumpIcon: {fileID: 0}
 --- !u!114 &54844345132049648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20105,9 +18483,6 @@ GameObject:
   - component: {fileID: 6559952477270105211}
   - component: {fileID: 1182505709571232867}
   - component: {fileID: 3622750712735218617}
-  - component: {fileID: 8065776851190986527}
-  - component: {fileID: 1869939513132151821}
-  - component: {fileID: 8891409315226949525}
   m_Layer: 5
   m_Name: Delete_Button
   m_TagString: Untagged
@@ -20347,141 +18722,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &8065776851190986527
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4706637742544859766}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &1869939513132151821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4706637742544859766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &8891409315226949525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4706637742544859766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &4760998761883690166
 GameObject:
   m_ObjectHideFlags: 0
@@ -26877,9 +25118,6 @@ GameObject:
   - component: {fileID: 2452682250775916558}
   - component: {fileID: 4897152578652343385}
   - component: {fileID: 2456163695516111324}
-  - component: {fileID: 2623830252382833248}
-  - component: {fileID: 3663914607113263853}
-  - component: {fileID: 3306770050192158401}
   m_Layer: 5
   m_Name: Exit_Button
   m_TagString: Untagged
@@ -27140,141 +25378,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &2623830252382833248
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5482122899349844446}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &3663914607113263853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5482122899349844446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &3306770050192158401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5482122899349844446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &5490962431308904838
 GameObject:
   m_ObjectHideFlags: 0
@@ -27671,6 +25775,7 @@ MonoBehaviour:
   buttonClick: []
   buttonSelect: []
   checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &5590364207543694647
 GameObject:
   m_ObjectHideFlags: 0
@@ -28139,9 +26244,6 @@ GameObject:
   - component: {fileID: 4051633464903907266}
   - component: {fileID: 7528502664529543384}
   - component: {fileID: 5612085921338979632}
-  - component: {fileID: 1177863569127044065}
-  - component: {fileID: 7791336261141838295}
-  - component: {fileID: 5626099675251877376}
   m_Layer: 5
   m_Name: Delete_Button
   m_TagString: Untagged
@@ -28381,141 +26483,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &1177863569127044065
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5704133398146673434}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &7791336261141838295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5704133398146673434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &5626099675251877376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5704133398146673434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &5727344481219667350
 GameObject:
   m_ObjectHideFlags: 0
@@ -28550,8 +26518,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: -149.50002}
-  m_SizeDelta: {x: 200, y: 20}
+  m_AnchoredPosition: {x: -225, y: -179.1}
+  m_SizeDelta: {x: 250, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8177341284670591998
 CanvasRenderer:
@@ -28608,8 +26576,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -28753,6 +26721,8 @@ GameObject:
   - component: {fileID: 7627753391316488462}
   - component: {fileID: 9048549955889545590}
   - component: {fileID: 4731525440843627990}
+  - component: {fileID: 1346299411002378087}
+  - component: {fileID: 4403160685138411023}
   m_Layer: 0
   m_Name: Line_Image
   m_TagString: Untagged
@@ -28839,6 +26809,121 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!82 &1346299411002378087
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5773339865521837985}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &4403160685138411023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5773339865521837985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAudioController
+  barOpen: []
+  barClose: []
+  buttonClick: []
+  buttonSelect: []
+  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &5866608212996598520
 GameObject:
   m_ObjectHideFlags: 0
@@ -28854,9 +26939,6 @@ GameObject:
   - component: {fileID: 2400757007755578357}
   - component: {fileID: 4605093231424134224}
   - component: {fileID: 374321966916093655}
-  - component: {fileID: 2436906447127605137}
-  - component: {fileID: 3415681662743150512}
-  - component: {fileID: 2409287410511641465}
   m_Layer: 5
   m_Name: Next_Button
   m_TagString: Untagged
@@ -29117,141 +27199,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &2436906447127605137
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5866608212996598520}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &3415681662743150512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5866608212996598520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &2409287410511641465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5866608212996598520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &5955838743574547188
 GameObject:
   m_ObjectHideFlags: 0
@@ -29286,7 +27234,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -243}
+  m_AnchoredPosition: {x: 0, y: -258.49997}
   m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7920295324952444737
@@ -29730,7 +27678,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: -177.09999}
+  m_AnchoredPosition: {x: -225, y: -206.69998}
   m_SizeDelta: {x: 200, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3069633539970831914
@@ -29848,9 +27796,6 @@ GameObject:
   - component: {fileID: 768895486988246464}
   - component: {fileID: 2375025921192258973}
   - component: {fileID: 6836724548891932370}
-  - component: {fileID: 566003668414470928}
-  - component: {fileID: 4052937749170296929}
-  - component: {fileID: 382942155913609597}
   m_Layer: 5
   m_Name: Continue_Button
   m_TagString: Untagged
@@ -30111,141 +28056,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &566003668414470928
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6266312444011583921}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &4052937749170296929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6266312444011583921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &382942155913609597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6266312444011583921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &6398718368915231706
 GameObject:
   m_ObjectHideFlags: 0
@@ -30261,8 +28072,6 @@ GameObject:
   - component: {fileID: 8184556601317583498}
   - component: {fileID: 3990693784363703142}
   - component: {fileID: 8617775761036574764}
-  - component: {fileID: 2662089087517072147}
-  - component: {fileID: 4159034739316851759}
   m_Layer: 5
   m_Name: Settings_Button
   m_TagString: Untagged
@@ -30523,124 +28332,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &2662089087517072147
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6398718368915231706}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &4159034739316851759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6398718368915231706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &6407703220988664995
 GameObject:
   m_ObjectHideFlags: 0
@@ -30656,9 +28348,6 @@ GameObject:
   - component: {fileID: 2862758772584211618}
   - component: {fileID: 4884356698594699182}
   - component: {fileID: 350919887203624293}
-  - component: {fileID: 6749894646858461409}
-  - component: {fileID: 30254679902233501}
-  - component: {fileID: 2757538693472082629}
   m_Layer: 5
   m_Name: NewGame_Button
   m_TagString: Untagged
@@ -30919,141 +28608,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &6749894646858461409
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6407703220988664995}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &30254679902233501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6407703220988664995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &2757538693472082629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6407703220988664995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &6412609855304445545
 GameObject:
   m_ObjectHideFlags: 0
@@ -31434,9 +28989,6 @@ GameObject:
   - component: {fileID: 2762243568811868188}
   - component: {fileID: 442484418993699956}
   - component: {fileID: 2244844505603942754}
-  - component: {fileID: 1270296305406177593}
-  - component: {fileID: 3898447043189449575}
-  - component: {fileID: 5058132086488467859}
   m_Layer: 5
   m_Name: Next_Button
   m_TagString: Untagged
@@ -31677,141 +29229,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &1270296305406177593
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6578409765255479295}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &3898447043189449575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6578409765255479295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &5058132086488467859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6578409765255479295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &6591462813966544284
 GameObject:
   m_ObjectHideFlags: 0
@@ -32268,9 +29686,6 @@ GameObject:
   - component: {fileID: 6178698773079133585}
   - component: {fileID: 204576205735593825}
   - component: {fileID: 5775311974785129181}
-  - component: {fileID: 4013714278469328363}
-  - component: {fileID: 7458762661736195139}
-  - component: {fileID: 5709973244304000736}
   m_Layer: 5
   m_Name: Back_Button
   m_TagString: Untagged
@@ -32531,141 +29946,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &4013714278469328363
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6821521441107528247}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &7458762661736195139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6821521441107528247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &5709973244304000736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6821521441107528247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &6837125034192533118
 GameObject:
   m_ObjectHideFlags: 0
@@ -32681,9 +29962,6 @@ GameObject:
   - component: {fileID: 270845463988010547}
   - component: {fileID: 8911486043667412384}
   - component: {fileID: 1861639658155570314}
-  - component: {fileID: 4238074212637496693}
-  - component: {fileID: 2342964715310605611}
-  - component: {fileID: 460362154718191284}
   m_Layer: 5
   m_Name: AudioSettings_Button
   m_TagString: Untagged
@@ -32944,141 +30222,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &4238074212637496693
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6837125034192533118}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &2342964715310605611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6837125034192533118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &460362154718191284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6837125034192533118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &6845032556736710894
 GameObject:
   m_ObjectHideFlags: 0
@@ -33490,7 +30634,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -71.799995}
+  m_AnchoredPosition: {x: 0, y: -101.7}
   m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5640957688766488750
@@ -33812,8 +30956,6 @@ GameObject:
   - component: {fileID: 2832228421090700903}
   - component: {fileID: 2813968764215105742}
   - component: {fileID: 3075138434527121618}
-  - component: {fileID: 8020508242558757502}
-  - component: {fileID: 3491685197917880937}
   m_Layer: 5
   m_Name: AudioSettings_Button
   m_TagString: Untagged
@@ -34074,120 +31216,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!114 &8020508242558757502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7074633170282559370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
---- !u!82 &3491685197917880937
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7074633170282559370}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  powerUpUnlock: []
 --- !u!1 &7160038355880056422
 GameObject:
   m_ObjectHideFlags: 0
@@ -34203,9 +31232,6 @@ GameObject:
   - component: {fileID: 2318556542686906372}
   - component: {fileID: 2723286937034285371}
   - component: {fileID: 1458380179150160022}
-  - component: {fileID: 8501173413713961346}
-  - component: {fileID: 8851659331571569}
-  - component: {fileID: 3359352499752518508}
   m_Layer: 5
   m_Name: Confirm_Button
   m_TagString: Untagged
@@ -34466,141 +31492,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &8501173413713961346
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7160038355880056422}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &8851659331571569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7160038355880056422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &3359352499752518508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7160038355880056422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &7191688567006643498
 GameObject:
   m_ObjectHideFlags: 0
@@ -36037,6 +32929,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &7661152870058377472
 GameObject:
   m_ObjectHideFlags: 0
@@ -36050,6 +32943,8 @@ GameObject:
   - component: {fileID: 6648204004176681935}
   - component: {fileID: 6954578905028901659}
   - component: {fileID: 718484110249605678}
+  - component: {fileID: 344254346246045697}
+  - component: {fileID: 6936856750132196343}
   m_Layer: 5
   m_Name: MiddleBar_Image
   m_TagString: Untagged
@@ -36150,6 +33045,123 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnimationEventRelay
   attackProgress: 0
   speedMultiplier: 1
+--- !u!82 &344254346246045697
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7661152870058377472}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &6936856750132196343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7661152870058377472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
+  barOpen:
+  - {fileID: 8300000, guid: 0ded538b90c4dbc40b0ca1a33c1efc22, type: 3}
+  barClose:
+  - {fileID: 8300000, guid: e058bd6e5ecaaba478d2a751653e5fd6, type: 3}
+  buttonClick: []
+  buttonSelect: []
+  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &7672847892823579949
 GameObject:
   m_ObjectHideFlags: 0
@@ -36903,9 +33915,6 @@ GameObject:
   - component: {fileID: 4356476645739535963}
   - component: {fileID: 8611063073117864192}
   - component: {fileID: 8028717766697475684}
-  - component: {fileID: 8951638254168390023}
-  - component: {fileID: 9102273047145249285}
-  - component: {fileID: 8032890631452347921}
   m_Layer: 5
   m_Name: ExitToMainMenu_Button
   m_TagString: Untagged
@@ -37166,141 +34175,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &8951638254168390023
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8080112887223772814}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &9102273047145249285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8080112887223772814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &8032890631452347921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8080112887223772814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &8084357220294268480
 GameObject:
   m_ObjectHideFlags: 0
@@ -37542,8 +34417,8 @@ RectTransform:
   m_GameObject: {fileID: 8147780047648325142}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8582035859049294628}
   - {fileID: 5181894260112018685}
@@ -37560,7 +34435,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -3.9}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9073276843849316306
@@ -37628,9 +34503,6 @@ GameObject:
   - component: {fileID: 3792363670688066242}
   - component: {fileID: 940277176382454394}
   - component: {fileID: 3433163641280326758}
-  - component: {fileID: 6212104624052103726}
-  - component: {fileID: 9029473621786286684}
-  - component: {fileID: 5744460811249222127}
   m_Layer: 5
   m_Name: Resume_Button
   m_TagString: Untagged
@@ -37891,141 +34763,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &6212104624052103726
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8191193709384166657}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &9029473621786286684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8191193709384166657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &5744460811249222127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8191193709384166657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &8196611357906195007
 GameObject:
   m_ObjectHideFlags: 0
@@ -38301,6 +35039,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &8239963683430454999
 GameObject:
   m_ObjectHideFlags: 0
@@ -38441,9 +35180,6 @@ GameObject:
   - component: {fileID: 361990331971961152}
   - component: {fileID: 3706075123798358628}
   - component: {fileID: 8176361201977084214}
-  - component: {fileID: 4404365235988426669}
-  - component: {fileID: 5411878020162304950}
-  - component: {fileID: 669797384297830831}
   m_Layer: 5
   m_Name: Delete_Button
   m_TagString: Untagged
@@ -38683,141 +35419,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &4404365235988426669
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8409984981712319691}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &5411878020162304950
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8409984981712319691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &669797384297830831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8409984981712319691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &8473488990281313551
 GameObject:
   m_ObjectHideFlags: 0
@@ -38908,9 +35510,6 @@ GameObject:
   - component: {fileID: 795872471773724079}
   - component: {fileID: 6296973091107195930}
   - component: {fileID: 7504126663735736086}
-  - component: {fileID: 763331541252215034}
-  - component: {fileID: 7275477171952034899}
-  - component: {fileID: 6964697036931623075}
   m_Layer: 5
   m_Name: PlayGame_Button
   m_TagString: Untagged
@@ -39171,141 +35770,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &763331541252215034
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8567247056600977668}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &7275477171952034899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8567247056600977668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &6964697036931623075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8567247056600977668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &8617740173465147466
 GameObject:
   m_ObjectHideFlags: 0
@@ -39456,9 +35921,6 @@ GameObject:
   - component: {fileID: 6608058933235899381}
   - component: {fileID: 8193258648419989007}
   - component: {fileID: 5231632663646286529}
-  - component: {fileID: 2373937466457631050}
-  - component: {fileID: 2782477064977614651}
-  - component: {fileID: 5921035630871651711}
   m_Layer: 5
   m_Name: Back_Button
   m_TagString: Untagged
@@ -39719,141 +36181,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &2373937466457631050
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8626616584885300441}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &2782477064977614651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8626616584885300441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &5921035630871651711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8626616584885300441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &8634966447947398923
 GameObject:
   m_ObjectHideFlags: 0
@@ -40658,9 +36986,6 @@ GameObject:
   - component: {fileID: 2613178985377843072}
   - component: {fileID: 7387296104903855189}
   - component: {fileID: 8173866285133539443}
-  - component: {fileID: 6423086532545110302}
-  - component: {fileID: 4883576417080367666}
-  - component: {fileID: 5184992906603182306}
   m_Layer: 5
   m_Name: Continue_Button
   m_TagString: Untagged
@@ -40921,141 +37246,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &6423086532545110302
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8858314988722876787}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &4883576417080367666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8858314988722876787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &5184992906603182306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8858314988722876787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &8912495050468777799
 GameObject:
   m_ObjectHideFlags: 0
@@ -41107,9 +37298,6 @@ GameObject:
   - component: {fileID: 8527965860888543257}
   - component: {fileID: 4455731230142698320}
   - component: {fileID: 1916977756907884410}
-  - component: {fileID: 7771573725519213098}
-  - component: {fileID: 3593012165188322792}
-  - component: {fileID: 2971418711768562492}
   m_Layer: 5
   m_Name: NewGame_Button
   m_TagString: Untagged
@@ -41370,141 +37558,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &7771573725519213098
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8960440948744487493}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &3593012165188322792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8960440948744487493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &2971418711768562492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8960440948744487493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &8962481308810028092
 GameObject:
   m_ObjectHideFlags: 0
@@ -41836,9 +37890,6 @@ GameObject:
   - component: {fileID: 1897868756499619579}
   - component: {fileID: 5852095374169197626}
   - component: {fileID: 5307117776373274852}
-  - component: {fileID: 5168688145573712503}
-  - component: {fileID: 8740262188883018589}
-  - component: {fileID: 3854738939891402326}
   m_Layer: 5
   m_Name: Back_Button
   m_TagString: Untagged
@@ -42099,141 +38150,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &5168688145573712503
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9032138694883167286}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &8740262188883018589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9032138694883167286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &3854738939891402326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9032138694883167286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &9052959730864619079
 GameObject:
   m_ObjectHideFlags: 0
@@ -42422,9 +38339,6 @@ GameObject:
   - component: {fileID: 2430643255962814524}
   - component: {fileID: 6306428840425371123}
   - component: {fileID: 4367862340802912}
-  - component: {fileID: 5152524693382972743}
-  - component: {fileID: 4639287716593819122}
-  - component: {fileID: 7650040057442777497}
   m_Layer: 5
   m_Name: Continue_Button
   m_TagString: Untagged
@@ -42685,141 +38599,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &5152524693382972743
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9095293773471802997}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &4639287716593819122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9095293773471802997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
---- !u!114 &7650040057442777497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9095293773471802997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick: []
-  buttonSelect: []
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &9142873591713533708
 GameObject:
   m_ObjectHideFlags: 0
@@ -42871,8 +38651,6 @@ GameObject:
   - component: {fileID: 7056475484469680163}
   - component: {fileID: 4424411100728670045}
   - component: {fileID: 944665255388562507}
-  - component: {fileID: 3712178207268872959}
-  - component: {fileID: 116300626265525779}
   m_Layer: 5
   m_Name: VideoSettings_Button
   m_TagString: Untagged
@@ -43133,124 +38911,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
   - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
   checkBoxClic: []
---- !u!82 &3712178207268872959
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9143737803550010540}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &116300626265525779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9143737803550010540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b31b73351ed41e142bb1ce71cd8676ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UiAudioController
-  barOpen: []
-  barClose: []
-  buttonClick:
-  - {fileID: 8300000, guid: 1600483494f18ab4780f8e5881bc18fc, type: 3}
-  - {fileID: 8300000, guid: f3d726475b1f7a8429778eed530b0771, type: 3}
-  buttonSelect:
-  - {fileID: 8300000, guid: 8b5ce69cc4b095d4888911d811a71250, type: 3}
-  - {fileID: 8300000, guid: edc93b8b51535894ab67d6fc2fda2453, type: 3}
-  checkBoxClic: []
+  powerUpUnlock: []
 --- !u!1 &9184432810836832418
 GameObject:
   m_ObjectHideFlags: 0

@@ -123,9 +123,13 @@ public class HUDManager : MonoBehaviour
         if (stats == null) return;
 
         int currentUnlocks = 0;
+
         if (stats.attackUnlocked) currentUnlocks++;
-        if (stats.jumpUnlocked) currentUnlocks++;
+
+        if (stats.maxJumpCount >= 2) currentUnlocks++;
+
         if (stats.dashUnlocked) currentUnlocks++;
+
         if (stats.wallJumpUnlocked) currentUnlocks++;
 
         if (force || lastUnlockCount == -1)

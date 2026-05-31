@@ -9,7 +9,7 @@ public class UIAudioController : MonoBehaviour
     [SerializeField] private AudioClip[] buttonClick;
     [SerializeField] private AudioClip[] buttonSelect;
     [SerializeField] private AudioClip[] checkBoxClic;
-
+    [SerializeField] private AudioClip[] powerUpUnlock;
 
     private AudioSource audioSource;
 
@@ -23,9 +23,8 @@ public class UIAudioController : MonoBehaviour
     public void PlayBarCloseSound() => PlayRandomClip(barClose);
     public void PlayButtonClickSound() => PlayRandomClip(buttonClick);
     public void PlayButtonSelectSound() => PlayRandomClip(buttonSelect);
-
     public void PlayCheckBoxClicSound() => PlayRandomClip(checkBoxClic);
-
+    public void PlayPowerUpUnlock() => PlayRandomClip(powerUpUnlock);
 
     private void PlayRandomClip(AudioClip[] clips)
     {

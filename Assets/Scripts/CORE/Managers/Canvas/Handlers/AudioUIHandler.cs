@@ -32,6 +32,11 @@ public class UIAudioHandler : MonoBehaviour
         InitializeUI();
     }
 
+    private void OnDisable()
+    {
+        SaveAudioSettings();
+    }
+
     private void Start()
     {
         if (masterSlider != null) masterSlider.onValueChanged.AddListener(OnMasterChanged);
