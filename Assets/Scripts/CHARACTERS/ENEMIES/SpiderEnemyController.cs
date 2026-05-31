@@ -22,16 +22,19 @@ public class SpiderEnemyController : MonoBehaviour, IDamageable, IKnockbackable
     [Header("Health & Death")]
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private ParticleSystem damageParticles;
-    [SerializeField] private ParticleSystem deathParticles;
     [SerializeField] private SpriteRenderer[] enemySprites;
+    [SerializeField] private ParticleSystem deathParticles;
+    [SerializeField] private AudioClip deathSound;
 
     private int currentHealth;
     private Animator anim;
     private const string CORPSE_LAYER = "Corpse";
 
+    #region Cached Variables & References
     private DistanceJoint2D distanceJoint;
     private LineRenderer lineRenderer;
     private Rigidbody2D rb;
+    private AudioSource audioSource;
 
     private Vector2 originalPosition;
     private float originalJointDistance;
@@ -43,6 +46,7 @@ public class SpiderEnemyController : MonoBehaviour, IDamageable, IKnockbackable
     private bool isTakingDamage;
 
     private AnimationEventRelay animRelay;
+    #endregion
 
     private enum HazardState { Idle, Dropping, Attacking, Retracting, Dead }
 
@@ -53,6 +57,7 @@ public class SpiderEnemyController : MonoBehaviour, IDamageable, IKnockbackable
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         enemySprites = GetComponentsInChildren<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
 
         originalPosition = transform.position;
         originalJointDistance = distanceJoint.distance;
@@ -238,9 +243,10 @@ public class SpiderEnemyController : MonoBehaviour, IDamageable, IKnockbackable
     public void EndDeath()
     {
         if (deathParticles != null)
-        {
             Instantiate(deathParticles, transform.position, Quaternion.identity);
-        }
+
+        if (deathSound != null)
+            audioSource.PlayOneShot(deathSound);
 
         foreach (SpriteRenderer sr in enemySprites)
         {

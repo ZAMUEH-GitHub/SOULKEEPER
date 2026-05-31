@@ -13,7 +13,7 @@ public class EnemyAudioController : MonoBehaviour
     [SerializeField] private AudioClip[] prepareJumpSounds;
     [SerializeField] private AudioClip[] jumpSounds;
 
-    private AudioSource audioSource;
+    [HideInInspector] public AudioSource audioSource;
 
     private void Awake()
     {

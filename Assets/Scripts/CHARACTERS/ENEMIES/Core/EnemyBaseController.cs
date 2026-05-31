@@ -23,6 +23,7 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
     [HideInInspector] public EnemyDamageController damageController { get; private set; }
     [HideInInspector] public EnemyAnimationController animController { get; private set; }
     [HideInInspector] public EnemyPatrolController patrolController { get; private set; }
+    [HideInInspector] public EnemyAudioController audioController { get; private set; }
     [HideInInspector] public Transform player { get; private set; }
 
     [HideInInspector] public Vector2 lastKnownPlayerPosition;
@@ -211,7 +212,11 @@ public class EnemyBaseController : MonoBehaviour, IEnemy
     {
         if (damageController == null) return;
 
-        Instantiate(damageController.deathParticles, new Vector2(transform.position.x, transform.position.y - 1), Quaternion.identity);
+        if (damageController.deathParticles != null)
+            Instantiate(damageController.deathParticles, new Vector2(transform.position.x, transform.position.y - 1), Quaternion.identity);
+
+        if (damageController.deathSound != null)
+            audioController.audioSource.PlayOneShot(damageController.deathSound);
 
         for (int i = damageController.enemyScore; i > 0; i--)
         {

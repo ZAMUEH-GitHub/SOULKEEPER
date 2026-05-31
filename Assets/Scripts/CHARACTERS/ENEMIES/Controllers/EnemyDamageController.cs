@@ -11,11 +11,12 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
     public bool isTakingDamage;
     public bool isAlive = true;
 
-    [Header("VFX Settings")]
+    [Header("VFX & SFX Settings")]
     public GameObject soulObject;
     public ParticleSystem damageParticles;
-    public ParticleSystem deathParticles;
     [SerializeField] private SpriteRenderer[] enemySprites;
+    public ParticleSystem deathParticles;
+    public AudioClip deathSound;
 
     private float damageRate = 0.25f;
     private float nextDamage;
