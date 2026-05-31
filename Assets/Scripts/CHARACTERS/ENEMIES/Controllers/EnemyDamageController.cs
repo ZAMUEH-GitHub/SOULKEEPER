@@ -5,27 +5,28 @@ public class EnemyDamageController : MonoBehaviour, IKnockbackable, IDamageable
 {
     public EnemyStatsSO enemyStats;
 
+    [Header("Damage Stats")]
     public int enemyHealth;
     public int enemyScore;
     public bool isTakingDamage;
     public bool isAlive = true;
 
+    [Header("VFX Settings")]
     public GameObject soulObject;
     public ParticleSystem damageParticles;
     public ParticleSystem deathParticles;
+    [SerializeField] private SpriteRenderer[] enemySprites;
 
     private float damageRate = 0.25f;
     private float nextDamage;
 
     private Coroutine takeDamageCoroutine;
     private EnemyBaseController enemyBaseController;
-    private SpriteRenderer[] enemySprites;
     private Rigidbody2D enemyRB;
 
     private void Awake()
     {
         enemyBaseController = GetComponent<EnemyBaseController>();
-        enemySprites = GetComponentsInChildren<SpriteRenderer>();
         enemyRB = GetComponent<Rigidbody2D>();
 
         enemyHealth = enemyStats.health;

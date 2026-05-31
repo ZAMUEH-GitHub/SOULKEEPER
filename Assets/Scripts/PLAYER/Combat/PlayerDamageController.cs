@@ -13,7 +13,7 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     public bool isKnockedBack;
     [HideInInspector] public float currentKnockbackDuration;
 
-    [Header("Visual Effects")]
+    [Header("VFX Settings")]
     [SerializeField] private ParticleSystem damageParticles;
     [SerializeField] private SpriteRenderer[] playerSprite;
 
