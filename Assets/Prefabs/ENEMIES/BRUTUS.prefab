@@ -292,7 +292,6 @@ MonoBehaviour:
   isAlive: 0
   soulObject: {fileID: 7296185017180021397, guid: 44300729b2eb8f64eb9c3d31a04fad52, type: 3}
   damageParticles: {fileID: 6848039770606231452, guid: 91414f9d545ade143a7c2ac95c8a81e6, type: 3}
-  deathParticles: {fileID: 1076189247513063588, guid: 72a07841332b0a04c8ff49deb92a8b4f, type: 3}
   enemySprites:
   - {fileID: 2582064530694209214}
   - {fileID: 225890701766667987}
@@ -309,6 +308,8 @@ MonoBehaviour:
   - {fileID: 7505852897432482731}
   - {fileID: 4412716295585747927}
   - {fileID: 4249735211525357710}
+  deathParticles: {fileID: 1076189247513063588, guid: 72a07841332b0a04c8ff49deb92a8b4f, type: 3}
+  deathSound: {fileID: 8300000, guid: 26ff542edb350ae418872f04f62108b9, type: 3}
 --- !u!114 &164332524090484785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,6 +362,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8fe7b660ba4e58148b63b9a6bbfb0e25, type: 3}
   prepareJumpSounds: []
   jumpSounds: []
+  audioSource: {fileID: 0}
 --- !u!50 &2553967306837096810
 Rigidbody2D:
   serializedVersion: 5

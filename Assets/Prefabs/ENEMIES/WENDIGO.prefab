@@ -332,7 +332,6 @@ MonoBehaviour:
   isAlive: 0
   soulObject: {fileID: 7296185017180021397, guid: 44300729b2eb8f64eb9c3d31a04fad52, type: 3}
   damageParticles: {fileID: 6848039770606231452, guid: 91414f9d545ade143a7c2ac95c8a81e6, type: 3}
-  deathParticles: {fileID: 1076189247513063588, guid: 72a07841332b0a04c8ff49deb92a8b4f, type: 3}
   enemySprites:
   - {fileID: 69726296113991437}
   - {fileID: 9072656098000172521}
@@ -360,6 +359,8 @@ MonoBehaviour:
   - {fileID: 7977722321449033913}
   - {fileID: 4160011143458274669}
   - {fileID: 3131689770276106336}
+  deathParticles: {fileID: 1076189247513063588, guid: 72a07841332b0a04c8ff49deb92a8b4f, type: 3}
+  deathSound: {fileID: 8300000, guid: 26ff542edb350ae418872f04f62108b9, type: 3}
 --- !u!114 &2049250654084834690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,6 +415,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 35038ba9b4ff5804a9cc5065ec0bf829, type: 3}
   jumpSounds:
   - {fileID: 8300000, guid: 78bc1ec80446c904eaaaa64a6fe6d72f, type: 3}
+  audioSource: {fileID: 0}
 --- !u!50 &4109982421318919372
 Rigidbody2D:
   serializedVersion: 5
@@ -491,7 +493,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
