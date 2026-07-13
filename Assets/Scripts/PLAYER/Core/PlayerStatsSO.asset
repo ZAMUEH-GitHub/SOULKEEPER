@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c6cc784ef8bdf4ba24195bc472cf59, type: 3}
   m_Name: PlayerStatsSO
   m_EditorClassIdentifier: 
-  health: 5
-  maxHealth: 5
+  health: 10
+  maxHealth: 10
   score: 0
   speed: 8
   maxJumpCount: 1
@@ -29,7 +29,7 @@ MonoBehaviour:
   dashLenght: 0.25
   damage: 5
   attackRate: 0.5
-  attackRange: 5
+  attackRange: 7.5
   knockback: 7.5
   knockbackLenght: 0.25
   damageRate: 1
@@ -38,7 +38,7 @@ MonoBehaviour:
   jumpUnlocked: 1
   attackUnlocked: 1
   wallSlideUnlocked: 1
-  wallJumpUnlocked: 0
-  dashUnlocked: 0
+  wallJumpUnlocked: 1
+  dashUnlocked: 1
   coyoteTime: 0.1
   bufferTime: 0.1

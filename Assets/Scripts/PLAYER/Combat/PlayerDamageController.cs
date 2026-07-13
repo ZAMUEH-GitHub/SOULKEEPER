@@ -18,9 +18,10 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     [SerializeField] private SpriteRenderer[] playerSprite;
 
     #region Script and Component References
-    private PlayerDeathController deathController;
     private PlayerController playerController;
     private PlayerDashController dashController;
+    private PlayerDeathController deathController;
+    private PlayerAnimationController animController;
     private Coroutine takeDamageCoroutine;
 
     private Rigidbody2D playerRB;
@@ -38,7 +39,8 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
         }
 
         playerController = PlayerController.Instance;
-        deathController = GetComponent<PlayerDeathController>();
+        animController = PlayerController.Instance.animController;
+        deathController = PlayerController.Instance.deathController;
         dashController = PlayerController.Instance.dashController;
 
         playerRB = GetComponent<Rigidbody2D>();
@@ -48,6 +50,8 @@ public class PlayerDamageController : MonoBehaviour, IKnockbackable, IDamageable
     private void Update()
     {
         nextDamage = Mathf.Max(0, nextDamage - Time.deltaTime);
+
+        animController.SetBool("isTakingDamage", isTakingDamage);
     }
     #endregion
 

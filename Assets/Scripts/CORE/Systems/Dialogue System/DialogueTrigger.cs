@@ -31,7 +31,6 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
         
         if (!collision.CompareTag("Player") || !gameObject.activeInHierarchy)
             return;
-        Debug.Log("choco con player");
         playerInRange = true;
         ShowInteractText();
     }
@@ -47,7 +46,6 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
 
     private void OnDisable()
     {
-        // Failsafe: Hide text instantly if the controller disables this object/collider
         playerInRange = false;
         SetTextInstantAlpha(interactTextMesh, 0f);
     }
@@ -60,8 +58,6 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
             return;
         if (dialogueSequence != null && DialoguePanelManager.Instance != null)
         {
-            Debug.Log("player interacted");
-
             lastInteractionTime = Time.time;
             HideInteractText();
             DialoguePanelManager.Instance.StartDialogue(dialogueSequence);

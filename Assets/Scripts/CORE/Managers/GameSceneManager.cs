@@ -18,6 +18,7 @@ public class GameSceneManager : Singleton<GameSceneManager>
     [Header("Scene Management")]
     [SerializeField] private SceneLoadMode currentLoadMode;
     [SerializeField] private bool isLoadingScene;
+    public bool IsLoadingScene => isLoadingScene;
 
     [Header("Player Targets")]
     [SerializeField] private string targetDoorID;

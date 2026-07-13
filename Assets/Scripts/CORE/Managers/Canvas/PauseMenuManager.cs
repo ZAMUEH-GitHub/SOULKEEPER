@@ -67,6 +67,9 @@ public class PauseMenuManager : Singleton<PauseMenuManager>
     {
         if (isTransitioning) return;
 
+        if (!isPaused && sceneManager != null && sceneManager.IsLoadingScene)
+            return;
+
         if (isPaused) StartCoroutine(ResumeGameRoutine());
         else StartCoroutine(PauseGameRoutine());
     }
